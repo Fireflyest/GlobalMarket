@@ -1,0 +1,54 @@
+main: com.fireflyest.market.GlobalMarket
+name: GlobalMarket
+version: 1.0-SNAPSHOT
+description: 环球市场插件，作者QQ746969484(备注来意)
+api-version: 1.13
+authors: [Fireflyest]
+website: https://www.mcbbs.net/thread-1090611-1-1.html
+depend: [Vault,Gui]
+softdepend: [PlayerPoints]
+
+commands:
+  market:
+    description: 打开市场
+    usage: /market <help>
+
+permissions:
+  market.statistic:
+    description: 查询统计数据
+    default: op
+  market.sign:
+    description: 一键签收所有物品
+    default: op
+  market.create:
+    description: 创建牌子
+    default: op
+  market.vip:
+    description: 会员
+    default: op
+  market.admin:
+    description: 打开个人商店
+    default: op
+  market.send:
+    description: 邮寄物品
+    default: true
+  market.sell:
+    description: 出售物品
+    default: true
+  market.point:
+    description: 出售点券物品
+    default: true
+  market.auction:
+    description: 拍卖物品
+    default: true
+  market.discount:
+    description: 折扣物品
+    default: true
+  market.reprice:
+    description: 修改价格
+    default: true
+  market.other:
+    description: 打开个人商店
+    default: true
+
+

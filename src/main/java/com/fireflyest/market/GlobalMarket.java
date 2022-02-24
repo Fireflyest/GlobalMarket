@@ -1,0 +1,221 @@
+package com.fireflyest.market;
+
+import com.fireflyest.gui.api.ViewGuide;
+import com.fireflyest.market.bean.Mail;
+import com.fireflyest.market.bean.Note;
+import com.fireflyest.market.bean.Sale;
+import com.fireflyest.market.bean.User;
+import com.fireflyest.market.command.MarketCommand;
+import com.fireflyest.market.command.MarketTab;
+import com.fireflyest.market.core.MarketAffair;
+import com.fireflyest.market.core.MarketHandler;
+import com.fireflyest.market.core.MarketManager;
+import com.fireflyest.market.data.Config;
+import com.fireflyest.market.data.Data;
+import com.fireflyest.market.data.Language;
+import com.fireflyest.market.data.Storage;
+import com.fireflyest.market.listener.PlayerEventListener;
+import com.fireflyest.market.sql.SqlData;
+import com.fireflyest.market.sql.SqlStorage;
+import com.fireflyest.market.sqll.SqLiteData;
+import com.fireflyest.market.sqll.SqLiteStorage;
+import com.fireflyest.market.util.TimeUtils;
+import com.fireflyest.market.util.YamlUtils;
+import com.fireflyest.market.view.*;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.sql.SQLException;
+
+/**
+ * @author Fireflyest
+ * 2022/2/15 22:05
+ */
+public class GlobalMarket extends JavaPlugin{
+
+    /*
+    系统商店
+    点券支持
+    商品税收
+    邮箱交费
+    手续费
+    排行榜
+     */
+
+    public static final String MAIN_VIEW = "main";
+    public static final String MAIL_VIEW = "mail";
+    public static final String MINE_VIEW = "mine";
+    public static final String HOME_VIEW = "home";
+    public static final String CLASSIFY_VIEW = "classify";
+    public static final String AFFAIR_VIEW = "affair";
+
+    public static JavaPlugin getInstance() { return plugin; }
+
+    private static JavaPlugin plugin;
+
+    private static Storage storage;
+    private static Data data;
+    private static Economy economy;
+    private static ViewGuide guide;
+
+    private BukkitTask marketTask;
+
+    public static Data getData() {
+        return data;
+    }
+    public static Storage getStorage() {
+        return storage;
+    }
+    public static Economy getEconomy() {
+        return economy;
+    }
+    public static ViewGuide getGuide() {
+        return guide;
+    }
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+        plugin = this;
+
+        this.setupData();
+        this.setupEconomy();
+        this.setupGuide();
+
+        // 注册事件
+         this.getServer().getPluginManager().registerEvents( new PlayerEventListener(), this);
+
+        // 注册指令
+        PluginCommand command = this.getCommand("market");
+        if(command!=null){
+            command.setExecutor(new MarketCommand());
+            command.setTabCompleter(new MarketTab());
+        }
+
+        // 初始化管理
+        MarketManager.initMarketManager();
+        MarketAffair.getInstance().initPages();
+        // 任务处理线程
+        MarketHandler.getInstance().createTaskHandler(this);
+
+        // 重载初始化User数据
+        for (Player onlinePlayer : getServer().getOnlinePlayers()) {
+            this.getServer().getPluginManager().callEvent(new PlayerJoinEvent(onlinePlayer, null));
+        }
+
+        // 20mc刻为一秒
+        marketTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                long limit = (long) Config.LIMIT_TIME * 1000 * 60 * 60 * 24;
+                long now = TimeUtils.getDate();
+                MarketManager.getSales().forEach(sale -> {
+                    long delta = now - sale.getAppear();
+                    // 判断是否超时
+                    if (delta > limit) {
+                        Player player = Bukkit.getPlayer(sale.getOwner());
+                        // 玩家是否在线
+                        if (player != null && player.getName().equals(sale.getOwner())) {
+                            // 下架处理
+                            if (sale.isAuction()){
+                                MarketAffair.getInstance().affairCancel(player, sale.getId());
+                            }else {
+                                MarketAffair.getInstance().affairFinish(player, sale.getId());
+                            }
+                        }
+                    }
+                });
+            }
+        }.runTaskTimerAsynchronously(this, 20 * 10, 20 * 60 * 30); // 每三十分钟
+    }
+
+    @Override
+    public void onDisable() {
+        try {
+            storage.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        MarketHandler.getInstance().stop();
+        Bukkit.getScheduler().cancelTasks(this);
+
+        marketTask.cancel();
+    }
+
+    private void setupData(){
+        YamlUtils.iniYamlUtils(plugin);
+
+        if(Config.SQL){
+            if(Config.DEBUG) Bukkit.getLogger().info("使用数据库存储");
+            // 数据库访问对象
+            try {
+                storage = new SqlStorage(Config.URL, Config.USER, Config.PASSWORD);
+                data = new SqlData(storage);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }else{
+            if(Config.DEBUG) Bukkit.getLogger().info("使用本地存储");
+            // 本地数据库访问对象
+            String url = "jdbc:sqlite:" + getDataFolder() + "/storage.db";
+
+            try {
+                storage = new SqLiteStorage(url);
+                data = new SqLiteData(storage);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        data.createTable(User.class);
+        data.createTable(Sale.class);
+        data.createTable(Mail.class);
+        data.createTable(Note.class);
+    }
+
+    /**
+     * 经济插件
+     */
+    private void setupEconomy() {
+        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
+            return;
+        }
+        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            Bukkit.getLogger().warning("Economy not found!");
+            return;
+        }
+        economy = rsp.getProvider();
+    }
+
+    /**
+     * 界面初始化
+     */
+    private void setupGuide() {
+        if (Bukkit.getServer().getPluginManager().getPlugin("Gui") == null) {
+            return;
+        }
+        RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer().getServicesManager().getRegistration(ViewGuide.class);
+        if (rsp == null) {
+            Bukkit.getLogger().warning("Gui not found!");
+            return;
+        }
+        guide = rsp.getProvider();
+
+        guide.addView(MAIN_VIEW, new MainView(Language.PLUGIN_NAME));
+        guide.addView(MAIL_VIEW, new MailView(Language.PLUGIN_NAME));
+        guide.addView(MINE_VIEW, new MineView(Language.PLUGIN_NAME));
+        guide.addView(HOME_VIEW, new HomeView(Language.PLUGIN_NAME));
+        guide.addView(CLASSIFY_VIEW, new ClassifyView(Language.PLUGIN_NAME));
+        guide.addView(AFFAIR_VIEW, new AffairView(Language.PLUGIN_NAME));
+    }
+
+}

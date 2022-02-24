@@ -1,0 +1,35 @@
+Version: '2.0.0'
+
+# 反馈bug联系QQ: 746969484
+Debug: false
+
+#SQL参数(高一点的版本需要在url加上'useSSL=false')
+Sql: false
+Url: 'jdbc:mysql://localhost:3306/mc_market?useSSL=false&serverTimezone=UTC'
+User: 'root'
+Password: '123456'
+
+#物品几天后自动下架(默认一周)
+LimitTime: 7
+
+#启用分类
+ItemClassify: true
+
+#上架限制
+LimitLore: false
+LimitLoreList: 私有,vip,绑定
+
+#数量限制
+LimitAmount: true
+LimitAmountNum: 30
+LimitAmountNumVip: 50
+
+#上架最大金额(默认99999999)
+MaxPrice: 99999999
+
+#上架提示
+SellBroadcast: true
+
+#邮箱限制
+LimitMail: true
+LimitMailNum: 50
