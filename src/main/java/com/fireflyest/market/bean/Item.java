@@ -13,11 +13,13 @@ public class Item  implements Comparable<Item>{
     // 物品
     private String stack;
     private String meta;
+    // nbt数据
+    private String nbt;
 
     // 创建时间
     private long appear;
 
-    public Item(int id, String stack, String meta, long appear) {
+    public Item(int id, String stack, String meta, String nbt, long appear) {
         this.id = id;
         this.stack = stack;
         this.meta = meta;
@@ -57,6 +59,14 @@ public class Item  implements Comparable<Item>{
 
     public void setAppear(long appear) {
         this.appear = appear;
+    }
+
+    public String getNbt() {
+        return nbt;
+    }
+
+    public void setNbt(String nbt) {
+        this.nbt = nbt;
     }
 
     @Override

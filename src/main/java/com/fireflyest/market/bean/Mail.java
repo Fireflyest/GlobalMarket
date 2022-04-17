@@ -28,8 +28,8 @@ public class Mail extends Item{
     public Mail() {
     }
 
-    public Mail(int id, String stack, String meta, long create, String owner, String info, boolean signed, boolean record, double price, boolean point) {
-        super(id, stack, meta, create);
+    public Mail(int id, String stack, String meta, String nbt, long create, String owner, String info, boolean signed, boolean record, double price, boolean point) {
+        super(id, stack, meta, nbt, create);
         this.owner = owner;
         this.info = info;
         this.signed = signed;

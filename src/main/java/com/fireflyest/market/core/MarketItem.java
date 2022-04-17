@@ -20,11 +20,16 @@ public class MarketItem {
     public static ItemStack CLOSE;
     public static ItemStack BLANK;
     public static ItemStack BOOK;
+    public static ItemStack BUY_1;
+    public static ItemStack BUY_8;
+    public static ItemStack BUY_ALL;
     public static ItemStack CANCEL;
     public static ItemStack ADD_NUGGET;
     public static ItemStack ADD_INGOT;
     public static ItemStack ADD_BLOCK;
     public static ItemStack PAGE;
+    public static ItemStack PAGE_PRE;
+    public static ItemStack PAGE_NEXT;
     public static ItemStack ERROR;
 
     public static ItemStack EDIBLE;
@@ -135,6 +140,19 @@ public class MarketItem {
             BOOK = new ItemStack(book);
         }
 
+        Material buy1 = XMaterial.ITEM_FRAME.parseMaterial();
+        if(null != buy1){
+            BUY_1 = new ItemStack(buy1);
+        }
+        Material buy2 = XMaterial.ITEM_FRAME.parseMaterial();
+        if(null != buy2){
+            BUY_8 = new ItemStack(buy2);
+        }
+        Material buy3 = XMaterial.ITEM_FRAME.parseMaterial();
+        if(null != buy3){
+            BUY_ALL = new ItemStack(buy3);
+        }
+
         Material cancel = XMaterial.HOPPER.parseMaterial();
         if(null != cancel){
             CANCEL = new ItemStack(cancel);
@@ -158,6 +176,18 @@ public class MarketItem {
             PAGE = new ItemStack(page);
             ItemUtils.setDisplayName(PAGE, "§3§l换页");
             ItemUtils.addLore(PAGE, "§f左右键");
+        }
+
+        Material pagePre = XMaterial.PAPER.parseMaterial();
+        if(null != pagePre){
+            PAGE_PRE = new ItemStack(pagePre);
+            ItemUtils.setDisplayName(PAGE_PRE, "§3§l上一页");
+        }
+
+        Material pageNext = XMaterial.PAPER.parseMaterial();
+        if(null != pageNext){
+            PAGE_NEXT = new ItemStack(pageNext);
+            ItemUtils.setDisplayName(PAGE_NEXT, "§3§l下一页");
         }
 
         Material error = XMaterial.BARRIER.parseMaterial();
@@ -248,7 +278,23 @@ public class MarketItem {
         ItemStack tmp = PAGE.clone();
         tmp.setAmount(i);
         ItemUtils.addLore(tmp, "§7<§e"+(i)+"§7>§0");
-        ItemUtils.setItemValue(tmp, String.format("page %d", i) );
+        ItemUtils.setItemValue(tmp, "page");
+        return tmp;
+    }
+
+    public static ItemStack getPrePageItem(int i){
+        ItemStack tmp = PAGE_PRE.clone();
+        tmp.setAmount(i);
+        ItemUtils.addLore(tmp, "§7<§e"+(i)+"§7>§0");
+        ItemUtils.setItemValue(tmp, "page pre");
+        return tmp;
+    }
+
+    public static ItemStack getNextPageItem(int i){
+        ItemStack tmp = PAGE_NEXT.clone();
+        tmp.setAmount(i);
+        ItemUtils.addLore(tmp, "§7<§e"+(i)+"§7>§0");
+        ItemUtils.setItemValue(tmp, "page next");
         return tmp;
     }
 

@@ -49,12 +49,12 @@ public class GlobalMarket extends JavaPlugin{
     排行榜
      */
 
-    public static final String MAIN_VIEW = "main";
-    public static final String MAIL_VIEW = "mail";
-    public static final String MINE_VIEW = "mine";
-    public static final String HOME_VIEW = "home";
-    public static final String CLASSIFY_VIEW = "classify";
-    public static final String AFFAIR_VIEW = "affair";
+    public static final String MAIN_VIEW = "market.main";
+    public static final String MAIL_VIEW = "market.mail";
+    public static final String MINE_VIEW = "market.mine";
+    public static final String HOME_VIEW = "market.home";
+    public static final String CLASSIFY_VIEW = "market.classify";
+    public static final String AFFAIR_VIEW = "market.affair";
 
     public static JavaPlugin getInstance() { return plugin; }
 
@@ -104,11 +104,6 @@ public class GlobalMarket extends JavaPlugin{
         MarketAffair.getInstance().initPages();
         // 任务处理线程
         MarketHandler.getInstance().createTaskHandler(this);
-
-        // 重载初始化User数据
-        for (Player onlinePlayer : getServer().getOnlinePlayers()) {
-            this.getServer().getPluginManager().callEvent(new PlayerJoinEvent(onlinePlayer, null));
-        }
 
         // 20mc刻为一秒
         marketTask = new BukkitRunnable() {

@@ -71,6 +71,10 @@ public class HomePage implements ViewPage {
     }
 
     @Override
+    public void setNext(ViewPage viewPage) {
+    }
+
+    @Override
     public void refreshPage() {
         itemMap.put(0, MarketItem.EDIBLE);
         itemMap.put(1, MarketItem.ITEM);

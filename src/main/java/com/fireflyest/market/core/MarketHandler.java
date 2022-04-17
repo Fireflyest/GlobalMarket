@@ -271,6 +271,7 @@ public class MarketHandler implements MarketInteract{
             if (!Config.DEBUG) return;
         }
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
+        ItemUtils.setItemValue(item, sale.getNbt());
 
         String itemName = sale.getNickname();
         boolean buyAll = amount == 0, point = sale.isPoint();
@@ -375,6 +376,7 @@ public class MarketHandler implements MarketInteract{
         }
 
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
+        ItemUtils.setItemValue(item, sale.getNbt());
 
         MarketManager.removeSale(sale);
         player.sendMessage(Language.CANCEL_ITEM);
@@ -432,7 +434,7 @@ public class MarketHandler implements MarketInteract{
 
         String stack = SerializeUtil.serializeItemStack(item);
         String meta = SerializeUtil.serializeItemMeta(item);
-        Sale sale = new Sale(0, stack, meta, new Date().getTime(), seller, "", price, price, 0, itemName, auction, point);
+        Sale sale = new Sale(0, stack, meta, ItemUtils.getItemValue(item), new Date().getTime(), seller, "", price, price, 0, itemName, auction, point);
         
         MarketManager.addSale(sale, item.getType());
 
@@ -465,6 +467,7 @@ public class MarketHandler implements MarketInteract{
 
         mail.setSigned(true);
         ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
+        ItemUtils.setItemValue(item, mail.getNbt());
         player.getInventory().addItem(item);
         if (mail.isRecord()){
             economy.depositPlayer(player, mail.getPrice());
@@ -487,7 +490,7 @@ public class MarketHandler implements MarketInteract{
     private void affairSend(String to, ItemStack item, double price, boolean point) {
         String stack = SerializeUtil.serializeItemStack(item);
         String meta = SerializeUtil.serializeItemMeta(item);
-        Mail mail = new Mail(0, stack, meta, new Date().getTime(), to, "", false, price > 0, price, point);
+        Mail mail = new Mail(0, stack, meta, ItemUtils.getItemValue(item), new Date().getTime(), to, "", false, price > 0, price, point);
         
         MarketManager.addMail(mail);
 
@@ -542,6 +545,7 @@ public class MarketHandler implements MarketInteract{
         economy.withdrawPlayer(buyerPlayer, sale.getCost());
         // 发送物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
+        ItemUtils.setItemValue(item, sale.getNbt());
         this.obtainMailTask(buyer, item).sendToTarget();
 
         // 更新市场

@@ -6,7 +6,8 @@ api-version: 1.13
 authors: [Fireflyest]
 website: https://www.mcbbs.net/thread-1090611-1-1.html
 depend: [Vault,Gui]
-softdepend: [PlayerPoints]
+load: POSTWORLD
+softdepend: [PlayerPoints,EssentialEconomy,Economy]
 
 commands:
   market:
@@ -27,7 +28,7 @@ permissions:
     description: 会员
     default: op
   market.admin:
-    description: 打开个人商店
+    description: 打开系统商店
     default: op
   market.send:
     description: 邮寄物品

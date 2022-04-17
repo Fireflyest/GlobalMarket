@@ -43,8 +43,8 @@ public class Sale extends Item{
     public Sale() {
     }
 
-    public Sale(int id, String stack, String meta, long create, String owner, String buyer, double price, double cost, int heat, String nickname, boolean auction, boolean point) {
-        super(id, stack, meta, create);
+    public Sale(int id, String stack, String meta, String nbt, long create, String owner, String buyer, double price, double cost, int heat, String nickname, boolean auction, boolean point) {
+        super(id, stack, meta, nbt, create);
         this.buyer = buyer;
         this.owner = owner;
         this.price = price;

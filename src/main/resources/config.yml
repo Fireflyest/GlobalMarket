@@ -33,3 +33,6 @@ SellBroadcast: true
 #邮箱限制
 LimitMail: true
 LimitMailNum: 50
+
+# 换页按钮是否分离
+PageButtonSplit: false

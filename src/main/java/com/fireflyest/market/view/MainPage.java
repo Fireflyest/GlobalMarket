@@ -136,10 +136,20 @@ public class MainPage implements ViewPage {
     }
 
     @Override
+    public void setNext(ViewPage viewPage) {
+
+    }
+
+    @Override
     public void refreshPage() {
         itemMap.put(45, MarketItem.MINE);
         itemMap.put(46, MarketItem.MAIL);
-        itemMap.put(49, MarketItem.getPageItem(page));
+        if(Config.PAGE_BUTTON_SPLIT){
+            itemMap.put(48, MarketItem.getPrePageItem(page));
+            itemMap.put(50, MarketItem.getNextPageItem(page));
+        }else {
+            itemMap.put(49, MarketItem.getPageItem(page));
+        }
         itemMap.put(52, MarketItem.CLASSIFY);
         itemMap.put(53, MarketItem.CLOSE);
     }

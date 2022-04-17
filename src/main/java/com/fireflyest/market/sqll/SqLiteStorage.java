@@ -52,6 +52,8 @@ public class SqLiteStorage implements Storage {
                         ReflectUtils.invokeSet(t, field.getName(), resultSet.getDouble(field.getName()));
                     } else if (boolean.class.equals(field.getType())) {
                         ReflectUtils.invokeSet(t, field.getName(), resultSet.getBoolean(field.getName()));
+                    } else if (long.class.equals(field.getType())) {
+                        ReflectUtils.invokeSet(t, field.getName(), resultSet.getLong(field.getName()));
                     } else {
                         ReflectUtils.invokeSet(t, field.getName(), resultSet.getObject(field.getName()));
                     }

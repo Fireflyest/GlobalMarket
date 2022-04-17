@@ -26,7 +26,8 @@ public class AffairPage implements ViewPage {
 
     private final Inventory inventory;
     private final String target;
-    private final Sale sale;
+
+    private Sale sale;
 
     public AffairPage(String title, String target) {
         this.target = target;
@@ -44,9 +45,12 @@ public class AffairPage implements ViewPage {
     @Override
     public Map<Integer, ItemStack> getItemMap(){
         Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
+        sale = MarketManager.getSale(ConvertUtils.parseInt(target));
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
+        // 展示物品
         itemMap.put(10, item);
 
+        // 下架按钮
         ItemStack cancel;
         if(sale.isAuction() && sale.getPrice() != sale.getCost()){
             cancel = MarketItem.BOOK.clone();
@@ -64,6 +68,7 @@ public class AffairPage implements ViewPage {
 
         // 添加交易操作按钮
         if(sale.isAuction()){
+            // 拍卖
             ItemStack add1 = MarketItem.ADD_NUGGET.clone();
             ItemUtils.setDisplayName(add1, "§e§l加价");
             ItemUtils.addLore(add1, "§3§l增加§7:§f 10");
@@ -85,26 +90,27 @@ public class AffairPage implements ViewPage {
             ItemUtils.setItemValue(add3, "add "+sale.getId()+" 1000");
             itemMap.put(15, add3);
         }else {
+            // 直售
             int amount = item.getAmount();
-            ItemStack buy1 = MarketItem.BOOK.clone();
-            buy1.setAmount(1);
+            ItemStack buy1 = MarketItem.BUY_1.clone();
             ItemUtils.setDisplayName(buy1, "§e§l单件");
             ItemUtils.addLore(buy1, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount));
             ItemUtils.setItemValue(buy1, "buy "+sale.getId()+" 1");
+            buy1.setAmount(1);
             itemMap.put(13, buy1);
             if(amount > 8){
-                ItemStack buy2 = MarketItem.BOOK.clone();
-                buy2.setAmount(8);
+                ItemStack buy2 = MarketItem.BUY_8.clone();
                 ItemUtils.setDisplayName(buy2, "§e§l部分");
                 ItemUtils.addLore(buy2, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount * 8));
                 ItemUtils.setItemValue(buy2, "buy "+sale.getId()+" 8");
+                buy2.setAmount(8);
                 itemMap.put(14, buy2);
             }
-            ItemStack buy3 = MarketItem.BOOK.clone();
-            buy3.setAmount(amount);
+            ItemStack buy3 = MarketItem.BUY_ALL.clone();
             ItemUtils.setDisplayName(buy3, "§e§l一口价");
             ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
             ItemUtils.setItemValue(buy3, "buy "+sale.getId());
+            buy3.setAmount(amount);
             itemMap.put(15, buy3);
         }
         return itemStackMap;
@@ -142,6 +148,10 @@ public class AffairPage implements ViewPage {
 
     @Override
     public void setPre(ViewPage pre) {
+    }
+
+    @Override
+    public void setNext(ViewPage viewPage) {
     }
 
     @Override

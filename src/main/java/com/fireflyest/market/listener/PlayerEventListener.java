@@ -86,10 +86,18 @@ public class PlayerEventListener implements Listener {
         // 翻页
         if (value.contains("page")){
             player.playSound(player.getLocation(), pageSound, 1F, 1F);
-            if (event.isLeftClick()){
-                guide.prePage(player);
-            }else if (event.isRightClick()){
-                guide.nextPage(player);
+            if(Config.PAGE_BUTTON_SPLIT){
+                if (value.contains("pre")){
+                    guide.prePage(player);
+                }else if (value.contains("next")){
+                    guide.nextPage(player);
+                }
+            }else {
+                if (event.isLeftClick()){
+                    guide.prePage(player);
+                }else if (event.isRightClick()){
+                    guide.nextPage(player);
+                }
             }
             return;
         }

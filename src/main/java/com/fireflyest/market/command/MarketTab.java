@@ -3,6 +3,7 @@ package com.fireflyest.market.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class MarketTab implements TabCompleter {
         op.addAll(user);
     }
 
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args){
+    public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args){
         if(command.getName().equalsIgnoreCase("market")){
             List<String> tab = new ArrayList<>();
             if(args.length == 1){
