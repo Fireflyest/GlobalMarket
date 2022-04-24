@@ -33,6 +33,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.sql.SQLException;
+import java.util.function.Predicate;
 
 /**
  * @author Fireflyest
@@ -111,7 +112,8 @@ public class GlobalMarket extends JavaPlugin{
             public void run() {
                 long limit = (long) Config.LIMIT_TIME * 1000 * 60 * 60 * 24;
                 long now = TimeUtils.getDate();
-                MarketManager.getSales().forEach(sale -> {
+                // 找出非系统商店的判断是否超时
+                MarketManager.getSales().stream().filter(sale -> !sale.isAdmin()).forEach(sale -> {
                     long delta = now - sale.getAppear();
                     // 判断是否超时
                     if (delta > limit) {

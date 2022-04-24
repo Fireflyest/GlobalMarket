@@ -80,7 +80,7 @@ public class SerializeUtil {
         // 判断是否有解析过这个元
         if(!"".equals(itemMeta)){
             ItemMeta meta;
-            if (metaStorage.containsKey(itemMeta)){
+            if (metaStorage.containsKey(itemMeta) && metaStorage.get(itemMeta) != null){
                 meta = metaStorage.get(itemMeta).clone();
             }else {
                 metaMap = gson.fromJson(itemMeta, type);

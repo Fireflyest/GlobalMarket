@@ -1,5 +1,6 @@
 package com.fireflyest.market.core;
 
+import com.fireflyest.gui.api.ViewGuide;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Sale;
@@ -40,6 +41,7 @@ public class MarketHandler implements MarketInteract{
     private static final MarketHandler marketHandler = new MarketHandler();
 
     private Economy economy;
+    private ViewGuide guide;
 //    private Economy pointEconomy;
 
     private BukkitTask tradeLooper;
@@ -58,6 +60,7 @@ public class MarketHandler implements MarketInteract{
     public void createTaskHandler(JavaPlugin plugin){
         data = GlobalMarket.getData();
         economy = GlobalMarket.getEconomy();
+        guide = GlobalMarket.getGuide();
         enable = true;
 
         // 开启两个线程运行队列
@@ -271,7 +274,7 @@ public class MarketHandler implements MarketInteract{
             if (!Config.DEBUG) return;
         }
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-        ItemUtils.setItemValue(item, sale.getNbt());
+        if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
 
         String itemName = sale.getNickname();
         boolean buyAll = amount == 0, point = sale.isPoint();
@@ -358,6 +361,8 @@ public class MarketHandler implements MarketInteract{
         user.setMoney(user.getMoney() + cost);
         data.update(user);
 
+        guide.refreshPage(player.getName());
+
     }
 
     @Override
@@ -376,7 +381,7 @@ public class MarketHandler implements MarketInteract{
         }
 
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-        ItemUtils.setItemValue(item, sale.getNbt());
+        if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
 
         MarketManager.removeSale(sale);
         player.sendMessage(Language.CANCEL_ITEM);
@@ -389,6 +394,7 @@ public class MarketHandler implements MarketInteract{
         // 发送邮件
         this.obtainMailTask(sale.getOwner() , item).sendToTarget();
 
+        guide.refreshPage(player.getName());
     }
 
     @Override
@@ -420,6 +426,7 @@ public class MarketHandler implements MarketInteract{
 
         MarketManager.updateSale(sale);
 
+        guide.refreshPage(player.getName());
     }
 
     @Override
@@ -467,7 +474,7 @@ public class MarketHandler implements MarketInteract{
 
         mail.setSigned(true);
         ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
-        ItemUtils.setItemValue(item, mail.getNbt());
+        if(!"null".equals(mail.getNbt()) && !"".equals(mail.getNbt())) ItemUtils.setItemValue(item, mail.getNbt());
         player.getInventory().addItem(item);
         if (mail.isRecord()){
             economy.depositPlayer(player, mail.getPrice());
@@ -477,6 +484,8 @@ public class MarketHandler implements MarketInteract{
         }
         
         MarketManager.removeMail(mail);
+
+        guide.refreshPage(player.getName());
 
     }
 
@@ -545,7 +554,7 @@ public class MarketHandler implements MarketInteract{
         economy.withdrawPlayer(buyerPlayer, sale.getCost());
         // 发送物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-        ItemUtils.setItemValue(item, sale.getNbt());
+        if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
         this.obtainMailTask(buyer, item).sendToTarget();
 
         // 更新市场
@@ -561,6 +570,8 @@ public class MarketHandler implements MarketInteract{
         user.setAmount(user.getAmount() + 1);
         user.setMoney(user.getMoney() + cost);
         data.update(user);
+
+        guide.refreshPage(player.getName());
 
     }
 

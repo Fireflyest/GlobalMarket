@@ -85,9 +85,11 @@ public class HomePage implements ViewPage {
         itemMap.put(6, MarketItem.SOLID);
         itemMap.put(7, MarketItem.EQUIP);
         itemMap.put(8, MarketItem.KNOWLEDGE);
+
         itemMap.put(18, MarketItem.MARKET);
-        itemMap.put(19, MarketItem.POINT);
-        itemMap.put(20, MarketItem.ADMIN);
+        itemMap.put(19, MarketItem.MARKET_ALL);
+        itemMap.put(20, MarketItem.POINT);
+        itemMap.put(21, MarketItem.ADMIN);
         itemMap.put(26, MarketItem.CLOSE);
         for (int i = 9; i < 18; i++) {
             itemMap.put(i, MarketItem.BLANK);

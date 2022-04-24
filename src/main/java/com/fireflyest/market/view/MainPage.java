@@ -34,7 +34,8 @@ public class MainPage implements ViewPage {
     private final String target;
     private final int page;
     private final int size;
-    private final String sql;
+    private final String sqlAll;
+    private final String sqlNormal;
     private final String sqlPoint;
     private final String sqlAdmin;
 
@@ -56,13 +57,15 @@ public class MainPage implements ViewPage {
         this.inventory = Bukkit.createInventory(null, size, guiTitle);
 
         if(Config.SQL){
-            sql = MysqlExecuteUtils.query(Sale.class, (page-1)*45, page*45);
-            sqlPoint = MysqlExecuteUtils.query(Sale.class, "point", true, (page-1)*45, page*45);
-            sqlAdmin = MysqlExecuteUtils.query(Sale.class, "admin", true, (page-1)*45, page*45);
+            sqlAll = MysqlExecuteUtils.query(Sale.class, (page-1)*45, page*45);
+            sqlNormal = MysqlExecuteUtils.query(Sale.class, " where admin=0 order by id desc",(page-1)*45, page*45);
+            sqlPoint = MysqlExecuteUtils.query(Sale.class, " where point=1 order by id desc", (page-1)*45, page*45);
+            sqlAdmin = MysqlExecuteUtils.query(Sale.class, " where admin=1 order by id desc", (page-1)*45, page*45);
         }else {
-            sql = SqliteExecuteUtils.query(Sale.class, (page-1)*45, page*45);
-            sqlPoint = SqliteExecuteUtils.query(Sale.class, "point", true, (page-1)*45, page*45);
-            sqlAdmin = SqliteExecuteUtils.query(Sale.class, "admin", true, (page-1)*45, page*45);
+            sqlAll = SqliteExecuteUtils.query(Sale.class, (page-1)*45, page*45);
+            sqlNormal = MysqlExecuteUtils.query(Sale.class, " where admin=0 order by id desc",(page-1)*45, page*45);
+            sqlPoint = SqliteExecuteUtils.query(Sale.class, " where point=1 order by id desc", (page-1)*45, page*45);
+            sqlAdmin = SqliteExecuteUtils.query(Sale.class, " where admin=1 order by id desc",  (page-1)*45, page*45);
         }
 
         this.refreshPage();
@@ -79,9 +82,12 @@ public class MainPage implements ViewPage {
             case MainView.ADMIN:
                 sales = storage.inquiryList(sqlAdmin, Sale.class);
                 break;
+            case MainView.NORMAL:
+                sales = storage.inquiryList(sqlNormal, Sale.class);
+                break;
             case MainView.ALL:
             default:
-                sales = storage.inquiryList(sql, Sale.class);
+                sales = storage.inquiryList(sqlAll, Sale.class);
         }
         for (int i = 0; i < 45; i++) {
             if(i < sales.size()){

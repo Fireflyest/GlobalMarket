@@ -23,8 +23,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MarketCommand implements CommandExecutor {
@@ -65,7 +63,7 @@ public class MarketCommand implements CommandExecutor {
     private void executeCommand(CommandSender sender){
         Player player = (sender instanceof Player)? (Player)sender : null;
         if (player != null) {
-            guide.openView(player, GlobalMarket.MAIN_VIEW, MainView.ALL);
+            guide.openView(player, GlobalMarket.MAIN_VIEW, MainView.NORMAL);
         }else {
             sender.sendMessage(Language.PLAYER_COMMAND);
         }
@@ -88,7 +86,7 @@ public class MarketCommand implements CommandExecutor {
                         "§b/market clean                     §f - 全部签收\n" +
                         "§b/market sell [m] <a>              §f - 出售物品\n" +
                         "§b/market auction [m] <a>          §f - 拍卖物品\n" +
-                        "§b/market discount [id] [a]        §f - 全部签收\n" +
+                        "§b/market discount [id] [a]        §f - 商品打折\n" +
                         "§b/market send [p] <a>             §f - 发送邮件\n" +
                         "§b/market statistic <p|id>          §f - 统计数据\n" +
                         "§b/market other [p]                 §f - 他人商店\n" +
@@ -115,6 +113,14 @@ public class MarketCommand implements CommandExecutor {
                 }
                 String playerName = player.getName();
                 guide.openView(player, GlobalMarket.MINE_VIEW, playerName);
+                break;
+            }
+            case "all":{
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                guide.openView(player, GlobalMarket.MAIN_VIEW, MainView.ALL);
                 break;
             }
             case "close":
@@ -216,9 +222,13 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }else {
                     Sale sale = data.queryOne(Sale.class, "id", var2);
+                    if (sale == null) {
+                        sender.sendMessage(Language.DATA_NULL);
+                        return;
+                    }
                     sale.setAdmin(!sale.isAdmin());
                     data.update(sale);
-                    player.sendMessage(Language.TITLE + "商品属性修改成功");
+                    player.sendMessage(Language.TITLE + "商品成功设置为无限");
                 }
                 break;
             case "classify":{
@@ -352,8 +362,8 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 ItemStack item = player.getInventory().getItemInMainHand();
-                // 判断最大数量
-                if(Config.LIMIT_AMOUNT){
+                // 判断最大数量 op无限制
+                if(Config.LIMIT_AMOUNT && !player.isOp()){
                     User user = MarketManager.getUser(player.getName());
                     int limit = player.hasPermission("market.vip") ? Config.LIMIT_AMOUNT_NUM_VIP : Config.LIMIT_AMOUNT_NUM;
                     if(user.getSelling() > limit){

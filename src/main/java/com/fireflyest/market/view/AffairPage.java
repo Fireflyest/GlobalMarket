@@ -46,6 +46,9 @@ public class AffairPage implements ViewPage {
     public Map<Integer, ItemStack> getItemMap(){
         Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
         sale = MarketManager.getSale(ConvertUtils.parseInt(target));
+        if (sale == null) {
+            return itemStackMap;
+        }
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
         // 展示物品
         itemMap.put(10, item);
@@ -167,6 +170,10 @@ public class AffairPage implements ViewPage {
 
         itemMap.put(26, MarketItem.MARKET.clone());
 
+        sale = MarketManager.getSale(ConvertUtils.parseInt(target));
+        if (sale == null) {
+            return;
+        }
         ItemStack other = new ItemStack(MarketItem.MINE.getType());
         ItemUtils.setDisplayName(other, "§e§l个人商店");
         ItemUtils.addLore(other, "§f点击查看该商品主人的商店");

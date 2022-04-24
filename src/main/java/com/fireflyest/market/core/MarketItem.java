@@ -10,6 +10,7 @@ public class MarketItem {
     public static ItemStack AIR;
     public static ItemStack MINE;
     public static ItemStack MARKET;
+    public static ItemStack MARKET_ALL;
     public static ItemStack DATA;
     public static ItemStack CLASSIFY;
     public static ItemStack SIGN;
@@ -60,9 +61,19 @@ public class MarketItem {
         Material market = XMaterial.ENDER_CHEST.parseMaterial();
         if(null != market){
             MARKET = new ItemStack(market);
-            ItemUtils.setDisplayName(MARKET, "§3§l市场");
-            ItemUtils.addLore(MARKET, "§f点击回到总市场");
+            ItemUtils.setDisplayName(MARKET, "§3§l玩家市场");
+            ItemUtils.addLore(MARKET, "§f点击回到交易市场");
+            ItemUtils.addLore(MARKET, "§f普通交易与点券交易");
             ItemUtils.setItemValue(MARKET, " ");
+        }
+
+        Material marketAll = XMaterial.SHULKER_BOX.parseMaterial();
+        if(null != marketAll){
+            MARKET_ALL = new ItemStack(marketAll);
+            ItemUtils.setDisplayName(MARKET_ALL, "§3§l总市场");
+            ItemUtils.addLore(MARKET_ALL, "§f点击前往总市场");
+            ItemUtils.addLore(MARKET_ALL, "§f普通交易、点券交易以及系统商店");
+            ItemUtils.setItemValue(MARKET_ALL, "all");
         }
 
         Material data = XMaterial.BOOK.parseMaterial();
@@ -102,6 +113,7 @@ public class MarketItem {
             POINT = new ItemStack(point);
             ItemUtils.setDisplayName(POINT, "§3§l点券商城");
             ItemUtils.addLore(POINT, "§f点击打开");
+            ItemUtils.addLore(POINT, "§f点券交易的所有商品");
             ItemUtils.setItemValue(POINT, "point");
         }
 
@@ -110,6 +122,7 @@ public class MarketItem {
             ADMIN = new ItemStack(admin);
             ItemUtils.setDisplayName(ADMIN, "§3§l系统商城");
             ItemUtils.addLore(ADMIN, "§f点击打开");
+            ItemUtils.addLore(ADMIN, "§f系统交易商品");
             ItemUtils.setItemValue(ADMIN, "admin");
         }
 
@@ -140,15 +153,15 @@ public class MarketItem {
             BOOK = new ItemStack(book);
         }
 
-        Material buy1 = XMaterial.ITEM_FRAME.parseMaterial();
+        Material buy1 = XMaterial.PRISMARINE_CRYSTALS.parseMaterial();
         if(null != buy1){
             BUY_1 = new ItemStack(buy1);
         }
-        Material buy2 = XMaterial.ITEM_FRAME.parseMaterial();
+        Material buy2 = XMaterial.PRISMARINE_CRYSTALS.parseMaterial();
         if(null != buy2){
             BUY_8 = new ItemStack(buy2);
         }
-        Material buy3 = XMaterial.ITEM_FRAME.parseMaterial();
+        Material buy3 = XMaterial.PRISMARINE_CRYSTALS.parseMaterial();
         if(null != buy3){
             BUY_ALL = new ItemStack(buy3);
         }
@@ -284,7 +297,6 @@ public class MarketItem {
 
     public static ItemStack getPrePageItem(int i){
         ItemStack tmp = PAGE_PRE.clone();
-        tmp.setAmount(i);
         ItemUtils.addLore(tmp, "§7<§e"+(i)+"§7>§0");
         ItemUtils.setItemValue(tmp, "page pre");
         return tmp;
@@ -292,7 +304,6 @@ public class MarketItem {
 
     public static ItemStack getNextPageItem(int i){
         ItemStack tmp = PAGE_NEXT.clone();
-        tmp.setAmount(i);
         ItemUtils.addLore(tmp, "§7<§e"+(i)+"§7>§0");
         ItemUtils.setItemValue(tmp, "page next");
         return tmp;
