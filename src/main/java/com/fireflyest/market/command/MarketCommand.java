@@ -12,9 +12,11 @@ import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Data;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ConvertUtils;
+import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.YamlUtils;
 import com.fireflyest.market.view.HomeView;
 import com.fireflyest.market.view.MainView;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,10 +33,12 @@ public class MarketCommand implements CommandExecutor {
 
     private final Data data;
     private final ViewGuide guide;
+    private final Economy economy;
 
     public MarketCommand() {
-        this.guide = GlobalMarket.getGuide();
         this.data = GlobalMarket.getData();
+        this.guide = GlobalMarket.getGuide();
+        economy = GlobalMarket.getEconomy();
         this.marketAffair = MarketAffair.getInstance();
     }
 
@@ -87,6 +91,7 @@ public class MarketCommand implements CommandExecutor {
                         "§b/market sell [m] <a>              §f - 出售物品\n" +
                         "§b/market auction [m] <a>          §f - 拍卖物品\n" +
                         "§b/market discount [id] [a]        §f - 商品打折\n" +
+                        "§b/market reprice [id] [a]          §f - 价格修改\n" +
                         "§b/market send [p] <a>             §f - 发送邮件\n" +
                         "§b/market statistic <p|id>          §f - 统计数据\n" +
                         "§b/market other [p]                 §f - 他人商店\n" +
@@ -354,11 +359,11 @@ public class MarketCommand implements CommandExecutor {
             case "auction":
                 int price = ConvertUtils.parseInt(var2), amount = ConvertUtils.parseInt(var3);
                 if(price <= 0 || price > Config.MAX_PRICE){
-                    player.sendMessage(Language.COMMAND_ERROR+" §3物品价格设置错误§f！");
+                    player.sendMessage(Language.COMMAND_ERROR+" §3物品价格§f设置错误！");
                     return;
                 }
                 if(amount <= 0 || amount > 64){
-                    player.sendMessage(Language.COMMAND_ERROR+" §3物品数量设置错误§f！");
+                    player.sendMessage(Language.COMMAND_ERROR+" §3物品数量§f设置错误！");
                     return;
                 }
                 ItemStack item = player.getInventory().getItemInMainHand();
@@ -388,35 +393,56 @@ public class MarketCommand implements CommandExecutor {
                 }
                 // 禁止交易记录
                 if (item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial())){
-                    player.sendMessage(Language.TYPE_ERROR);
-                    return;
+                    String value = ItemUtils.getItemValue(item);
+                    if(value.equals("record")){
+                        player.sendMessage(Language.TYPE_ERROR);
+                        return;
+                    }
                 }
+
+                // 判断物品是否足够
                 int has = item.getAmount();
                 if(amount > has){
                     player.sendMessage(Language.NOT_ENOUGH_ITEM);
                     return;
-                }else {
-                    ItemStack saleItem = item.clone();
-                    saleItem.setAmount(amount);
-                    if(var1.equals("sell") && sender.hasPermission("market.sell")){
-                        marketAffair.affairSell(player.getName(), false, false, price, saleItem);
-                        item.setAmount(has - amount);
-                        player.sendMessage(Language.SELL_ITEM);
-                        return;
-                    }else if(var1.equals("auction") && sender.hasPermission("market.auction")){
-                        marketAffair.affairSell(player.getName(), true, false, price, saleItem);
-                        item.setAmount(has - amount);
-                        player.sendMessage(Language.SELL_ITEM);
-                        return;
-                    }else if(var1.equals("point") && sender.hasPermission("market.point")){
-                        marketAffair.affairSell(player.getName(), false, true, price, saleItem);
-                        item.setAmount(has - amount);
-                        player.sendMessage(Language.SELL_ITEM);
-                        return;
-                    } else {
-                        player.sendMessage(Language.NOT_PERMISSION);
+                }
+
+                // 赋税
+                if(Config.TAX){
+                    if(price > Config.TAX_THRESHOLD){
+                        double tax = Config.TAX_RATE * price;
+                        if(economy.has(player, tax)){
+                            // 扣钱
+                            economy.withdrawPlayer(player, tax);
+                            player.sendMessage(String.format(Language.TAX, Config.TAX_RATE, tax));
+                        }else {
+                            player.sendMessage(Language.TITLE + "§c您无法承担赋税！");
+                            return;
+                        }
                     }
                 }
+
+                ItemStack saleItem = item.clone();
+                saleItem.setAmount(amount);
+                if(var1.equals("sell") && sender.hasPermission("market.sell")){
+                    marketAffair.affairSell(player.getName(), false, false, price, saleItem);
+                    item.setAmount(has - amount);
+                    player.sendMessage(Language.SELL_ITEM);
+                    return;
+                }else if(var1.equals("auction") && sender.hasPermission("market.auction")){
+                    marketAffair.affairSell(player.getName(), true, false, price, saleItem);
+                    item.setAmount(has - amount);
+                    player.sendMessage(Language.SELL_ITEM);
+                    return;
+                }else if(var1.equals("point") && sender.hasPermission("market.point")){
+                    marketAffair.affairSell(player.getName(), false, true, price, saleItem);
+                    item.setAmount(has - amount);
+                    player.sendMessage(Language.SELL_ITEM);
+                    return;
+                } else {
+                    player.sendMessage(Language.NOT_PERMISSION);
+                }
+
                 break;
             case "reprice":
                 if(!player.hasPermission("market.reprice")){

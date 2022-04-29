@@ -31,6 +31,7 @@ public class Language {
     public static String DATA_NULL;
     public static String HAS_MAIL;
     public static String LIMIT_MAIL;
+    public static String TAX;
 
     public static String MARKET_MAIN_NICK;
     public static String MARKET_MAIL_NICK;

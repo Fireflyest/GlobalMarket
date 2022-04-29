@@ -119,14 +119,16 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
 
+        // 打开交易记录
         if(event.hasItem()){
             ItemStack item = event.getItem();
             if(item == null)return;
-            if(!item.getType().equals(XMaterial.WRITABLE_BOOK.parseMaterial()))return;
+            if(!item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial()))return;
             String value = ItemUtils.getItemValue(item);
-            if(value.contains("#"))item.setAmount(0);
+            if(value.equals("record"))item.setAmount(0);
         }
 
+        // 右键牌子
         if(event.hasBlock()){
             Block block = event.getClickedBlock();
             if(block == null)return;

@@ -17,6 +17,7 @@ public class MarketStatistic {
 
     public static void statisticMarket(Player player){
         Note note = MarketManager.getTodayNote();
+        player.closeInventory();
         player.sendMessage("§e§m =                                             = ");
         player.sendMessage(Language.TITLE+"§f只显示一天之内的交易数据");
         player.sendMessage("§3总交易金额§7: §f"+note.getMoney());

@@ -9,7 +9,7 @@ Url: 'jdbc:mysql://localhost:3306/mc_market?useSSL=false&serverTimezone=UTC'
 User: 'root'
 Password: '123456'
 
-#物品几天后自动下架(默认一周)
+#物品几天后自动下架，请输入正整数，输入-1为关闭限制
 LimitTime: 7
 
 #启用分类
@@ -36,3 +36,10 @@ LimitMailNum: 50
 
 # 换页按钮是否分离
 PageButtonSplit: false
+
+# 上架税，防止玩家随意高价上架物品，不退还
+Tax: true
+# 起征点
+TaxThreshold: 100000
+# 税率，百分比0~1
+TaxRate: 0.002

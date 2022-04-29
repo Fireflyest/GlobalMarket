@@ -12,6 +12,7 @@ public class MarketItem {
     public static ItemStack MARKET;
     public static ItemStack MARKET_ALL;
     public static ItemStack DATA;
+    public static ItemStack STATISTIC;
     public static ItemStack CLASSIFY;
     public static ItemStack SIGN;
     public static ItemStack MAIL;
@@ -79,9 +80,17 @@ public class MarketItem {
         Material data = XMaterial.BOOK.parseMaterial();
         if(null != data){
             DATA = new ItemStack(data);
-            ItemUtils.setDisplayName(DATA, "§3§l统计");
+            ItemUtils.setDisplayName(DATA, "§3§l个人统计");
             ItemUtils.addLore(DATA, "§f点击查看");
             ItemUtils.setItemValue(DATA, "data");
+        }
+
+        Material statistic = XMaterial.BOOKSHELF.parseMaterial();
+        if(null != statistic){
+            STATISTIC = new ItemStack(statistic);
+            ItemUtils.setDisplayName(STATISTIC, "§3§l市场统计");
+            ItemUtils.addLore(STATISTIC, "§f点击查看");
+            ItemUtils.setItemValue(STATISTIC, "statistic");
         }
 
         Material classify = XMaterial.ENDER_EYE.parseMaterial();

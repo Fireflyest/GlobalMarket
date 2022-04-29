@@ -299,11 +299,6 @@ public class MarketHandler implements MarketInteract{
         // 判断是否无限
         if(sale.isAdmin()){
             if (!buyAll) {
-//                int saveAmount = item.getAmount() - amount;
-//                if(saveAmount < 0){
-//                    player.sendMessage(Language.NOT_ENOUGH_ITEM);
-//                    return;
-//                }
                 item.setAmount(amount);
             }
             this.obtainMailTask(buyer, item).sendToTarget();

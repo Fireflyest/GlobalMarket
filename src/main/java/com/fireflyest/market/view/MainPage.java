@@ -156,7 +156,11 @@ public class MainPage implements ViewPage {
         }else {
             itemMap.put(49, MarketItem.getPageItem(page));
         }
-        itemMap.put(52, MarketItem.CLASSIFY);
+        if(Config.ITEM_CLASSIFY){
+            itemMap.put(52, MarketItem.CLASSIFY);
+        }else{
+            itemMap.put(52, MarketItem.STATISTIC);
+        }
         itemMap.put(53, MarketItem.CLOSE);
     }
 

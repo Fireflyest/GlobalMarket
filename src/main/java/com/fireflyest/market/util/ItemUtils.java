@@ -96,6 +96,7 @@ public class ItemUtils {
         BookMeta meta = (BookMeta)item.getItemMeta();
         if(meta != null){
             meta.setDisplayName("§e§l交易记录");
+            meta.setLocalizedName("record");
             meta.setTitle("交易记录");
             String info =  "§3§l出售的物品§7: " +
                     name +

@@ -190,28 +190,32 @@ public class SerializeUtil {
             hasPatterns = true;
 
             List<?>patternMapList = (List<?>) map.get("patterns");
-            for (Object o : patternMapList) {
-                LinkedTreeMap<?,?> treeMap = (LinkedTreeMap<?, ?>)o;
-                String color = treeMap.get("color").toString();
-                String pattern = treeMap.get("pattern").toString();
-                Pattern p = new Pattern(DyeColor.valueOf(color), PatternType.valueOf(pattern));
-                patternList.add(p);
+            if (patternMapList != null) {
+                for (Object o : patternMapList) {
+                    LinkedTreeMap<?,?> treeMap = (LinkedTreeMap<?, ?>)o;
+                    String color = treeMap.get("color").toString();
+                    String pattern = treeMap.get("pattern").toString();
+                    Pattern p = new Pattern(DyeColor.valueOf(color), PatternType.valueOf(pattern));
+                    patternList.add(p);
+                }
             }
             map.remove("patterns");
         }
 
         // 烟花
         boolean firework = false;
-        double power = 1;
-        if ("FIREWORK".equals(metaType)){
+        if ("FIREWORK".equals(metaType) && map.containsKey("firework-effects")){
             firework = true;
             ArrayList<?> effectList = ((ArrayList<?>) map.get("firework-effects"));
-            for (Object o : effectList) {
-                effectTreeMapList.add((LinkedTreeMap<? ,?>)o);
+            if (effectList != null) {
+                for (Object o : effectList) effectTreeMapList.add((LinkedTreeMap<? ,?>)o);
             }
+            map.remove("firework-effects");
+        }
+        double power = -1;
+        if ("FIREWORK".equals(metaType) && map.containsKey("power")){
             power = (Double) map.get("power");
             map.remove("power");
-            map.remove("firework-effects");
         }
 
         double mapId = -1;
@@ -233,6 +237,8 @@ public class SerializeUtil {
         }
         if (firework){
             addFireworkEffects(meta, effectTreeMapList, true);
+        }
+        if(power != -1){
             ((FireworkMeta)meta).setPower((int)power);
         }
         if (mapId != -1) //noinspection deprecation

@@ -26,14 +26,12 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.sql.SQLException;
-import java.util.function.Predicate;
 
 /**
  * @author Fireflyest
@@ -106,6 +104,8 @@ public class GlobalMarket extends JavaPlugin{
         // 任务处理线程
         MarketHandler.getInstance().createTaskHandler(this);
 
+        // 若有自动下架，建立监控线程
+        if(Config.LIMIT_TIME == -1) return;
         // 20mc刻为一秒
         marketTask = new BukkitRunnable() {
             @Override
@@ -144,7 +144,10 @@ public class GlobalMarket extends JavaPlugin{
         MarketHandler.getInstance().stop();
         Bukkit.getScheduler().cancelTasks(this);
 
-        marketTask.cancel();
+        // 自动下架监控
+        if (marketTask != null) {
+            marketTask.cancel();
+        }
     }
 
     private void setupData(){
