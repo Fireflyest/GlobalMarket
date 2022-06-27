@@ -9,6 +9,8 @@
         <module name="GlobalMarket" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="17">
+      <module name="GlobalMarket" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

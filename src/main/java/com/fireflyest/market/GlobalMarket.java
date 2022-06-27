@@ -23,6 +23,10 @@ import com.fireflyest.market.util.TimeUtils;
 import com.fireflyest.market.util.YamlUtils;
 import com.fireflyest.market.view.*;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.CustomChart;
+import org.bstats.charts.MultiLineChart;
+import org.bstats.json.JsonObjectBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -32,6 +36,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * @author Fireflyest
@@ -40,11 +47,8 @@ import java.sql.SQLException;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    系统商店
     点券支持
-    商品税收
     邮箱交费
-    手续费
     排行榜
      */
 
@@ -54,6 +58,7 @@ public class GlobalMarket extends JavaPlugin{
     public static final String HOME_VIEW = "market.home";
     public static final String CLASSIFY_VIEW = "market.classify";
     public static final String AFFAIR_VIEW = "market.affair";
+    public static final String SELL_VIEW = "market.sell";
 
     public static JavaPlugin getInstance() { return plugin; }
 
@@ -84,12 +89,15 @@ public class GlobalMarket extends JavaPlugin{
         super.onEnable();
         plugin = this;
 
+        // 统计
+        new Metrics(this, 15549);
+
         this.setupData();
         this.setupEconomy();
         this.setupGuide();
 
         // 注册事件
-         this.getServer().getPluginManager().registerEvents( new PlayerEventListener(), this);
+        this.getServer().getPluginManager().registerEvents( new PlayerEventListener(), this);
 
         // 注册指令
         PluginCommand command = this.getCommand("market");
@@ -216,6 +224,7 @@ public class GlobalMarket extends JavaPlugin{
         guide.addView(HOME_VIEW, new HomeView(Language.PLUGIN_NAME));
         guide.addView(CLASSIFY_VIEW, new ClassifyView(Language.PLUGIN_NAME));
         guide.addView(AFFAIR_VIEW, new AffairView(Language.PLUGIN_NAME));
+        guide.addView(SELL_VIEW, new SellView(Language.PLUGIN_NAME));
     }
 
 }

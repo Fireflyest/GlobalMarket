@@ -23,6 +23,7 @@ public class Item  implements Comparable<Item>{
         this.id = id;
         this.stack = stack;
         this.meta = meta;
+        this.nbt = nbt;
         this.appear = appear;
     }
 
@@ -73,8 +74,6 @@ public class Item  implements Comparable<Item>{
     public int compareTo(Item o) {
         if (appear > o.appear) return 1;
         if (appear < o.appear) return -1;
-        if (id > o.id) return 1;
-        if (id < o.id) return -1;
-        return 0;
+        return Integer.compare(id, o.id);
     }
 }

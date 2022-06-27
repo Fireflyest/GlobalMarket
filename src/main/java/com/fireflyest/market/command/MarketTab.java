@@ -35,6 +35,7 @@ public class MarketTab implements TabCompleter {
         user.add("finish");
         user.add("other");
         user.add("classify");
+        user.add("quick");
 
         user.add("sell");
         user.add("point");
@@ -43,6 +44,7 @@ public class MarketTab implements TabCompleter {
         user.add("discount");
         user.add("send");
         user.add("reprice");
+        user.add("desc");
 
         op.addAll(user);
     }

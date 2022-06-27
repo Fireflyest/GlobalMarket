@@ -95,6 +95,15 @@ public class ConvertUtils {
         return i;
     }
 
+    public static double parseDouble(String var){
+        double i = 0;
+        try {
+            i = Double.parseDouble(var);
+        } catch (NumberFormatException ignored) {
+        }
+        return i;
+    }
+
     public static String formatDouble(double d) {
         NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(2);

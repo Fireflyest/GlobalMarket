@@ -20,6 +20,7 @@ public class MarketItem {
     public static ItemStack POINT;
     public static ItemStack ADMIN;
     public static ItemStack CLOSE;
+    public static ItemStack DONE;
     public static ItemStack BLANK;
     public static ItemStack BOOK;
     public static ItemStack BUY_1;
@@ -32,6 +33,13 @@ public class MarketItem {
     public static ItemStack PAGE;
     public static ItemStack PAGE_PRE;
     public static ItemStack PAGE_NEXT;
+    public static ItemStack ADD_1;
+    public static ItemStack ADD_10;
+    public static ItemStack ADD_100;
+    public static ItemStack REDUCE_1;
+    public static ItemStack REDUCE_10;
+    public static ItemStack REDUCE_100;
+    public static ItemStack AMOUNT;
     public static ItemStack ERROR;
 
     public static ItemStack EDIBLE;
@@ -151,6 +159,14 @@ public class MarketItem {
             ItemUtils.setItemValue(CLOSE, "close");
         }
 
+        Material done = XMaterial.EMERALD.parseMaterial();
+        if(null != done){
+            DONE = new ItemStack(done);
+            ItemUtils.setDisplayName(DONE, "§c§l确定");
+            ItemUtils.addLore(DONE, "§f请设置出售价格！");
+
+        }
+
         Material blank = XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial();
         if(null != blank){
             BLANK = new ItemStack(blank);
@@ -210,6 +226,43 @@ public class MarketItem {
         if(null != pageNext){
             PAGE_NEXT = new ItemStack(pageNext);
             ItemUtils.setDisplayName(PAGE_NEXT, "§3§l下一页");
+        }
+
+        Material addMoney = XMaterial.YELLOW_DYE.parseMaterial();
+        Material reduceMoney = XMaterial.RED_DYE.parseMaterial();
+        if (addMoney != null) {
+            ADD_1 = new ItemStack(addMoney);
+            ItemUtils.setDisplayName(ADD_1, "§e§l+1");
+            ItemUtils.setItemValue(ADD_1, "add1");
+
+            ADD_10 = new ItemStack(addMoney);
+            ItemUtils.setDisplayName(ADD_10, "§e§l+10");
+            ItemUtils.setItemValue(ADD_10, "add10");
+
+            ADD_100 = new ItemStack(addMoney);
+            ItemUtils.setDisplayName(ADD_100, "§e§l+100");
+            ItemUtils.setItemValue(ADD_100, "add100");
+        }
+        if (reduceMoney != null) {
+            REDUCE_1 = new ItemStack(reduceMoney);
+            ItemUtils.setDisplayName(REDUCE_1, "§c§l-1");
+            ItemUtils.setItemValue(REDUCE_1, "reduce1");
+
+            REDUCE_10 = new ItemStack(reduceMoney);
+            ItemUtils.setDisplayName(REDUCE_10, "§c§l-10");
+            ItemUtils.setItemValue(REDUCE_10, "reduce10");
+
+            REDUCE_100 = new ItemStack(reduceMoney);
+            ItemUtils.setDisplayName(REDUCE_100, "§c§l-100");
+            ItemUtils.setItemValue(REDUCE_100, "reduce100");
+        }
+
+        Material amount = XMaterial.HOPPER_MINECART.parseMaterial();
+        if (amount != null) {
+            AMOUNT = new ItemStack(amount);
+            ItemUtils.setDisplayName(AMOUNT, "§c§l修改物品数量");
+            ItemUtils.addLore(AMOUNT, "§f左键减少，右键增加");
+            ItemUtils.setItemValue(AMOUNT, "amount");
         }
 
         Material error = XMaterial.BARRIER.parseMaterial();

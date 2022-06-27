@@ -63,8 +63,25 @@ public class ItemUtils {
         }
     }
 
+    public static void setLore(ItemStack item, String lore, int line){
+        ItemMeta meta = item.getItemMeta();
+        if(meta != null){
+            List<String> lores = item.getItemMeta().getLore();
+            if (lores == null) {
+                lores = new ArrayList<>();
+            }
+            while (lores.size() <= line){
+                lores.add("");
+            }
+            lores.set(line, lore);
+            meta.setLore(lores);
+            item.setItemMeta(meta);
+        }
+    }
+
     public static void loreSaleItem(ItemStack item, Sale sale){
         ItemUtils.addLore(item, "");
+        if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
         ItemUtils.addLore(item, "§e§m·                         ·");
         ItemUtils.addLore(item, "§f"+(sale.isAuction() ? "[§7拍卖§f]":"[§7直售§f]") + (sale.isPoint() ? "[§6点券§f]" : "") + (sale.isAdmin() ? "[§c无限§f]" : ""));
         ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());

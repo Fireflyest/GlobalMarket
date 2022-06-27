@@ -20,7 +20,7 @@ public class AffairView implements View<AffairPage> {
 
     @Override
     public AffairPage getFirstPage(String target){
-        if (!pageMap.containsKey(target)){
+        if (! pageMap.containsKey(target)){
             Sale sale = MarketManager.getSale(ConvertUtils.parseInt(target));
             if (sale != null) {
                 pageMap.put(target, new AffairPage(title, target));
