@@ -96,7 +96,7 @@ public class ConvertUtils {
     }
 
     public static double parseDouble(String var){
-        double i = 0;
+        double i = 0.0;
         try {
             i = Double.parseDouble(var);
         } catch (NumberFormatException ignored) {

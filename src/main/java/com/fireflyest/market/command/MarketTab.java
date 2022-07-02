@@ -62,19 +62,21 @@ public class MarketTab implements TabCompleter {
                 }else if("data".equalsIgnoreCase(args[0])){
                     tab.add("<id>");
                 }else if("admin".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
+                    tab.add("[id]");
                 }else if("buy".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
+                    tab.add("[id]");
                 }else if("add".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
+                    tab.add("[id]");
                 }else if("affair".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
+                    tab.add("[id]");
                 }else if("sign".equalsIgnoreCase(args[0])){
                     tab.add("<id>");
                 }else if("finish".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
+                    tab.add("[id]");
+                }else if("desc".equalsIgnoreCase(args[0])){
+                    tab.add("[id]");
                 }else if("discount".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
+                    tab.add("[id]");
                 }else if("classify".equalsIgnoreCase(args[0])){
                     for(String type : classify){
                         if(type.contains(args[1]))tab.add(type);
@@ -95,6 +97,8 @@ public class MarketTab implements TabCompleter {
                     tab.add("7");
                     tab.add("8");
                     tab.add("9");
+                }else if("desc".equalsIgnoreCase(args[0])){
+                    tab.add("[描述]");
                 }
             }
             return tab;

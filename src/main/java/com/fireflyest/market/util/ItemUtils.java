@@ -3,11 +3,15 @@ package com.fireflyest.market.util;
 import com.cryptomorin.xseries.XMaterial;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Sale;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +20,63 @@ import java.util.List;
  */
 public class ItemUtils {
 
+    private static String versionPacket;
+    private static Class<?> craftItemStackClass;
+    private static Class<?> itemStackClass;
+    private static Class<?> compoundClass;
+    private static Method asNMSCopy;
+    private static Method asBukkitCopy;
+    private static Method getTag;
+    private static Method setTag;
+    private static Method compoundSet;
+    private static Method compoundGet;
+
+    static {
+        String version = Bukkit.getVersion();
+        String v = version.substring(version.indexOf(".")+1, version.lastIndexOf("."));
+        int r = 1;
+        while (craftItemStackClass == null && r < 9){
+            try {
+                versionPacket = String.format("v1_%s_R%d", v, r);
+                craftItemStackClass = Class.forName(
+                        String.format("org.bukkit.craftbukkit.%s.inventory.CraftItemStack", versionPacket));
+
+                itemStackClass = Class.forName("net.minecraft.world.item.ItemStack");
+                compoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
+            } catch (ClassNotFoundException ignore) {}
+            r ++;
+        }
+        if (craftItemStackClass != null) {
+            try {
+                asNMSCopy = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class);
+                asBukkitCopy = craftItemStackClass.getMethod("asBukkitCopy", itemStackClass);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        if (itemStackClass != null) {
+            try {
+                getTag = itemStackClass.getMethod("u");
+                setTag = itemStackClass.getMethod("c", compoundClass);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (compoundClass != null) {
+            try {
+                compoundSet = compoundClass.getMethod("a", String.class, String.class);
+                compoundGet = compoundClass.getMethod("l", String.class);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     private ItemUtils(){
+    }
+
+    public static String getVersionPacket() {
+        return versionPacket;
     }
 
     /**
@@ -37,12 +97,46 @@ public class ItemUtils {
         if(meta == null)return;
         meta.setLocalizedName(value);
         item.setItemMeta(meta);
+//        setItemNBT(item, "market", value);
+
     }
 
     public static String getItemValue(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if(meta == null)return "";
         return meta.getLocalizedName();
+//        return getItemNBT(item, "market");
+    }
+
+    public static ItemStack setItemNBT(ItemStack item, String key, String value) {
+        try {
+            Object craftItem = asNMSCopy.invoke(null, item);
+            Object nbt = getTag.invoke(craftItem);
+
+            compoundSet.invoke(nbt, key, value);
+
+            setTag.invoke(craftItem, nbt);
+
+            item = ((ItemStack) asBukkitCopy.invoke(null, craftItem));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        return item;
+    }
+
+    public static String getItemNBT(ItemStack item, String key) {
+        String value;
+        try {
+            Object craftItem = asNMSCopy.invoke(null, item);
+            Object nbt = getTag.invoke(craftItem);
+
+            value = ((String) compoundGet.invoke(nbt, key));
+
+            setTag.invoke(craftItem, nbt);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        return value;
     }
 
     /**

@@ -29,7 +29,8 @@ public class SerializeUtil {
     private SerializeUtil(){
     }
 
-    private static Method deserialize = null;
+    private static Method deserialize;
+    private static String versionPacket;
     private static final Map<String, ItemMeta> metaStorage = new HashMap<>();
     private static final Map<String, ItemStack> stackStorage = new HashMap<>();
 
@@ -40,8 +41,9 @@ public class SerializeUtil {
         int r = 1;
         while (clazz == null && r < 9){
             try {
+                versionPacket = String.format("v1_%s_R%d", v, r);
                 clazz = Class.forName(
-                        String.format("org.bukkit.craftbukkit.v1_%s_R%d.inventory.CraftMetaItem$SerializableMeta", v, r));
+                        String.format("org.bukkit.craftbukkit.%s.inventory.CraftMetaItem$SerializableMeta", versionPacket));
             } catch (ClassNotFoundException ignore) {}
             r ++;
         }
@@ -54,31 +56,9 @@ public class SerializeUtil {
         }
     }
 
-    private static final Set<String> nbtAuthoritySet = new HashSet<>(){
-        {
-            add("display-name");
-            add("loc-name");
-            add("display");
-            add("lore");
-            add("custom-model-data");
-            add("id");
-            add("lvl");
-            add("attribute-modifiers");
-            add("AttributeName");
-            add("Name");
-            add("Amount");
-            add("Operation");
-            add("UUIDMost");
-            add("UUIDLeast");
-            add("Slot");
-            add("ItemFlags");
-            add("Unbreakable");
-            add("Damage");
-            add("BlockStateTag");
-            add("PublicBukkitValues");
-            add("internal");
-        }
-    };
+    public static String getVersionPacket() {
+        return versionPacket;
+    }
 
     /**
      * 析构堆
@@ -253,6 +233,13 @@ public class SerializeUtil {
         while (mapIterator.hasNext()){
             Map.Entry<String, Object> entry = mapIterator.next();
             switch (entry.getKey()){
+                case "custom-model-data" -> {
+                    // 针对某插件修复
+                    String value = map.get("custom-model-data").toString();
+                    if (! value.contains(".")) break;
+                    // 转为整数类型
+                    map.put("custom-model-data", ((int) ConvertUtils.parseDouble(value)));
+                }
                 case "Damage" ->{
                     damage = (double)map.get("Damage");
                     mapIterator.remove();
@@ -406,13 +393,10 @@ public class SerializeUtil {
      * @return 元
      */
     private static ItemMeta invokeMeta(Map<String, Object> map){
-        // 开始解析
+        // 解析
         try{
             return  (ItemMeta) deserialize.invoke(null, map);
         }catch (InvocationTargetException | IllegalAccessException e){
-            // 照出非官方nbt
-            Set<String> nbtSet = map.keySet().stream().filter(nbt -> !nbtAuthoritySet.contains(nbt)).collect(Collectors.toSet());
-            Bukkit.getLogger().severe(String.format("[GlobalMarket]可能未处理数据集：%s", nbtSet));
             Bukkit.getLogger().severe(String.format("[GlobalMarket]解析物品数据时出错：%s", map));
             e.printStackTrace();
         }
