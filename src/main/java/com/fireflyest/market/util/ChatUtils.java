@@ -73,6 +73,7 @@ public class ChatUtils {
         }else {
             infoBuilder.append("§3出售 §f");
         }
+
         info = infoBuilder.toString();
         if(meta != null){
             if(!"".equals(meta.getDisplayName())){
@@ -92,6 +93,7 @@ public class ChatUtils {
                 .append("\n"));
         hoverBuilder.append("点击查看");
         hover = hoverBuilder.toString();
+
         player.spigot().sendMessage(new ComponentBuilder(info)
                 .append(LEFT)
                 .append(display)

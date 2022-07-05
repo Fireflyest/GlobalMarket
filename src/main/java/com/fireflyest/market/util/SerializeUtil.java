@@ -8,12 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 
@@ -21,8 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class SerializeUtil {
 
@@ -30,7 +25,6 @@ public class SerializeUtil {
     }
 
     private static Method deserialize;
-    private static String versionPacket;
     private static final Map<String, ItemMeta> metaStorage = new HashMap<>();
     private static final Map<String, ItemStack> stackStorage = new HashMap<>();
 
@@ -41,7 +35,7 @@ public class SerializeUtil {
         int r = 1;
         while (clazz == null && r < 9){
             try {
-                versionPacket = String.format("v1_%s_R%d", v, r);
+                String versionPacket = String.format("v1_%s_R%d", v, r);
                 clazz = Class.forName(
                         String.format("org.bukkit.craftbukkit.%s.inventory.CraftMetaItem$SerializableMeta", versionPacket));
             } catch (ClassNotFoundException ignore) {}
@@ -54,10 +48,6 @@ public class SerializeUtil {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static String getVersionPacket() {
-        return versionPacket;
     }
 
     /**
@@ -160,7 +150,7 @@ public class SerializeUtil {
 
         // 先处理部分meta数据
         switch (metaType){
-            case "LEATHER_ARMOR" -> {
+            case "LEATHER_ARMOR" : {
                 if ( !map.containsKey("color") ) break;
                 isLeather = true;
                 LinkedTreeMap<? ,?> treeMap = ((LinkedTreeMap<? ,?>) map.get("color"));
@@ -171,8 +161,9 @@ public class SerializeUtil {
                 if (green < 0) green += 256;
                 if (blue < 0) blue += 256;
                 map.remove("color");
+                break;
             }
-            case "ENCHANTED" -> {
+            case "ENCHANTED" : {
                 if ( !map.containsKey("stored-enchants") ) break;
                 storageEnchants =
                         map.get("stored-enchants")
@@ -181,8 +172,9 @@ public class SerializeUtil {
                                 .replace("}", "")
                                 .replace("\"", "");
                 map.remove("stored-enchants");
+                break;
             }
-            case "FIREWORK_EFFECT" -> {
+            case "FIREWORK_EFFECT" : {
                 if ( map.containsKey("firework-effect") ){
                     fireworkEffect = true;
                     effectTreeMapList.add((LinkedTreeMap<? ,?>) map.get("firework-effect"));
@@ -190,8 +182,9 @@ public class SerializeUtil {
                 }
                 // TODO type数据读取
                 map.remove("type");
+                break;
             }
-            case "FIREWORK" -> {
+            case "FIREWORK" : {
                 if (map.containsKey("firework-effects")){
                     firework = true;
                     ArrayList<?> effectList = ((ArrayList<?>) map.get("firework-effects"));
@@ -204,8 +197,9 @@ public class SerializeUtil {
                     power = (Double) map.get("power");
                     map.remove("power");
                 }
+                break;
             }
-            case "BANNER" -> {
+            case "BANNER" : {
                 if ( !map.containsKey("patterns") ) break;
                 hasPatterns = true;
                 List<?>patternMapList = (List<?>) map.get("patterns");
@@ -219,13 +213,15 @@ public class SerializeUtil {
                     }
                 }
                 map.remove("patterns");
+                break;
             }
-            case "MAP" -> {
+            case "MAP" : {
                 if ( !map.containsKey("map-id") ) break;
                 mapId = (Double) map.get("map-id");
                 map.remove("map-id");
+                break;
             }
-            default -> {}
+            default : {}
         }
 
         // 遍历其他nbt
@@ -233,136 +229,36 @@ public class SerializeUtil {
         while (mapIterator.hasNext()){
             Map.Entry<String, Object> entry = mapIterator.next();
             switch (entry.getKey()){
-                case "custom-model-data" -> {
+                case "custom-model-data" : {
                     // 针对某插件修复
                     String value = map.get("custom-model-data").toString();
                     if (! value.contains(".")) break;
                     // 转为整数类型
                     map.put("custom-model-data", ((int) ConvertUtils.parseDouble(value)));
+                    break;
                 }
-                case "Damage" ->{
+                case "Damage" :{
                     damage = (double)map.get("Damage");
                     mapIterator.remove();
+                    break;
                 }
-                case "enchants" ->{
+                case "enchants" :{
                     enchants = map.get("enchants").toString().replace("{", "").replace("}", "").replace("\"", "");
                     mapIterator.remove();
+                    break;
                 }
-                case "repair-cost" ->{
+                case "repair-cost" :{
                     repairCost = (double) map.get("repair-cost");
                     mapIterator.remove();
+                    break;
                 }
-                default -> {}
+                default : {}
             }
         }
 
         meta = invokeMeta(map);
         if (meta == null) return null;
 
-//        // 耐久装备
-//        double damage = 0;
-//        if (map.containsKey("Damage")){
-//            damage = (double)map.get("Damage");
-//            map.remove("Damage");
-//        }
-
-//        // 有附魔
-//        String enchants = null;
-//        if (map.containsKey("enchants")){
-//            enchants = map.get("enchants").toString().replace("{", "").replace("}", "").replace("\"", "");
-//            map.remove("enchants");
-//        }
-        
-//        double repairCost = 0.0;
-//        if (map.containsKey("repair-cost")){
-//            repairCost = (Double) map.get("repair-cost");
-//            map.remove("repair-cost"); // 经验修补附带
-//        }
-
-//        // 皮革甲
-//        boolean isLeather = false;
-//        double red = 0, green = 0, blue = 0;
-//        if ("LEATHER_ARMOR".equals(metaType) && map.containsKey("color")){
-//            isLeather = true;
-//            LinkedTreeMap<? ,?> treeMap = ((LinkedTreeMap<? ,?>) map.get("color"));
-//            red = (Double)(treeMap.get("red"));
-//            green = (Double)(treeMap.get("green"));
-//            blue = (Double)(treeMap.get("blue"));
-//            if (red < 0) red += 256;
-//            if (green < 0) green += 256;
-//            if (blue < 0) blue += 256;
-//            map.remove("color");
-//        }
-
-//        // 如果是附魔书
-//        String storageEnchants = null;
-//        if ("ENCHANTED".equals(metaType)){
-//            storageEnchants =
-//                    map.get("stored-enchants")
-//                            .toString()
-//                            .replace("{", "")
-//                            .replace("}", "")
-//                            .replace("\"", "");
-//            map.remove("enchants");
-//        }
-
-//        // 烟花核
-//        List<LinkedTreeMap<? ,?>> effectTreeMapList = new ArrayList<>();
-//        boolean fireworkEffect = false;
-//        if ("FIREWORK_EFFECT".equals(metaType)){
-//            fireworkEffect = true;
-//            effectTreeMapList.add((LinkedTreeMap<? ,?>) map.get("firework-effect"));
-//            map.remove("type");
-//            map.remove("firework-effect");
-//        }
-
-//        boolean hasPatterns = false;
-//        List<Pattern> patternList = new ArrayList<>();
-//        if ("BANNER".equals(metaType) && map.containsKey("patterns")){
-//            hasPatterns = true;
-//
-//            List<?>patternMapList = (List<?>) map.get("patterns");
-//            if (patternMapList != null) {
-//                for (Object o : patternMapList) {
-//                    LinkedTreeMap<?,?> treeMap = (LinkedTreeMap<?, ?>)o;
-//                    String color = treeMap.get("color").toString();
-//                    String pattern = treeMap.get("pattern").toString();
-//                    Pattern p = new Pattern(DyeColor.valueOf(color), PatternType.valueOf(pattern));
-//                    patternList.add(p);
-//                }
-//            }
-//            map.remove("patterns");
-//        }
-
-//        // 烟花
-//        boolean firework = false;
-//        if ("FIREWORK".equals(metaType) && map.containsKey("firework-effects")){
-//            firework = true;
-//            ArrayList<?> effectList = ((ArrayList<?>) map.get("firework-effects"));
-//            if (effectList != null) {
-//                for (Object o : effectList) effectTreeMapList.add((LinkedTreeMap<? ,?>)o);
-//            }
-//            map.remove("firework-effects");
-//        }
-//        double power = -1;
-//        if ("FIREWORK".equals(metaType) && map.containsKey("power")){
-//            power = (Double) map.get("power");
-//            map.remove("power");
-//        }
-
-//        double mapId = -1;
-//        if ("MAP".equals(metaType)){
-//            mapId = (Double) map.get("map-id");
-//            map.remove("map-id");
-//        }
-
-//        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE,
-//                new AttributeModifier(UUID.randomUUID(),"攻击力加成", 10, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.OFF_HAND));
-
-//        meta = invokeMeta(map);
-//        if (meta == null) {
-//            return null;
-//        }
         if (isLeather) ((LeatherArmorMeta)meta).setColor(Color.fromRGB((int)red, (int)green, (int)blue));
         if (damage != 0) ((Damageable)meta).setDamage((int)damage);
         if (enchants != null) addEnchantments(meta, enchants.split(","));

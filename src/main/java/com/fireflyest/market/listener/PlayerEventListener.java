@@ -106,33 +106,34 @@ public class PlayerEventListener implements Listener {
 
         // 快捷上架
         ViewPage page = guide.getUsingPage(player.getName());
-        if (page instanceof SellPage sellPage){
+        if (page instanceof SellPage){
+            SellPage sellPage = ((SellPage) page);
             switch (value) {
-                case "add1" -> {
+                case "add1" : {
                     sellPage.addPrice(1);
                     return;
                 }
-                case "add10" -> {
+                case "add10" : {
                     sellPage.addPrice(10);
                     return;
                 }
-                case "add100" -> {
+                case "add100" : {
                     sellPage.addPrice(100);
                     return;
                 }
-                case "reduce1" -> {
+                case "reduce1" : {
                     sellPage.reducePrice(1);
                     return;
                 }
-                case "reduce10" -> {
+                case "reduce10" : {
                     sellPage.reducePrice(10);
                     return;
                 }
-                case "reduce100" -> {
+                case "reduce100" : {
                     sellPage.reducePrice(100);
                     return;
                 }
-                case "amount" -> {
+                case "amount" : {
                     if (event.isLeftClick()) {
                         sellPage.raise(1);
                     } else if (event.isRightClick()) {
@@ -140,7 +141,7 @@ public class PlayerEventListener implements Listener {
                     }
                     return;
                 }
-                default -> {
+                default : {
                 }
             }
         }

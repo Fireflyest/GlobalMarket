@@ -45,10 +45,8 @@ public class MarketItem {
     public static ItemStack EDIBLE;
     public static ItemStack ITEM;
     public static ItemStack BLOCK;
-    public static ItemStack RECORD;
     public static ItemStack BURNABLE;
     public static ItemStack INTERACTABLE;
-    public static ItemStack SOLID;
     public static ItemStack EQUIP;
     public static ItemStack KNOWLEDGE;
 
@@ -299,14 +297,6 @@ public class MarketItem {
             ItemUtils.setItemValue(BLOCK, "classify block");
         }
 
-        Material record = XMaterial.MUSIC_DISC_WARD.parseMaterial();
-        if(null != record){
-            RECORD = new ItemStack(record);
-            ItemUtils.setDisplayName(RECORD, "§3§l唱片");
-            ItemUtils.addLore(RECORD, "§f来首音乐吧");
-            ItemUtils.setItemValue(RECORD, "classify record");
-        }
-
         Material burnable = XMaterial.COAL.parseMaterial();
         if(null != burnable){
             BURNABLE = new ItemStack(burnable);
@@ -321,14 +311,6 @@ public class MarketItem {
             ItemUtils.setDisplayName(INTERACTABLE, "§3§l功能方块");
             ItemUtils.addLore(INTERACTABLE, "§f似乎是魔法在运作");
             ItemUtils.setItemValue(INTERACTABLE, "classify interactable");
-        }
-
-        Material solid = XMaterial.GRASS_BLOCK.parseMaterial();
-        if(null != solid){
-            SOLID = new ItemStack(solid);
-            ItemUtils.setDisplayName(SOLID, "§3§l土壤");
-            ItemUtils.addLore(SOLID, "§f万物生长所必须");
-            ItemUtils.setItemValue(SOLID, "classify solid");
         }
 
         Material equip = XMaterial.GOLDEN_SWORD.parseMaterial();

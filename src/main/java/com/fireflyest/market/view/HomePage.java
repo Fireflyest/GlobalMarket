@@ -79,12 +79,10 @@ public class HomePage implements ViewPage {
         itemMap.put(0, MarketItem.EDIBLE);
         itemMap.put(1, MarketItem.ITEM);
         itemMap.put(2, MarketItem.BLOCK);
-        itemMap.put(3, MarketItem.RECORD);
-        itemMap.put(4, MarketItem.BURNABLE);
-        itemMap.put(5, MarketItem.INTERACTABLE);
-        itemMap.put(6, MarketItem.SOLID);
-        itemMap.put(7, MarketItem.EQUIP);
-        itemMap.put(8, MarketItem.KNOWLEDGE);
+        itemMap.put(3, MarketItem.BURNABLE);
+        itemMap.put(4, MarketItem.INTERACTABLE);
+        itemMap.put(5, MarketItem.EQUIP);
+        itemMap.put(6, MarketItem.KNOWLEDGE);
 
         itemMap.put(18, MarketItem.MARKET);
         itemMap.put(19, MarketItem.MARKET_ALL);

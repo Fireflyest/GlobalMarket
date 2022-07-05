@@ -48,10 +48,17 @@ public class MarketCommand implements CommandExecutor {
         if(!label.equalsIgnoreCase("market")) return true;
 
         switch (args.length) {
-            case 1 -> this.executeCommand(sender, args[0]);
-            case 2 -> this.executeCommand(sender, args[0], args[1]);
-            case 3 -> this.executeCommand(sender, args[0], args[1], args[2]);
-            default -> this.executeCommand(sender);
+            case 1:
+                this.executeCommand(sender, args[0]);
+                break;
+            case 2:
+                this.executeCommand(sender, args[0], args[1]);
+                break;
+            case 3:
+                this.executeCommand(sender, args[0], args[1], args[2]);
+                break;
+            default:
+                this.executeCommand(sender);
         }
         return true;
     }
@@ -75,23 +82,23 @@ public class MarketCommand implements CommandExecutor {
         Player player = (sender instanceof Player)? (Player)sender : null;
         switch (var1){
             case "help":
-                sender.sendMessage("""
-                        §e§m =               §f§l[§eGlobeMarket§f§l]§e§m               =
-                        §b/market                            §f - 环球市场
-                        §b/market help                      §f - 指令帮助
-                        §b/market mine                      §f - 个人市场
-                        §b/market mail                       §f - 个人邮箱
-                        §b/market clean                     §f - 全部签收
-                        §b/market sell [m] <a>              §f - 出售物品
-                        §b/market auction [m] <a>          §f - 拍卖物品
-                        §b/market discount [id] [a]        §f - 商品打折
-                        §b/market reprice [id] [a]          §f - 价格修改
-                        §b/market send [p] <a>             §f - 发送邮件
-                        §b/market statistic <p|id>          §f - 统计数据
-                        §b/market other [p]                 §f - 他人商店
-                        §b/market classify <type>         §f - 分类商店
-                        §9其中§7p§9表玩家，§7a§9表数量，§7m§9表价格，§7<>§9表示可选，§7[]§9表示必填
-                        """);
+                sender.sendMessage(
+                        "§e§m =               §f§l[§eGlobeMarket§f§l]§e§m               =\n"+
+                        "§b/market                            §f - 环球市场\n"+
+                        "§b/market help                      §f - 指令帮助\n"+
+                        "§b/market mine                      §f - 个人市场\n"+
+                        "§b/market mail                       §f - 个人邮箱\n"+
+                        "§b/market clean                     §f - 全部签收\n"+
+                        "§b/market sell [m] <a>              §f - 出售物品\n"+
+                        "§b/market auction [m] <a>          §f - 拍卖物品\n"+
+                        "§b/market discount [id] [a]        §f - 商品打折\n"+
+                        "§b/market reprice [id] [a]          §f - 价格修改\n"+
+                        "§b/market send [p] <a>             §f - 发送邮件\n"+
+                        "§b/market statistic <p|id>          §f - 统计数据\n"+
+                        "§b/market other [p]                 §f - 他人商店\n"+
+                        "§b/market classify <type>         §f - 分类商店\n"+
+                        "§9其中§7p§9表玩家，§7a§9表数量，§7m§9表价格，§7<>§9表示可选，§7[]§9表示必填"
+                        );
                 break;
             case "reload":
                 if(!sender.isOp())return;
@@ -309,7 +316,7 @@ public class MarketCommand implements CommandExecutor {
             return;
         }
         switch (var1) {
-            case "send" -> {
+            case "send": {
                 // 禁止发送给自己
                 if (var2.equals(player.getName())) {
                     player.sendMessage(Language.SEND_ERROR);
@@ -340,8 +347,9 @@ public class MarketCommand implements CommandExecutor {
                     sendItem.setAmount(sendHas - sendAmount);
                     marketAffair.affairSend(var2, saleItem);
                 }
+                break;
             }
-            case "add" -> {
+            case "add" : {
                 // 拍卖加价
                 int id = ConvertUtils.parseInt(var2);
                 int add = ConvertUtils.parseInt(var3);
@@ -350,19 +358,23 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 marketAffair.affairAuction(player, id, add);
+                break;
             }
-            case "discount" -> {
+            case "discount" : {
                 if (!player.hasPermission("market.discount")) {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
                 marketAffair.affairDiscount(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
                 player.sendMessage(Language.TITLE + String.format("商品成功打§3%s§f折", var3));
+                break;
             }
-            case "point" ->
+            case "point" :
                 // TODO: 2021/5/5 point 去掉break即可
                     sender.sendMessage("功能未完成");
-            case "sell", "auction" -> {
+            case "sell" :
+            case "auction":
+            {
                 double price = ConvertUtils.parseDouble(var2);
                 int amount = ConvertUtils.parseInt(var3);
                 if (price <= 0 || price > Config.MAX_PRICE) {
@@ -446,16 +458,18 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION);
                 }
                 player.closeInventory();
+                break;
             }
-            case "reprice" -> {
+            case "reprice" : {
                 if (!player.hasPermission("market.reprice")) {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
                 marketAffair.affairReprice(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
                 player.sendMessage(Language.TITLE + String.format("商品修改价格为 §3%s§f", var3));
+                break;
             }
-            case "desc" -> {
+            case "desc" : {
                 if (!player.hasPermission("market.desc")) {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
@@ -468,9 +482,13 @@ public class MarketCommand implements CommandExecutor {
                 sale.setDesc(var3);
                 data.update(sale);
                 player.sendMessage(Language.TITLE + String.format("成功给商品§3%s§f添加备注", var2));
+                break;
             }
-            case "buy" -> marketAffair.affairBuy(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
-            default -> sender.sendMessage(Language.COMMAND_ERROR);
+            case "buy" :
+                marketAffair.affairBuy(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
+                break;
+            default :
+                sender.sendMessage(Language.COMMAND_ERROR);
         }
     }
 

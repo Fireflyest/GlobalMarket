@@ -154,10 +154,6 @@ public class ClassifyPage implements ViewPage {
                 return "物品";
             case ClassifyView.KNOWLEDGE:
                 return "知识";
-            case ClassifyView.RECORD:
-                return "唱片";
-            case ClassifyView.SOLID:
-                return "土壤";
             default:
                 return "";
         }

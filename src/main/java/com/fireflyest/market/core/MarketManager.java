@@ -147,17 +147,11 @@ public class MarketManager {
         if(material.isBlock()){
             classifyList.add("block");
         }
-        if(material.isRecord()){
-            classifyList.add("record");
-        }
         if(material.isBurnable() || material.isFlammable() || material.isFuel()){
             classifyList.add("burnable");
         }
         if(material.isInteractable()){
             classifyList.add("interactable");
-        }
-        if(material.isSolid()){
-            classifyList.add("solid");
         }
         if (material.getMaxDurability() > 0){
             classifyList.add("equip");

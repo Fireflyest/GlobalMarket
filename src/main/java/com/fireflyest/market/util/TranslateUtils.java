@@ -20,7 +20,7 @@ public class TranslateUtils {
         }
     }
 
-    private static final Map<String, String> itemList = new HashMap<>() {
+    private static final Map<String, String> itemList = new HashMap<String, String>() {
         {
             put("STONE", "石头");
             put("GRANITE", "花岗岩");
@@ -150,7 +150,6 @@ public class TranslateUtils {
             put("RAILS", "铁轨");
             put("COBBLESTONE_STAIRS", "圆石楼梯");
             put("LEVER", "拉杆");
-            // TODO: 2021/5/4 压力板
             put("STONE_PLATE", "石压力板");
             put("WOOD_PLATE", "木压力板");
             put("REDSTONE_ORE", "红石矿石");
@@ -1023,7 +1022,7 @@ public class TranslateUtils {
             put("MULE_SPAWN_EGG", "骡子刷怪蛋");
             put("MUSHROOM_STEW", "蘑菇炖");
             put("MUTTON", "羊肉");
-            put("NAME_TAG", "姓名标签");
+            put("NAME_TAG", "命名牌");
             put("NETHER_BRICK_FENCE", "下界砖围墙");
             put("NETHER_BRICK_SLAB", "下界砖台阶");
             put("NETHER_BRICK_WALL", "下界砖墙");
@@ -1139,8 +1138,8 @@ public class TranslateUtils {
             put("POTTED_RED_MUSHROOM", "盆栽红蘑菇");
             put("POTTED_RED_TULIP", "盆栽红郁金香");
             put("POTTED_SPRUCE_SAPLING", "盆栽云杉树苗");
-            put("POTTED_WARPED_FUNGUS", "盆栽扭曲的真菌");
-            put("POTTED_WARPED_ROOTS", "盆栽扭曲的根源");
+            put("POTTED_WARPED_FUNGUS", "盆栽诡异菌");
+            put("POTTED_WARPED_ROOTS", "盆栽诡异菌索");
             put("POTTED_WHITE_TULIP", "盆栽白色郁金香");
             put("POTTED_WITHER_ROSE", "盆栽玫瑰枯萎");
             put("POWDER_SNOW", "粉雪");
@@ -1171,12 +1170,12 @@ public class TranslateUtils {
             put("RABBIT_STEW", "兔子炖");
             put("RAIL", "铁路");
             put("RAVAGER_SPAWN_EGG", "破坏者刷怪蛋");
-            put("RAW_COPPER", "生铜");
-            put("RAW_COPPER_BLOCK", "生的铜块");
-            put("RAW_GOLD", "生金");
-            put("RAW_GOLD_BLOCK", "生黄金块");
-            put("RAW_IRON", "生的铁");
-            put("RAW_IRON_BLOCK", "生铁块");
+            put("RAW_COPPER", "粗铜");
+            put("RAW_COPPER_BLOCK", "粗铜块");
+            put("RAW_GOLD", "粗金");
+            put("RAW_GOLD_BLOCK", "粗黄金块");
+            put("RAW_IRON", "粗铁");
+            put("RAW_IRON_BLOCK", "粗铁块");
             put("RECOVERY_COMPASS", "复苏的指南针");
             put("RED_CANDLE", "红色的蜡烛");
             put("RED_CANDLE_CAKE", "红蜡烛的蛋糕");
@@ -1254,7 +1253,7 @@ public class TranslateUtils {
             put("SPRUCE_TRAPDOOR", "云杉活板门");
             put("SPRUCE_WALL_SIGN", "云杉墙告示牌");
             put("SPRUCE_WOOD", "云杉木材");
-            put("SPYGLASS", "小望远镜");
+            put("SPYGLASS", "望远镜");
             put("SQUID_SPAWN_EGG", "乌贼刷怪蛋");
             put("STONE_BRICK_WALL", "石砖墙");
             put("STONE_BRICKS", "石砖");
@@ -1265,22 +1264,22 @@ public class TranslateUtils {
             put("STONECUTTER", "石匠");
             put("STRAY_SPAWN_EGG", "杂散刷怪蛋");
             put("STRIDER_SPAWN_EGG", "水黾刷怪蛋");
-            put("STRIPPED_CRIMSON_HYPHAE", "剥夺了深红色的菌丝");
-            put("STRIPPED_CRIMSON_STEM", "剥夺了深红色的茎");
-            put("STRIPPED_MANGROVE_LOG", "剥夺了红树林的日志");
-            put("STRIPPED_MANGROVE_WOOD", "剥夺了红树林木");
-            put("STRIPPED_WARPED_HYPHAE", "被扭曲的菌丝");
-            put("STRIPPED_WARPED_STEM", "被扭曲的茎");
+            put("STRIPPED_CRIMSON_HYPHAE", "去皮深红色的菌丝");
+            put("STRIPPED_CRIMSON_STEM", "去皮深红色的茎");
+            put("STRIPPED_MANGROVE_LOG", "去皮红树林的牌子");
+            put("STRIPPED_MANGROVE_WOOD", "去皮红树林木");
+            put("STRIPPED_WARPED_HYPHAE", "去皮诡异菌");
+            put("STRIPPED_WARPED_STEM", "去皮诡异菌柄");
             put("STRUCTURE_BLOCK", "结构块");
             put("STRUCTURE_VOID", "结构空隙");
             put("SUNFLOWER", "向日葵");
             put("SUSPICIOUS_STEW", "可疑的炖肉");
             put("SWEET_BERRIES", "甜蜜的浆果");
-            put("SWEET_BERRY_BUSH", "布什甜浆果");
+            put("SWEET_BERRY_BUSH", "甜浆果灌木");
             put("TADPOLE_BUCKET", "蝌蚪桶");
             put("TADPOLE_SPAWN_EGG", "蝌蚪刷怪蛋");
             put("TALL_SEAGRASS", "高大的海草");
-            put("TARGET", "目标");
+            put("TARGET", "标靶");
             put("TINTED_GLASS", "有色玻璃");
             put("TNT_MINECART", "TNT矿车");
             put("TRADER_LLAMA_SPAWN_EGG", "交易员骆驼刷怪蛋");
@@ -1293,8 +1292,8 @@ public class TranslateUtils {
             put("TUFF", "凝灰岩");
             put("TURTLE_EGG", "龟蛋");
             put("TURTLE_SPAWN_EGG", "龟刷怪蛋");
-            put("TWISTING_VINES", "扭葡萄");
-            put("TWISTING_VINES_PLANT", "缠绕藤蔓植物");
+            put("TWISTING_VINES", "缠怨藤");
+            put("TWISTING_VINES_PLANT", "缠怨藤植物");
             put("VERDANT_FROGLIGHT", "翠绿的froglight");
             put("VEX_SPAWN_EGG", "烦恼刷怪蛋");
             put("VILLAGER_SPAWN_EGG", "村民刷怪蛋");
@@ -1303,24 +1302,24 @@ public class TranslateUtils {
             put("WALL_TORCH", "墙火炬");
             put("WANDERING_TRADER_SPAWN_EGG", "流浪的交易员刷怪蛋");
             put("WARDEN_SPAWN_EGG", "监狱长刷怪蛋");
-            put("WARPED_BUTTON", "扭曲的按钮");
-            put("WARPED_DOOR", "扭曲的门");
-            put("WARPED_FENCE", "扭曲的栅栏");
-            put("WARPED_FENCE_GATE", "扭曲的篱笆门");
-            put("WARPED_FUNGUS", "扭曲的真菌");
-            put("WARPED_FUNGUS_ON_A_STICK", "弯曲的棍子上的真菌");
-            put("WARPED_HYPHAE", "扭曲的菌丝");
-            put("WARPED_NYLIUM", "扭曲nylium");
-            put("WARPED_PLANKS", "扭曲的木板");
-            put("WARPED_PRESSURE_PLATE", "扭曲压盘");
-            put("WARPED_ROOTS", "扭曲的根源");
-            put("WARPED_SIGN", "扭曲告示牌");
-            put("WARPED_SLAB", "扭曲的台阶");
-            put("WARPED_STAIRS", "弯曲的楼梯");
-            put("WARPED_STEM", "扭曲的茎");
-            put("WARPED_TRAPDOOR", "扭曲的活板门");
-            put("WARPED_WALL_SIGN", "扭曲的墙告示牌");
-            put("WARPED_WART_BLOCK", "扭曲的疣块");
+            put("WARPED_BUTTON", "诡异木按钮");
+            put("WARPED_DOOR", "诡异木门");
+            put("WARPED_FENCE", "诡异木");
+            put("WARPED_FENCE_GATE", "诡异木栅栏门");
+            put("WARPED_FUNGUS", "诡异木真菌");
+            put("WARPED_FUNGUS_ON_A_STICK", "诡异木棍子上的真菌");
+            put("WARPED_HYPHAE", "诡异木菌丝");
+            put("WARPED_NYLIUM", "诡异菌岩");
+            put("WARPED_PLANKS", "诡异木板");
+            put("WARPED_PRESSURE_PLATE", "诡异木压力板");
+            put("WARPED_ROOTS", "诡异菌索");
+            put("WARPED_SIGN", "诡异木告示牌");
+            put("WARPED_SLAB", "诡异木台阶");
+            put("WARPED_STAIRS", "诡异木楼梯");
+            put("WARPED_STEM", "诡异木柄");
+            put("WARPED_TRAPDOOR", "诡异木活板门");
+            put("WARPED_WALL_SIGN", "诡异木墙告示牌");
+            put("WARPED_WART_BLOCK", "诡异木疣块");
             put("WATER", "水");
             put("WATER_CAULDRON", "水的大锅");
             put("WAXED_COPPER_BLOCK", "上过蜡的铜块");
@@ -1343,7 +1342,7 @@ public class TranslateUtils {
             put("WEATHERED_CUT_COPPER", "风化切制铜");
             put("WEATHERED_CUT_COPPER_SLAB", "风化切制铜的台阶");
             put("WEATHERED_CUT_COPPER_STAIRS", "风化切制铜楼梯");
-            put("WEEPING_VINES", "哭泣的藤蔓");
+            put("WEEPING_VINES", "垂泪藤");
             put("WEEPING_VINES_PLANT", "哭泣的藤蔓植物");
             put("WHEAT_SEEDS", "小麦种子");
             put("WHITE_CANDLE", "白色蜡烛");
@@ -1360,7 +1359,7 @@ public class TranslateUtils {
             put("WOODEN_PICKAXE", "木制的鹤嘴锄");
             put("WOODEN_SHOVEL", "木铲");
             put("WOODEN_SWORD", "木刀");
-            put("WRITABLE_BOOK", "可写的书");
+            put("WRITABLE_BOOK", "书与笔");
             put("YELLOW_CANDLE", "黄色的蜡烛");
             put("YELLOW_CANDLE_CAKE", "黄色的蜡烛的蛋糕");
             put("YELLOW_WALL_BANNER", "黄色的墙壁标语");
