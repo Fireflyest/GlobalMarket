@@ -43,3 +43,6 @@ Tax: true
 TaxThreshold: 100000
 # 税率，百分比0~1
 TaxRate: 0.002
+
+# 零散购买，开启后玩家可以只买一部分
+BuyPartial: true

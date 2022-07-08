@@ -1,6 +1,6 @@
 main: com.fireflyest.market.GlobalMarket
 name: GlobalMarket
-version: 3.1.2
+version: 3.1.5
 description: 环球市场插件，作者QQ746969484(备注来意)
 api-version: 1.13
 authors: [Fireflyest]
@@ -18,9 +18,6 @@ permissions:
   market.statistic:
     description: 查询统计数据
     default: op
-  market.sign:
-    description: 一键签收所有物品
-    default: op
   market.create:
     description: 创建牌子
     default: op
@@ -32,6 +29,9 @@ permissions:
     default: op
   market.send:
     description: 邮寄物品
+    default: true
+  market.sign:
+    description: 一键签收所有物品
     default: true
   market.sell:
     description: 出售物品
@@ -55,7 +55,7 @@ permissions:
     description: 搜索商品
     default: true
   market.other:
-    description: 打开个人商店
+    description: 打开他人商店
     default: true
 
 

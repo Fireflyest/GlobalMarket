@@ -24,6 +24,7 @@ public class Config {
     public static boolean TAX;
     public static long TAX_THRESHOLD;
     public static double TAX_RATE;
+    public static boolean BUY_PARTIAL;
 
     private Config(){
     }

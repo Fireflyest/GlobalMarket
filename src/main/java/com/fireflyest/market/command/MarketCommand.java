@@ -208,6 +208,14 @@ public class MarketCommand implements CommandExecutor {
                 player.sendMessage(Language.SEARCH_ITEM);
                 break;
             case "sign":
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                if(!player.hasPermission("market.sign")){
+                    player.sendMessage(Language.NOT_PERMISSION);
+                    return;
+                }
                 marketAffair.affairSignAll(player);
                 break;
             case "quick":
@@ -482,7 +490,7 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
-                marketAffair.affairReprice(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
+                marketAffair.affairReprice(player, ConvertUtils.parseInt(var2), ConvertUtils.parseDouble(var3));
                 player.sendMessage(String.format(Language.REPRICE_ITEM, var3));
                 break;
             }
@@ -502,6 +510,11 @@ public class MarketCommand implements CommandExecutor {
                 break;
             }
             case "buy" :
+                // 禁用零散购买
+                if(! Config.BUY_PARTIAL && !"0".equals(var3)){
+                    player.sendMessage(Language.COMMAND_ERROR);
+                    break;
+                }
                 marketAffair.affairBuy(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
                 break;
             default :

@@ -4,6 +4,7 @@ import com.fireflyest.gui.api.ViewPage;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.core.MarketManager;
+import com.fireflyest.market.data.Config;
 import com.fireflyest.market.util.ConvertUtils;
 import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.SerializeUtil;
@@ -93,28 +94,37 @@ public class AffairPage implements ViewPage {
             ItemUtils.setItemValue(add3, "add "+sale.getId()+" 1000");
             itemStackMap.put(15, add3);
         }else {
-            // 直售
             int amount = item.getAmount();
-            ItemStack buy1 = MarketItem.BUY_1.clone();
-            ItemUtils.setDisplayName(buy1, "§e§l单件");
-            ItemUtils.addLore(buy1, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount));
-            ItemUtils.setItemValue(buy1, "buy "+sale.getId()+" 1");
-            buy1.setAmount(1);
-            itemStackMap.put(13, buy1);
-            if(amount > 8){
-                ItemStack buy2 = MarketItem.BUY_8.clone();
-                ItemUtils.setDisplayName(buy2, "§e§l部分");
-                ItemUtils.addLore(buy2, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount * 8));
-                ItemUtils.setItemValue(buy2, "buy "+sale.getId()+" 8");
-                buy2.setAmount(8);
-                itemStackMap.put(14, buy2);
+            if (Config.BUY_PARTIAL){
+                // 直售
+                ItemStack buy1 = MarketItem.BUY_1.clone();
+                ItemUtils.setDisplayName(buy1, "§e§l单件");
+                ItemUtils.addLore(buy1, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount));
+                ItemUtils.setItemValue(buy1, "buy "+sale.getId()+" 1");
+                buy1.setAmount(1);
+                itemStackMap.put(13, buy1);
+                if(amount > 8){
+                    ItemStack buy2 = MarketItem.BUY_8.clone();
+                    ItemUtils.setDisplayName(buy2, "§e§l部分");
+                    ItemUtils.addLore(buy2, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount * 8));
+                    ItemUtils.setItemValue(buy2, "buy "+sale.getId()+" 8");
+                    buy2.setAmount(8);
+                    itemStackMap.put(14, buy2);
+                }
+                ItemStack buy3 = MarketItem.BUY_ALL.clone();
+                ItemUtils.setDisplayName(buy3, "§e§l一口价");
+                ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
+                ItemUtils.setItemValue(buy3, "buy "+sale.getId());
+                buy3.setAmount(amount);
+                itemStackMap.put(15, buy3);
+            }else {
+                ItemStack buy3 = MarketItem.BUY_ALL.clone();
+                ItemUtils.setDisplayName(buy3, "§e§l一口价");
+                ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
+                ItemUtils.setItemValue(buy3, "buy "+sale.getId());
+                buy3.setAmount(amount);
+                itemStackMap.put(14, buy3);
             }
-            ItemStack buy3 = MarketItem.BUY_ALL.clone();
-            ItemUtils.setDisplayName(buy3, "§e§l一口价");
-            ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
-            ItemUtils.setItemValue(buy3, "buy "+sale.getId());
-            buy3.setAmount(amount);
-            itemStackMap.put(15, buy3);
         }
         return itemStackMap;
     }
