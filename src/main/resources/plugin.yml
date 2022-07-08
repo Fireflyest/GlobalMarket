@@ -28,7 +28,7 @@ permissions:
     description: 会员
     default: op
   market.admin:
-    description: 打开系统商店
+    description: 设置系统商店商品
     default: op
   market.send:
     description: 邮寄物品
@@ -50,6 +50,9 @@ permissions:
     default: true
   market.desc:
     description: 给商品设置备注
+    default: true
+  market.search:
+    description: 搜索商品
     default: true
   market.other:
     description: 打开个人商店

@@ -5,6 +5,7 @@ import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
+import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
 import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.MysqlExecuteUtils;
@@ -47,7 +48,7 @@ public class MinePage implements ViewPage {
         this.size = size;
         String guiTitle = title;
 
-        if (target != null)  guiTitle += ("§9" + target + "的商店");    // 副标题
+        if (target != null)  guiTitle += ("§9" + String.format(Language.MARKET_MINE_NICK, target));    // 副标题
         if (page != 0) guiTitle += (" §7#§8" + page);          // 给标题加上页码
 
         // 界面容器

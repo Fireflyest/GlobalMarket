@@ -2,6 +2,7 @@ package com.fireflyest.market.view;
 
 import com.fireflyest.gui.api.ViewPage;
 import com.fireflyest.market.core.MarketItem;
+import com.fireflyest.market.data.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ public class HomePage implements ViewPage {
     public HomePage(String title) {
         String guiTitle = title;
 
-        guiTitle += ("§9导航界面");
+        guiTitle += ("§9" + Language.MARKET_HOME_NICK);
 
         // 界面容器
         this.inventory = Bukkit.createInventory(null, 27, guiTitle);
@@ -83,11 +84,12 @@ public class HomePage implements ViewPage {
         itemMap.put(4, MarketItem.INTERACTABLE);
         itemMap.put(5, MarketItem.EQUIP);
         itemMap.put(6, MarketItem.KNOWLEDGE);
+        itemMap.put(8, MarketItem.SEARCH);
 
         itemMap.put(18, MarketItem.MARKET);
-        itemMap.put(19, MarketItem.MARKET_ALL);
         itemMap.put(20, MarketItem.POINT);
         itemMap.put(21, MarketItem.ADMIN);
+        itemMap.put(19, MarketItem.MARKET_ALL);
         itemMap.put(26, MarketItem.CLOSE);
         for (int i = 9; i < 18; i++) {
             itemMap.put(i, MarketItem.BLANK);

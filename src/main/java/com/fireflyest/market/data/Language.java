@@ -32,12 +32,23 @@ public class Language {
     public static String HAS_MAIL;
     public static String LIMIT_MAIL;
     public static String TAX;
+    public static String SEARCH_ITEM;
+    public static String UNLIMITED_ITEM;
+    public static String DISCOUNT_ITEM;
+    public static String TAX_BURDEN;
+    public static String REPRICE_ITEM;
+    public static String DESC_ITEM;
+    public static String MAIL_BUTTON;
+    public static String MAIL_HOVER;
 
-    public static String MARKET_MAIN_NICK;
     public static String MARKET_MAIL_NICK;
     public static String MARKET_MINE_NICK;
-    public static String MARKET_CLASSIFY_NICK;
-    public static String MARKET_MENU_NICK;
+    public static String MARKET_HOME_NICK;
+    public static String MARKET_QUICK_NICK;
+    public static String MARKET_MAIN_ALL_NICK;
+    public static String MARKET_MAIN_NORMAL_NICK;
+    public static String MARKET_MAIN_ADMIN_NICK;
+    public static String MARKET_MAIN_POINT_NICK;
 
     private Language(){
     }

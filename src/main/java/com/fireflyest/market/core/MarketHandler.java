@@ -502,7 +502,7 @@ public class MarketHandler implements MarketInteract{
         Player player = Bukkit.getPlayer(to);
         if(player != null && to.equals(player.getName())){
             player.sendMessage(Language.HAS_MAIL);
-            ChatUtils.sendCommandButton(player, "打开邮箱", "点击打开邮箱界面", "/market mail");
+            ChatUtils.sendCommandButton(player, Language.MAIL_BUTTON, Language.MAIL_HOVER, "/market mail");
         }
     }
 

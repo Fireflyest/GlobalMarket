@@ -61,7 +61,7 @@ public class PlayerEventListener implements Listener {
         int mailAmount = MarketManager.getMailAmount(playerName);
         if (mailAmount > 0){
             player.sendMessage(Language.HAS_MAIL);
-            ChatUtils.sendCommandButton(player, "打开邮箱", "点击打开邮箱界面", "/market mail");
+            ChatUtils.sendCommandButton(player, Language.MAIL_BUTTON, Language.MAIL_HOVER, "/market mail");
             if (!Config.LIMIT_MAIL) return;
             if (mailAmount > Config.LIMIT_MAIL_NUM - 5){
                 player.sendMessage(Language.LIMIT_MAIL);
@@ -163,12 +163,14 @@ public class PlayerEventListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
+        Player player = event.getPlayer();
 
         // 打开交易记录
         if(event.hasItem()){
             ItemStack item = event.getItem();
             if(item != null && item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial())) {
                 String value = ItemUtils.getItemValue(item);
+                player.openBook(item);
                 if(value.equals("record"))item.setAmount(0);
             }
         }
@@ -181,11 +183,15 @@ public class PlayerEventListener implements Listener {
             Sign sign = (Sign)block.getState();
 
             if(sign.getLine(0).contains("GlobeMarket")){
-                Player player = event.getPlayer();
 
-                if("quick".equals(sign.getLine(1))){
+                if("mail".equals(sign.getLine(1))){
+                    event.setCancelled(true);
+                    player.performCommand("market mail");
+                }else if (player.isSneaking()){
+                    event.setCancelled(true);
                     player.performCommand("market quick");
                 }else {
+                    event.setCancelled(true);
                     player.performCommand("market");
                 }
             }

@@ -6,12 +6,17 @@ Reloaded: '§f配置文件重载完成!'
 #显示在提示信息
 Title: '§6✦§f'
 #显示在界面
-MarketMainNick: ' §9主市场'
-MarketMailNick: ' §9收件箱'
-MarketMineNick: ' '
-MarketClassifyNick: ' §9分类'
-MarketMenuNick: ' §9菜单'
 PluginName: '§f§l[§0GlobeMarket§f§l]'
+MarketHomeNick: ' 导航界面'
+MarketMailNick: ' %s的邮箱'
+MarketMineNick: ' %s的商店'
+MarketQuickNick: ' 快捷上架'
+MarketMainAllNick: ' 全部交易'
+MarketMainNormalNick: ' 玩家交易'
+MarketMainAdminNick: ' 系统交易'
+MarketMainPointNick: ' 点券交易'
+MailButton: "打开邮箱"
+MailHover: "点击打开邮箱界面"
 
 CommandError: '§6✦§f输入指令有误或该功能未开启(§3输入/market help 查看帮助§f)'
 NotEnoughMoney: '§6✦§f%s没有足够的麦块币'
@@ -36,3 +41,9 @@ DataNull: '§6✦§f暂无数据'
 HasMail: '§6✦§f你有新的邮件，打开看看吧'
 LimitMail: '§6✦§f如果邮件数量到达上限，将强制签收'
 Tax: '§6✦§f扣除§3%s的税收，金额为§3%s'
+TaxBurden: "§6✦§f您无法承担赋税！"
+SearchItem: '§6✦§f使用指令 §3/market search [物品] §f来搜索某个物品'
+UnlimitedItem: "§6✦§f商品成功设置为无限"
+DiscountItem: "§6✦§f商品成功打§3%s§f折"
+RepriceItem: "§6✦§f商品修改价格为 §3%s§f"
+DescItem: "§6✦§f成功给商品§3%s§f设置简介"

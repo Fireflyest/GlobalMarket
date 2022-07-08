@@ -75,19 +75,14 @@ public class MainPage implements ViewPage {
     public Map<Integer, ItemStack> getItemMap(){
         Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
         List<Sale> sales;
-        switch (target){
-            case MainView.POINT:
-                sales = storage.inquiryList(sqlPoint, Sale.class);
-                break;
-            case MainView.ADMIN:
-                sales = storage.inquiryList(sqlAdmin, Sale.class);
-                break;
-            case MainView.NORMAL:
-                sales = storage.inquiryList(sqlNormal, Sale.class);
-                break;
-            case MainView.ALL:
-            default:
-                sales = storage.inquiryList(sqlAll, Sale.class);
+        if (target.equals(MainView.POINT)){
+            sales = storage.inquiryList(sqlPoint, Sale.class);
+        } else if (target.equals(MainView.ADMIN)) {
+            sales = storage.inquiryList(sqlAdmin, Sale.class);
+        } else if (target.equals(MainView.ALL)) {
+            sales = storage.inquiryList(sqlAll, Sale.class);
+        } else {
+            sales = storage.inquiryList(sqlNormal, Sale.class);
         }
         for (int i = 0; i < 45; i++) {
             if(i < sales.size()){

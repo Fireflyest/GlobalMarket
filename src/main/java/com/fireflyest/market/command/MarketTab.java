@@ -21,6 +21,7 @@ public class MarketTab implements TabCompleter {
         op.add("reload");
         op.add("default");
 
+        op.add("admin");
         op.add("statistic");
 
         user.add("help");
@@ -39,12 +40,12 @@ public class MarketTab implements TabCompleter {
 
         user.add("sell");
         user.add("point");
-        user.add("admin");
         user.add("auction");
         user.add("discount");
         user.add("send");
         user.add("reprice");
         user.add("desc");
+        user.add("search");
 
         op.addAll(user);
     }
@@ -58,7 +59,7 @@ public class MarketTab implements TabCompleter {
                 }
             }else if(args.length == 2){
                 if("sell".equalsIgnoreCase(args[0]) || "auction".equalsIgnoreCase(args[0])){
-                    tab.add("[价格]");
+                    tab.add("[price]");
                 }else if("data".equalsIgnoreCase(args[0])){
                     tab.add("<id>");
                 }else if("admin".equalsIgnoreCase(args[0])){
@@ -75,6 +76,8 @@ public class MarketTab implements TabCompleter {
                     tab.add("[id]");
                 }else if("desc".equalsIgnoreCase(args[0])){
                     tab.add("[id]");
+                }else if("search".equalsIgnoreCase(args[0])){
+                    tab.add("[something]");
                 }else if("discount".equalsIgnoreCase(args[0])){
                     tab.add("[id]");
                 }else if("classify".equalsIgnoreCase(args[0])){
@@ -86,7 +89,7 @@ public class MarketTab implements TabCompleter {
                 }
             }else if(args.length == 3){
                 if("sell".equalsIgnoreCase(args[0]) || "auction".equalsIgnoreCase(args[0]) || "send".equalsIgnoreCase(args[0])){
-                    tab.add("<数量>");
+                    tab.add("<number>");
                 }else if("discount".equalsIgnoreCase(args[0])){
                     tab.add("1");
                     tab.add("2");
@@ -98,7 +101,7 @@ public class MarketTab implements TabCompleter {
                     tab.add("8");
                     tab.add("9");
                 }else if("desc".equalsIgnoreCase(args[0])){
-                    tab.add("[描述]");
+                    tab.add("[desc]");
                 }
             }
             return tab;

@@ -61,10 +61,11 @@ public class ChatUtils {
         if(Bukkit.getVersion().contains("1.12"))return;
         ItemMeta meta = item.getItemMeta();
         String hover, info, display = item.getType().name();
+        // 悬浮文本
         StringBuilder hoverBuilder = new StringBuilder();
+        // 提示文本
         StringBuilder infoBuilder = new StringBuilder();
-        infoBuilder
-                .append(Language.TITLE)
+        infoBuilder.append(Language.TITLE)
                 .append("玩家§3")
                 .append(name)
                 .append("§f在环球市场");
@@ -73,14 +74,15 @@ public class ChatUtils {
         }else {
             infoBuilder.append("§3出售 §f");
         }
-
         info = infoBuilder.toString();
+
         if(meta != null){
             if(!"".equals(meta.getDisplayName())){
                 display = meta.getDisplayName();
             }else {
                 display = TranslateUtils.translate(item.getType());
             }
+            hoverBuilder.append(display);
             if(meta.hasLore() && meta.getLore() != null){
                 meta.getLore().forEach(s -> hoverBuilder.append(s).append("\n"));
             }

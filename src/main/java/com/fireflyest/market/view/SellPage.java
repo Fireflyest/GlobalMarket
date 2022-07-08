@@ -4,6 +4,7 @@ import com.fireflyest.gui.api.ViewPage;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.core.MarketManager;
+import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ConvertUtils;
 import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.SerializeUtil;
@@ -48,7 +49,7 @@ public class SellPage implements ViewPage {
         this.reduce10 = MarketItem.REDUCE_10.clone();
         this.reduce100 = MarketItem.REDUCE_100.clone();
 
-        String guiTitle = title + "§9快捷上架";
+        String guiTitle = title + "§9" + Language.MARKET_QUICK_NICK;
 
         // 界面容器
         this.inventory = Bukkit.createInventory(null, 18, guiTitle);

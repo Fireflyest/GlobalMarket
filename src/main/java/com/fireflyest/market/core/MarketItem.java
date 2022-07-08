@@ -49,6 +49,7 @@ public class MarketItem {
     public static ItemStack INTERACTABLE;
     public static ItemStack EQUIP;
     public static ItemStack KNOWLEDGE;
+    public static ItemStack SEARCH;
 
     private MarketItem(){
     }
@@ -69,12 +70,12 @@ public class MarketItem {
         if(null != market){
             MARKET = new ItemStack(market);
             ItemUtils.setDisplayName(MARKET, "§3§l玩家市场");
-            ItemUtils.addLore(MARKET, "§f点击回到交易市场");
+            ItemUtils.addLore(MARKET, "§f点击回到玩家交易市场");
             ItemUtils.addLore(MARKET, "§f普通交易与点券交易");
             ItemUtils.setItemValue(MARKET, " ");
         }
 
-        Material marketAll = XMaterial.SHULKER_BOX.parseMaterial();
+        Material marketAll = XMaterial.GOLD_INGOT.parseMaterial();
         if(null != marketAll){
             MARKET_ALL = new ItemStack(marketAll);
             ItemUtils.setDisplayName(MARKET_ALL, "§3§l总市场");
@@ -327,6 +328,14 @@ public class MarketItem {
             ItemUtils.setDisplayName(KNOWLEDGE, "§3§l知识");
             ItemUtils.addLore(KNOWLEDGE, "§f知识就是力量");
             ItemUtils.setItemValue(KNOWLEDGE, "classify knowledge");
+        }
+
+        Material search = XMaterial.COMPASS.parseMaterial();
+        if(null != search){
+            SEARCH = new ItemStack(search);
+            ItemUtils.setDisplayName(SEARCH, "§3§l搜索");
+            ItemUtils.addLore(SEARCH, "§f按照关键词搜索商品");
+            ItemUtils.setItemValue(SEARCH, "search");
         }
 
     }

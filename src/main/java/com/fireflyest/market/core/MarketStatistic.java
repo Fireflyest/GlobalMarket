@@ -15,6 +15,10 @@ public class MarketStatistic {
     private MarketStatistic(){
     }
 
+    /**
+     * 当天市场交易统计/market statistic
+     * @param player 指令使用者
+     */
     public static void statisticMarket(Player player){
         Note note = MarketManager.getTodayNote();
         player.closeInventory();
@@ -26,6 +30,11 @@ public class MarketStatistic {
         player.sendMessage("§e§m =                                             = ");
     }
 
+    /**
+     * 某个商品的信息
+     * @param player 指令使用者
+     * @param id 商品id
+     */
     public static void statisticSale(Player player, int id){
         Sale sale = MarketManager.getSale(id);
         if(sale == null){
@@ -43,6 +52,11 @@ public class MarketStatistic {
         player.sendMessage("§e§m =                                             = ");
     }
 
+    /**
+     * 玩家信息统计/market statistic [name]
+     * @param player 指令使用者
+     * @param name 目标玩家
+     */
     public static void statisticPlayer(Player player, String name){
         User user = MarketManager.getUser(name);
         if(user == null || "".equals(user.getUuid())){
@@ -60,6 +74,10 @@ public class MarketStatistic {
         player.sendMessage("§e§m =                                             = ");
     }
 
+    /**
+     * 个人市场数据/market data
+     * @param player 玩家
+     */
     public static void statisticData(Player player){
         List<Sale> sales = MarketManager.getPlayerSales(player.getName());
 

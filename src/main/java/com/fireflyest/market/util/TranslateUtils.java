@@ -630,9 +630,9 @@ public class TranslateUtils {
             put("ANDESITE_SLAB", "安山岩台阶");
             put("ANDESITE_STAIRS", "安山岩楼梯");
             put("ANDESITE_WALL", "安山岩墙");
-            put("ANVIL", "铁砧");
-            put("AXOLOTL_BUCKET", "蝾螈桶");
-            put("AXOLOTL_SPAWN_EGG", "蝾螈刷怪蛋");
+            put("ANVIL", "铁毡");
+            put("AXOLOTL_BUCKET", "美西螈桶");
+            put("AXOLOTL_SPAWN_EGG", "美西螈刷怪蛋");
             put("AZALEA", "杜鹃花");
             put("AZALEA_LEAVES", "杜鹃花的叶子");
             put("BAKED_POTATO", "烤土豆");

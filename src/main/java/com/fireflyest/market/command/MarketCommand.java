@@ -195,6 +195,18 @@ public class MarketCommand implements CommandExecutor {
                 guide.openView(player, GlobalMarket.HOME_VIEW, HomeView.NORMAL);
                 break;
             }
+            case "search":
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                if(!player.hasPermission("market.search")){
+                    player.sendMessage(Language.NOT_PERMISSION);
+                    return;
+                }
+                player.closeInventory();
+                player.sendMessage(Language.SEARCH_ITEM);
+                break;
             case "sign":
                 marketAffair.affairSignAll(player);
                 break;
@@ -249,7 +261,7 @@ public class MarketCommand implements CommandExecutor {
                     }
                     sale.setAdmin(!sale.isAdmin());
                     data.update(sale);
-                    player.sendMessage(Language.TITLE + "商品成功设置为无限");
+                    player.sendMessage(Language.UNLIMITED_ITEM);
                 }
                 break;
             case "classify":{
@@ -277,18 +289,23 @@ public class MarketCommand implements CommandExecutor {
             case "finish":
                 marketAffair.affairFinish(player, ConvertUtils.parseInt(var2));
                 break;
+            case "search":
+                if(!player.hasPermission("market.search")){
+                    player.sendMessage(Language.NOT_PERMISSION);
+                    return;
+                }
+                guide.openView(player, GlobalMarket.SEARCH_VIEW, var2);
+                break;
             case "statistic":
                 if(!player.hasPermission("market.statistic")){
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
-                int target = ConvertUtils.parseInt(var2);
-                if(target == 0){
-                    MarketStatistic.statisticPlayer(player, var2);
-                }else {
-                    MarketStatistic.statisticSale(player, target);
-                }
+                MarketStatistic.statisticPlayer(player, var2);
                 break;
+            case "data":
+                int target = ConvertUtils.parseInt(var2);
+                MarketStatistic.statisticSale(player, target);
             case "other":{
                 if(!player.hasPermission("market.other")){
                     player.sendMessage(Language.NOT_PERMISSION);
@@ -366,7 +383,7 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 marketAffair.affairDiscount(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
-                player.sendMessage(Language.TITLE + String.format("商品成功打§3%s§f折", var3));
+                player.sendMessage(String.format(Language.DISCOUNT_ITEM, var3));
                 break;
             }
             case "point" :
@@ -378,11 +395,11 @@ public class MarketCommand implements CommandExecutor {
                 double price = ConvertUtils.parseDouble(var2);
                 int amount = ConvertUtils.parseInt(var3);
                 if (price <= 0 || price > Config.MAX_PRICE) {
-                    player.sendMessage(Language.COMMAND_ERROR + " §3物品价格§f设置错误！");
+                    player.sendMessage(Language.COMMAND_ERROR + " §3the price§f you entered is invalid!");
                     return;
                 }
                 if (amount <= 0 || amount > 64) {
-                    player.sendMessage(Language.COMMAND_ERROR + " §3物品数量§f设置错误！");
+                    player.sendMessage(Language.COMMAND_ERROR + " §3the amount§f you entered is invalid!");
                     return;
                 }
                 ItemStack item = player.getInventory().getItemInMainHand();
@@ -435,7 +452,7 @@ public class MarketCommand implements CommandExecutor {
                             economy.withdrawPlayer(player, tax);
                             player.sendMessage(String.format(Language.TAX, Config.TAX_RATE, tax));
                         } else {
-                            player.sendMessage(Language.TITLE + "§c您无法承担赋税！");
+                            player.sendMessage(Language.TAX_BURDEN);
                             return;
                         }
                     }
@@ -466,7 +483,7 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 marketAffair.affairReprice(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
-                player.sendMessage(Language.TITLE + String.format("商品修改价格为 §3%s§f", var3));
+                player.sendMessage(String.format(Language.REPRICE_ITEM, var3));
                 break;
             }
             case "desc" : {
@@ -481,7 +498,7 @@ public class MarketCommand implements CommandExecutor {
                 }
                 sale.setDesc(var3);
                 data.update(sale);
-                player.sendMessage(Language.TITLE + String.format("成功给商品§3%s§f添加备注", var2));
+                player.sendMessage(String.format(Language.DESC_ITEM, var2));
                 break;
             }
             case "buy" :

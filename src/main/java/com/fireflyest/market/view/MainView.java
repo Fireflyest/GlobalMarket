@@ -1,16 +1,17 @@
 package com.fireflyest.market.view;
 
 import com.fireflyest.gui.api.View;
+import com.fireflyest.market.data.Language;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainView implements View<MainPage> {
 
-    public static final String ALL = "全部交易";
-    public static final String NORMAL = "玩家交易";
-    public static final String ADMIN = "系统交易";
-    public static final String POINT = "点券交易";
+    public static final String ALL = Language.MARKET_MAIN_ALL_NICK;
+    public static final String NORMAL = Language.MARKET_MAIN_NORMAL_NICK;
+    public static final String ADMIN = Language.MARKET_MAIN_ADMIN_NICK;
+    public static final String POINT = Language.MARKET_MAIN_POINT_NICK;
 
     private final Map<String, MainPage> pageMap = new HashMap<>();
 
