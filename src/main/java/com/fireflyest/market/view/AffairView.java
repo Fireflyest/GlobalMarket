@@ -1,6 +1,6 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.View;
+import org.fireflyest.craftgui.api.View;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.util.ConvertUtils;

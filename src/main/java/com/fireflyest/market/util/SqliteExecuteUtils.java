@@ -130,7 +130,7 @@ public class SqliteExecuteUtils {
         }
         String data = dataString.toString().replace("'true'", "1").replace("'false'", "0");
         String table = getTable(clazz);
-        return String.format("insert into %s (%s) values (%s)", table, fieldString.toString(), data);
+        return String.format("insert into %s (%s) values (%s)", table, fieldString, data);
     }
 
     private static String addCondition(String sql, String key, Object value) {

@@ -1,6 +1,6 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.ViewPage;
+import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.core.MarketManager;
@@ -12,6 +12,7 @@ import com.fireflyest.market.util.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class AffairPage implements ViewPage {
     }
 
     @Override
-    public Map<Integer, ItemStack> getItemMap(){
+    public @NotNull Map<Integer, ItemStack> getItemMap(){
         Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
         sale = MarketManager.getSale(ConvertUtils.parseInt(target));
         if (sale == null) {
@@ -130,12 +131,12 @@ public class AffairPage implements ViewPage {
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtonMap() {
+    public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new HashMap<>(itemMap);
     }
 
     @Override
-    public Inventory getInventory(){
+    public @NotNull Inventory getInventory(){
         return inventory;
     }
 

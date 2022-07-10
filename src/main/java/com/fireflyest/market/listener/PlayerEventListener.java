@@ -2,9 +2,9 @@ package com.fireflyest.market.listener;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
-import com.fireflyest.gui.api.ViewGuide;
-import com.fireflyest.gui.api.ViewPage;
-import com.fireflyest.gui.event.ViewClickEvent;
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.craftgui.api.ViewPage;
+import org.fireflyest.craftgui.event.ViewClickEvent;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.User;
 import com.fireflyest.market.core.MarketAffair;

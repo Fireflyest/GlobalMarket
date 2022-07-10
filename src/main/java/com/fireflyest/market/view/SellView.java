@@ -1,12 +1,10 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.View;
+import org.fireflyest.craftgui.api.View;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class SellView implements View<SellPage> {
 

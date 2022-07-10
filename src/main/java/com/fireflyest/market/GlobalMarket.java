@@ -1,6 +1,6 @@
 package com.fireflyest.market;
 
-import com.fireflyest.gui.api.ViewGuide;
+import org.fireflyest.craftgui.api.ViewGuide;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Note;
 import com.fireflyest.market.bean.Sale;

@@ -1,8 +1,7 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.ViewPage;
+import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
-import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
@@ -14,6 +13,7 @@ import com.fireflyest.market.util.SqliteExecuteUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +65,7 @@ public class ClassifyPage implements ViewPage {
     }
 
     @Override
-    public Map<Integer, ItemStack> getItemMap(){
+    public @NotNull Map<Integer, ItemStack> getItemMap(){
         Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
         List<Sale> sales = storage.inquiryList(sql, Sale.class);
         for (int i = 0; i < 45; i++) {
@@ -82,12 +82,12 @@ public class ClassifyPage implements ViewPage {
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtonMap() {
+    public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new HashMap<>(itemMap);
     }
 
     @Override
-    public Inventory getInventory(){
+    public @NotNull Inventory getInventory(){
         return inventory;
     }
 

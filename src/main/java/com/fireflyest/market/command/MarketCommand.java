@@ -1,7 +1,7 @@
 package com.fireflyest.market.command;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.fireflyest.gui.api.ViewGuide;
+import org.fireflyest.craftgui.api.ViewGuide;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
