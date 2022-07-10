@@ -146,3 +146,6 @@ BuyPartial: true
 
 ## 维护人员
 [@Fireflyest](https://github.com/Fireflyest) QQ: 746969484
+
+## 使用情况
+![bstats](https://bstats.org/signatures/bukkit/GlobalMarket.svg)
