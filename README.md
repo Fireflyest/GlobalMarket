@@ -19,6 +19,7 @@
 * 自定义配置
 * 权限与指令
 * 维护人员
+* 使用情况
 
 ## 安装插件
 在安装插件前，先确保已经添加前置插件[Vault](https://www.spigotmc.org/resources/vault.34315/)、ProtocolLib和CraftGUI以正常加载插件。
