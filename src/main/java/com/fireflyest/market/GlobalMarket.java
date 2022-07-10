@@ -119,15 +119,15 @@ public class GlobalMarket extends JavaPlugin{
                     long delta = now - sale.getAppear();
                     // 判断是否超时
                     if (delta > limit) {
-                        Player player = Bukkit.getPlayer(sale.getOwner());
-                        // 玩家是否在线
-                        if (player != null && player.getName().equals(sale.getOwner())) {
-                            // 下架处理
-                            if (sale.isAuction()){
-                                MarketAffair.getInstance().affairCancel(player, sale.getId());
-                            }else {
+                        if (sale.isAuction()){
+                            // 结束竞拍
+                            Player player = Bukkit.getPlayer(sale.getOwner());
+                            if (player != null && player.getName().equals(sale.getOwner())) {
                                 MarketAffair.getInstance().affairFinish(player, sale.getId());
                             }
+                        }else {
+                            // 下架
+                            MarketAffair.getInstance().affairCancel(sale.getId());
                         }
                     }
                 });
