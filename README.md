@@ -21,7 +21,7 @@
 * 维护人员
 
 ## 安装插件
-在安装插件前，先确保已经添加前置插件Vault、ProtocolLib和Gui以正常加载插件。
+在安装插件前，先确保已经添加前置插件[Vault](https://www.spigotmc.org/resources/vault.34315/)、ProtocolLib和CraftGUI以正常加载插件。
 将插件下载后放置于plugins文件夹，并重载服务器。
 ## 功能和使用方法
 ### 出售物品
@@ -146,3 +146,6 @@ BuyPartial: true
 
 ## 维护人员
 [@Fireflyest](https://github.com/Fireflyest) QQ: 746969484
+
+## 使用情况
+![bstats](https://bstats.org/signatures/bukkit/GlobalMarket.svg)
