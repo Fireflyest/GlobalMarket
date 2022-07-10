@@ -162,6 +162,13 @@ public class MarketHandler implements MarketInteract{
         }
     }
 
+    public MarketTask obtainTask(int type, int id){
+        MarketTask task = new MarketTask();
+        task.type = type;
+        task.id = id;
+        return task;
+    }
+
     public MarketTask obtainTask(int type, Player player, int id){
         MarketTask task = new MarketTask();
         task.type = type;
@@ -366,30 +373,37 @@ public class MarketHandler implements MarketInteract{
 
         // 判断商品是否存在
         if(null == sale){
-            player.sendMessage(Language.DATA_NULL);
+            if (player != null) player.sendMessage(Language.DATA_NULL);
             return;
         }
         // 判断操作者是否商品主人
-        if(!sale.getOwner().equals(player.getName())){
+        if(player != null && !sale.getOwner().equals(player.getName())){
             player.sendMessage(Language.CANCEL_ERROR);
             return;
         }
 
+        // 解析物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
         if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
 
-        MarketManager.removeSale(sale);
-        player.sendMessage(Language.CANCEL_ITEM);
-
         // 减少正在出售的数量
-        User user = MarketManager.getUser(player.getName());
+        User user = MarketManager.getUser(sale.getOwner());
         user.setSelling(user.getSelling() - 1);
         data.update(user);
+
+        // 删除商品
+        MarketManager.removeSale(sale);
+        if (player != null) player.sendMessage(Language.CANCEL_ITEM);
 
         // 发送邮件
         this.obtainMailTask(sale.getOwner() , item).sendToTarget();
 
-        guide.refreshPage(player.getName());
+        if (player != null) guide.refreshPage(player.getName());
+    }
+
+    @Override
+    public void affairCancel(int id) {
+        this.affairCancel(null, id);
     }
 
     @Override

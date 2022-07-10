@@ -36,6 +36,11 @@ public class MarketAffair implements MarketInteract{
     }
 
     @Override
+    public void affairCancel(int id) {
+        marketHandler.obtainTask(MarketTask.CANCEL, id).sendToTarget();
+    }
+
+    @Override
     public void affairAuction(Player player, int id, int add) {
         marketHandler.obtainBuyTask(MarketTask.AUCTION, player, id, add).sendToTarget();
     }

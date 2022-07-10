@@ -10,6 +10,7 @@ public interface MarketInteract {
 
     // 下架
     void affairCancel(Player player, int id);
+    void affairCancel(int id);
 
     // 拍卖
     void affairAuction(Player player, int id, int add);
