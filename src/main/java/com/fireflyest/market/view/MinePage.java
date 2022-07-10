@@ -102,7 +102,7 @@ public class MinePage implements ViewPage {
 
     @Override
     public ViewPage getNext() {
-        if(next == null && page < 30){
+        if(next == null && page < 5){
             next = new MinePage(title, target, page+1, size);
             next.setPre(this);
         }

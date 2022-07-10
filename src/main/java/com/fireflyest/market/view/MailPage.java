@@ -3,7 +3,6 @@ package com.fireflyest.market.view;
 import com.fireflyest.gui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Mail;
-import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
@@ -103,7 +102,7 @@ public class MailPage implements ViewPage {
 
     @Override
     public ViewPage getNext() {
-        if(next == null && page < 30){
+        if(next == null && page < 5){
             next = new MailPage(title, target, page+1, size);
             next.setPre(this);
         }

@@ -20,16 +20,16 @@ import java.util.List;
  */
 public class ItemUtils {
 
-    private static String versionPacket;
-    private static Class<?> craftItemStackClass;
-    private static Class<?> itemStackClass;
-    private static Class<?> compoundClass;
-    private static Method asNMSCopy;
-    private static Method asBukkitCopy;
-    private static Method getTag;
-    private static Method setTag;
-    private static Method compoundSet;
-    private static Method compoundGet;
+//    private static String versionPacket;
+//    private static Class<?> craftItemStackClass;
+//    private static Class<?> itemStackClass;
+//    private static Class<?> compoundClass;
+//    private static Method asNMSCopy;
+//    private static Method asBukkitCopy;
+//    private static Method getTag;
+//    private static Method setTag;
+//    private static Method compoundSet;
+//    private static Method compoundGet;
 
 //    static {
 //        String version = Bukkit.getVersion();
@@ -73,10 +73,6 @@ public class ItemUtils {
 //    }
 
     private ItemUtils(){
-    }
-
-    public static String getVersionPacket() {
-        return versionPacket;
     }
 
     /**

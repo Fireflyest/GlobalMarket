@@ -24,9 +24,6 @@ import com.fireflyest.market.util.YamlUtils;
 import com.fireflyest.market.view.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
-import org.bstats.charts.CustomChart;
-import org.bstats.charts.MultiLineChart;
-import org.bstats.json.JsonObjectBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -36,9 +33,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
 
 /**
  * @author Fireflyest
@@ -60,8 +54,6 @@ public class GlobalMarket extends JavaPlugin{
     public static final String AFFAIR_VIEW = "market.affair";
     public static final String SELL_VIEW = "market.sell";
     public static final String SEARCH_VIEW = "market.search";
-
-    public static JavaPlugin getInstance() { return plugin; }
 
     private static JavaPlugin plugin;
 
