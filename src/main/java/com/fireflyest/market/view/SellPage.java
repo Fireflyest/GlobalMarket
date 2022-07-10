@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -101,7 +102,7 @@ public class SellPage implements ViewPage {
     }
 
     @Override
-    public Map<Integer, ItemStack> getItemMap(){
+    public @NotNull Map<Integer, ItemStack> getItemMap(){
         Map<Integer, ItemStack> itemStackMap = new ConcurrentHashMap<>(itemMap);
 
         itemStackMap.put(0, itemStack);
@@ -119,12 +120,12 @@ public class SellPage implements ViewPage {
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtonMap() {
+    public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new ConcurrentHashMap<>(itemMap);
     }
 
     @Override
-    public Inventory getInventory(){
+    public @NotNull Inventory getInventory(){
         return inventory;
     }
 

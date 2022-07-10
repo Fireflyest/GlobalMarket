@@ -6,6 +6,7 @@ import com.fireflyest.market.data.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,17 +34,17 @@ public class HomePage implements ViewPage {
     }
 
     @Override
-    public Map<Integer, ItemStack> getItemMap(){
+    public @NotNull Map<Integer, ItemStack> getItemMap(){
         return new HashMap<>(itemMap);
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtonMap() {
+    public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new HashMap<>(itemMap);
     }
 
     @Override
-    public Inventory getInventory(){
+    public @NotNull Inventory getInventory(){
         return inventory;
     }
 
