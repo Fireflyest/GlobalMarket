@@ -2,7 +2,6 @@ package com.fireflyest.market.view;
 
 import com.fireflyest.gui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
-import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;

@@ -106,16 +106,6 @@ public class MarketCommand implements CommandExecutor {
                 YamlUtils.loadConfig();
                 sender.sendMessage(Language.RELOADED);
                 break;
-            case "test":
-//                if (player != null && player.isOp()){
-//                    for (int i = 0; i < 60; i++) {
-//                        player.performCommand(String.format( "market sell %d 1", i));
-//                    }
-//                }
-
-//                ItemStack itemHand = player.getInventory().getItemInMainHand();
-//                ItemUtils.setItemValue(itemHand, "test");
-                break;
             case "mine":{
                 if(player == null) {
                     sender.sendMessage(Language.PLAYER_COMMAND);
