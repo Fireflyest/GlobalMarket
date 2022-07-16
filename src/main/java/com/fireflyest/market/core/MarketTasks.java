@@ -1,7 +1,6 @@
 package com.fireflyest.market.core;
 
 import com.fireflyest.market.task.*;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MarketTasks {
@@ -25,7 +24,6 @@ public class MarketTasks {
     };
 
     private MarketTasks(){
-
     }
 
     public static TaskManager getTaskManager() {

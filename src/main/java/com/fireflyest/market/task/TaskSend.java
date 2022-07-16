@@ -34,11 +34,7 @@ public class TaskSend extends Task{
     }
 
     public TaskSend(@NotNull String playerName, @NotNull String target, @NotNull ItemStack item) {
-        super(playerName);
-        this.target = target;
-        this.item = item;
-        this.price = 0;
-        this.point = false;
+        this(playerName, target, item, 0, false);
     }
 
     @Override

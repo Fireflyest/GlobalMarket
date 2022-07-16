@@ -73,6 +73,7 @@ public class GlobalMarket extends JavaPlugin{
         return storage;
     }
     public static Economy getEconomy() {
+        if (economy == null) setupEconomy();
         return economy;
     }
     public static ViewGuide getGuide() {
@@ -88,7 +89,6 @@ public class GlobalMarket extends JavaPlugin{
         new Metrics(this, 15549);
 
         this.setupData();
-        this.setupEconomy();
         this.setupGuide();
 
         // 注册事件
@@ -181,18 +181,6 @@ public class GlobalMarket extends JavaPlugin{
     }
 
     /**
-     * 经济插件
-     */
-    private void setupEconomy() {
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            Bukkit.getLogger().warning("Economy not found!");
-            return;
-        }
-        economy = rsp.getProvider();
-    }
-
-    /**
      * 界面初始化
      */
     private void setupGuide() {
@@ -213,4 +201,15 @@ public class GlobalMarket extends JavaPlugin{
         guide.addView(SEARCH_VIEW, new SearchView(Language.PLUGIN_NAME));
     }
 
+    /**
+     * 经济插件
+     */
+    private static void setupEconomy() {
+        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            Bukkit.getLogger().warning("Economy not found!");
+            return;
+        }
+        economy = rsp.getProvider();
+    }
 }
