@@ -1,11 +1,12 @@
 package com.fireflyest.market.command;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.fireflyest.gui.api.ViewGuide;
+import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.task.*;
+import org.fireflyest.craftgui.api.ViewGuide;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
-import com.fireflyest.market.core.MarketAffair;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketStatistic;
 import com.fireflyest.market.data.Config;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class MarketCommand implements CommandExecutor {
 
-    private final MarketAffair marketAffair;
+    private final MarketTasks.TaskManager taskManager;
 
     private final Data data;
     private final ViewGuide guide;
@@ -39,8 +40,9 @@ public class MarketCommand implements CommandExecutor {
     public MarketCommand() {
         this.data = GlobalMarket.getData();
         this.guide = GlobalMarket.getGuide();
-        economy = GlobalMarket.getEconomy();
-        this.marketAffair = MarketAffair.getInstance();
+        this.economy = GlobalMarket.getEconomy();
+
+        this.taskManager = MarketTasks.getTaskManager();
     }
 
     @Override
@@ -105,6 +107,16 @@ public class MarketCommand implements CommandExecutor {
                 sender.sendMessage(Language.RELOADING);
                 YamlUtils.loadConfig();
                 sender.sendMessage(Language.RELOADED);
+                break;
+            case "test":
+//                if (player != null && player.isOp()){
+//                    for (int i = 0; i < 60; i++) {
+//                        player.performCommand(String.format( "market sell %d 1", i));
+//                    }
+//                }
+
+//                ItemStack itemHand = player.getInventory().getItemInMainHand();
+//                ItemUtils.setItemValue(itemHand, "test");
                 break;
             case "mine":{
                 if(player == null) {
@@ -206,7 +218,7 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
-                marketAffair.affairSignAll(player);
+                taskManager.putTask(new TaskSignAll(player.getName()));
                 break;
             case "quick":
                 if(player == null) {
@@ -275,17 +287,17 @@ public class MarketCommand implements CommandExecutor {
                 break;
             }
             case "buy":
-                marketAffair.affairBuy(player, ConvertUtils.parseInt(var2), 0);
+                taskManager.putTask(new TaskBuy(player.getName(), ConvertUtils.parseInt(var2), 0));
                 break;
             case "sign":
-                marketAffair.affairSign(player, ConvertUtils.parseInt(var2));
+                taskManager.putTask(new TaskSign(player.getName(), ConvertUtils.parseInt(var2)));
                 break;
             case "cancel":
-                marketAffair.affairCancel(player, ConvertUtils.parseInt(var2));
+                taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(var2)));
                 player.closeInventory();
                 break;
             case "finish":
-                marketAffair.affairFinish(player, ConvertUtils.parseInt(var2));
+                taskManager.putTask(new TaskFinish(player.getName(), ConvertUtils.parseInt(var2)));
                 break;
             case "search":
                 if(!player.hasPermission("market.search")){
@@ -335,7 +347,7 @@ public class MarketCommand implements CommandExecutor {
                 // 禁止发送给自己
                 if (var2.equals(player.getName())) {
                     player.sendMessage(Language.SEND_ERROR);
-                    return;
+                    if (!Config.DEBUG) return;
                 }
                 // 判断玩家是否存在
                 if (MarketManager.getUser(var2) == null) {
@@ -360,7 +372,7 @@ public class MarketCommand implements CommandExecutor {
                     ItemStack saleItem = sendItem.clone();
                     saleItem.setAmount(sendAmount);
                     sendItem.setAmount(sendHas - sendAmount);
-                    marketAffair.affairSend(var2, saleItem);
+                    taskManager.putTask(new TaskSend(player.getName(), var2, saleItem));
                 }
                 break;
             }
@@ -372,7 +384,7 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.COMMAND_ERROR);
                     return;
                 }
-                marketAffair.affairAuction(player, id, add);
+                taskManager.putTask(new TaskBid(player.getName(), id, add));
                 break;
             }
             case "discount" : {
@@ -380,13 +392,15 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
-                marketAffair.affairDiscount(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
+                taskManager.putTask(new TaskDiscount(player.getName(), ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3)));
+
                 player.sendMessage(String.format(Language.DISCOUNT_ITEM, var3));
                 break;
             }
             case "point" :
                 // TODO: 2021/5/5 point 去掉break即可
                     sender.sendMessage("功能未完成");
+                    break;
             case "sell" :
             case "auction":
             {
@@ -458,15 +472,15 @@ public class MarketCommand implements CommandExecutor {
                 ItemStack saleItem = item.clone();
                 saleItem.setAmount(amount);
                 if (var1.equals("sell") && sender.hasPermission("market.sell")) {
-                    marketAffair.affairSell(player.getName(), false, false, price, saleItem);
+                    taskManager.putTask(new TaskSell(player.getName(), false, false, price, saleItem));
                     item.setAmount(has - amount);
                     player.sendMessage(Language.SELL_ITEM);
                 } else if (var1.equals("auction") && sender.hasPermission("market.auction")) {
-                    marketAffair.affairSell(player.getName(), true, false, price, saleItem);
+                    taskManager.putTask(new TaskSell(player.getName(), true, false, price, saleItem));
                     item.setAmount(has - amount);
                     player.sendMessage(Language.SELL_ITEM);
                 } else if (var1.equals("point") && sender.hasPermission("market.point")) {
-                    marketAffair.affairSell(player.getName(), false, true, price, saleItem);
+                    taskManager.putTask(new TaskSell(player.getName(), false, true, price, saleItem));
                     item.setAmount(has - amount);
                     player.sendMessage(Language.SELL_ITEM);
                 } else {
@@ -480,7 +494,7 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
-                marketAffair.affairReprice(player, ConvertUtils.parseInt(var2), ConvertUtils.parseDouble(var3));
+                taskManager.putTask(new TaskReprice(player.getName(), ConvertUtils.parseInt(var2), ConvertUtils.parseDouble(var3)));
                 player.sendMessage(String.format(Language.REPRICE_ITEM, var3));
                 break;
             }
@@ -505,7 +519,7 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.COMMAND_ERROR);
                     break;
                 }
-                marketAffair.affairBuy(player, ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3));
+                taskManager.putTask(new TaskBuy(player.getName(), ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3)));
                 break;
             default :
                 sender.sendMessage(Language.COMMAND_ERROR);

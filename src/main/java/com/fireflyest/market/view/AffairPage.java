@@ -1,6 +1,7 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.ViewPage;
+import org.bukkit.Material;
+import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.core.MarketManager;
@@ -49,6 +50,10 @@ public class AffairPage implements ViewPage {
         Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
         sale = MarketManager.getSale(ConvertUtils.parseInt(target));
         if (sale == null) {
+            itemStackMap.put(10, new ItemStack(Material.AIR));
+            itemStackMap.put(13, new ItemStack(Material.AIR));
+            itemStackMap.put(14, new ItemStack(Material.AIR));
+            itemStackMap.put(15, new ItemStack(Material.AIR));
             return itemStackMap;
         }
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
