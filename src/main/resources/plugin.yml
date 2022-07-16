@@ -1,5 +1,6 @@
 main: com.fireflyest.market.GlobalMarket
 name: GlobalMarket
+prefix: GlobalMarket
 version: '${project.version}'
 description: 环球市场插件，作者QQ746969484(备注来意)
 api-version: 1.13
