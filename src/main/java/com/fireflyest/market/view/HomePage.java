@@ -97,4 +97,9 @@ public class HomePage implements ViewPage {
         }
     }
 
+    @Override
+    public void updateTitle(String s) {
+
+    }
+
 }

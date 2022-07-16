@@ -197,4 +197,9 @@ public class AffairPage implements ViewPage {
         itemMap.put(8, other);
     }
 
+    @Override
+    public void updateTitle(String s) {
+
+    }
+
 }

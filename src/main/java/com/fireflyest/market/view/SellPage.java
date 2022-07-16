@@ -169,4 +169,9 @@ public class SellPage implements ViewPage {
         itemMap.put(9, MarketItem.AMOUNT.clone());
     }
 
+    @Override
+    public void updateTitle(String s) {
+
+    }
+
 }

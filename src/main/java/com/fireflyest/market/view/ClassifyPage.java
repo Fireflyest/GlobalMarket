@@ -138,6 +138,11 @@ public class ClassifyPage implements ViewPage {
         itemMap.put(53, MarketItem.CLOSE);
     }
 
+    @Override
+    public void updateTitle(String s) {
+
+    }
+
     private String getSubtitle(String target){
         switch (target){
             case ClassifyView.EDIBLE:
