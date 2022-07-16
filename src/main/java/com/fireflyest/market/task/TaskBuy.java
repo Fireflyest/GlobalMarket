@@ -4,6 +4,7 @@ import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
 import com.fireflyest.market.core.MarketManager;
+import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ItemUtils;
@@ -28,6 +29,8 @@ public class TaskBuy extends Task{
         this.num = num;
 
         this.economy = GlobalMarket.getEconomy();
+
+        this.type = MarketTasks.SALE_TASK;
     }
 
     @Override
@@ -76,12 +79,11 @@ public class TaskBuy extends Task{
         if(sale.isAdmin()){
             // 发货给买家
             if (!buyAll) item.setAmount(num);
-            // TODO: 2022/7/16   this.obtainMailTask(buyer, item).sendToTarget();
+            then.add(new TaskSend("", buyer, item));
         }else {
             if (buyAll){
                 // 发货给买家
-                // TODO: 2022/7/16   this.obtainMailTask(buyer, item).sendToTarget();
-
+                then.add(new TaskSend("", buyer, item));
                 MarketManager.removeSale(sale);
 
                 // 统计数据修改
@@ -114,7 +116,7 @@ public class TaskBuy extends Task{
                 }
                 // 邮寄给买家
                 item.setAmount(num);
-                // TODO: 2022/7/16  this.obtainMailTask(buyer, item).sendToTarget();
+                then.add(new TaskSend("", buyer, item));
 
             }
         }
@@ -125,7 +127,7 @@ public class TaskBuy extends Task{
 
         // 发送给卖家
         ItemStack record = ItemUtils.getRecordItem(itemName, buyer, cost, point);
-        // TODO: 2022/7/16   this.obtainMailTask(seller, record, cost, point).sendToTarget();
+        then.add(new TaskSend("", seller, record, cost, point));
 
         // 更新卖家统计数据
         user.setMoney(user.getMoney() + cost);

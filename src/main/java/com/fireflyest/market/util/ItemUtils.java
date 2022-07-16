@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -194,10 +195,11 @@ public class ItemUtils {
         ItemUtils.setItemValue(item, "sign " + mail.getId());
     }
 
+    @NotNull
     public static ItemStack getRecordItem(String name, String buyer, double cost, boolean point){
         ItemStack item;
         Material w_book = XMaterial.WRITTEN_BOOK.parseMaterial();
-        if(null == w_book) return null;
+        if(null == w_book) return new ItemStack(Material.STONE);
         item = new ItemStack(w_book);
 
         BookMeta meta = (BookMeta)item.getItemMeta();

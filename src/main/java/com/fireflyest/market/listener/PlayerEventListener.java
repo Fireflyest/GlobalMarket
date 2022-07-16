@@ -2,12 +2,14 @@ package com.fireflyest.market.listener;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
+import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.task.TaskCancel;
+import com.fireflyest.market.task.TaskSignAll;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.api.ViewPage;
 import org.fireflyest.craftgui.event.ViewClickEvent;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.User;
-import com.fireflyest.market.core.MarketAffair;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
@@ -35,7 +37,7 @@ public class PlayerEventListener implements Listener {
 
     private final ViewGuide guide;
 
-    private final MarketAffair marketAffair;
+    private final MarketTasks.TaskManager taskManager;
 
     public PlayerEventListener(){
 
@@ -45,7 +47,7 @@ public class PlayerEventListener implements Listener {
 
         this.guide = GlobalMarket.getGuide();
 
-        this.marketAffair = MarketAffair.getInstance();
+        this.taskManager = MarketTasks.getTaskManager();
     }
 
     @EventHandler
@@ -67,7 +69,7 @@ public class PlayerEventListener implements Listener {
                 player.sendMessage(Language.LIMIT_MAIL);
             }
             if(mailAmount > Config.LIMIT_MAIL_NUM){
-                marketAffair.affairSignAll(player);
+                taskManager.putTask(new TaskSignAll(playerName));
             }
         }
     }
@@ -149,7 +151,7 @@ public class PlayerEventListener implements Listener {
         // 其他按钮点击，执行指令
         if (event.isShiftClick()){ // 下架
             if (value.contains("affair")){
-                marketAffair.affairCancel(player, ConvertUtils.parseInt(value.split(" ")[1]));
+                taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(value.split(" ")[1])));
                 player.playSound(player.getLocation(), cancelSound, 1F, 1F);
             }
         }else { // 执行指令

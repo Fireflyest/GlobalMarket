@@ -6,9 +6,9 @@ description: 环球市场插件，作者QQ746969484(备注来意)
 api-version: 1.13
 authors: [Fireflyest]
 website: https://www.mcbbs.net/thread-1090611-1-1.html
-depend: [Vault,Gui]
+depend: [Vault,CraftGUI]
 load: POSTWORLD
-softdepend: [PlayerPoints,EssentialEconomy,Economy]
+softdepend: [PlayerPoints,EssentialEconomy,Economy,CMI]
 
 commands:
   market:
