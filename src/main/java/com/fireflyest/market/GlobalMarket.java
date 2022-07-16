@@ -43,6 +43,8 @@ public class GlobalMarket extends JavaPlugin{
     /*
     点券支持
     邮箱交费
+    价格统计
+    界面交互
     排行榜
      */
 
@@ -186,9 +188,6 @@ public class GlobalMarket extends JavaPlugin{
      * 经济插件
      */
     private void setupEconomy() {
-        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-            return;
-        }
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             Bukkit.getLogger().warning("Economy not found!");
@@ -201,9 +200,6 @@ public class GlobalMarket extends JavaPlugin{
      * 界面初始化
      */
     private void setupGuide() {
-        if (Bukkit.getServer().getPluginManager().getPlugin("Gui") == null) {
-            return;
-        }
         RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer().getServicesManager().getRegistration(ViewGuide.class);
         if (rsp == null) {
             Bukkit.getLogger().warning("Gui not found!");
