@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="CraftGUI-1.0.5">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../Project/CraftGUI/target/CraftGUI-1.0.5.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

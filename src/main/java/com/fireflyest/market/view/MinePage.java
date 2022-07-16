@@ -139,4 +139,9 @@ public class MinePage implements ViewPage {
         itemMap.put(53, MarketItem.CLOSE);
     }
 
+    @Override
+    public void updateTitle(String s) {
+
+    }
+
 }
