@@ -122,25 +122,25 @@ BuyPartial: true
 ```
 
 ## 权限与指令
-其中p表玩家，a表数量，m表价格，<>表示可选，[]表示必填
+其中p表玩家，a表数量，m表价格，()表示可选，[]表示必填
 
 前面带*的权限是op默认拥有，普通玩家没有的
 
 | 指令                          | 功能           | 权限                 |
 |-----------------------------|--------------|--------------------|
 | /market admin [id]          | 将商品设置为无限     | * market.admin     |
-| /market statistic <p>       | 统计服务器或玩家交易数据 | * market.statistic |
+| /market statistic (p)       | 统计服务器或玩家交易数据 | * market.statistic |
 | /market mine                | 打开个人商店       |                    |
 | /market mail                | 打开邮箱         |                    |
-| /market data <id>           | 查看个人或商品数据    |                    |
+| /market data (id)           | 查看个人或商品数据    |                    |
 | /market sign                | 一次性签收所有邮件    | market.sign        |
 | /market other [p]           | 打开他人的商店      | market.other       |
 | /market quick               | 快捷上架         |                    |
-| /market sell [m] <a>        | 出售商品         | market.sell        |
-| /market auction [m] <a>     | 拍卖商品         | market.auction     |
+| /market sell [m] (a)        | 出售商品         | market.sell        |
+| /market auction [m] (a)     | 拍卖商品         | market.auction     |
 | /market discount [id] [1~9] | 商品打折         | market.discount    |
 | /market reprice [id] [m]    | 商品重新定价       | market.reprice     |
-| /market send [p] <a>        | 邮寄物品         | market.send        |
+| /market send [p] (a)        | 邮寄物品         | market.send        |
 | /market desc [id] [desc]    | 给商品添加描述      | market.desc        |
 | /market search [something]  | 搜索商品         | market.search      |
 
