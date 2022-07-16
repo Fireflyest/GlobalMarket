@@ -24,6 +24,8 @@ public abstract class Task {
     protected final String playerName;
     protected final Player player;
 
+    protected int type;
+
     public Task(@NotNull String playerName){
         this.playerName = playerName;
         this.player = Bukkit.getPlayerExact(playerName);
@@ -40,4 +42,7 @@ public abstract class Task {
         player.sendMessage(info);
     }
 
+    public int getType() {
+        return type;
+    }
 }

@@ -1,5 +1,8 @@
 package com.fireflyest.market;
 
+import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.task.TaskCancel;
+import com.fireflyest.market.task.TaskFinish;
 import org.fireflyest.craftgui.api.ViewGuide;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Note;
@@ -7,8 +10,6 @@ import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
 import com.fireflyest.market.command.MarketCommand;
 import com.fireflyest.market.command.MarketTab;
-import com.fireflyest.market.core.MarketAffair;
-import com.fireflyest.market.core.MarketHandler;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Data;
@@ -26,7 +27,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -103,9 +103,8 @@ public class GlobalMarket extends JavaPlugin{
 
         // 初始化管理
         MarketManager.initMarketManager();
-        MarketAffair.getInstance().initPages();
         // 任务处理线程
-        MarketHandler.getInstance().createTaskHandler(this);
+        MarketTasks.initMarketTasks(this);
 
         // 若有自动下架，建立监控线程
         if(Config.LIMIT_TIME == -1) return;
@@ -122,13 +121,10 @@ public class GlobalMarket extends JavaPlugin{
                     if (delta > limit) {
                         if (sale.isAuction()){
                             // 结束竞拍
-                            Player player = Bukkit.getPlayer(sale.getOwner());
-                            if (player != null && player.getName().equals(sale.getOwner())) {
-                                MarketAffair.getInstance().affairFinish(player, sale.getId());
-                            }
+                            MarketTasks.getTaskManager().putTask(new TaskFinish(sale.getOwner(), sale.getId()));
                         }else {
                             // 下架
-                            MarketAffair.getInstance().affairCancel(sale.getId());
+                            MarketTasks.getTaskManager().putTask(new TaskCancel(sale.getOwner(), sale.getId()));
                         }
                     }
                 });
@@ -144,7 +140,7 @@ public class GlobalMarket extends JavaPlugin{
             e.printStackTrace();
         }
 
-        MarketHandler.getInstance().stop();
+        MarketTasks.close();
         Bukkit.getScheduler().cancelTasks(this);
 
         // 自动下架监控
