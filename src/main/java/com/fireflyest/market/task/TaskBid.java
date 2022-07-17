@@ -41,13 +41,17 @@ public class TaskBid extends Task{
         }
         if(sale.getOwner().equals(player.getName())){
             this.executeInfo(Language.BUY_ERROR);
-            if (!Config.DEBUG) return then;
+            if (!Config.DEBUG) {
+                guide.refreshPage(playerName);
+                return then;
+            }
         }
         // 拍卖加价
         double cost = sale.getCost()+num;
         if(economy.has(player, cost)){
             sale.setCost(cost);
-            sale.setHeat(sale.getHeat()+1);
+            // heat每半小时降一次，到0的时候完成竞拍
+            sale.setHeat(3);
             sale.setBuyer(player.getName());
         }else {
             this.executeInfo(String.format(Language.NOT_ENOUGH_MONEY, "你"));
@@ -57,7 +61,7 @@ public class TaskBid extends Task{
 
         MarketManager.updateSale(sale);
 
-        guide.refreshPage(player.getName());
+        guide.refreshPage(playerName);
         return then;
     }
 }

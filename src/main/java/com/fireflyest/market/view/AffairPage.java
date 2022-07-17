@@ -1,15 +1,15 @@
 package com.fireflyest.market.view;
 
+import com.fireflyest.market.core.MarketButton;
+import com.fireflyest.market.data.Language;
 import org.bukkit.Material;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.util.ConvertUtils;
 import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.SerializeUtil;
-import com.fireflyest.market.util.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -64,40 +64,24 @@ public class AffairPage implements ViewPage {
         // 展示物品
         crashMap.put(10, item);
 
-        // 下架按钮
-        ItemStack cancel;
-        if(sale.isAuction() && sale.getPrice() != sale.getCost()){
-            cancel = MarketItem.BOOK.clone();
-            ItemUtils.setDisplayName(cancel, "§e§l成交");
-            ItemUtils.addLore(cancel, "§3§l售价§7:§f "+sale.getCost());
-            ItemUtils.setItemValue(cancel, "finish "+sale.getId());
-        }else {
-            cancel = MarketItem.CANCEL.clone();
-            ItemUtils.setDisplayName(cancel, "§c§l下架");
-            ItemUtils.addLore(cancel, "§3§l卖家§7:§f "+sale.getOwner());
-            ItemUtils.addLore(cancel, "§3§l上架于§7:§f "+ TimeUtils.getTime(sale.getAppear()));
-            ItemUtils.setItemValue(cancel, "cancel "+sale.getId());
-        }
-        crashMap.put(17, cancel);
-
         // 添加交易操作按钮
         if(sale.isAuction()){
             // 拍卖
-            ItemStack add1 = MarketItem.ADD_NUGGET.clone();
+            ItemStack add1 = MarketButton.BID_10.clone();
             ItemUtils.setDisplayName(add1, "§e§l加价");
             ItemUtils.addLore(add1, "§3§l增加§7:§f 10");
             ItemUtils.addLore(add1, "§3§l当前§7:§f "+sale.getCost());
             ItemUtils.setItemValue(add1, "add "+sale.getId()+" 10");
             crashMap.put(13, add1);
 
-            ItemStack add2 = MarketItem.ADD_INGOT.clone();
+            ItemStack add2 = MarketButton.BID_100.clone();
             ItemUtils.setDisplayName(add2, "§e§l加价");
             ItemUtils.addLore(add2, "§3§l增加§7:§f 100");
             ItemUtils.addLore(add2, "§3§l当前§7:§f "+sale.getCost());
             ItemUtils.setItemValue(add2, "add "+sale.getId()+" 100");
             crashMap.put(14, add2);
 
-            ItemStack add3 = MarketItem.ADD_BLOCK.clone();
+            ItemStack add3 = MarketButton.BID_1000.clone();
             ItemUtils.setDisplayName(add3, "§e§l加价");
             ItemUtils.addLore(add3, "§3§l增加§7:§f 1000");
             ItemUtils.addLore(add3, "§3§l当前§7:§f "+sale.getCost());
@@ -107,28 +91,35 @@ public class AffairPage implements ViewPage {
             int amount = item.getAmount();
             if (Config.BUY_PARTIAL){
                 // 直售
-                ItemStack buy1 = MarketItem.BUY_1.clone();
+                ItemStack buy1 = MarketButton.BUY_1.clone();
                 ItemUtils.setDisplayName(buy1, "§e§l单件");
                 ItemUtils.addLore(buy1, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount));
                 ItemUtils.setItemValue(buy1, "buy "+sale.getId()+" 1");
                 buy1.setAmount(1);
                 crashMap.put(13, buy1);
                 if(amount > 8){
-                    ItemStack buy2 = MarketItem.BUY_8.clone();
+                    ItemStack buy2 = MarketButton.BUY_8.clone();
                     ItemUtils.setDisplayName(buy2, "§e§l部分");
                     ItemUtils.addLore(buy2, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount * 8));
                     ItemUtils.setItemValue(buy2, "buy "+sale.getId()+" 8");
                     buy2.setAmount(8);
                     crashMap.put(14, buy2);
+                    ItemStack buy3 = MarketButton.BUY_ALL.clone();
+                    ItemUtils.setDisplayName(buy3, "§e§l一口价");
+                    ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
+                    ItemUtils.setItemValue(buy3, "buy "+sale.getId());
+                    buy3.setAmount(amount);
+                    crashMap.put(15, buy3);
+                }else {
+                    ItemStack buy3 = MarketButton.BUY_ALL.clone();
+                    ItemUtils.setDisplayName(buy3, "§e§l一口价");
+                    ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
+                    ItemUtils.setItemValue(buy3, "buy "+sale.getId());
+                    buy3.setAmount(amount);
+                    crashMap.put(14, buy3);
                 }
-                ItemStack buy3 = MarketItem.BUY_ALL.clone();
-                ItemUtils.setDisplayName(buy3, "§e§l一口价");
-                ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
-                ItemUtils.setItemValue(buy3, "buy "+sale.getId());
-                buy3.setAmount(amount);
-                crashMap.put(15, buy3);
             }else {
-                ItemStack buy3 = MarketItem.BUY_ALL.clone();
+                ItemStack buy3 = MarketButton.BUY_ALL.clone();
                 ItemUtils.setDisplayName(buy3, "§e§l一口价");
                 ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
                 ItemUtils.setItemValue(buy3, "buy "+sale.getId());
@@ -136,6 +127,12 @@ public class AffairPage implements ViewPage {
                 crashMap.put(14, buy3);
             }
         }
+        // 添加皮肤
+        ItemStack head = crashMap.get(8);
+        org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, sale.getOwner()));
+        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(head, MarketManager.getOfflinePlayer(sale.getOwner()));
+        ItemUtils.setItemValue(head, String.format("other %s", sale.getOwner()));
+
         return crashMap;
     }
 
@@ -184,24 +181,19 @@ public class AffairPage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        itemMap.put(0, MarketItem.BLANK);
-        itemMap.put(1, MarketItem.BLANK);
-        itemMap.put(2, MarketItem.BLANK);
-        itemMap.put(9, MarketItem.BLANK);
-        itemMap.put(11, MarketItem.BLANK);
-        itemMap.put(18, MarketItem.BLANK);
-        itemMap.put(19, MarketItem.BLANK);
-        itemMap.put(20, MarketItem.BLANK);
+        itemMap.put(0, MarketButton.BLANK);
+        itemMap.put(1, MarketButton.BLANK);
+        itemMap.put(2, MarketButton.BLANK);
+        itemMap.put(9, MarketButton.BLANK);
+        itemMap.put(11, MarketButton.BLANK);
+        itemMap.put(18, MarketButton.BLANK);
+        itemMap.put(19, MarketButton.BLANK);
+        itemMap.put(20, MarketButton.BLANK);
 
-        itemMap.put(26, MarketItem.MARKET.clone());
-
-        sale = MarketManager.getSale(ConvertUtils.parseInt(target));
-        if (sale == null) return;
-        ItemStack other = new ItemStack(MarketItem.MINE.getType());
-        ItemUtils.setDisplayName(other, "§e§l个人商店");
-        ItemUtils.addLore(other, "§f点击查看该商品主人的商店");
-        ItemUtils.setItemValue(other, "other "+sale.getOwner());
-        itemMap.put(8, other);
+        ItemStack head = MarketButton.OTHER.clone();
+        itemMap.put(8, head);
+        itemMap.put(17, MarketButton.MARKET);
+        itemMap.put(26, MarketButton.CLOSE);
     }
 
     @Override

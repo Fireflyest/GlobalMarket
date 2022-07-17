@@ -63,7 +63,6 @@ public class TaskSign extends Task{
 
         MarketManager.removeMail(mail);
 
-        guide.refreshPage(player.getName());
         return then;
     }
 }

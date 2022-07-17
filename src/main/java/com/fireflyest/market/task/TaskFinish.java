@@ -94,7 +94,6 @@ public class TaskFinish extends Task{
         user.setMoney(user.getMoney() + cost);
         data.update(user);
 
-        guide.refreshPage(playerName);
         return then;
     }
 }
