@@ -51,6 +51,8 @@ public class TaskSend extends Task{
             targetPlayer.sendMessage(Language.HAS_MAIL);
             ChatUtils.sendCommandButton(targetPlayer, Language.MAIL_BUTTON, Language.MAIL_HOVER, "/market mail");
         }
+
+        guide.refreshPage(target);
         return then;
     }
 }

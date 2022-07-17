@@ -43,6 +43,7 @@ public class Language {
 
     public static String MARKET_MAIL_NICK;
     public static String MARKET_MINE_NICK;
+    public static String MARKET_OTHER_NICK;
     public static String MARKET_HOME_NICK;
     public static String MARKET_QUICK_NICK;
     public static String MARKET_MAIN_ALL_NICK;

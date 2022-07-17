@@ -1,9 +1,10 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.ViewPage;
+import com.fireflyest.market.core.MarketButton;
+import com.fireflyest.market.core.MarketManager;
+import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
@@ -51,16 +52,16 @@ public class MinePage implements ViewPage {
         this.size = size;
         String guiTitle = title;
 
-        if (target != null)  guiTitle += ("§9" + String.format(Language.MARKET_MINE_NICK, target));    // 副标题
+        if (target != null)  guiTitle += ("§9" + Language.MARKET_MINE_NICK);    // 副标题
         if (page != 0) guiTitle += (" §7#§8" + page);          // 给标题加上页码
 
         // 界面容器
         this.inventory = Bukkit.createInventory(null, size, guiTitle);
 
         if(Config.SQL){
-            sql = MysqlExecuteUtils.query(Sale.class, "owner", target,(page-1)*45, page*45);
+            sql = MysqlExecuteUtils.query(Sale.class, "owner", target,(page-1)*35, page*35);
         }else {
-            sql = SqliteExecuteUtils.query(Sale.class, "owner", target,(page-1)*45, page*45);
+            sql = SqliteExecuteUtils.query(Sale.class, "owner", target,(page-1)*35, page*35);
         }
 
         this.refreshPage();
@@ -72,16 +73,46 @@ public class MinePage implements ViewPage {
         crashMap.putAll(itemMap);
 
         List<Sale> sales = storage.inquiryList(sql, Sale.class);
-        for (int i = 0; i < 45; i++) {
-            if(i < sales.size()){
-                Sale sale = sales.get(i);
-                ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-                ItemUtils.loreSaleItem(item, sale);
-                crashMap.put(i, item);
-            }else {
-                crashMap.put(i, MarketItem.AIR.clone());
+        int i = 0, j = 0, m = (page-1)*35;
+        for (Sale sale : sales) {
+            if (j > 6){ // 到末尾
+                if (i < 4){ // 四行以下就能再加一行，并且转到头
+                    i++;
+                    j = 0;
+                }else {
+                    break;
+                }
             }
+            ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
+            ItemUtils.loreSaleItem(item, sale);
+            crashMap.put(i * 9 + 2 + j, item);
+            m++;
+            j++;
         }
+
+        while (i < 5){
+            for (; j < 7; j++){
+                ItemStack sell;
+                if (m < Config.LIMIT_AMOUNT_NUM){
+                    sell = MarketButton.SELL.clone();
+                }else if (m < Config.LIMIT_AMOUNT_NUM_VIP){
+                    sell = MarketButton.SELL_VIP.clone();
+                }else {
+                    sell = MarketButton.SELL_OP.clone();
+                }
+                crashMap.put(i * 9 + 2 + j, sell);
+                m++;
+            }
+            j = 0;
+            i++;
+        }
+        // 可以下一页
+        if (sales.size() != 0){
+            crashMap.put(53, MarketButton.PAGE_NEXT);
+        }
+        // 添加皮肤
+        ItemStack mine = crashMap.get(0);
+        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(mine, MarketManager.getOfflinePlayer(target));
         return crashMap;
     }
 
@@ -136,16 +167,26 @@ public class MinePage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        itemMap.put(45, MarketItem.MARKET);
-        itemMap.put(46, MarketItem.MAIL);
-        if(Config.PAGE_BUTTON_SPLIT){
-            itemMap.put(48, MarketItem.getPrePageItem(page));
-            itemMap.put(50, MarketItem.getNextPageItem(page));
-        }else {
-            itemMap.put(49, MarketItem.getPageItem(page));
+        for (int i = 1; i < 53; i+=9){
+            itemMap.put(i, MarketButton.BLANK);
         }
-        itemMap.put(52, MarketItem.DATA);
-        itemMap.put(53, MarketItem.CLOSE);
+        ItemStack head = MarketButton.OTHER.clone();
+        org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, target));
+        ItemUtils.setItemValue(head, String.format("other %s", target));
+        itemMap.put(0, head);
+        itemMap.put(9, MarketButton.MARKET);
+        itemMap.put(18, MarketButton.MAIL);
+
+        // 上一页
+        if (page == 1){
+            itemMap.put(52, MarketButton.PAGE_PRE_DISABLE);
+        }else {
+            itemMap.put(52, MarketButton.PAGE_PRE);
+        }
+        // 下一页
+        itemMap.put(53, MarketButton.PAGE_NEXT_DISABLE);
+
+        itemMap.put(45, MarketButton.CLOSE);
     }
 
     @Override
