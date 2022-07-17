@@ -8,11 +8,11 @@ import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.util.ConvertUtils;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -129,8 +129,8 @@ public class AffairPage implements ViewPage {
         }
         // 添加皮肤
         ItemStack head = crashMap.get(8);
-        org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, sale.getOwner()));
-        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(head, MarketManager.getOfflinePlayer(sale.getOwner()));
+        ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, sale.getOwner()));
+        ItemUtils.setSkullOwner(head, MarketManager.getOfflinePlayer(sale.getOwner()));
         ItemUtils.setItemValue(head, String.format("other %s", sale.getOwner()));
 
         return crashMap;

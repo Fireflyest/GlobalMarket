@@ -6,7 +6,6 @@ import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Storage;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.MysqlExecuteUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import com.fireflyest.market.util.SqliteExecuteUtils;
@@ -98,7 +97,7 @@ public class MainPage implements ViewPage {
             if(i < sales.size()){
                 Sale sale = sales.get(i);
                 ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-                ItemUtils.loreSaleItem(item, sale);
+                MarketButton.loreSaleItem(item, sale);
                 crashMap.put(i, item);
             }else {
                 crashMap.put(i, MarketButton.AIR.clone());

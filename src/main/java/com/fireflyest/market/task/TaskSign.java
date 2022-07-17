@@ -5,10 +5,10 @@ import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

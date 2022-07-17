@@ -3,14 +3,15 @@ package com.fireflyest.market.task;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
+import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -131,7 +132,7 @@ public class TaskBuy extends Task{
         this.executeInfo(Language.BUY_ITEM);
 
         // 发送给卖家
-        ItemStack record = ItemUtils.getRecordItem(itemName, buyer, cost, point);
+        ItemStack record = MarketButton.getRecordItem(itemName, buyer, cost, point);
         then.add(new TaskSend("", seller, record, cost, point));
 
         // 更新卖家统计数据

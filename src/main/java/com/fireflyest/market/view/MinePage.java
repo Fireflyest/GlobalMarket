@@ -8,13 +8,13 @@ import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.MysqlExecuteUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import com.fireflyest.market.util.SqliteExecuteUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,7 +84,7 @@ public class MinePage implements ViewPage {
                 }
             }
             ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-            ItemUtils.loreSaleItem(item, sale);
+            MarketButton.loreSaleItem(item, sale);
             crashMap.put(i * 9 + 2 + j, item);
             m++;
             j++;
@@ -171,7 +171,7 @@ public class MinePage implements ViewPage {
             itemMap.put(i, MarketButton.BLANK);
         }
         ItemStack head = MarketButton.OTHER.clone();
-        org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, target));
+        ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, target));
         ItemUtils.setItemValue(head, String.format("other %s", target));
         itemMap.put(0, head);
         itemMap.put(9, MarketButton.MARKET);
