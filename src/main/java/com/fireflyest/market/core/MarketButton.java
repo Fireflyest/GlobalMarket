@@ -254,6 +254,7 @@ public class MarketButton {
 
     public static void loreSaleItem(ItemStack item, Sale sale){
         ItemUtils.addLore(item, "");
+        // info
         if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
         ItemUtils.addLore(item, "§e§m·                         ·");
         ItemUtils.addLore(item, "§f"+(sale.isAuction() ? "[§7拍卖§f]":"[§7直售§f]") + (sale.isPoint() ? "[§6点券§f]" : "") + (sale.isAdmin() ? "[§c无限§f]" : ""));

@@ -124,7 +124,12 @@ public class GlobalMarket extends JavaPlugin{
                     if (delta > limit) {
                         if (sale.isAuction()){
                             // 结束竞拍
-                            MarketTasks.getTaskManager().putTask(new TaskFinish(sale.getOwner(), sale.getId()));
+                            if (sale.getHeat() == 0){
+                                MarketTasks.getTaskManager().putTask(new TaskFinish(sale.getOwner(), sale.getId()));
+                            }else {
+                                sale.setHeat(sale.getHeat() - 1);
+                                data.update(sale);
+                            }
                         }else {
                             // 下架
                             MarketTasks.getTaskManager().putTask(new TaskCancel(sale.getOwner(), sale.getId()));
