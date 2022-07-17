@@ -89,7 +89,7 @@ public class MainPage implements ViewPage {
         } else {
             sales = storage.inquiryList(sqlNormal, Sale.class);
         }
-        // 满了，可以下一页
+        // 可以下一页
         if (sales.size() != 0){
             crashMap.put(46, MarketButton.PAGE_NEXT);
         }
