@@ -6,7 +6,6 @@ import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.MysqlExecuteUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import com.fireflyest.market.util.SqliteExecuteUtils;
@@ -14,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.api.ViewPage;
+import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,7 +76,7 @@ public class OtherPage implements ViewPage {
             if(i < sales.size()){
                 Sale sale = sales.get(i);
                 ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-                ItemUtils.loreSaleItem(item, sale);
+                MarketButton.loreSaleItem(item, sale);
                 crashMap.put(i, item);
             }else {
                 crashMap.put(i, MarketButton.AIR.clone());
@@ -149,10 +149,10 @@ public class OtherPage implements ViewPage {
         // 下一页
         itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
         ItemStack market = MarketButton.MARKET.clone();
-        org.fireflyest.craftgui.util.ItemUtils.addLore(market, "§f前往主市场");
+        ItemUtils.addLore(market, "§f前往主市场");
         itemMap.put(51, market);
         ItemStack send = MarketButton.SEND.clone();
-        org.fireflyest.craftgui.util.ItemUtils.addLore(send, "§f拖住物品点击这里");
+        ItemUtils.addLore(send, "§f拖住物品点击这里");
         itemMap.put(52, send);
         itemMap.put(53, MarketButton.CLOSE);
     }

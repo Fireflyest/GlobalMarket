@@ -7,13 +7,13 @@ import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.MysqlExecuteUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import com.fireflyest.market.util.SqliteExecuteUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,7 +90,7 @@ public class MailPage implements ViewPage {
                 }
             }
             ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
-            ItemUtils.loreMailItem(item, mail);
+            MarketButton.loreMailItem(item, mail);
             crashMap.put(i * 9 + 2 + j, item);
             m++;
             j++;
@@ -117,7 +117,7 @@ public class MailPage implements ViewPage {
                 break;
             }
             ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
-            ItemUtils.loreMailItem(item, mail);
+            MarketButton.loreMailItem(item, mail);
             crashMap.put(k * 9 + 2 + l, item);
             m++;
             l++;
@@ -137,7 +137,7 @@ public class MailPage implements ViewPage {
         ItemStack transport = MarketButton.TRANSPORT.clone();
         int stagnate = (mails.size() - m);
         if (stagnate > 0) {
-            org.fireflyest.craftgui.util.ItemUtils.addLore(transport, String.format("§f库存过多，有§3%s§f件物品滞留", stagnate));
+            ItemUtils.addLore(transport, String.format("§f库存过多，有§3%s§f件物品滞留", stagnate));
         }
         crashMap.put(53, transport);
 
