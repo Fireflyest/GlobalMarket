@@ -1,10 +1,10 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.market.core.MarketButton;
-import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
+import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
+import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
 import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.MysqlExecuteUtils;
@@ -13,6 +13,7 @@ import com.fireflyest.market.util.SqliteExecuteUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.api.ViewPage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,27 +26,24 @@ import java.util.Map;
  * 2022/2/15 0:00
  */
 
-public class MainPage implements ViewPage {
+public class OtherPage implements ViewPage {
 
     private final Map<Integer, ItemStack> itemMap = new HashMap<>();
     private final Map<Integer, ItemStack> crashMap = new HashMap<>();
-
-    private final Storage storage;
 
     private final Inventory inventory;
     private final String title;
     private final String target;
     private final int page;
     private final int size;
-    private final String sqlAll;
-    private final String sqlNormal;
-    private final String sqlPoint;
-    private final String sqlAdmin;
+    private final String sql;
+
+    private final Storage storage;
 
     private ViewPage next = null;
     private ViewPage pre = null;
 
-    public MainPage(String title, String target, int page, int size) {
+    public OtherPage(String title, String target, int page, int size) {
         this.storage = GlobalMarket.getStorage();
         this.title = title;
         this.target = target;
@@ -53,22 +51,16 @@ public class MainPage implements ViewPage {
         this.size = size;
         String guiTitle = title;
 
-        if (target != null)  guiTitle += ("§9" + target);    // 副标题
+        if (target != null)  guiTitle += ("§9" + String.format(Language.MARKET_MINE_NICK, target));    // 副标题
         if (page != 0) guiTitle += (" §7#§8" + page);          // 给标题加上页码
 
         // 界面容器
         this.inventory = Bukkit.createInventory(null, size, guiTitle);
 
         if(Config.SQL){
-            sqlAll = MysqlExecuteUtils.query(Sale.class, (page-1)*45, page*45);
-            sqlNormal = MysqlExecuteUtils.query(Sale.class, " where admin=0 order by id desc",(page-1)*45, page*45);
-            sqlPoint = MysqlExecuteUtils.query(Sale.class, " where point=1 order by id desc", (page-1)*45, page*45);
-            sqlAdmin = MysqlExecuteUtils.query(Sale.class, " where admin=1 order by id desc", (page-1)*45, page*45);
+            sql = MysqlExecuteUtils.query(Sale.class, "owner", target,(page-1)*45, page*45);
         }else {
-            sqlAll = SqliteExecuteUtils.query(Sale.class, (page-1)*45, page*45);
-            sqlNormal = MysqlExecuteUtils.query(Sale.class, " where admin=0 order by id desc",(page-1)*45, page*45);
-            sqlPoint = SqliteExecuteUtils.query(Sale.class, " where point=1 order by id desc", (page-1)*45, page*45);
-            sqlAdmin = SqliteExecuteUtils.query(Sale.class, " where admin=1 order by id desc",  (page-1)*45, page*45);
+            sql = SqliteExecuteUtils.query(Sale.class, "owner", target,(page-1)*45, page*45);
         }
 
         this.refreshPage();
@@ -79,21 +71,7 @@ public class MainPage implements ViewPage {
         crashMap.clear();
         crashMap.putAll(itemMap);
 
-        List<Sale> sales;
-        if (target.equals(MainView.POINT)){
-            sales = storage.inquiryList(sqlPoint, Sale.class);
-        } else if (target.equals(MainView.ADMIN)) {
-            sales = storage.inquiryList(sqlAdmin, Sale.class);
-        } else if (target.equals(MainView.ALL)) {
-            sales = storage.inquiryList(sqlAll, Sale.class);
-        } else {
-            sales = storage.inquiryList(sqlNormal, Sale.class);
-        }
-        // 满了，可以下一页
-        if (sales.size() != 0){
-            crashMap.put(46, MarketButton.PAGE_NEXT);
-        }
-        // 放置商品
+        List<Sale> sales = storage.inquiryList(sql, Sale.class);
         for (int i = 0; i < 45; i++) {
             if(i < sales.size()){
                 Sale sale = sales.get(i);
@@ -101,7 +79,7 @@ public class MainPage implements ViewPage {
                 ItemUtils.loreSaleItem(item, sale);
                 crashMap.put(i, item);
             }else {
-                crashMap.put(i, MarketButton.AIR.clone());
+                crashMap.put(i, MarketItem.AIR.clone());
             }
         }
         return crashMap;
@@ -134,8 +112,8 @@ public class MainPage implements ViewPage {
 
     @Override
     public ViewPage getNext() {
-        if(next == null && page < 30){
-            next = new MainPage(title, target, page+1, size);
+        if(next == null && page < 5){
+            next = new OtherPage(title, target, page+1, size);
             next.setPre(this);
         }
         return next;
@@ -158,19 +136,16 @@ public class MainPage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        // 上一页
-        if (page == 1){
-            itemMap.put(45, MarketButton.PAGE_PRE_DISABLE);
+        itemMap.put(45, MarketItem.MARKET);
+        itemMap.put(46, MarketItem.MAIL);
+        if(Config.PAGE_BUTTON_SPLIT){
+            itemMap.put(48, MarketItem.getPrePageItem(page));
+            itemMap.put(50, MarketItem.getNextPageItem(page));
         }else {
-            itemMap.put(45, MarketButton.PAGE_PRE);
+            itemMap.put(49, MarketItem.getPageItem(page));
         }
-        // 下一页
-        itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
-
-        itemMap.put(50, MarketButton.MINE);
-        itemMap.put(51, MarketButton.MAIL);
-        itemMap.put(52, MarketButton.CLASSIFY);
-        itemMap.put(53, MarketButton.CLOSE);
+        itemMap.put(52, MarketItem.DATA);
+        itemMap.put(53, MarketItem.CLOSE);
     }
 
     @Override

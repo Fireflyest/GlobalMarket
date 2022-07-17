@@ -322,7 +322,7 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION);
                     return;
                 }
-                guide.openView(player, GlobalMarket.MINE_VIEW, var2);
+                guide.openView(player, GlobalMarket.OTHER_VIEW, var2);
                 break;
             }
             default:

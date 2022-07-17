@@ -9,9 +9,11 @@ public class MarketButton {
 
     public static ItemStack AIR;
     public static ItemStack MINE;
-    public static ItemStack HEAD;
     public static ItemStack OTHER;
     public static ItemStack MARKET;
+    public static ItemStack AUCTION;
+    public static ItemStack COLLECT;
+    public static ItemStack TRADE;
     public static ItemStack DATA;
     public static ItemStack STATISTIC;
     public static ItemStack CLASSIFY;
@@ -57,15 +59,23 @@ public class MarketButton {
                 .name("§3§l我的")
                 .command("mine")
                 .build();
-        HEAD = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
-                .command("mine")
-                .build();
         OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
-                .name("§3§l他的")
                 .build();
         MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
                 .name("§3§l市场")
                 .command(" ")
+                .build();
+        AUCTION = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§3§l拍卖行")
+                .command("auction")
+                .build();
+        COLLECT = new ViewItemBuilder(XMaterial.BUCKET.parseMaterial())
+                .name("§3§l收购")
+                .command("collect")
+                .build();
+        TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
+                .name("§3§l以物易物")
+                .command("trade")
                 .build();
         DATA = new ViewItemBuilder(XMaterial.BOOK.parseMaterial())
                 .name("§3§l个人统计")
@@ -106,7 +116,7 @@ public class MarketButton {
                 .name("§c§l关闭")
                 .command("close")
                 .build();
-        DONE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
+        DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
                 .name("§3§l确定")
                 .build();
         BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
@@ -199,7 +209,7 @@ public class MarketButton {
                 .lore("§f知识的力量")
                 .command("classify knowledge")
                 .build();
-        SEARCH  = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
+        SEARCH  = new ViewItemBuilder(XMaterial.COMPASS.parseMaterial())
                 .name("§3§l搜索")
                 .lore("§f按照关键词搜索商品")
                 .command("search")

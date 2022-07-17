@@ -1,7 +1,7 @@
 package com.fireflyest.market.view;
 
+import com.fireflyest.market.core.MarketButton;
 import org.fireflyest.craftgui.api.ViewPage;
-import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
@@ -87,23 +87,28 @@ public class HomePage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        itemMap.put(0, MarketItem.EDIBLE);
-        itemMap.put(1, MarketItem.ITEM);
-        itemMap.put(2, MarketItem.BLOCK);
-        itemMap.put(3, MarketItem.BURNABLE);
-        itemMap.put(4, MarketItem.INTERACTABLE);
-        itemMap.put(5, MarketItem.EQUIP);
-        itemMap.put(6, MarketItem.KNOWLEDGE);
-        itemMap.put(8, MarketItem.SEARCH);
+        itemMap.put(0, MarketButton.EDIBLE);
+        itemMap.put(1, MarketButton.ITEM);
+        itemMap.put(2, MarketButton.BLOCK);
+        itemMap.put(3, MarketButton.BURNABLE);
+        itemMap.put(4, MarketButton.INTERACTABLE);
+        itemMap.put(5, MarketButton.EQUIP);
+        itemMap.put(6, MarketButton.KNOWLEDGE);
+        itemMap.put(8, MarketButton.SEARCH);
 
-        itemMap.put(18, MarketItem.MARKET);
-        itemMap.put(20, MarketItem.POINT);
-        itemMap.put(21, MarketItem.ADMIN);
-        itemMap.put(19, MarketItem.MARKET_ALL);
-        itemMap.put(26, MarketItem.CLOSE);
-        for (int i = 9; i < 18; i++) {
-            itemMap.put(i, MarketItem.BLANK);
+        itemMap.put(18, MarketButton.MARKET);
+        itemMap.put(19, MarketButton.AUCTION);
+        itemMap.put(20, MarketButton.POINT);
+        itemMap.put(21, MarketButton.ADMIN);
+        itemMap.put(22, MarketButton.COLLECT);
+        itemMap.put(23, MarketButton.TRADE);
+        itemMap.put(26, MarketButton.CLOSE);
+        for (int i = 9; i < 17; i++) {
+            itemMap.put(i, MarketButton.BLANK);
         }
+        itemMap.put(7, MarketButton.BLANK);
+        itemMap.put(25, MarketButton.BLANK);
+
     }
 
     @Override
