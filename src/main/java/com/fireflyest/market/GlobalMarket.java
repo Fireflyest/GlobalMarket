@@ -53,6 +53,7 @@ public class GlobalMarket extends JavaPlugin{
     public static final String MAIN_VIEW = "market.main";
     public static final String MAIL_VIEW = "market.mail";
     public static final String MINE_VIEW = "market.mine";
+    public static final String OTHER_VIEW = "market.other";
     public static final String HOME_VIEW = "market.home";
     public static final String CLASSIFY_VIEW = "market.classify";
     public static final String AFFAIR_VIEW = "market.affair";
@@ -196,6 +197,7 @@ public class GlobalMarket extends JavaPlugin{
         guide.addView(MAIN_VIEW, new MainView(Language.PLUGIN_NAME));
         guide.addView(MAIL_VIEW, new MailView(Language.PLUGIN_NAME));
         guide.addView(MINE_VIEW, new MineView(Language.PLUGIN_NAME));
+        guide.addView(OTHER_VIEW, new OtherView(Language.PLUGIN_NAME));
         guide.addView(HOME_VIEW, new HomeView(Language.PLUGIN_NAME));
         guide.addView(CLASSIFY_VIEW, new ClassifyView(Language.PLUGIN_NAME));
         guide.addView(AFFAIR_VIEW, new AffairView(Language.PLUGIN_NAME));
