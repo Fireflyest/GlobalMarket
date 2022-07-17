@@ -1,7 +1,7 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.ViewPage;
-import com.fireflyest.market.core.MarketItem;
+import com.fireflyest.market.core.MarketButton;
+import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ConvertUtils;
 import com.fireflyest.market.util.ItemUtils;
@@ -40,13 +40,13 @@ public class SellPage implements ViewPage {
         this.target = target;
         this.itemStack = itemStack.clone();
         this.maxAmount = itemStack.getAmount();
-        this.done = MarketItem.DONE.clone();
-        this.add1 = MarketItem.ADD_1.clone();
-        this.add10 = MarketItem.ADD_10.clone();
-        this.add100 = MarketItem.ADD_100.clone();
-        this.reduce1 = MarketItem.REDUCE_1.clone();
-        this.reduce10 = MarketItem.REDUCE_10.clone();
-        this.reduce100 = MarketItem.REDUCE_100.clone();
+        this.done = MarketButton.DONE.clone();
+        this.add1 = MarketButton.ADD_1.clone();
+        this.add10 = MarketButton.ADD_10.clone();
+        this.add100 = MarketButton.ADD_100.clone();
+        this.reduce1 = MarketButton.REDUCE_1.clone();
+        this.reduce10 = MarketButton.REDUCE_10.clone();
+        this.reduce100 = MarketButton.REDUCE_100.clone();
 
         String guiTitle = title + "§9" + Language.MARKET_QUICK_NICK;
 
@@ -168,14 +168,12 @@ public class SellPage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        itemMap.put(1, MarketItem.BLANK.clone());
-        itemMap.put(7, MarketItem.BLANK.clone());
-        itemMap.put(10, MarketItem.BLANK.clone());
-        itemMap.put(16, MarketItem.BLANK.clone());
+        itemMap.put(1, MarketButton.BLANK.clone());
+        itemMap.put(7, MarketButton.BLANK.clone());
+        itemMap.put(10, MarketButton.BLANK.clone());
+        itemMap.put(16, MarketButton.BLANK.clone());
 
-        itemMap.put(17, MarketItem.CLOSE.clone());
-
-        itemMap.put(9, MarketItem.AMOUNT.clone());
+        itemMap.put(17, MarketButton.CLOSE.clone());
     }
 
     @Override
