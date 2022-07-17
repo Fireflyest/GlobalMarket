@@ -13,7 +13,7 @@ public class MarketButton {
     public static ItemStack MARKET;
     public static ItemStack AUCTION;
     public static ItemStack COLLECT;
-    public static ItemStack ADVANCE;
+    public static ItemStack RETAIL;
     public static ItemStack TRADE;
     public static ItemStack DATA;
     public static ItemStack STATISTIC;
@@ -78,9 +78,9 @@ public class MarketButton {
                 .name("§3§l收购")
                 .command("collect")
                 .build();
-        ADVANCE = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
-                .name("§3§l预售")
-                .command("advance")
+        RETAIL = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
+                .name("§3§l直售")
+                .command("retail")
                 .build();
         TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
                 .name("§3§l以物易物")
