@@ -2,7 +2,7 @@ package com.fireflyest.market.view;
 
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketItem;
+import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
@@ -79,8 +79,12 @@ public class OtherPage implements ViewPage {
                 ItemUtils.loreSaleItem(item, sale);
                 crashMap.put(i, item);
             }else {
-                crashMap.put(i, MarketItem.AIR.clone());
+                crashMap.put(i, MarketButton.AIR.clone());
             }
+        }
+        // 可以下一页
+        if (sales.size() != 0){
+            crashMap.put(46, MarketButton.PAGE_NEXT);
         }
         return crashMap;
     }
@@ -136,16 +140,21 @@ public class OtherPage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        itemMap.put(45, MarketItem.MARKET);
-        itemMap.put(46, MarketItem.MAIL);
-        if(Config.PAGE_BUTTON_SPLIT){
-            itemMap.put(48, MarketItem.getPrePageItem(page));
-            itemMap.put(50, MarketItem.getNextPageItem(page));
+        // 上一页
+        if (page == 1){
+            itemMap.put(45, MarketButton.PAGE_PRE_DISABLE);
         }else {
-            itemMap.put(49, MarketItem.getPageItem(page));
+            itemMap.put(45, MarketButton.PAGE_PRE);
         }
-        itemMap.put(52, MarketItem.DATA);
-        itemMap.put(53, MarketItem.CLOSE);
+        // 下一页
+        itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
+        ItemStack market = MarketButton.MARKET.clone();
+        org.fireflyest.craftgui.util.ItemUtils.addLore(market, "§f前往主市场");
+        itemMap.put(51, market);
+        ItemStack send = MarketButton.SEND.clone();
+        org.fireflyest.craftgui.util.ItemUtils.addLore(send, "§f拖住物品点击这里");
+        itemMap.put(52, send);
+        itemMap.put(53, MarketButton.CLOSE);
     }
 
     @Override
