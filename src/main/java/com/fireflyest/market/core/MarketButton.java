@@ -13,6 +13,7 @@ public class MarketButton {
     public static ItemStack MARKET;
     public static ItemStack AUCTION;
     public static ItemStack COLLECT;
+    public static ItemStack ADVANCE;
     public static ItemStack TRADE;
     public static ItemStack DATA;
     public static ItemStack STATISTIC;
@@ -26,6 +27,10 @@ public class MarketButton {
     public static ItemStack CLOSE;
     public static ItemStack DONE;
     public static ItemStack BLANK;
+    public static ItemStack SELL;
+    public static ItemStack SELL_VIP;
+    public static ItemStack SELL_OP;
+
     public static ItemStack BUY_1;
     public static ItemStack BUY_8;
     public static ItemStack BUY_ALL;
@@ -72,6 +77,10 @@ public class MarketButton {
         COLLECT = new ViewItemBuilder(XMaterial.BUCKET.parseMaterial())
                 .name("§3§l收购")
                 .command("collect")
+                .build();
+        ADVANCE = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
+                .name("§3§l预售")
+                .command("advance")
                 .build();
         TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
                 .name("§3§l以物易物")
@@ -120,6 +129,18 @@ public class MarketButton {
                 .name("§3§l确定")
                 .build();
         BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
+                .build();
+        SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
+                .name("")
+                .command("sell")
+                .build();
+        SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
+                .name("")
+                .command("sell")
+                .build();
+        SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
+                .name("")
+                .command("sell")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
                 .build();

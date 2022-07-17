@@ -21,8 +21,8 @@ LimitLoreList: 私有,vip,绑定
 
 #数量限制
 LimitAmount: true
-LimitAmountNum: 30
-LimitAmountNumVip: 50
+LimitAmountNum: 21
+LimitAmountNumVip: 49
 
 #上架最大金额(默认99999999)
 MaxPrice: 99999999
