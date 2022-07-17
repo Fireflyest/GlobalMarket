@@ -12,8 +12,8 @@ MarketMailNick: ' %s的邮箱'
 MarketMineNick: ' %s的商店'
 MarketQuickNick: ' 快捷上架'
 MarketMainAllNick: ' 全部交易'
-MarketMainNormalNick: ' 玩家交易'
-MarketMainAdminNick: ' 系统交易'
+MarketMainNormalNick: ' 市场交易'
+MarketMainAdminNick: ' 系统商店'
 MarketMainPointNick: ' 点券交易'
 MailButton: "打开邮箱"
 MailHover: "点击打开邮箱界面"

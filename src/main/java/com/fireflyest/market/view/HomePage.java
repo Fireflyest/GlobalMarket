@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class HomePage implements ViewPage {
 
     private final Map<Integer, ItemStack> itemMap = new HashMap<>();
+    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
 
     private final Inventory inventory;
 
@@ -35,12 +37,19 @@ public class HomePage implements ViewPage {
 
     @Override
     public @NotNull Map<Integer, ItemStack> getItemMap(){
-        return new HashMap<>(itemMap);
+        crashMap.clear();
+        crashMap.putAll(itemMap);
+        return crashMap;
     }
 
     @Override
     public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new HashMap<>(itemMap);
+    }
+
+    @Override
+    public @Nullable ItemStack getItem(int slot) {
+        return crashMap.get(slot);
     }
 
     @Override

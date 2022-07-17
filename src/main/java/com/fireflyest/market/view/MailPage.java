@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class MailPage implements ViewPage {
 
     private final Map<Integer, ItemStack> itemMap = new HashMap<>();
+    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
 
     private final Inventory inventory;
     private final String title;
@@ -66,24 +68,31 @@ public class MailPage implements ViewPage {
 
     @Override
     public @NotNull Map<Integer, ItemStack> getItemMap(){
-        Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
+        crashMap.clear();
+        crashMap.putAll(itemMap);
+
         List<Mail> mails = storage.inquiryList(sql, Mail.class);
         for (int i = 0; i < 45; i++) {
             if(i < mails.size()){
                 Mail mail = mails.get(i);
                 ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
                 ItemUtils.loreMailItem(item, mail);
-                itemStackMap.put(i, item);
+                crashMap.put(i, item);
             }else {
-                itemStackMap.put(i, MarketItem.AIR.clone());
+                crashMap.put(i, MarketItem.AIR.clone());
             }
         }
-        return itemStackMap;
+        return crashMap;
     }
 
     @Override
     public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new HashMap<>(itemMap);
+    }
+
+    @Override
+    public @Nullable ItemStack getItem(int slot) {
+        return crashMap.get(slot);
     }
 
     @Override
