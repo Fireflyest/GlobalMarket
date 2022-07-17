@@ -134,16 +134,6 @@ public class MailPage implements ViewPage {
         org.fireflyest.craftgui.util.ItemUtils.addLore(transport, String.format("§f库存过多，有§3%s§f件物品无法入库", (mails.size() - m)));
         crashMap.put(53, transport);
 
-//        for (i = 0; i < 35; i++) {
-//            if(i < mails.size()){
-//                Mail mail = mails.get(i);
-//                ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
-//                ItemUtils.loreMailItem(item, mail);
-//                crashMap.put(i, item);
-//            }else {
-//                crashMap.put(i, MarketItem.AIR.clone());
-//            }
-//        }
         // 添加皮肤
         ItemStack mine = crashMap.get(0);
         org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(mine, MarketManager.getOfflinePlayer(target));
@@ -205,8 +195,8 @@ public class MailPage implements ViewPage {
         for (int i = 1; i < 53; i+=9){
             itemMap.put(i, MarketButton.BLANK);
         }
-        ItemStack head = MarketButton.HEAD.clone();
-        org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + target);
+        ItemStack head = MarketButton.OTHER.clone();
+        org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_MINE_NICK, target));
         itemMap.put(0, head);
         itemMap.put(9, MarketButton.MARKET);
         itemMap.put(18, MarketButton.SEND);
