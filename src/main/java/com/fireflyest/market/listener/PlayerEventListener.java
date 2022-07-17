@@ -5,6 +5,7 @@ import com.cryptomorin.xseries.XSound;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
 import com.fireflyest.market.task.TaskSignAll;
+import org.bukkit.Bukkit;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.api.ViewPage;
 import org.fireflyest.craftgui.event.ViewClickEvent;
@@ -89,19 +90,12 @@ public class PlayerEventListener implements Listener {
 
         // 翻页
         if (value.contains("page")){
+            if (Config.DEBUG) Bukkit.getLogger().info("action -> " + value);
             player.playSound(player.getLocation(), pageSound, 1F, 1F);
-            if(Config.PAGE_BUTTON_SPLIT){
-                if (value.contains("pre")){
-                    guide.prePage(player);
-                }else if (value.contains("next")){
-                    guide.nextPage(player);
-                }
-            }else {
-                if (event.isLeftClick()){
-                    guide.prePage(player);
-                }else if (event.isRightClick()){
-                    guide.nextPage(player);
-                }
+            if (value.contains("pre")){
+                guide.prePage(player);
+            }else if (value.contains("next")){
+                guide.nextPage(player);
             }
             return;
         }
@@ -155,7 +149,7 @@ public class PlayerEventListener implements Listener {
                 player.playSound(player.getLocation(), cancelSound, 1F, 1F);
             }
         }else { // 执行指令
-            if (Config.DEBUG) System.out.println("command -> " + "market "+ value);
+            if (Config.DEBUG) Bukkit.getLogger().info("command -> " + "market "+ value);
             player.performCommand("market "+ value);
             if (clickSound != null) {
                 player.playSound(player.getLocation(), clickSound, 1F, 1F);

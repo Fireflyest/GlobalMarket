@@ -108,7 +108,7 @@ public class MarketItem {
             ItemUtils.setItemValue(CLASSIFY, "classify");
         }
 
-        Material mail = XMaterial.JUKEBOX.parseMaterial();
+        Material mail = XMaterial.GRINDSTONE.parseMaterial();
         if(null != mail){
             MAIL = new ItemStack(mail);
             ItemUtils.setDisplayName(MAIL, "§3§l邮箱");

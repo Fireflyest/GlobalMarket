@@ -10,7 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SellPage implements ViewPage {
 
     private final Map<Integer, ItemStack> itemMap = new ConcurrentHashMap<>();
+    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
 
     private final Inventory inventory;
     private final String target;
@@ -103,25 +106,31 @@ public class SellPage implements ViewPage {
 
     @Override
     public @NotNull Map<Integer, ItemStack> getItemMap(){
-        Map<Integer, ItemStack> itemStackMap = new ConcurrentHashMap<>(itemMap);
+        crashMap.clear();
+        crashMap.putAll(itemMap);
 
-        itemStackMap.put(0, itemStack);
+        crashMap.put(0, itemStack);
 
-        itemStackMap.put(2, add1);
-        itemStackMap.put(3, add10);
-        itemStackMap.put(4, add100);
-        itemStackMap.put(11, reduce1);
-        itemStackMap.put(12, reduce10);
-        itemStackMap.put(13, reduce100);
+        crashMap.put(2, add1);
+        crashMap.put(3, add10);
+        crashMap.put(4, add100);
+        crashMap.put(11, reduce1);
+        crashMap.put(12, reduce10);
+        crashMap.put(13, reduce100);
 
-        itemStackMap.put(8, done);
+        crashMap.put(8, done);
 
-        return itemStackMap;
+        return crashMap;
     }
 
     @Override
     public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new ConcurrentHashMap<>(itemMap);
+    }
+
+    @Override
+    public @Nullable ItemStack getItem(int slot) {
+        return crashMap.get(slot);
     }
 
     @Override

@@ -9,6 +9,7 @@ public class MarketButton {
 
     public static ItemStack AIR;
     public static ItemStack MINE;
+    public static ItemStack OTHER;
     public static ItemStack MARKET;
     public static ItemStack DATA;
     public static ItemStack STATISTIC;
@@ -49,11 +50,14 @@ public class MarketButton {
 
     static {
         AIR = new ViewItemBuilder(Material.AIR).build();
-        MINE = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
+        MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
                 .name("§3§l我的")
                 .command("mine")
                 .build();
-        MARKET = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
+        OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
+                .name("§3§l他的")
+                .build();
+        MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
                 .name("§3§l市场")
                 .command(" ")
                 .build();
@@ -73,7 +77,7 @@ public class MarketButton {
                 .name("§3§l全部签收")
                 .command("sign")
                 .build();
-        MAIL = new ViewItemBuilder(XMaterial.JUKEBOX.parseMaterial())
+        MAIL = new ViewItemBuilder(XMaterial.GRINDSTONE.parseMaterial())
                 .name("§3§l邮箱")
                 .command("mail")
                 .build();
@@ -110,11 +114,11 @@ public class MarketButton {
                 .build();
         PAGE_NEXT = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
                 .name("§a§l▶")
-                .command("next")
+                .command("page next")
                 .build();
         PAGE_PRE = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
                 .name("§a§l◀")
-                .command("pre")
+                .command("page pre")
                 .build();
         PAGE_NEXT_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
                 .name("§7§l▷")

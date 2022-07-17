@@ -1,8 +1,10 @@
 package com.fireflyest.market.core;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.fireflyest.gui.api.ViewGuide;
-import com.fireflyest.gui.api.ViewPage;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Note;
@@ -14,9 +16,7 @@ import com.fireflyest.market.view.*;
 import com.google.common.base.Joiner;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Fireflyest
@@ -50,6 +50,14 @@ public class MarketManager {
 
     public static void addUser(User user){
         data.insert(user);
+    }
+
+    public static OfflinePlayer getOfflinePlayer(String name){
+        User user = data.queryOne(User.class, "name", name);
+        if (user == null) {
+            return null;
+        }
+        return Bukkit.getOfflinePlayer(UUID.fromString(user.getUuid()));
     }
 
     public static Note getTodayNote(){
@@ -93,11 +101,11 @@ public class MarketManager {
     public static void refreshMarket(Sale sale, List<String> classify){
         for (String viewer : guide.getViewers()) {
             ViewPage page = guide.getUsingPage(viewer);
-            if(page instanceof AffairPage && page.getTarget().equals(String.valueOf(sale.getId()))){
+            if(page instanceof AffairPage && Objects.equals(page.getTarget(), String.valueOf(sale.getId()))){
                 guide.refreshPage(viewer);
             }else if(page instanceof MainPage){
                 guide.refreshPage(viewer);
-            }else if(page instanceof MinePage && page.getTarget().equals(sale.getOwner())){
+            }else if(page instanceof MinePage && Objects.equals(page.getTarget(), sale.getOwner())){
                 guide.refreshPage(viewer);
             }else if(page instanceof ClassifyPage && classify.contains(page.getTarget())){
                 guide.refreshPage(viewer);

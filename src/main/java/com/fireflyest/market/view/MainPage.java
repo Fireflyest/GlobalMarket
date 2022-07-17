@@ -1,6 +1,7 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.ViewPage;
+import com.fireflyest.market.core.MarketButton;
+import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketItem;
@@ -14,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,7 @@ import java.util.Map;
 public class MainPage implements ViewPage {
 
     private final Map<Integer, ItemStack> itemMap = new HashMap<>();
+    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
 
     private final Storage storage;
 
@@ -74,7 +77,9 @@ public class MainPage implements ViewPage {
 
     @Override
     public @NotNull Map<Integer, ItemStack> getItemMap(){
-        Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
+        crashMap.clear();
+        crashMap.putAll(itemMap);
+
         List<Sale> sales;
         if (target.equals(MainView.POINT)){
             sales = storage.inquiryList(sqlPoint, Sale.class);
@@ -85,22 +90,32 @@ public class MainPage implements ViewPage {
         } else {
             sales = storage.inquiryList(sqlNormal, Sale.class);
         }
+        // 满了，可以下一页
+        if (sales.size() != 0){
+            crashMap.put(46, MarketButton.PAGE_NEXT);
+        }
+        // 放置商品
         for (int i = 0; i < 45; i++) {
             if(i < sales.size()){
                 Sale sale = sales.get(i);
                 ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
                 ItemUtils.loreSaleItem(item, sale);
-                itemStackMap.put(i, item);
+                crashMap.put(i, item);
             }else {
-                itemStackMap.put(i, MarketItem.AIR.clone());
+                crashMap.put(i, MarketItem.AIR.clone());
             }
         }
-        return itemStackMap;
+        return crashMap;
     }
 
     @Override
     public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new HashMap<>(itemMap);
+    }
+
+    @Override
+    public @Nullable ItemStack getItem(int slot) {
+        return crashMap.get(slot);
     }
 
     @Override
@@ -144,20 +159,20 @@ public class MainPage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        itemMap.put(45, MarketItem.MINE);
-        itemMap.put(46, MarketItem.MAIL);
-        if(Config.PAGE_BUTTON_SPLIT){
-            itemMap.put(48, MarketItem.getPrePageItem(page));
-            itemMap.put(50, MarketItem.getNextPageItem(page));
+        // 上一页
+        if (page == 1){
+            itemMap.put(45, MarketButton.PAGE_PRE_DISABLE);
         }else {
-            itemMap.put(49, MarketItem.getPageItem(page));
+            itemMap.put(45, MarketButton.PAGE_PRE);
         }
-        if(Config.ITEM_CLASSIFY){
-            itemMap.put(52, MarketItem.CLASSIFY);
-        }else{
-            itemMap.put(52, MarketItem.STATISTIC);
-        }
-        itemMap.put(53, MarketItem.CLOSE);
+        // 下一页
+        itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
+
+        itemMap.put(49, MarketButton.MINE);
+        itemMap.put(50, MarketButton.MAIL);
+        itemMap.put(51, MarketButton.CLASSIFY);
+        itemMap.put(52, MarketButton.STATISTIC);
+        itemMap.put(53, MarketButton.CLOSE);
     }
 
     @Override
