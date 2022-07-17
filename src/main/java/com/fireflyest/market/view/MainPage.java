@@ -102,7 +102,7 @@ public class MainPage implements ViewPage {
                 ItemUtils.loreSaleItem(item, sale);
                 crashMap.put(i, item);
             }else {
-                crashMap.put(i, MarketItem.AIR.clone());
+                crashMap.put(i, MarketButton.AIR.clone());
             }
         }
         return crashMap;
@@ -168,10 +168,9 @@ public class MainPage implements ViewPage {
         // 下一页
         itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
 
-        itemMap.put(49, MarketButton.MINE);
-        itemMap.put(50, MarketButton.MAIL);
-        itemMap.put(51, MarketButton.CLASSIFY);
-        itemMap.put(52, MarketButton.STATISTIC);
+        itemMap.put(50, MarketButton.MINE);
+        itemMap.put(51, MarketButton.MAIL);
+        itemMap.put(52, MarketButton.CLASSIFY);
         itemMap.put(53, MarketButton.CLOSE);
     }
 
