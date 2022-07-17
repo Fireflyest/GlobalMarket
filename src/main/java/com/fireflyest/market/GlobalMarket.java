@@ -44,6 +44,8 @@ public class GlobalMarket extends JavaPlugin{
     点券支持
     邮箱交费
     价格统计
+    交易
+    收购
     界面交互
     排行榜
      */
