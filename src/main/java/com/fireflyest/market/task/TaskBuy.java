@@ -52,7 +52,10 @@ public class TaskBuy extends Task{
         // 正常情况下不能购买自己出售的东西
         if(seller.equals(buyer)){
             this.executeInfo(Language.BUY_ERROR);
-            if (!Config.DEBUG) return then;
+            if (!Config.DEBUG) {
+                guide.refreshPage(playerName);
+                return then;
+            }
         }
         // 解析物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
@@ -71,6 +74,7 @@ public class TaskBuy extends Task{
         // 判断钱是否足够
         if (!economy.has(player, cost)){
             this.executeInfo(String.format(Language.NOT_ENOUGH_MONEY, "你"));
+            guide.refreshPage(playerName);
             return then;
         }
         // 获取出售者的玩家信息
@@ -94,6 +98,7 @@ public class TaskBuy extends Task{
                 int saveAmount = item.getAmount() - num;
                 if(saveAmount < 0){
                     this.executeInfo(Language.NOT_ENOUGH_ITEM);
+                    guide.refreshPage(playerName);
                     return then;
                 }
 
@@ -133,7 +138,7 @@ public class TaskBuy extends Task{
         user.setMoney(user.getMoney() + cost);
         data.update(user);
 
-        guide.refreshPage(player.getName());
+        guide.refreshPage(playerName);
 
         return then;
     }

@@ -111,8 +111,8 @@ public class MinePage implements ViewPage {
             crashMap.put(53, MarketButton.PAGE_NEXT);
         }
         // 添加皮肤
-        ItemStack mine = crashMap.get(0);
-        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(mine, MarketManager.getOfflinePlayer(target));
+        ItemStack head = crashMap.get(0);
+        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(head, MarketManager.getOfflinePlayer(target));
         return crashMap;
     }
 

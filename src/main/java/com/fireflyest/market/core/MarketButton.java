@@ -35,9 +35,9 @@ public class MarketButton {
     public static ItemStack BUY_8;
     public static ItemStack BUY_ALL;
     public static ItemStack CANCEL;
-    public static ItemStack BID_1;
     public static ItemStack BID_10;
     public static ItemStack BID_100;
+    public static ItemStack BID_1000;
     public static ItemStack PAGE_PRE;
     public static ItemStack PAGE_NEXT;
     public static ItemStack PAGE_PRE_DISABLE;
@@ -111,7 +111,7 @@ public class MarketButton {
                 .command("mail")
                 .build();
         TRANSPORT = new ViewItemBuilder(XMaterial.CHEST_MINECART.parseMaterial())
-                .name("§3§l运输中")
+                .name("§3§l运输车")
                 .build();
         POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
                 .name("§3§l点券市场")
@@ -150,11 +150,11 @@ public class MarketButton {
                 .build();
         CANCEL = new ViewItemBuilder(XMaterial.HOPPER.parseMaterial())
                 .build();
-        BID_1 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
+        BID_10 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
                 .build();
-        BID_10 = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+        BID_100 = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
                 .build();
-        BID_100 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
+        BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
                 .build();
         PAGE_NEXT = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
                 .name("§a§l▶")

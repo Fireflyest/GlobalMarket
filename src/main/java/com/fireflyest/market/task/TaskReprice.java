@@ -38,12 +38,14 @@ public class TaskReprice extends Task{
 
         if(price < 0 || price > Config.MAX_PRICE){
             this.executeInfo(Language.COMMAND_ERROR);
+            guide.refreshPage(playerName);
             return then;
         }
 
         sale.setCost(price);
 
         MarketManager.updateSale(sale);
+        guide.refreshPage(playerName);
         return then;
     }
 }
