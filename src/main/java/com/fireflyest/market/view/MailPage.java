@@ -1,7 +1,6 @@
 package com.fireflyest.market.view;
 
 import com.fireflyest.market.core.MarketButton;
-import com.fireflyest.market.core.MarketManager;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Mail;
@@ -76,13 +75,18 @@ public class MailPage implements ViewPage {
         List<Mail> mails = storage.inquiryList(sql, Mail.class);
         List<Mail> items = mails.stream().filter(mail -> !mail.isRecord()).collect(Collectors.toList());
         List<Mail> records = mails.stream().filter(Mail::isRecord).collect(Collectors.toList());
-        int i = 0, j = 0, k, l = 0, m = 0;
+        int i = 0, j = 0, k, l = 0, m = 0, limit = 2;
+        if (records.size() == 0) {
+            limit = 4;
+        }else if (records.size() < 14){
+            limit = 3;
+        }
         for (Mail mail : items) {
             if (j > 6){ // 到末尾
-                if (i < 2){ // 两行以下就能再加一行，并且转到头
+                if (i < limit){ // 限制行以下就能再加一行，并且转到头
                     i++;
                     j = 0;
-                }else { // 已经三行了，退出
+                }else { // 超过行了，退出
                     break;
                 }
             }
@@ -130,13 +134,13 @@ public class MailPage implements ViewPage {
             k++;
         }
 
+        // 滞留数量
         ItemStack transport = MarketButton.TRANSPORT.clone();
-        org.fireflyest.craftgui.util.ItemUtils.addLore(transport, String.format("§f库存过多，有§3%s§f件物品无法入库", (mails.size() - m)));
+        int stagnate = (mails.size() - m);
+        if (stagnate > 0) {
+            org.fireflyest.craftgui.util.ItemUtils.addLore(transport, String.format("§f库存过多，有§3%s§f件物品滞留", stagnate));
+        }
         crashMap.put(53, transport);
-
-        // 添加皮肤
-        ItemStack mine = crashMap.get(0);
-        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(mine, MarketManager.getOfflinePlayer(target));
 
         return crashMap;
     }
@@ -195,13 +199,9 @@ public class MailPage implements ViewPage {
         for (int i = 1; i < 53; i+=9){
             itemMap.put(i, MarketButton.BLANK);
         }
-        ItemStack head = MarketButton.OTHER.clone();
-        org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_MINE_NICK, target));
-        ItemUtils.setItemValue(head, String.format("other %s", target));
-        itemMap.put(0, head);
+        itemMap.put(0, MarketButton.MINE);
         itemMap.put(9, MarketButton.MARKET);
-        itemMap.put(18, MarketButton.SEND);
-        itemMap.put(27, MarketButton.SIGN);
+        itemMap.put(18, MarketButton.SIGN);
         itemMap.put(45, MarketButton.CLOSE);
     }
 

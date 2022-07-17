@@ -109,14 +109,11 @@ public class MarketCommand implements CommandExecutor {
                 sender.sendMessage(Language.RELOADED);
                 break;
             case "test":
-//                if (player != null && player.isOp()){
-//                    for (int i = 0; i < 60; i++) {
-//                        player.performCommand(String.format( "market sell %d 1", i));
-//                    }
-//                }
-
-//                ItemStack itemHand = player.getInventory().getItemInMainHand();
-//                ItemUtils.setItemValue(itemHand, "test");
+                if (player != null && player.isOp()){
+                    for (int i = 0; i < 60; i++) {
+                        player.performCommand(String.format( "market sell %d 1", i));
+                    }
+                }
                 break;
             case "mine":{
                 if(player == null) {

@@ -90,6 +90,9 @@ public class PlayerEventListener implements Listener {
 
         // 翻页
         if (value.contains("page")){
+            // 不用刷新
+            event.setRefresh(false);
+
             if (Config.DEBUG) Bukkit.getLogger().info("action -> " + value);
             player.playSound(player.getLocation(), pageSound, 1F, 1F);
             if (value.contains("pre")){
@@ -145,15 +148,17 @@ public class PlayerEventListener implements Listener {
         // 其他按钮点击，执行指令
         if (event.isShiftClick()){ // 下架
             if (value.contains("affair")){
+                event.setRefresh(false);
+
                 taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(value.split(" ")[1])));
                 player.playSound(player.getLocation(), cancelSound, 1F, 1F);
             }
         }else { // 执行指令
+            event.setRefresh(false);
+
             if (Config.DEBUG) Bukkit.getLogger().info("command -> " + "market "+ value);
             player.performCommand("market "+ value);
-            if (clickSound != null) {
-                player.playSound(player.getLocation(), clickSound, 1F, 1F);
-            }
+            if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
         }
     }
 

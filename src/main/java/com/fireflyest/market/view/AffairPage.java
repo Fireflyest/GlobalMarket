@@ -196,9 +196,7 @@ public class AffairPage implements ViewPage {
         itemMap.put(26, MarketItem.MARKET.clone());
 
         sale = MarketManager.getSale(ConvertUtils.parseInt(target));
-        if (sale == null) {
-            return;
-        }
+        if (sale == null) return;
         ItemStack other = new ItemStack(MarketItem.MINE.getType());
         ItemUtils.setDisplayName(other, "§e§l个人商店");
         ItemUtils.addLore(other, "§f点击查看该商品主人的商店");
