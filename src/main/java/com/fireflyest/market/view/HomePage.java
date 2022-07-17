@@ -97,12 +97,13 @@ public class HomePage implements ViewPage {
         itemMap.put(8, MarketButton.SEARCH);
 
         itemMap.put(18, MarketButton.MARKET);
-        itemMap.put(19, MarketButton.AUCTION);
-        itemMap.put(20, MarketButton.POINT);
-        itemMap.put(21, MarketButton.ADMIN);
-        itemMap.put(22, MarketButton.COLLECT);
-        itemMap.put(23, MarketButton.TRADE);
-        itemMap.put(24, MarketButton.ADVANCE);
+        itemMap.put(19, MarketButton.RETAIL);
+        itemMap.put(20, MarketButton.AUCTION);
+        itemMap.put(21, MarketButton.POINT);
+        itemMap.put(22, MarketButton.ADMIN);
+        itemMap.put(23, MarketButton.COLLECT);
+        itemMap.put(24, MarketButton.TRADE);
+
         itemMap.put(26, MarketButton.CLOSE);
         for (int i = 9; i < 17; i++) {
             itemMap.put(i, MarketButton.BLANK);
