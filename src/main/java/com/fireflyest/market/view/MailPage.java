@@ -197,6 +197,7 @@ public class MailPage implements ViewPage {
         }
         ItemStack head = MarketButton.OTHER.clone();
         org.fireflyest.craftgui.util.ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_MINE_NICK, target));
+        ItemUtils.setItemValue(head, String.format("other %s", target));
         itemMap.put(0, head);
         itemMap.put(9, MarketButton.MARKET);
         itemMap.put(18, MarketButton.SEND);
