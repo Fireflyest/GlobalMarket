@@ -55,8 +55,6 @@ public class TaskCancel extends Task{
         // 发送邮件
         then.add(new TaskSend("", sale.getOwner(), item));
 
-        if (player != null) guide.refreshPage(player.getName());
-
         return then;
     }
 }

@@ -59,9 +59,9 @@ public class MailPage implements ViewPage {
         this.inventory = Bukkit.createInventory(null, size, guiTitle);
 
         if(Config.SQL){
-            sql = MysqlExecuteUtils.query(Mail.class, "owner", target);
+            sql = MysqlExecuteUtils.query(Mail.class, "owner", target, 0, 512);
         }else {
-            sql = SqliteExecuteUtils.query(Mail.class, "owner", target);
+            sql = SqliteExecuteUtils.query(Mail.class, "owner", target, 0, 512);
         }
 
         this.refreshPage();

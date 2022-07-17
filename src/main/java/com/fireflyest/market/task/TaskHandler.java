@@ -13,7 +13,7 @@ public class TaskHandler {
 
     private final BukkitTask bukkitTask;
 
-    private final ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(256);
+    private final ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(512);
 
     public TaskHandler(@NotNull JavaPlugin plugin){
         this.enable = true;
