@@ -316,6 +316,7 @@ public class MarketCommand implements CommandExecutor {
             case "data":
                 int target = ConvertUtils.parseInt(var2);
                 MarketStatistic.statisticSale(player, target);
+                break;
             case "other":{
                 if(!player.hasPermission("market.other")){
                     player.sendMessage(Language.NOT_PERMISSION);

@@ -9,13 +9,16 @@ public class MarketButton {
 
     public static ItemStack AIR;
     public static ItemStack MINE;
+    public static ItemStack HEAD;
     public static ItemStack OTHER;
     public static ItemStack MARKET;
     public static ItemStack DATA;
     public static ItemStack STATISTIC;
     public static ItemStack CLASSIFY;
+    public static ItemStack SEND;
     public static ItemStack SIGN;
     public static ItemStack MAIL;
+    public static ItemStack TRANSPORT;
     public static ItemStack POINT;
     public static ItemStack ADMIN;
     public static ItemStack CLOSE;
@@ -54,6 +57,9 @@ public class MarketButton {
                 .name("§3§l我的")
                 .command("mine")
                 .build();
+        HEAD = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
+                .command("mine")
+                .build();
         OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
                 .name("§3§l他的")
                 .build();
@@ -77,9 +83,16 @@ public class MarketButton {
                 .name("§3§l全部签收")
                 .command("sign")
                 .build();
+        SEND = new ViewItemBuilder(XMaterial.END_PORTAL_FRAME.parseMaterial())
+                .name("§3§l邮寄")
+                .command("send")
+                .build();
         MAIL = new ViewItemBuilder(XMaterial.GRINDSTONE.parseMaterial())
                 .name("§3§l邮箱")
                 .command("mail")
+                .build();
+        TRANSPORT = new ViewItemBuilder(XMaterial.CHEST_MINECART.parseMaterial())
+                .name("§3§l运输中")
                 .build();
         POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
                 .name("§3§l点券市场")
