@@ -4,7 +4,6 @@ import com.fireflyest.market.core.MarketButton;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Mail;
-import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.Storage;
@@ -98,7 +97,7 @@ public class MailPage implements ViewPage {
         }
         if (j != 0){ // 如果这行有东西但是没有满
             for (; j < 7; j++){ // 最后一行没有放满，填充空气
-                crashMap.put(i * 9 + 2 + j, MarketItem.AIR.clone());
+                crashMap.put(i * 9 + 2 + j, MarketButton.AIR.clone());
             }
         }
         if (m == 0){ // 如果没有物品直接首行开始
@@ -128,7 +127,7 @@ public class MailPage implements ViewPage {
                 if (k == 5 && l > 4){
                     break;
                 }
-                crashMap.put(k * 9 + 2 + l, MarketItem.AIR.clone());
+                crashMap.put(k * 9 + 2 + l, MarketButton.AIR.clone());
             }
             l = 0;
             k++;
