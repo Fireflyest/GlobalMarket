@@ -17,11 +17,8 @@ public class TaskSignAll extends Task{
 
     @Override
     public @NotNull List<Task> execute() {
-        int max = 36;
-        if (player != null){
-            max = 36 - player.getInventory().getContents().length;
-        }
-        data.query(Mail.class, "owner", playerName, 0, max).forEach(mail -> then.add(new TaskSign(playerName, mail.getId())));
+        data.query(Mail.class, "owner", playerName).forEach(mail -> then.add(new TaskSign(playerName, mail.getId())));
+        if (then.size() == 0) guide.refreshPage(playerName);
         return then;
     }
 }

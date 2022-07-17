@@ -1,9 +1,14 @@
 package com.fireflyest.market.core;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.fireflyest.market.bean.Mail;
+import com.fireflyest.market.bean.Sale;
+import com.fireflyest.market.util.TimeUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.item.ViewItemBuilder;
+import org.fireflyest.craftgui.util.ItemUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class MarketButton {
 
@@ -240,6 +245,38 @@ public class MarketButton {
     private MarketButton(){
     }
 
+    public static void loreMailItem(ItemStack item, Mail mail){
+        ItemUtils.addLore(item, "");
+        ItemUtils.addLore(item, "§e§m·                         ·");
+        ItemUtils.addLore(item, "§f" + TimeUtils.getTime(mail.getAppear()));
+        ItemUtils.setItemValue(item, "sign " + mail.getId());
+    }
 
+    public static void loreSaleItem(ItemStack item, Sale sale){
+        ItemUtils.addLore(item, "");
+        if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
+        ItemUtils.addLore(item, "§e§m·                         ·");
+        ItemUtils.addLore(item, "§f"+(sale.isAuction() ? "[§7拍卖§f]":"[§7直售§f]") + (sale.isPoint() ? "[§6点券§f]" : "") + (sale.isAdmin() ? "[§c无限§f]" : ""));
+        ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
+        if(sale.getPrice() != sale.getCost()){
+            ItemUtils.addLore(item, "§3§l原价§7: §f§m"+sale.getPrice());
+            ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost());
+        }else {
+            ItemUtils.addLore(item, "§3§l价格§7: §f"+sale.getPrice());
+        }
+        ItemUtils.setItemValue(item, "affair " + sale.getId());
+    }
+
+    @NotNull
+    public static ItemStack getRecordItem(String name, String buyer, double cost, boolean point){
+        return new ViewItemBuilder(XMaterial.WRITTEN_BOOK.parseMaterial())
+                .name("§e§l交易记录")
+                .command("record")
+                .lore("§3§l出售的物品§7: " + name)
+                .lore("§3§l买家§7: " + buyer)
+                .lore("§3§l花费§7: " + cost)
+                .lore("§3§l是否点券出售§7: " + (point ? "是" : "否"))
+                .build();
+    }
 
 }

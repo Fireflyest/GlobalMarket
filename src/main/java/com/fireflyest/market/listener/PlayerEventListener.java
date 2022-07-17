@@ -16,7 +16,6 @@ import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ChatUtils;
 import com.fireflyest.market.util.ConvertUtils;
-import com.fireflyest.market.util.ItemUtils;
 import com.fireflyest.market.util.TimeUtils;
 import com.fireflyest.market.view.SellPage;
 import org.bukkit.Sound;
@@ -29,6 +28,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.util.ItemUtils;
 
 public class PlayerEventListener implements Listener {
 
@@ -171,7 +171,6 @@ public class PlayerEventListener implements Listener {
             ItemStack item = event.getItem();
             if(item != null && item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial())) {
                 String value = ItemUtils.getItemValue(item);
-                player.openBook(item);
                 if(value.equals("record"))item.setAmount(0);
             }
         }
