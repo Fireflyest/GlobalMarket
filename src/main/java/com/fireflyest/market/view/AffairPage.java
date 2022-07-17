@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ import java.util.Map;
 public class AffairPage implements ViewPage {
 
     private final Map<Integer, ItemStack> itemMap = new HashMap<>();
+    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
 
     private final Inventory inventory;
     private final String target;
@@ -47,18 +49,20 @@ public class AffairPage implements ViewPage {
 
     @Override
     public @NotNull Map<Integer, ItemStack> getItemMap(){
-        Map<Integer, ItemStack> itemStackMap = new HashMap<>(itemMap);
+        crashMap.clear();
+        crashMap.putAll(itemMap);
+
         sale = MarketManager.getSale(ConvertUtils.parseInt(target));
         if (sale == null) {
-            itemStackMap.put(10, new ItemStack(Material.AIR));
-            itemStackMap.put(13, new ItemStack(Material.AIR));
-            itemStackMap.put(14, new ItemStack(Material.AIR));
-            itemStackMap.put(15, new ItemStack(Material.AIR));
-            return itemStackMap;
+            crashMap.put(10, new ItemStack(Material.AIR));
+            crashMap.put(13, new ItemStack(Material.AIR));
+            crashMap.put(14, new ItemStack(Material.AIR));
+            crashMap.put(15, new ItemStack(Material.AIR));
+            return crashMap;
         }
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
         // 展示物品
-        itemStackMap.put(10, item);
+        crashMap.put(10, item);
 
         // 下架按钮
         ItemStack cancel;
@@ -74,7 +78,7 @@ public class AffairPage implements ViewPage {
             ItemUtils.addLore(cancel, "§3§l上架于§7:§f "+ TimeUtils.getTime(sale.getAppear()));
             ItemUtils.setItemValue(cancel, "cancel "+sale.getId());
         }
-        itemStackMap.put(17, cancel);
+        crashMap.put(17, cancel);
 
         // 添加交易操作按钮
         if(sale.isAuction()){
@@ -84,21 +88,21 @@ public class AffairPage implements ViewPage {
             ItemUtils.addLore(add1, "§3§l增加§7:§f 10");
             ItemUtils.addLore(add1, "§3§l当前§7:§f "+sale.getCost());
             ItemUtils.setItemValue(add1, "add "+sale.getId()+" 10");
-            itemStackMap.put(13, add1);
+            crashMap.put(13, add1);
 
             ItemStack add2 = MarketItem.ADD_INGOT.clone();
             ItemUtils.setDisplayName(add2, "§e§l加价");
             ItemUtils.addLore(add2, "§3§l增加§7:§f 100");
             ItemUtils.addLore(add2, "§3§l当前§7:§f "+sale.getCost());
             ItemUtils.setItemValue(add2, "add "+sale.getId()+" 100");
-            itemStackMap.put(14, add2);
+            crashMap.put(14, add2);
 
             ItemStack add3 = MarketItem.ADD_BLOCK.clone();
             ItemUtils.setDisplayName(add3, "§e§l加价");
             ItemUtils.addLore(add3, "§3§l增加§7:§f 1000");
             ItemUtils.addLore(add3, "§3§l当前§7:§f "+sale.getCost());
             ItemUtils.setItemValue(add3, "add "+sale.getId()+" 1000");
-            itemStackMap.put(15, add3);
+            crashMap.put(15, add3);
         }else {
             int amount = item.getAmount();
             if (Config.BUY_PARTIAL){
@@ -108,36 +112,41 @@ public class AffairPage implements ViewPage {
                 ItemUtils.addLore(buy1, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount));
                 ItemUtils.setItemValue(buy1, "buy "+sale.getId()+" 1");
                 buy1.setAmount(1);
-                itemStackMap.put(13, buy1);
+                crashMap.put(13, buy1);
                 if(amount > 8){
                     ItemStack buy2 = MarketItem.BUY_8.clone();
                     ItemUtils.setDisplayName(buy2, "§e§l部分");
                     ItemUtils.addLore(buy2, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount * 8));
                     ItemUtils.setItemValue(buy2, "buy "+sale.getId()+" 8");
                     buy2.setAmount(8);
-                    itemStackMap.put(14, buy2);
+                    crashMap.put(14, buy2);
                 }
                 ItemStack buy3 = MarketItem.BUY_ALL.clone();
                 ItemUtils.setDisplayName(buy3, "§e§l一口价");
                 ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
                 ItemUtils.setItemValue(buy3, "buy "+sale.getId());
                 buy3.setAmount(amount);
-                itemStackMap.put(15, buy3);
+                crashMap.put(15, buy3);
             }else {
                 ItemStack buy3 = MarketItem.BUY_ALL.clone();
                 ItemUtils.setDisplayName(buy3, "§e§l一口价");
                 ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()));
                 ItemUtils.setItemValue(buy3, "buy "+sale.getId());
                 buy3.setAmount(amount);
-                itemStackMap.put(14, buy3);
+                crashMap.put(14, buy3);
             }
         }
-        return itemStackMap;
+        return crashMap;
     }
 
     @Override
     public @NotNull Map<Integer, ItemStack> getButtonMap() {
         return new HashMap<>(itemMap);
+    }
+
+    @Override
+    public @Nullable ItemStack getItem(int slot) {
+        return crashMap.get(slot);
     }
 
     @Override

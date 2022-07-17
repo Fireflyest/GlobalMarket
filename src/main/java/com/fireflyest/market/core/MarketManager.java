@@ -1,6 +1,8 @@
 package com.fireflyest.market.core;
 
 import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
@@ -14,10 +16,7 @@ import com.fireflyest.market.view.*;
 import com.google.common.base.Joiner;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Fireflyest
@@ -51,6 +50,14 @@ public class MarketManager {
 
     public static void addUser(User user){
         data.insert(user);
+    }
+
+    public static OfflinePlayer getOfflinePlayer(String name){
+        User user = data.queryOne(User.class, "name", name);
+        if (user == null) {
+            return null;
+        }
+        return Bukkit.getOfflinePlayer(UUID.fromString(user.getUuid()));
     }
 
     public static Note getTodayNote(){
