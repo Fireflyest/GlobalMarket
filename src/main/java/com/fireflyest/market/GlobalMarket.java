@@ -46,6 +46,8 @@ public class GlobalMarket extends JavaPlugin{
     价格统计
     交易
     收购
+    自定义按钮
+    快捷上架
     界面交互
     排行榜
      */
