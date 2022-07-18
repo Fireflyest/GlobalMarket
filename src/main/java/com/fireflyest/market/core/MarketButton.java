@@ -148,18 +148,24 @@ public class MarketButton {
                 .command("sell")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l单件")
                 .build();
         BUY_8 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l部分")
                 .build();
         BUY_ALL = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l一口价")
                 .build();
         CANCEL = new ViewItemBuilder(XMaterial.HOPPER.parseMaterial())
                 .build();
         BID_10 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
+                .name("§e§l叫价")
                 .build();
         BID_100 = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§e§l叫价")
                 .build();
         BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
+                .name("§e§l叫价")
                 .build();
         PAGE_NEXT = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
                 .name("§a§l▶")
