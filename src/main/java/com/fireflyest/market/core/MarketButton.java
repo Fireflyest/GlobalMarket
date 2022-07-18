@@ -257,14 +257,27 @@ public class MarketButton {
         // info
         if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
         ItemUtils.addLore(item, "§e§m·                         ·");
-        ItemUtils.addLore(item, "§f"+(sale.isAuction() ? "[§7拍卖§f]":"[§7直售§f]") + (sale.isPoint() ? "[§6点券§f]" : "") + (sale.isAdmin() ? "[§c无限§f]" : ""));
-        ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
-        if(sale.getPrice() != sale.getCost()){
-            ItemUtils.addLore(item, "§3§l原价§7: §f§m"+sale.getPrice());
-            ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost());
-        }else {
-            ItemUtils.addLore(item, "§3§l价格§7: §f"+sale.getPrice());
+
+        if (sale.getPrice() == -1){ // 预售物品
+            ItemUtils.addLore(item, "§f[§9预售§f]");
+
+            ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
+        }else { // 在售物品
+            ItemUtils.addLore(item, "§f"
+                    + (sale.isAuction() ? "[§7拍卖§f]":"[§7直售§f]")
+                    + (sale.isPoint() ? "[§6点券§f]" : "")
+                    + (sale.isAdmin() ? "[§c无限§f]" : ""));
+
+            ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
+
+            if(sale.getPrice() != sale.getCost()){
+                ItemUtils.addLore(item, "§3§l原价§7: §f§m"+sale.getPrice());
+                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost());
+            }else {
+                ItemUtils.addLore(item, "§3§l价格§7: §f"+sale.getPrice());
+            }
         }
+
         ItemUtils.setItemValue(item, "affair " + sale.getId());
     }
 
