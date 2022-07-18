@@ -1,6 +1,7 @@
 # GlobalMarket - Free Trade Market
 ##### 一个基于游戏箱子界面的玩家交易市场插件
-在多人游戏中，玩家进行物品交易时常需要考虑各种问题，这里提供一个平台使玩家能够使用游戏币进行商品交易。
+在Minecraft多人游戏中，玩家在进行物品交易时，需要考虑他们在交易过程中的信任问题。
+本插件提供一个实时交易平台使玩家能够使用游戏币进行商品交易。
 
 插件基于[Spigot](https://www.spigotmc.org/)核心开发，使用[ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)插件发送虚拟物品，将玩家交易商品展示在游戏容器中。
 玩家可在容器中点击物品进行对商品的查看、购买等操作。
@@ -9,7 +10,7 @@
 ![市场图片](https://attachment.mcbbs.net/data/myattachment/forum/202007/31/182901yqwqs5dz50qwdxw6.png.thumb.jpg)
 
 ## 目录
-* 安装插件
+* [安装插件](#安装插件)
 * 功能和使用方法
   * 出售物品
   * 打折或修改价格
