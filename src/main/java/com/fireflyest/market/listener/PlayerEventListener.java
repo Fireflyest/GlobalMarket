@@ -1,6 +1,5 @@
 package com.fireflyest.market.listener;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
@@ -166,14 +165,14 @@ public class PlayerEventListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
 
-        // 打开交易记录
-        if(event.hasItem()){
-            ItemStack item = event.getItem();
-            if(item != null && item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial())) {
-                String value = ItemUtils.getItemValue(item);
-                if(value.equals("record"))item.setAmount(0);
-            }
-        }
+//        // 打开交易记录
+//        if(event.hasItem()){
+//            ItemStack item = event.getItem();
+//            if(item != null && item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial())) {
+//                String value = ItemUtils.getItemValue(item);
+//                if(value.equals("record"))item.setAmount(0);
+//            }
+//        }
 
         // 右键牌子
         if(event.hasBlock()){
