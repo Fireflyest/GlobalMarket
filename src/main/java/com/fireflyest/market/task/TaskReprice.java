@@ -31,6 +31,10 @@ public class TaskReprice extends Task{
             this.executeInfo(Language.DATA_NULL);
             return then;
         }
+        if (sale.getPrice() == -1){
+            this.executeInfo(Language.NOT_SELLING);
+            return then;
+        }
         if(!sale.getOwner().equalsIgnoreCase(playerName)){
             this.executeInfo(Language.BUY_ERROR);
             return then;
