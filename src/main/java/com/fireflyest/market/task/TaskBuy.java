@@ -43,6 +43,10 @@ public class TaskBuy extends Task{
             this.executeInfo(Language.DATA_NULL);
             return then;
         }
+        if (sale.getPrice() == -1){
+            this.executeInfo(Language.NOT_SELLING);
+            return then;
+        }
         String buyer = playerName;
         String seller = sale.getOwner();
         // 拍卖的物品不能直接购买

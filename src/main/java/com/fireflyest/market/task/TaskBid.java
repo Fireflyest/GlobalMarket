@@ -35,6 +35,10 @@ public class TaskBid extends Task{
             this.executeInfo(Language.DATA_NULL);
             return then;
         }
+        if (sale.getPrice() == -1){
+            this.executeInfo(Language.NOT_SELLING);
+            return then;
+        }
         if(!sale.isAuction()){
             this.executeInfo(Language.TYPE_ERROR);
             return then;
