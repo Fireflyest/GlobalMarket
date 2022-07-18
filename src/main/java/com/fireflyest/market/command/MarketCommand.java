@@ -187,10 +187,6 @@ public class MarketCommand implements CommandExecutor {
                     sender.sendMessage(Language.PLAYER_COMMAND);
                     return;
                 }
-                if(!Config.ITEM_CLASSIFY){
-                    player.sendMessage(Language.COMMAND_ERROR);
-                    return;
-                }
                 guide.openView(player, GlobalMarket.HOME_VIEW, HomeView.NORMAL);
                 break;
             }
@@ -272,10 +268,6 @@ public class MarketCommand implements CommandExecutor {
                 }
                 break;
             case "classify":{
-                if(!Config.ITEM_CLASSIFY){
-                    player.sendMessage(Language.COMMAND_ERROR);
-                    return;
-                }
                 guide.openView(player, GlobalMarket.CLASSIFY_VIEW, var2);
                 break;
             }

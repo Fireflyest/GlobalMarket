@@ -1,4 +1,4 @@
-Version: '3.0.0'
+Version: '${project.version}'
 PlayerCommand: '§c该指令只能由玩家使用!'
 Reloading: '§f配置文件重载中...'
 Reloaded: '§f配置文件重载完成!'
