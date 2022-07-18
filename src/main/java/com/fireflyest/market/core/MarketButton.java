@@ -262,9 +262,21 @@ public class MarketButton {
             ItemUtils.addLore(item, "§f[§9预售§f]");
 
             ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
-        }else { // 在售物品
-            ItemUtils.addLore(item, "§f"
-                    + (sale.isAuction() ? "[§7拍卖§f]":"[§7直售§f]")
+        }else if (sale.isAuction()){ // 拍卖物品
+            ItemUtils.addLore(item, "§f[§7拍卖§f]"
+                    + (sale.isPoint() ? "[§6点券§f]" : ""));
+
+            ItemUtils.addLore(item, "§3§l拍卖人§7: §f"+sale.getOwner());
+
+            if(sale.getPrice() != sale.getCost()){
+                ItemUtils.addLore(item, "§3§l起拍价§7: §f§m"+sale.getPrice());
+                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost());
+                ItemUtils.addLore(item, String.format("§f第§3%s§f次叫价", 3 - sale.getHeat()));
+            }else {
+                ItemUtils.addLore(item, "§3§l起拍价§7: §f"+sale.getPrice());
+            }
+        }else {
+            ItemUtils.addLore(item, "§f[§7直售§f]"
                     + (sale.isPoint() ? "[§6点券§f]" : "")
                     + (sale.isAdmin() ? "[§c无限§f]" : ""));
 

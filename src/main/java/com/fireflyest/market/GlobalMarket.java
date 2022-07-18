@@ -2,7 +2,7 @@ package com.fireflyest.market;
 
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
-import com.fireflyest.market.task.TaskFinish;
+import com.fireflyest.market.task.TaskHeat;
 import org.fireflyest.craftgui.api.ViewGuide;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Note;
@@ -33,6 +33,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Fireflyest
@@ -113,33 +115,27 @@ public class GlobalMarket extends JavaPlugin{
 
         // 若有自动下架，建立监控线程
         if(Config.LIMIT_TIME == -1) return;
+        final long limit = (long) Config.LIMIT_TIME * 1000 * 60 * 60 * 24;
         // 20mc刻为一秒
         marketTask = new BukkitRunnable() {
             @Override
             public void run() {
-                long limit = (long) Config.LIMIT_TIME * 1000 * 60 * 60 * 24;
                 long now = TimeUtils.getDate();
                 // 找出非系统商店的判断是否超时
-                MarketManager.getSales().stream().filter(sale -> !sale.isAdmin()).forEach(sale -> {
-                    long delta = now - sale.getAppear();
-                    // 判断是否超时
-                    if (delta > limit) {
-                        if (sale.isAuction()){
-                            // 结束竞拍
-                            if (sale.getHeat() == 0){
-                                MarketTasks.getTaskManager().putTask(new TaskFinish(sale.getOwner(), sale.getId()));
-                            }else {
-                                sale.setHeat(sale.getHeat() - 1);
-                                data.update(sale);
-                            }
-                        }else {
-                            // 下架
-                            MarketTasks.getTaskManager().putTask(new TaskCancel(sale.getOwner(), sale.getId()));
-                        }
+                List<Sale> saleList = MarketManager.getSales().stream().filter(sale -> !sale.isAdmin()).collect(Collectors.toList());
+                for (Sale sale : saleList) {
+                    if (sale.isAuction()){
+                        // 每半小时商品热度降1
+                        MarketTasks.getTaskManager().putTask(new TaskHeat(sale.getOwner(), sale.getId(), -1));
+                    }else {
+                        // 超过限时，商品下架
+                        long delta = now - sale.getAppear();
+                        if (delta > limit) MarketTasks.getTaskManager().putTask(new TaskCancel(sale.getOwner(), sale.getId()));
                     }
-                });
+
+                }
             }
-        }.runTaskTimerAsynchronously(this, 20 * 10, 20 * 60 * 30); // 每三十分钟
+        }.runTaskTimerAsynchronously(this, 20 * 60, 20 * 60 * 30); // 每三十分钟
     }
 
     @Override

@@ -48,6 +48,8 @@ public class TaskBid extends Task{
         }
         // 拍卖加价
         double cost = sale.getCost()+num;
+        // TODO: 2022/7/18 叫价消息
+
         if(economy.has(player, cost)){
             sale.setCost(cost);
             // heat每半小时降一次，到0的时候完成竞拍

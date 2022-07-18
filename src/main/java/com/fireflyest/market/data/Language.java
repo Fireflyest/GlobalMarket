@@ -21,6 +21,9 @@ public class Language {
     public static String CANCEL_ERROR;
     public static String AUCTION_ITEM;
     public static String AUCTION_FINISH;
+    public static String AUCTION_STEP;
+    public static String AUCTION_BID;
+    public static String AUCTION_FLOW;
     public static String COMMAND_ERROR;
     public static String AFFAIR_FINISH;
     public static  String FULL_MAIL;
