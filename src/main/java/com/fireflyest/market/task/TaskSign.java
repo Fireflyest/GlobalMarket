@@ -53,12 +53,12 @@ public class TaskSign extends Task{
         ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
         if(!"null".equals(mail.getNbt()) && !"".equals(mail.getNbt())) ItemUtils.setItemValue(item, mail.getNbt());
 
-        player.getInventory().addItem(item);
         if (mail.isRecord()){
             economy.depositPlayer(player, mail.getPrice());
             player.sendMessage(String.format(Language.AFFAIR_FINISH, mail.getPrice()));
         }else {
             player.sendMessage(Language.SIGN_FINISH);
+            player.getInventory().addItem(item);
         }
 
         MarketManager.removeMail(mail);
