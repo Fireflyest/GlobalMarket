@@ -54,8 +54,14 @@ public class TaskFinish extends Task{
         double cost = sale.getCost();
         boolean point = sale.isPoint();
 
-        if(!sale.isAuction() || "".equalsIgnoreCase(buyer)){
-            // 如果不是拍卖的物品 或者无人拍
+        if(!sale.isAuction()){
+            // 如果不是拍卖的物品
+            then.add(new TaskCancel(playerName, id));
+            return then;
+        }
+        if("".equalsIgnoreCase(buyer)){
+            // 无人拍
+            this.executeInfo(Language.AUCTION_FLOW.replace("%id%", String.valueOf(sale.getId())));
             then.add(new TaskCancel(playerName, id));
             return then;
         }
@@ -86,6 +92,7 @@ public class TaskFinish extends Task{
 
         // 发送给卖家
         ItemStack record = MarketButton.getRecordItem(itemName, buyer, cost, point);
+        this.executeInfo(Language.AUCTION_FINISH.replace("%id%", String.valueOf(sale.getId())));
         then.add(new TaskSend("", seller, record, cost, point));
 
         // 更新卖家统计数据
