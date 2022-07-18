@@ -19,8 +19,6 @@ public class Config {
     public static boolean LIMIT_MAIL;
     public static int LIMIT_MAIL_NUM;
     public static String  LIMIT_LORE_LIST;
-    public static boolean ITEM_CLASSIFY;
-    public static boolean  PAGE_BUTTON_SPLIT;
     public static boolean TAX;
     public static long TAX_THRESHOLD;
     public static double TAX_RATE;

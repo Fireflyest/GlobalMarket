@@ -1,4 +1,4 @@
-Version: '3.0.0'
+Version: '${project.version}'
 
 # 反馈bug联系QQ: 746969484
 Debug: false
@@ -11,9 +11,6 @@ Password: '123456'
 
 #物品几天后自动下架，请输入正整数，输入-1为关闭限制
 LimitTime: 7
-
-#启用分类
-ItemClassify: true
 
 #上架限制
 LimitLore: false
@@ -33,9 +30,6 @@ SellBroadcast: true
 #邮箱限制
 LimitMail: true
 LimitMailNum: 50
-
-# 换页按钮是否分离
-PageButtonSplit: false
 
 # 上架税，防止玩家随意高价上架物品，不退还
 Tax: true
