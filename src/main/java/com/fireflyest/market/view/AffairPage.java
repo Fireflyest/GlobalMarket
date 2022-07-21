@@ -123,6 +123,8 @@ public class AffairPage implements ViewPage {
                     crashMap.put(14, buy3);
                 }
             }
+        }else {
+            crashMap.put(14, MarketButton.WAIT);
         }
 
         // 添加皮肤

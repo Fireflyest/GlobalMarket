@@ -2,10 +2,12 @@ package com.fireflyest.market.listener;
 
 import com.cryptomorin.xseries.XSound;
 import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.task.TaskBuy;
 import com.fireflyest.market.task.TaskCancel;
 import com.fireflyest.market.task.TaskSell;
 import com.fireflyest.market.task.TaskSignAll;
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.ClickType;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.event.ViewClickEvent;
 import com.fireflyest.market.GlobalMarket;
@@ -109,7 +111,7 @@ public class PlayerEventListener implements Listener {
                 taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(value.split(" ")[1])));
                 player.playSound(player.getLocation(), cancelSound, 1F, 1F);
             }
-        }else { // 执行指令
+        } else { // 执行指令
             event.setRefresh(false);
 
             if (Config.DEBUG) Bukkit.getLogger().info("command -> " + "market "+ value);
