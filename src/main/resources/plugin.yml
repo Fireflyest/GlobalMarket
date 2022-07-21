@@ -14,6 +14,7 @@ commands:
   market:
     description: 打开市场
     usage: /market <help>
+    aliases: gm
 
 permissions:
   market.statistic:

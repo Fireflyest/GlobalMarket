@@ -32,6 +32,7 @@ public class MarketTab implements TabCompleter {
         user.add("buy");
         user.add("add");
         user.add("affair");
+        user.add("edit");
         user.add("sign");
         user.add("finish");
         user.add("other");
@@ -51,7 +52,7 @@ public class MarketTab implements TabCompleter {
     }
 
     public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args){
-        if(command.getName().equalsIgnoreCase("market")){
+        if(command.getName().equalsIgnoreCase("market") || command.getName().equalsIgnoreCase("gm")){
             List<String> tab = new ArrayList<>();
             if(args.length == 1){
                 for(String sub : sender.isOp()?op:user){
@@ -62,24 +63,19 @@ public class MarketTab implements TabCompleter {
                     tab.add("[price]");
                 }else if("data".equalsIgnoreCase(args[0])){
                     tab.add("<id>");
-                }else if("admin".equalsIgnoreCase(args[0])){
-                    tab.add("[id]");
-                }else if("buy".equalsIgnoreCase(args[0])){
-                    tab.add("[id]");
-                }else if("add".equalsIgnoreCase(args[0])){
-                    tab.add("[id]");
-                }else if("affair".equalsIgnoreCase(args[0])){
+                }else if("admin".equalsIgnoreCase(args[0])
+                        || "buy".equalsIgnoreCase(args[0])
+                        || "add".equalsIgnoreCase(args[0])
+                        || "affair".equalsIgnoreCase(args[0])
+                        || "finish".equalsIgnoreCase(args[0])
+                        || "edit".equalsIgnoreCase(args[0])
+                        || "discount".equalsIgnoreCase(args[0])
+                        || "desc".equalsIgnoreCase(args[0])){
                     tab.add("[id]");
                 }else if("sign".equalsIgnoreCase(args[0])){
                     tab.add("<id>");
-                }else if("finish".equalsIgnoreCase(args[0])){
-                    tab.add("[id]");
-                }else if("desc".equalsIgnoreCase(args[0])){
-                    tab.add("[id]");
                 }else if("search".equalsIgnoreCase(args[0])){
                     tab.add("[something]");
-                }else if("discount".equalsIgnoreCase(args[0])){
-                    tab.add("[id]");
                 }else if("classify".equalsIgnoreCase(args[0])){
                     for(String type : classify){
                         if(type.contains(args[1]))tab.add(type);

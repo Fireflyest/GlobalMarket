@@ -21,7 +21,7 @@ MailButton: "打开邮箱"
 MailHover: "点击打开邮箱界面"
 MailFromBuy: "商品购买"
 MailFromAuction: "拍卖行"
-MailFromSale: "商品下架"
+MailFromCancel: "商品下架"
 
 CommandError: '§6✦§f输入指令有误或该功能未开启(§3输入/market help 查看帮助§f)'
 NotEnoughMoney: '§6✦§f%s没有足够的麦块币'
