@@ -174,8 +174,9 @@ public class MinePage implements ViewPage {
         ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, target));
         ItemUtils.setItemValue(head, String.format("other %s", target));
         itemMap.put(0, head);
-        itemMap.put(9, MarketButton.MARKET);
-        itemMap.put(18, MarketButton.MAIL);
+        itemMap.put(9, MarketButton.MAIL);
+        itemMap.put(18, MarketButton.DATA);
+        itemMap.put(27, MarketButton.MARKET);
 
         // 上一页
         if (page == 1){
