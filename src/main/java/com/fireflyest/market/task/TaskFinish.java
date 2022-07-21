@@ -85,7 +85,7 @@ public class TaskFinish extends Task{
         // 发送物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
         if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
-        then.add(new TaskSend("", buyer, item));
+        then.add(new TaskSend(Language.MAIL_FROM_AUCTION, buyer, item));
 
         // 更新市场
         MarketManager.removeSale(sale);

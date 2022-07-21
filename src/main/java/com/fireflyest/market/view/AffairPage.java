@@ -58,6 +58,7 @@ public class AffairPage implements ViewPage {
             crashMap.put(13, new ItemStack(Material.AIR));
             crashMap.put(14, new ItemStack(Material.AIR));
             crashMap.put(15, new ItemStack(Material.AIR));
+            crashMap.put(8, new ItemStack(Material.AIR));
             return crashMap;
         }
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
