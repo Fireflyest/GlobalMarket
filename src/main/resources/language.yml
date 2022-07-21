@@ -11,12 +11,11 @@ MarketHomeNick: '导航界面'
 MarketMailNick: '%s的邮箱'
 MarketOtherNick: '%s的商店'
 MarketMineNick: '个人页面'
-MarketQuickNick: '快捷上架'
-MarketMainAllNick: '全部交易'
 MarketMainNormalNick: '市场交易'
 MarketMainAdminNick: '系统商店'
 MarketMainPointNick: '点券交易'
 MarketMainAuctionNick: '拍卖行'
+MarketMainRetailNick: '零售店'
 MailButton: "打开邮箱"
 MailHover: "点击打开邮箱界面"
 MailFromBuy: "商品购买"

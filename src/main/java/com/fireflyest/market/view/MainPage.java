@@ -36,8 +36,9 @@ public class MainPage implements ViewPage {
     private final String target;
     private final int page;
     private final int size;
-    private final String sqlAll;
     private final String sqlNormal;
+    private final String sqlRetail;
+    private final String sqlAuction;
     private final String sqlPoint;
     private final String sqlAdmin;
 
@@ -59,13 +60,17 @@ public class MainPage implements ViewPage {
         this.inventory = Bukkit.createInventory(null, size, guiTitle);
 
         if(Config.SQL){
-            sqlAll = MysqlExecuteUtils.query(Sale.class, (page-1)*45, page*45);
+            // sqlAll = MysqlExecuteUtils.query(Sale.class, (page-1)*45, page*45);
             sqlNormal = MysqlExecuteUtils.query(Sale.class, " where admin=0 order by id desc",(page-1)*45, page*45);
+            sqlRetail = MysqlExecuteUtils.query(Sale.class, " where auction=0 order by id desc",(page-1)*45, page*45);
+            sqlAuction = MysqlExecuteUtils.query(Sale.class, " where auction=1 order by id desc",(page-1)*45, page*45);
             sqlPoint = MysqlExecuteUtils.query(Sale.class, " where point=1 order by id desc", (page-1)*45, page*45);
             sqlAdmin = MysqlExecuteUtils.query(Sale.class, " where admin=1 order by id desc", (page-1)*45, page*45);
         }else {
-            sqlAll = SqliteExecuteUtils.query(Sale.class, (page-1)*45, page*45);
-            sqlNormal = MysqlExecuteUtils.query(Sale.class, " where admin=0 order by id desc",(page-1)*45, page*45);
+            // sqlAll = SqliteExecuteUtils.query(Sale.class, (page-1)*45, page*45);
+            sqlNormal = SqliteExecuteUtils.query(Sale.class, " where admin=0 order by id desc",(page-1)*45, page*45);
+            sqlRetail = SqliteExecuteUtils.query(Sale.class, " where auction=0 order by id desc",(page-1)*45, page*45);
+            sqlAuction = SqliteExecuteUtils.query(Sale.class, " where auction=1 order by id desc",(page-1)*45, page*45);
             sqlPoint = SqliteExecuteUtils.query(Sale.class, " where point=1 order by id desc", (page-1)*45, page*45);
             sqlAdmin = SqliteExecuteUtils.query(Sale.class, " where admin=1 order by id desc",  (page-1)*45, page*45);
         }
@@ -83,8 +88,10 @@ public class MainPage implements ViewPage {
             sales = storage.inquiryList(sqlPoint, Sale.class);
         } else if (target.equals(MainView.ADMIN)) {
             sales = storage.inquiryList(sqlAdmin, Sale.class);
-        } else if (target.equals(MainView.ALL)) {
-            sales = storage.inquiryList(sqlAll, Sale.class);
+        } else if (target.equals(MainView.RETAIL)) {
+            sales = storage.inquiryList(sqlRetail, Sale.class);
+        } else if (target.equals(MainView.AUCTION)) {
+            sales = storage.inquiryList(sqlAuction, Sale.class);
         } else {
             sales = storage.inquiryList(sqlNormal, Sale.class);
         }
