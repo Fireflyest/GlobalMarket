@@ -63,7 +63,7 @@ public class GlobalMarket extends JavaPlugin{
     public static final String HOME_VIEW = "market.home";
     public static final String CLASSIFY_VIEW = "market.classify";
     public static final String AFFAIR_VIEW = "market.affair";
-    public static final String SELL_VIEW = "market.sell";
+    public static final String SALE_VIEW = "market.sale";
     public static final String SEARCH_VIEW = "market.search";
 
     private static JavaPlugin plugin;
@@ -206,7 +206,7 @@ public class GlobalMarket extends JavaPlugin{
         guide.addView(HOME_VIEW, new HomeView(Language.PLUGIN_NAME));
         guide.addView(CLASSIFY_VIEW, new ClassifyView(Language.PLUGIN_NAME));
         guide.addView(AFFAIR_VIEW, new AffairView(Language.PLUGIN_NAME));
-        guide.addView(SELL_VIEW, new SellView(Language.PLUGIN_NAME));
+        guide.addView(SALE_VIEW, new SaleView(Language.PLUGIN_NAME));
         guide.addView(SEARCH_VIEW, new SearchView(Language.PLUGIN_NAME));
     }
 

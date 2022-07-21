@@ -39,7 +39,9 @@ public class AffairPage implements ViewPage {
         this.sale = MarketManager.getSale(ConvertUtils.parseInt(target));
 
         String guiTitle = title;
-        guiTitle += ("§9" + sale.getNickname() + " §7#§8" + sale.getId());
+        if (sale != null) {
+            guiTitle += ("§9" + sale.getNickname() + " §7#§8" + sale.getId());
+        }
 
         // 界面容器
         this.inventory = Bukkit.createInventory(null, 27, guiTitle);
@@ -61,8 +63,8 @@ public class AffairPage implements ViewPage {
             crashMap.put(8, new ItemStack(Material.AIR));
             return crashMap;
         }
-        ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
         // 展示物品
+        ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
         crashMap.put(10, item);
 
         if (sale.getPrice() != -1){

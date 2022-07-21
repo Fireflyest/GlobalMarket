@@ -47,7 +47,7 @@ public class MarketCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, String label, String[] args) {
-        if(!label.equalsIgnoreCase("market")) return true;
+        if(!label.equalsIgnoreCase("market") && !label.equalsIgnoreCase("gm")) return true;
 
         switch (args.length) {
             case 1:
@@ -222,7 +222,8 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_ENOUGH_ITEM);
                     return;
                 }
-                guide.openView(player, GlobalMarket.SELL_VIEW, player.getName());
+                taskManager.putTask(new TaskSell(player.getName(), false, false, -1, player.getInventory().getItemInMainHand().clone()));
+                player.getInventory().getItemInMainHand().setAmount(0);
                 break;
             default:
                 sender.sendMessage(Language.COMMAND_ERROR);
@@ -273,6 +274,10 @@ public class MarketCommand implements CommandExecutor {
             }
             case "affair":{
                 guide.openView(player, GlobalMarket.AFFAIR_VIEW, var2);
+                break;
+            }
+            case "edit":{
+                guide.openView(player, GlobalMarket.SALE_VIEW, var2);
                 break;
             }
             case "buy":
