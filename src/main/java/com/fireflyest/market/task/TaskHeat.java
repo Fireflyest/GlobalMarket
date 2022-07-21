@@ -2,6 +2,7 @@ package com.fireflyest.market.task;
 
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketManager;
+import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,6 +17,9 @@ public class TaskHeat extends Task{
         super(playerName);
         this.id = id;
         this.num = num;
+
+        this.type = MarketTasks.SALE_TASK;
+
     }
 
     @Override

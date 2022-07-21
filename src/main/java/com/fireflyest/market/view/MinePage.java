@@ -84,7 +84,7 @@ public class MinePage implements ViewPage {
                 }
             }
             ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-            MarketButton.loreSaleItem(item, sale);
+            MarketButton.loreSaleEditItem(item, sale);
             crashMap.put(i * 9 + 2 + j, item);
             m++;
             j++;

@@ -4,29 +4,26 @@ import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.util.ConvertUtils;
 import org.fireflyest.craftgui.api.View;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class SellView implements View<SellPage> {
+public class SaleView implements View<SalePage> {
 
-    private final Map<String, SellPage> pageMap = new HashMap<>();
+    private final Map<String, SalePage> pageMap = new HashMap<>();
     private final String title;
 
-    public SellView(String title) {
+    public SaleView(String title) {
         this.title = title;
     }
 
     @Override
-    public SellPage getFirstPage(String target){
+    public SalePage getFirstPage(String target){
         if (! pageMap.containsKey(target)){
             Sale sale = MarketManager.getSale(ConvertUtils.parseInt(target));
             if (sale != null) {
-                pageMap.put(target, new SellPage(title, target));
+                pageMap.put(target, new SalePage(title, target));
             }
         }
         return pageMap.get(target);

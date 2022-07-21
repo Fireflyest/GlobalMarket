@@ -28,9 +28,24 @@ public class MarketButton {
     public static ItemStack MAIL;
     public static ItemStack TRANSPORT;
     public static ItemStack POINT;
+    public static ItemStack COIN;
     public static ItemStack ADMIN;
     public static ItemStack CLOSE;
     public static ItemStack DONE;
+    public static ItemStack EDIT;
+    public static ItemStack CLEAR;
+    public static ItemStack UNDO;
+    public static ItemStack DOT;
+    public static ItemStack NUM0;
+    public static ItemStack NUM1;
+    public static ItemStack NUM2;
+    public static ItemStack NUM3;
+    public static ItemStack NUM4;
+    public static ItemStack NUM5;
+    public static ItemStack NUM6;
+    public static ItemStack NUM7;
+    public static ItemStack NUM8;
+    public static ItemStack NUM9;
     public static ItemStack BLANK;
     public static ItemStack SELL;
     public static ItemStack SELL_VIP;
@@ -76,14 +91,14 @@ public class MarketButton {
                 .command(" ")
                 .build();
         AUCTION = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
-                .name("§3§l拍卖行")
+                .name("§3§l拍卖")
                 .command("auction")
                 .build();
         COLLECT = new ViewItemBuilder(XMaterial.BUCKET.parseMaterial())
                 .name("§3§l收购")
                 .command("collect")
                 .build();
-        RETAIL = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
+        RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
                 .name("§3§l直售")
                 .command("retail")
                 .build();
@@ -119,11 +134,14 @@ public class MarketButton {
                 .name("§3§l运输车")
                 .build();
         POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
-                .name("§3§l点券市场")
+                .name("§3§l点券")
                 .command("point")
                 .build();
+        COIN = new ViewItemBuilder(XMaterial.SUNFLOWER.parseMaterial())
+                .name("§3§l金币")
+                .build();
         ADMIN = new ViewItemBuilder(XMaterial.ITEM_FRAME.parseMaterial())
-                .name("§3§l系统商城")
+                .name("§3§l官方")
                 .command("admin")
                 .build();
         CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
@@ -131,20 +149,63 @@ public class MarketButton {
                 .command("close")
                 .build();
         DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
-                .name("§3§l确定")
+                .name("§3§l发售")
+                .build();
+        EDIT = new ViewItemBuilder(XMaterial.NAME_TAG.parseMaterial())
+                .name("§3§l修改")
+                .build();
+        CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
+                .name("§3§l消除")
+                .build();
+        UNDO = new ViewItemBuilder(XMaterial.STRING.parseMaterial())
+                .name("§3§l还原")
+                .build();
+        DOT = new ViewItemBuilder(XMaterial.STONE_BUTTON.parseMaterial())
+                .name("§3§l.")
+                .build();
+        NUM0 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l0")
+                .build();
+        NUM1 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l1")
+                .build();
+        NUM2 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l2")
+                .build();
+        NUM3 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l3")
+                .build();
+        NUM4 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l4")
+                .build();
+        NUM5 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l5")
+                .build();
+        NUM6 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l6")
+                .build();
+        NUM7 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l7")
+                .build();
+        NUM8 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l8")
+                .build();
+        NUM9 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l9")
                 .build();
         BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
+                .name(" ")
                 .build();
         SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
-                .name("货架")
+                .name("§f货架")
                 .command("sell")
                 .build();
         SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
-                .name("货架")
+                .name("§f货架")
                 .command("sell")
                 .build();
         SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
-                .name("货架")
+                .name("§f货架")
                 .command("sell")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
@@ -157,6 +218,7 @@ public class MarketButton {
                 .name("§e§l一口价")
                 .build();
         CANCEL = new ViewItemBuilder(XMaterial.HOPPER.parseMaterial())
+                .name("§3§l下架")
                 .build();
         BID_10 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
                 .name("§e§l叫价")
@@ -181,27 +243,27 @@ public class MarketButton {
         PAGE_PRE_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
                 .name("§7§l◁")
                 .build();
-        ADD_1 = new ViewItemBuilder(XMaterial.YELLOW_DYE.parseMaterial())
+        ADD_1 = new ViewItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseMaterial())
                 .name("§e§l+1")
                 .command("add1")
                 .build();
-        ADD_10 = new ViewItemBuilder(XMaterial.YELLOW_DYE.parseMaterial())
+        ADD_10 = new ViewItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseMaterial())
                 .name("§e§l+10")
                 .command("add10")
                 .build();
-        ADD_100 = new ViewItemBuilder(XMaterial.YELLOW_DYE.parseMaterial())
+        ADD_100 = new ViewItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseMaterial())
                 .name("§e§l+100")
                 .command("add100")
                 .build();
-        REDUCE_1 = new ViewItemBuilder(XMaterial.RED_DYE.parseMaterial())
+        REDUCE_1 = new ViewItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial())
                 .name("§c§l-1")
                 .command("reduce1")
                 .build();
-        REDUCE_10 = new ViewItemBuilder(XMaterial.RED_DYE.parseMaterial())
+        REDUCE_10 = new ViewItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial())
                 .name("§c§l-10")
                 .command("reduce10")
                 .build();
-        REDUCE_100 = new ViewItemBuilder(XMaterial.RED_DYE.parseMaterial())
+        REDUCE_100 = new ViewItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial())
                 .name("§c§l-100")
                 .command("reduce100")
                 .build();
@@ -260,6 +322,16 @@ public class MarketButton {
     }
 
     public static void loreSaleItem(ItemStack item, Sale sale){
+        loreSale(item, sale);
+        ItemUtils.setItemValue(item, "affair " + sale.getId());
+    }
+
+    public static void loreSaleEditItem(ItemStack item, Sale sale){
+        loreSale(item, sale);
+        ItemUtils.setItemValue(item, "edit " + sale.getId());
+    }
+
+    public static void loreSale(ItemStack item, Sale sale){
         ItemUtils.addLore(item, "");
         // info
         if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
@@ -278,7 +350,7 @@ public class MarketButton {
             if(sale.getPrice() != sale.getCost()){
                 ItemUtils.addLore(item, "§3§l起拍价§7: §f§m"+sale.getPrice());
                 ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost());
-                ItemUtils.addLore(item, String.format("§f第§3%s§f次叫价", 3 - sale.getHeat()));
+                ItemUtils.addLore(item, String.format("§7第§3%s§7次叫价", 3 - sale.getHeat()));
             }else {
                 ItemUtils.addLore(item, "§3§l起拍价§7: §f"+sale.getPrice());
             }
@@ -297,8 +369,6 @@ public class MarketButton {
                 ItemUtils.addLore(item, "§3§l价格§7: §f"+sale.getPrice());
             }
         }
-
-        ItemUtils.setItemValue(item, "affair " + sale.getId());
     }
 
     @NotNull

@@ -101,51 +101,9 @@ public class PlayerEventListener implements Listener {
             return;
         }
 
-        // 快捷上架
-//        ViewPage page = guide.getUsingPage(player.getName());
-//        if (page instanceof SellPage){
-//            SellPage sellPage = ((SellPage) page);
-//            switch (value) {
-//                case "add1" : {
-//                    sellPage.addPrice(1);
-//                    return;
-//                }
-//                case "add10" : {
-//                    sellPage.addPrice(10);
-//                    return;
-//                }
-//                case "add100" : {
-//                    sellPage.addPrice(100);
-//                    return;
-//                }
-//                case "reduce1" : {
-//                    sellPage.reducePrice(1);
-//                    return;
-//                }
-//                case "reduce10" : {
-//                    sellPage.reducePrice(10);
-//                    return;
-//                }
-//                case "reduce100" : {
-//                    sellPage.reducePrice(100);
-//                    return;
-//                }
-//                case "amount" : {
-//                    if (event.isLeftClick()) {
-//                        sellPage.raise(1);
-//                    } else if (event.isRightClick()) {
-//                        sellPage.lessen(1);
-//                    }
-//                    return;
-//                }
-//                default : {
-//                }
-//            }
-//        }
-
         // 其他按钮点击，执行指令
         if (event.isShiftClick()){ // 下架
-            if (value.contains("affair")){
+            if (value.contains("affair") || value.contains("edit")){
                 event.setRefresh(false);
 
                 taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(value.split(" ")[1])));
