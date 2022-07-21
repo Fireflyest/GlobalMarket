@@ -31,7 +31,7 @@ public class MarketStatistic {
     }
 
     /**
-     * 某个商品的信息
+     * 某个商品的信息/market data id
      * @param player 指令使用者
      * @param id 商品id
      */
