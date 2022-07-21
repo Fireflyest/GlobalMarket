@@ -53,7 +53,7 @@ public class TaskCancel extends Task{
         this.executeInfo(Language.CANCEL_ITEM);
 
         // 发送邮件
-        then.add(new TaskSend("", sale.getOwner(), item));
+        then.add(new TaskSend(Language.MAIL_FROM_CANCEL, sale.getOwner(), item));
 
         return then;
     }

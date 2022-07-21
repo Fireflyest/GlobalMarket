@@ -252,6 +252,7 @@ public class MarketButton {
     }
 
     public static void loreMailItem(ItemStack item, Mail mail){
+        if (!"".equals(mail.getInfo())) ItemUtils.addLore(item, "§7by " + mail.getInfo());
         ItemUtils.addLore(item, "");
         ItemUtils.addLore(item, "§e§m·                         ·");
         ItemUtils.addLore(item, "§f" + TimeUtils.getTime(mail.getAppear()));

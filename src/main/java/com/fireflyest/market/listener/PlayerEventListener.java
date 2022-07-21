@@ -7,7 +7,6 @@ import com.fireflyest.market.task.TaskSell;
 import com.fireflyest.market.task.TaskSignAll;
 import org.bukkit.Bukkit;
 import org.fireflyest.craftgui.api.ViewGuide;
-import org.fireflyest.craftgui.api.ViewPage;
 import org.fireflyest.craftgui.event.ViewClickEvent;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.User;
@@ -17,7 +16,6 @@ import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ChatUtils;
 import com.fireflyest.market.util.ConvertUtils;
 import com.fireflyest.market.util.TimeUtils;
-import com.fireflyest.market.view.SellPage;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -104,46 +102,46 @@ public class PlayerEventListener implements Listener {
         }
 
         // 快捷上架
-        ViewPage page = guide.getUsingPage(player.getName());
-        if (page instanceof SellPage){
-            SellPage sellPage = ((SellPage) page);
-            switch (value) {
-                case "add1" : {
-                    sellPage.addPrice(1);
-                    return;
-                }
-                case "add10" : {
-                    sellPage.addPrice(10);
-                    return;
-                }
-                case "add100" : {
-                    sellPage.addPrice(100);
-                    return;
-                }
-                case "reduce1" : {
-                    sellPage.reducePrice(1);
-                    return;
-                }
-                case "reduce10" : {
-                    sellPage.reducePrice(10);
-                    return;
-                }
-                case "reduce100" : {
-                    sellPage.reducePrice(100);
-                    return;
-                }
-                case "amount" : {
-                    if (event.isLeftClick()) {
-                        sellPage.raise(1);
-                    } else if (event.isRightClick()) {
-                        sellPage.lessen(1);
-                    }
-                    return;
-                }
-                default : {
-                }
-            }
-        }
+//        ViewPage page = guide.getUsingPage(player.getName());
+//        if (page instanceof SellPage){
+//            SellPage sellPage = ((SellPage) page);
+//            switch (value) {
+//                case "add1" : {
+//                    sellPage.addPrice(1);
+//                    return;
+//                }
+//                case "add10" : {
+//                    sellPage.addPrice(10);
+//                    return;
+//                }
+//                case "add100" : {
+//                    sellPage.addPrice(100);
+//                    return;
+//                }
+//                case "reduce1" : {
+//                    sellPage.reducePrice(1);
+//                    return;
+//                }
+//                case "reduce10" : {
+//                    sellPage.reducePrice(10);
+//                    return;
+//                }
+//                case "reduce100" : {
+//                    sellPage.reducePrice(100);
+//                    return;
+//                }
+//                case "amount" : {
+//                    if (event.isLeftClick()) {
+//                        sellPage.raise(1);
+//                    } else if (event.isRightClick()) {
+//                        sellPage.lessen(1);
+//                    }
+//                    return;
+//                }
+//                default : {
+//                }
+//            }
+//        }
 
         // 其他按钮点击，执行指令
         if (event.isShiftClick()){ // 下架

@@ -88,11 +88,11 @@ public class TaskBuy extends Task{
         if(sale.isAdmin()){
             // 发货给买家
             if (!buyAll) item.setAmount(num);
-            then.add(new TaskSend("", buyer, item));
+            then.add(new TaskSend(Language.MAIL_FROM_BUY, buyer, item));
         }else {
             if (buyAll){
                 // 发货给买家
-                then.add(new TaskSend("", buyer, item));
+                then.add(new TaskSend(Language.MAIL_FROM_BUY, buyer, item));
                 MarketManager.removeSale(sale);
 
                 // 统计数据修改
@@ -126,7 +126,7 @@ public class TaskBuy extends Task{
                 }
                 // 邮寄给买家
                 item.setAmount(num);
-                then.add(new TaskSend("", buyer, item));
+                then.add(new TaskSend(Language.MAIL_FROM_BUY, buyer, item));
 
             }
         }

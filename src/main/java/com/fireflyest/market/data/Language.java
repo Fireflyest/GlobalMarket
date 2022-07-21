@@ -33,6 +33,7 @@ public class Language {
     public static String SIGN_ERROR;
     public static String USER_ERROR;
     public static String DATA_NULL;
+    public static String SEND_MAIL;
     public static String HAS_MAIL;
     public static String LIMIT_MAIL;
     public static String TAX;
@@ -44,6 +45,9 @@ public class Language {
     public static String DESC_ITEM;
     public static String MAIL_BUTTON;
     public static String MAIL_HOVER;
+    public static String MAIL_FROM_BUY;
+    public static String MAIL_FROM_AUCTION;
+    public static String MAIL_FROM_CANCEL;
 
     public static String MARKET_MAIL_NICK;
     public static String MARKET_MINE_NICK;

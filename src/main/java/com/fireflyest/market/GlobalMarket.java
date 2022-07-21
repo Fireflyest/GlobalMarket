@@ -44,13 +44,15 @@ public class GlobalMarket extends JavaPlugin{
 
     /*
     点券支持
-    邮箱交费
     价格统计
+    商品编辑
+    统计书
     交易
     收购
     自定义按钮
-    快捷上架
-    界面交互
+    自定义文本
+    快捷上架 ⚪
+    界面交互 √
     排行榜
      */
 
