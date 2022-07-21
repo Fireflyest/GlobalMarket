@@ -41,7 +41,7 @@ public class TaskSend extends Task{
     public @NotNull List<Task> execute() {
         String stack = SerializeUtil.serializeItemStack(item);
         String meta = SerializeUtil.serializeItemMeta(item);
-        Mail mail = new Mail(0, stack, meta, ItemUtils.getItemValue(item), new Date().getTime(), target, "", false, price > 0, price, point);
+        Mail mail = new Mail(0, stack, meta, ItemUtils.getItemValue(item), new Date().getTime(), target, playerName, false, price > 0, price, point);
 
         MarketManager.addMail(mail);
 
@@ -51,6 +51,8 @@ public class TaskSend extends Task{
             targetPlayer.sendMessage(Language.HAS_MAIL);
             ChatUtils.sendCommandButton(targetPlayer, Language.MAIL_BUTTON, Language.MAIL_HOVER, "/market mail");
         }
+
+        this.executeInfo(Language.SEND_MAIL);
 
         return then;
     }
