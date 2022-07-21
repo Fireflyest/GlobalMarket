@@ -124,14 +124,6 @@ public class MarketCommand implements CommandExecutor {
                 guide.openView(player, GlobalMarket.MINE_VIEW, playerName);
                 break;
             }
-            case "all":{
-                if(player == null) {
-                    sender.sendMessage(Language.PLAYER_COMMAND);
-                    return;
-                }
-                guide.openView(player, GlobalMarket.MAIN_VIEW, MainView.ALL);
-                break;
-            }
             case "close":
                 if(player == null) {
                     sender.sendMessage(Language.PLAYER_COMMAND);
@@ -161,6 +153,22 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 guide.openView(player, GlobalMarket.MAIN_VIEW, MainView.POINT);
+                break;
+            }
+            case "retail":{
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                guide.openView(player, GlobalMarket.MAIN_VIEW, MainView.RETAIL);
+                break;
+            }
+            case "auction":{
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                guide.openView(player, GlobalMarket.MAIN_VIEW, MainView.AUCTION);
                 break;
             }
             case "admin":{

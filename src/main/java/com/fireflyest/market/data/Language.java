@@ -53,9 +53,9 @@ public class Language {
     public static String MARKET_MINE_NICK;
     public static String MARKET_OTHER_NICK;
     public static String MARKET_HOME_NICK;
-    public static String MARKET_QUICK_NICK;
-    public static String MARKET_MAIN_ALL_NICK;
     public static String MARKET_MAIN_NORMAL_NICK;
+    public static String MARKET_MAIN_AUCTION_NICK;
+    public static String MARKET_MAIN_RETAIL_NICK;
     public static String MARKET_MAIN_ADMIN_NICK;
     public static String MARKET_MAIN_POINT_NICK;
 

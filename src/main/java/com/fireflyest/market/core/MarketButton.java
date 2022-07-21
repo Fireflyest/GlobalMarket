@@ -19,6 +19,7 @@ public class MarketButton {
     public static ItemStack AUCTION;
     public static ItemStack COLLECT;
     public static ItemStack RETAIL;
+    public static ItemStack WAIT;
     public static ItemStack TRADE;
     public static ItemStack DATA;
     public static ItemStack STATISTIC;
@@ -99,8 +100,11 @@ public class MarketButton {
                 .command("collect")
                 .build();
         RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
-                .name("§3§l直售")
+                .name("§3§l零售")
                 .command("retail")
+                .build();
+        WAIT = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
+                .name("§3§l敬请期待")
                 .build();
         TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
                 .name("§3§l以物易物")
@@ -342,7 +346,7 @@ public class MarketButton {
 
             ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
         }else if (sale.isAuction()){ // 拍卖物品
-            ItemUtils.addLore(item, "§f[§7拍卖§f]"
+            ItemUtils.addLore(item, "§f[§e拍卖§f]"
                     + (sale.isPoint() ? "[§6点券§f]" : ""));
 
             ItemUtils.addLore(item, "§3§l拍卖人§7: §f"+sale.getOwner());
@@ -356,7 +360,7 @@ public class MarketButton {
             }
 
         }else { // 普通物品
-            ItemUtils.addLore(item, "§f[§7直售§f]"
+            ItemUtils.addLore(item, "§f[§7零售§f]"
                     + (sale.isPoint() ? "[§6点券§f]" : "")
                     + (sale.isAdmin() ? "[§c无限§f]" : ""));
 
