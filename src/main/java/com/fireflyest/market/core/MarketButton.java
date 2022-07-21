@@ -136,15 +136,15 @@ public class MarketButton {
         BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
                 .build();
         SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
-                .name("")
+                .name("货架")
                 .command("sell")
                 .build();
         SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
-                .name("")
+                .name("货架")
                 .command("sell")
                 .build();
         SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
-                .name("")
+                .name("货架")
                 .command("sell")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
@@ -265,7 +265,7 @@ public class MarketButton {
         ItemUtils.addLore(item, "§e§m·                         ·");
 
         if (sale.getPrice() == -1){ // 预售物品
-            ItemUtils.addLore(item, "§f[§9预售§f]");
+            ItemUtils.addLore(item, "§f[§8预售§f]");
 
             ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
         }else if (sale.isAuction()){ // 拍卖物品
@@ -281,7 +281,8 @@ public class MarketButton {
             }else {
                 ItemUtils.addLore(item, "§3§l起拍价§7: §f"+sale.getPrice());
             }
-        }else {
+
+        }else { // 普通物品
             ItemUtils.addLore(item, "§f[§7直售§f]"
                     + (sale.isPoint() ? "[§6点券§f]" : "")
                     + (sale.isAdmin() ? "[§c无限§f]" : ""));
@@ -306,7 +307,7 @@ public class MarketButton {
                 .command("record")
                 .lore("§3§l出售的物品§7: " + name)
                 .lore("§3§l买家§7: " + buyer)
-                .lore("§3§l花费§7: " + cost)
+                .lore("§3§l收获§7: " + cost)
                 .lore("§3§l是否点券出售§7: " + (point ? "是" : "否"))
                 .build();
     }

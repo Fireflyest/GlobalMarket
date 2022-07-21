@@ -296,10 +296,6 @@ public class MarketCommand implements CommandExecutor {
                 guide.openView(player, GlobalMarket.SEARCH_VIEW, var2);
                 break;
             case "statistic":
-                if(!player.hasPermission("market.statistic")){
-                    player.sendMessage(Language.NOT_PERMISSION);
-                    return;
-                }
                 MarketStatistic.statisticPlayer(player, var2);
                 break;
             case "data":

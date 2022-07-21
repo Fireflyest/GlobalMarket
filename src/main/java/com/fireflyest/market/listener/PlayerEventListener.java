@@ -3,6 +3,7 @@ package com.fireflyest.market.listener;
 import com.cryptomorin.xseries.XSound;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
+import com.fireflyest.market.task.TaskSell;
 import com.fireflyest.market.task.TaskSignAll;
 import org.bukkit.Bukkit;
 import org.fireflyest.craftgui.api.ViewGuide;
@@ -27,6 +28,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.event.ViewPlaceEvent;
 import org.fireflyest.craftgui.util.ItemUtils;
 
 public class PlayerEventListener implements Listener {
@@ -81,9 +83,8 @@ public class PlayerEventListener implements Listener {
         ItemStack item = event.getCurrentItem();
         if(item == null) return;
 
-        Player player = null;
-        if(event.getWhoClicked() instanceof Player) player = (Player)event.getWhoClicked();
-        if (player == null) return;
+        Player player = (Player)event.getWhoClicked();
+
         String value = ItemUtils.getItemValue(item);
         if("".equals(value))return;
 
@@ -162,17 +163,27 @@ public class PlayerEventListener implements Listener {
     }
 
     @EventHandler
+    public void onViewPlace(ViewPlaceEvent event) {
+        if(!event.getView().getTitle().contains(Language.PLUGIN_NAME)) return;
+
+        ItemStack placeItem = event.getCursorItem();
+        ItemStack clickItem = event.getCurrentItem();
+        if(placeItem == null || clickItem == null) return;
+
+        Player player = (Player)event.getWhoClicked();
+
+        String value = ItemUtils.getItemValue(clickItem);
+        if("".equals(value))return;
+
+        if ("sell".equals(value)){
+            taskManager.putTask(new TaskSell(player.getName(), false, false, -1, placeItem.clone()));
+            event.setHandBack(false);
+        }
+    }
+
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
-
-//        // 打开交易记录
-//        if(event.hasItem()){
-//            ItemStack item = event.getItem();
-//            if(item != null && item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial())) {
-//                String value = ItemUtils.getItemValue(item);
-//                if(value.equals("record"))item.setAmount(0);
-//            }
-//        }
 
         // 右键牌子
         if(event.hasBlock()){
