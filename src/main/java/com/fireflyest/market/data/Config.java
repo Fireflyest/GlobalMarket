@@ -9,6 +9,9 @@ public class Config {
     public static String URL;
     public static String USER;
     public static String PASSWORD;
+    public static boolean POINT;
+    public static boolean COLLECT;
+    public static boolean TRADE;
     public static int LIMIT_TIME;
     public static boolean LIMIT_LORE;
     public static boolean LIMIT_AMOUNT;
