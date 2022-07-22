@@ -4,6 +4,7 @@ import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.data.Config;
 import com.fireflyest.market.task.TaskEdit;
 import com.fireflyest.market.util.ConvertUtils;
 import com.fireflyest.market.util.SerializeUtil;
@@ -169,7 +170,7 @@ public class SalePage implements ViewPage {
                 if (!done) auction = !auction;
                 break;
             case 17:
-                if (!done) point = !point;
+                if (!done && Config.POINT) point = !point;
                 break;
             case 31:
                 if (num.length() > 0) num = num.substring(0, num.length()-1);
