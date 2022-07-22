@@ -39,5 +39,6 @@
     <orderEntry type="library" name="Maven: com.github.cryptomorin:XSeries:8.8.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:23.0.0" level="project" />
     <orderEntry type="library" name="CraftGUI-1.0.6" level="project" />
+    <orderEntry type="library" name="PlayerPoints-3.2.4" level="project" />
   </component>
 </module>

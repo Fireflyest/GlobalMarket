@@ -9,6 +9,7 @@ import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.SerializeUtil;
 import net.milkbowl.vault.economy.Economy;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -24,12 +25,14 @@ public class TaskFinish extends Task{
     private final int id;
 
     private final Economy economy;
+    private final PlayerPointsAPI pointsAPI;
 
     public TaskFinish(@NotNull String playerName, int id) {
         super(playerName);
         this.id = id;
 
         this.economy = GlobalMarket.getEconomy();
+        this.pointsAPI = GlobalMarket.getPointsAPI();
 
         this.type = MarketTasks.SALE_TASK;
 
@@ -69,7 +72,14 @@ public class TaskFinish extends Task{
         User buyUser = MarketManager.getUser(buyer);
         OfflinePlayer buyerPlayer = Bukkit.getOfflinePlayer(UUID.fromString(buyUser.getUuid()));
 
-        if (!economy.has(buyerPlayer, cost)){
+        User buyerUser = MarketManager.getUser(playerName);
+        boolean hasMoney;
+        if (sale.isPoint()){
+            hasMoney = pointsAPI.look(UUID.fromString(buyerUser.getUuid())) >= cost;
+        }else {
+            hasMoney = economy.has(player, cost);
+        }
+        if (!hasMoney){
             // 不够钱，扣信誉
             this.executeInfo(String.format(Language.NOT_ENOUGH_MONEY, "对方"));
             buyUser.setCredit(buyUser.getCredit() - 1);
@@ -81,7 +91,11 @@ public class TaskFinish extends Task{
             ((Player) buyerPlayer).sendMessage(Language.BUY_ITEM);
         }
         // 买家扣钱
-        economy.withdrawPlayer(buyerPlayer, sale.getCost());
+        if (sale.isPoint()){
+            pointsAPI.take(UUID.fromString(buyerUser.getUuid()),  (int)Math.ceil(cost));
+        }else {
+            economy.withdrawPlayer(buyerPlayer, sale.getCost());
+        }
         // 发送物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
         if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());

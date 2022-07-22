@@ -68,7 +68,7 @@ public class YamlUtils {
                 boolean mkdirs = file.getParentFile().mkdirs();
                 boolean create =  file.createNewFile();
                 if (Config.DEBUG){
-                    plugin.getLogger().severe(mkdirs + " and " + create + ymlName+".yml");
+                    plugin.getLogger().info( "mkdirs:" +mkdirs + " , create:" + create + " " + ymlName+".yml");
                 }
                 plugin.saveResource(ymlName+".yml", true);
             } catch (IOException e) {
