@@ -3,34 +3,38 @@ Version: '${project.version}'
 # 反馈bug联系QQ: 746969484
 Debug: false
 
-#SQL参数(高一点的版本需要在url加上'useSSL=false')
+# SQL参数(高一点的版本需要在url加上'useSSL=false')
 Sql: false
 Url: 'jdbc:mysql://localhost:3306/mc_market?useSSL=false&serverTimezone=UTC'
 User: 'root'
 Password: '123456'
 
-#物品几天后自动下架，请输入正整数，输入-1为关闭限制
+# 点券支持
+Point: true
+# Collect: false 该功能在版本${project.version}未完成，请勿改成true
+# Trade: false 该功能在版本${project.version}未完成，请勿改成true
+
+# 物品几天后自动下架，请输入正整数，输入-1为关闭限制
 LimitTime: 7
 
-#上架限制
+# 上架限制
 LimitLore: false
 LimitLoreList: 私有,vip,绑定
 
-#数量限制
+# 数量限制
 LimitAmount: true
 LimitAmountNum: 35
 LimitAmountNumVip: 56
 
-#上架最大金额(默认99999999)
-MaxPrice: 99999999
-
-#上架提示
+# 上架提示
 SellBroadcast: true
 
-#邮箱限制
+# 邮箱限制
 LimitMail: true
 LimitMailNum: 50
 
+# 上架最大金额(默认99999999)
+MaxPrice: 99999999
 # 上架税，防止玩家随意高价上架物品，不退还
 Tax: true
 # 起征点
@@ -38,5 +42,5 @@ TaxThreshold: 100000
 # 税率，百分比0~1
 TaxRate: 0.002
 
-# 零散购买，开启后玩家可以只买一部分
+# 零散购买，关闭后玩家只能一次性全买
 BuyPartial: true

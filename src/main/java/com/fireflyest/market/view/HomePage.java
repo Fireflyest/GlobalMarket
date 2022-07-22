@@ -1,6 +1,7 @@
 package com.fireflyest.market.view;
 
 import com.fireflyest.market.core.MarketButton;
+import com.fireflyest.market.data.Config;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.data.Language;
 import org.bukkit.Bukkit;
@@ -99,10 +100,11 @@ public class HomePage implements ViewPage {
         itemMap.put(18, MarketButton.MARKET);
         itemMap.put(19, MarketButton.RETAIL);
         itemMap.put(20, MarketButton.AUCTION);
-        itemMap.put(21, MarketButton.POINT);
-        itemMap.put(22, MarketButton.ADMIN);
-        itemMap.put(23, MarketButton.COLLECT);
-        itemMap.put(24, MarketButton.TRADE);
+        itemMap.put(21, MarketButton.ADMIN);
+        int pos = 22;
+        if (Config.POINT) itemMap.put(pos++, MarketButton.POINT);
+        if (Config.COLLECT) itemMap.put(pos++, MarketButton.COLLECT);
+        if (Config.TRADE) itemMap.put(pos, MarketButton.TRADE);
 
         itemMap.put(26, MarketButton.CLOSE);
         for (int i = 9; i < 17; i++) {

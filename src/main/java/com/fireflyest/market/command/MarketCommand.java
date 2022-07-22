@@ -264,6 +264,10 @@ public class MarketCommand implements CommandExecutor {
         }
         switch (var1){
             case "point":
+                if (!Config.POINT){
+                    sender.sendMessage(Language.COMMAND_ERROR);
+                    return;
+                }
             case "sell":
             case "auction":
             case "send":
@@ -409,6 +413,10 @@ public class MarketCommand implements CommandExecutor {
                 break;
             }
             case "point" :
+                if (!Config.POINT){
+                    sender.sendMessage(Language.COMMAND_ERROR);
+                    return;
+                }
             case "sell" :
             case "auction":
             {
