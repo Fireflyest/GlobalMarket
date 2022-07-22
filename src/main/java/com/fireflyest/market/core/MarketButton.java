@@ -309,7 +309,6 @@ public class MarketButton {
                 .build();
         SEARCH  = new ViewItemBuilder(XMaterial.COMPASS.parseMaterial())
                 .name("§3§l搜索")
-                .lore("§f按照关键词搜索商品")
                 .command("search")
                 .build();
     }

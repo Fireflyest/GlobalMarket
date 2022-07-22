@@ -185,7 +185,7 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 if(!player.hasPermission("market.statistic")){
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.statistic"));
                     return;
                 }
                 MarketStatistic.statisticMarket(player);
@@ -204,11 +204,23 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 if(!player.hasPermission("market.search")){
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.search"));
                     return;
                 }
                 player.closeInventory();
                 player.sendMessage(Language.SEARCH_ITEM);
+                break;
+            case "send":
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                if(!player.hasPermission("market.send")){
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.send"));
+                    return;
+                }
+                player.closeInventory();
+                player.sendMessage(Language.SEND_ITEM);
                 break;
             case "sign":
                 if(player == null) {
@@ -216,7 +228,7 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 if(!player.hasPermission("market.sign")){
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.sign"));
                     return;
                 }
                 taskManager.putTask(new TaskSignAll(player.getName()));
@@ -252,9 +264,6 @@ public class MarketCommand implements CommandExecutor {
         }
         switch (var1){
             case "point":
-                // TODO: 2021/5/5 point 去掉break即可
-                sender.sendMessage("功能未完成");
-                break;
             case "sell":
             case "auction":
             case "send":
@@ -262,19 +271,18 @@ public class MarketCommand implements CommandExecutor {
                 this.executeCommand(sender, var1, var2, var3);
                 break;
             case "admin":
-                if(!player.isOp()){
-                    player.sendMessage(Language.NOT_PERMISSION);
+                if(!player.hasPermission("market.admin")){
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.admin"));
                     return;
-                }else {
-                    Sale sale = data.queryOne(Sale.class, "id", var2);
-                    if (sale == null) {
-                        sender.sendMessage(Language.DATA_NULL);
-                        return;
-                    }
-                    sale.setAdmin(!sale.isAdmin());
-                    data.update(sale);
-                    player.sendMessage(Language.UNLIMITED_ITEM);
                 }
+                Sale sale = data.queryOne(Sale.class, "id", var2);
+                if (sale == null) {
+                    sender.sendMessage(Language.DATA_NULL);
+                    return;
+                }
+                sale.setAdmin(!sale.isAdmin());
+                data.update(sale);
+                player.sendMessage(Language.UNLIMITED_ITEM);
                 break;
             case "classify":{
                 guide.openView(player, GlobalMarket.CLASSIFY_VIEW, var2);
@@ -303,7 +311,7 @@ public class MarketCommand implements CommandExecutor {
                 break;
             case "search":
                 if(!player.hasPermission("market.search")){
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.search"));
                     return;
                 }
                 guide.openView(player, GlobalMarket.SEARCH_VIEW, var2);
@@ -317,7 +325,7 @@ public class MarketCommand implements CommandExecutor {
                 break;
             case "other":{
                 if(!player.hasPermission("market.other")){
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.other"));
                     return;
                 }
                 guide.openView(player, GlobalMarket.OTHER_VIEW, var2);
@@ -343,6 +351,10 @@ public class MarketCommand implements CommandExecutor {
         }
         switch (var1) {
             case "send": {
+                if(!player.hasPermission("market.send")){
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.send"));
+                    return;
+                }
                 // 禁止发送给自己
                 if (var2.equals(player.getName())) {
                     player.sendMessage(Language.SEND_ERROR);
@@ -388,7 +400,7 @@ public class MarketCommand implements CommandExecutor {
             }
             case "discount" : {
                 if (!player.hasPermission("market.discount")) {
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.discount"));
                     return;
                 }
                 taskManager.putTask(new TaskDiscount(player.getName(), ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3)));
@@ -397,9 +409,6 @@ public class MarketCommand implements CommandExecutor {
                 break;
             }
             case "point" :
-                // TODO: 2021/5/5 point 去掉break即可
-                    sender.sendMessage("功能未完成");
-                    break;
             case "sell" :
             case "auction":
             {
@@ -483,14 +492,14 @@ public class MarketCommand implements CommandExecutor {
                     item.setAmount(has - amount);
                     player.sendMessage(Language.SELL_ITEM);
                 } else {
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market."+ var1));
                 }
                 player.closeInventory();
                 break;
             }
             case "reprice" : {
                 if (!player.hasPermission("market.reprice")) {
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.reprice"));
                     return;
                 }
                 taskManager.putTask(new TaskReprice(player.getName(), ConvertUtils.parseInt(var2), ConvertUtils.parseDouble(var3)));
@@ -499,7 +508,7 @@ public class MarketCommand implements CommandExecutor {
             }
             case "desc" : {
                 if (!player.hasPermission("market.desc")) {
-                    player.sendMessage(Language.NOT_PERMISSION);
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.desc"));
                     return;
                 }
                 Sale sale = data.queryOne(Sale.class, "id", var2);

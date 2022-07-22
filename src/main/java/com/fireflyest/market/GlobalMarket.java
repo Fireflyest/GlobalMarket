@@ -43,17 +43,18 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    点券支持
-    价格统计
-    商品编辑
-    统计书
-    交易
-    收购
-    自定义按钮
-    自定义文本
-    快捷上架 ⚪
-    界面交互 √
-    排行榜
+    界面交互 0
+    点券支持 1
+    拍卖 2
+    统计书 3
+    排行榜 4
+    自定义文本 5
+    自定义按钮 6
+    价格统计 7
+    交易 8
+    收购 9
+    商品编辑 √
+    快捷上架 √
      */
 
     public static final String MAIN_VIEW = "market.main";
