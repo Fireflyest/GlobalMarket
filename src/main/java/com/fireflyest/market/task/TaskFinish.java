@@ -81,7 +81,7 @@ public class TaskFinish extends Task{
         }
         if (!hasMoney){
             // 不够钱，扣信誉
-            this.executeInfo(String.format(Language.NOT_ENOUGH_MONEY, "对方"));
+            this.executeInfo(Language.NOT_ENOUGH_MONEY.replace("%target%", buyer));
             buyUser.setCredit(buyUser.getCredit() - 1);
             data.update(buyUser);
             then.add(new TaskCancel(playerName, id));

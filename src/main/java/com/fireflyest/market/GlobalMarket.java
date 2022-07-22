@@ -45,14 +45,14 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    拍卖 2 ing
+    自定义按钮 6
     统计书 3
     排行榜 4
     自定义文本 5 ing
-    自定义按钮 6
     价格统计 7
     交易 8
     收购 9
+    拍卖 √
     点券支持 √
     界面交互 √
     商品编辑 √
