@@ -45,7 +45,6 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    点券支持 1 ing
     拍卖 2 ing
     统计书 3
     排行榜 4
@@ -54,6 +53,7 @@ public class GlobalMarket extends JavaPlugin{
     价格统计 7
     交易 8
     收购 9
+    点券支持 √
     界面交互 √
     商品编辑 √
     快捷上架 √
