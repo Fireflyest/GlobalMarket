@@ -2,28 +2,34 @@ package com.fireflyest.market.task;
 
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Mail;
+import com.fireflyest.market.bean.User;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
+import com.fireflyest.market.util.ConvertUtils;
 import com.fireflyest.market.util.SerializeUtil;
 import net.milkbowl.vault.economy.Economy;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TaskSign extends Task{
 
     private final int id;
 
     private final Economy economy;
+    private final PlayerPointsAPI pointsAPI;
 
     public TaskSign(@NotNull String playerName, int id) {
         super(playerName);
         this.id = id;
 
         this.economy = GlobalMarket.getEconomy();
+        this.pointsAPI = GlobalMarket.getPointsAPI();
 
         this.type = MarketTasks.MAIL_TASK;
 
@@ -54,8 +60,15 @@ public class TaskSign extends Task{
         if(!"null".equals(mail.getNbt()) && !"".equals(mail.getNbt())) ItemUtils.setItemValue(item, mail.getNbt());
 
         if (mail.isRecord()){
-            economy.depositPlayer(player, mail.getPrice());
-            player.sendMessage(String.format(Language.AFFAIR_FINISH, mail.getPrice()));
+            if (mail.isPoint()){
+                User user = MarketManager.getUser(playerName);
+                int get = (int)Math.floor(mail.getPrice());
+                pointsAPI.give(UUID.fromString(user.getUuid()),  get);
+                player.sendMessage(Language.AFFAIR_FINISH.replace("%money%", String.valueOf(get)) + Language.POINT_SYMBOL);
+            }else {
+                economy.depositPlayer(player, mail.getPrice());
+                player.sendMessage(Language.AFFAIR_FINISH.replace("%money%", ConvertUtils.formatDouble(mail.getPrice())) + Language.COIN_SYMBOL);
+            }
         }else {
             player.sendMessage(Language.SIGN_FINISH);
             player.getInventory().addItem(item);

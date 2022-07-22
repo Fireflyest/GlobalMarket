@@ -3,6 +3,7 @@ package com.fireflyest.market.core;
 import com.cryptomorin.xseries.XMaterial;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Sale;
+import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.TimeUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -340,36 +341,36 @@ public class MarketButton {
         if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
         ItemUtils.addLore(item, "§e§m·                         ·");
 
+        String symbol = (sale.isPoint() ? Language.POINT_SYMBOL : Language.COIN_SYMBOL);
+
         if (sale.getPrice() == -1){ // 预售物品
             ItemUtils.addLore(item, "§f[§8预售§f]");
 
             ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
         }else if (sale.isAuction()){ // 拍卖物品
-            ItemUtils.addLore(item, "§f[§e拍卖§f]"
-                    + (sale.isPoint() ? "[§6点券§f]" : ""));
+            ItemUtils.addLore(item, "§f[§e拍卖§f]");
 
             ItemUtils.addLore(item, "§3§l拍卖人§7: §f"+sale.getOwner());
 
             if(sale.getPrice() != sale.getCost()){
                 ItemUtils.addLore(item, "§3§l起拍价§7: §f§m"+sale.getPrice());
-                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost());
+                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost() + symbol);
                 ItemUtils.addLore(item, String.format("§7第§3%s§7次叫价", 3 - sale.getHeat()));
             }else {
-                ItemUtils.addLore(item, "§3§l起拍价§7: §f"+sale.getPrice());
+                ItemUtils.addLore(item, "§3§l起拍价§7: §f"+sale.getPrice() + symbol);
             }
 
         }else { // 普通物品
             ItemUtils.addLore(item, "§f[§7零售§f]"
-                    + (sale.isPoint() ? "[§6点券§f]" : "")
                     + (sale.isAdmin() ? "[§c无限§f]" : ""));
 
             ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
 
             if(sale.getPrice() != sale.getCost()){
-                ItemUtils.addLore(item, "§3§l原价§7: §f§m"+sale.getPrice());
-                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost());
+                ItemUtils.addLore(item, "§3§l原价§7: §f§m"+sale.getPrice() + symbol);
+                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost() + symbol);
             }else {
-                ItemUtils.addLore(item, "§3§l价格§7: §f"+sale.getPrice());
+                ItemUtils.addLore(item, "§3§l价格§7: §f"+sale.getPrice() + symbol);
             }
         }
     }
@@ -381,8 +382,7 @@ public class MarketButton {
                 .command("record")
                 .lore("§3§l出售的物品§7: " + name)
                 .lore("§3§l买家§7: " + buyer)
-                .lore("§3§l收获§7: " + cost)
-                .lore("§3§l是否点券出售§7: " + (point ? "是" : "否"))
+                .lore("§3§l收获§7: " + cost + (point ? Language.POINT_SYMBOL : Language.COIN_SYMBOL))
                 .build();
     }
 

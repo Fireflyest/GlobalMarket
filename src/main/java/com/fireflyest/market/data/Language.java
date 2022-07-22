@@ -9,6 +9,8 @@ public class Language {
     public static String RELOADED;
 
     public static String PLUGIN_NAME;
+    public static String COIN_SYMBOL;
+    public static String POINT_SYMBOL;
     public static String NOT_ENOUGH_MONEY;
     public static String NOT_ENOUGH_ITEM;
     public static String NOT_ENOUGH_SPACE;

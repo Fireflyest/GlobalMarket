@@ -496,7 +496,7 @@ public class MarketCommand implements CommandExecutor {
                     item.setAmount(has - amount);
                     player.sendMessage(Language.SELL_ITEM);
                 } else if (var1.equals("point") && sender.hasPermission("market.point")) {
-                    taskManager.putTask(new TaskSell(player.getName(), false, true, price, saleItem));
+                    taskManager.putTask(new TaskSell(player.getName(), false, true, Math.round(price), saleItem));
                     item.setAmount(has - amount);
                     player.sendMessage(Language.SELL_ITEM);
                 } else {
