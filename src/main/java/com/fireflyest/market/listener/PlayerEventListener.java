@@ -2,12 +2,7 @@ package com.fireflyest.market.listener;
 
 import com.cryptomorin.xseries.XSound;
 import com.fireflyest.market.core.MarketTasks;
-import com.fireflyest.market.task.TaskBuy;
-import com.fireflyest.market.task.TaskCancel;
-import com.fireflyest.market.task.TaskSell;
-import com.fireflyest.market.task.TaskSignAll;
-import org.bukkit.Bukkit;
-import org.bukkit.event.inventory.ClickType;
+import com.fireflyest.market.task.*;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.event.ViewClickEvent;
 import com.fireflyest.market.GlobalMarket;
@@ -30,6 +25,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.event.ViewPlaceEvent;
 import org.fireflyest.craftgui.util.ItemUtils;
+import org.fireflyest.craftgui.util.TranslateUtils;
 
 public class PlayerEventListener implements Listener {
 
@@ -93,13 +89,19 @@ public class PlayerEventListener implements Listener {
             // 不用刷新
             event.setRefresh(false);
 
-            if (Config.DEBUG) Bukkit.getLogger().info("action -> " + value);
+            if (Config.DEBUG) GlobalMarket.getPlugin().getLogger().info("action -> " + value);
             player.playSound(player.getLocation(), pageSound, 1F, 1F);
             if (value.contains("pre")){
                 guide.prePage(player);
             }else if (value.contains("next")){
                 guide.nextPage(player);
             }
+            return;
+        }
+
+        if (value.contains("send")){
+            if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
+            player.performCommand("market send");
             return;
         }
 
@@ -114,7 +116,7 @@ public class PlayerEventListener implements Listener {
         } else { // 执行指令
             event.setRefresh(false);
 
-            if (Config.DEBUG) Bukkit.getLogger().info("command -> " + "market "+ value);
+            if (Config.DEBUG) GlobalMarket.getPlugin().getLogger().info("command -> " + "market "+ value);
             player.performCommand("market "+ value);
             if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
         }
@@ -135,6 +137,16 @@ public class PlayerEventListener implements Listener {
 
         if ("sell".equals(value)){
             taskManager.putTask(new TaskSell(player.getName(), false, false, -1, placeItem.clone()));
+            event.setHandBack(false);
+        }else if ("search".equals(value)){
+            String displayName = TranslateUtils.translate(placeItem.getType());
+            player.performCommand(String.format("market search %s", displayName));
+        }else if ("classify".equals(value)){
+            String classify = MarketManager.getClassify(placeItem.getType()).toString();
+            player.sendMessage(Language.CLASSIFY_ITEM.replace("%classify%", classify));
+        }else if (value.contains("send")){
+            String target = value.split(" ")[1];
+            taskManager.putTask(new TaskSend(player.getName(), target, placeItem.clone(), 0, false));
             event.setHandBack(false);
         }
     }

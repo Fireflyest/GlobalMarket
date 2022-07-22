@@ -44,6 +44,8 @@ public class Language {
     public static String TAX_BURDEN;
     public static String REPRICE_ITEM;
     public static String DESC_ITEM;
+    public static String CLASSIFY_ITEM;
+
     public static String MAIL_BUTTON;
     public static String MAIL_HOVER;
     public static String MAIL_FROM_BUY;
