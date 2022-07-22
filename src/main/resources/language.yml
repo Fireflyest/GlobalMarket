@@ -22,8 +22,10 @@ MailFromBuy: "商品购买"
 MailFromAuction: "拍卖行"
 MailFromCancel: "商品下架"
 
+CoinSymbol: '§6ɞ'
+PointSymbol: '§dɗ'
 CommandError: '§6✦§f输入指令有误或该功能未开启(§3输入/market help 查看帮助§f)'
-NotEnoughMoney: '§6✦§f%s没有足够的麦块币'
+NotEnoughMoney: '§6✦§f%target%无法承担交易价格'
 NotEnoughItem: '§6✦§f没有足够的物品'
 NotEnoughSpace: '§6✦§f你没有足够的上架空间'
 NotPermission: '§6✦§f你没有使用该命令的权限 %permission%'
@@ -39,7 +41,7 @@ AuctionFinish: '§6✦§f拍卖%id%结束，请到收件箱领取收益'
 AuctionStep: '§6✦§f拍卖商品§3%id%§f最高出价§3%money%§f第§3%num%§f次'
 AuctionBid: '§6✦§f玩家§3%player%§f对拍卖商品§3%id%§f叫价§3%money%§f'
 AuctionFlow: '§6✦§f你的拍卖商品§3%id%§f流拍了'
-AffairFinish: '§6✦§f收入了§3%s§f麦块币'
+AffairFinish: '§6✦§f交易收获：§3%money%§f'
 SignFinish: '§6✦§f你签收了一个物品'
 FullMail: '§6✦§f邮箱已满'
 SendError: '§6✦§f你不能发邮件给自己'

@@ -10,11 +10,13 @@ import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.SerializeUtil;
 import net.milkbowl.vault.economy.Economy;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TaskBuy extends Task{
 
@@ -23,6 +25,7 @@ public class TaskBuy extends Task{
     private final int num;
 
     private final Economy economy;
+    private final PlayerPointsAPI pointsAPI;
 
     public TaskBuy(String playerName, int id, int num) {
         super(playerName);
@@ -30,13 +33,13 @@ public class TaskBuy extends Task{
         this.num = num;
 
         this.economy = GlobalMarket.getEconomy();
+        this.pointsAPI = GlobalMarket.getPointsAPI();
 
         this.type = MarketTasks.SALE_TASK;
     }
 
     @Override
     public @NotNull List<Task> execute() {
-        // TODO: 2022/7/16 点券
         // 获取商品
         Sale sale = MarketManager.getSale(id);
         if(null == sale){
@@ -68,6 +71,10 @@ public class TaskBuy extends Task{
         // 购买数量
         String itemName = sale.getNickname();
         boolean buyAll = num == 0, point = sale.isPoint();
+        if(point && !buyAll){
+            this.executeInfo(Language.COMMAND_ERROR);
+            return then;
+        }
         double price, cost;
         if (buyAll){
             price = sale.getPrice();
@@ -76,8 +83,16 @@ public class TaskBuy extends Task{
             price = sale.getPrice() / item.getAmount() * num;
             cost = sale.getCost() / item.getAmount() * num;
         }
+
         // 判断钱是否足够
-        if (!economy.has(player, cost)){
+        User buyerUser = MarketManager.getUser(playerName);
+        boolean hasMoney;
+        if (sale.isPoint()){
+            hasMoney = pointsAPI.look(UUID.fromString(buyerUser.getUuid())) >= cost;
+        }else {
+            hasMoney = economy.has(player, cost);
+        }
+        if (!hasMoney){
             this.executeInfo(String.format(Language.NOT_ENOUGH_MONEY, "你"));
             guide.refreshPage(playerName);
             return then;
@@ -132,7 +147,11 @@ public class TaskBuy extends Task{
         }
 
         // 买家扣钱并通知
-        economy.withdrawPlayer(player, cost);
+        if (point){
+            pointsAPI.take(UUID.fromString(buyerUser.getUuid()),  (int)Math.ceil(cost));
+        }else {
+            economy.withdrawPlayer(player, cost);
+        }
         this.executeInfo(Language.BUY_ITEM);
 
         // 发送给卖家

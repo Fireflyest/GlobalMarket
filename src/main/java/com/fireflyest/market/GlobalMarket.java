@@ -3,6 +3,8 @@ package com.fireflyest.market;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
 import com.fireflyest.market.task.TaskHeat;
+import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.fireflyest.craftgui.api.ViewGuide;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Note;
@@ -43,11 +45,11 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    点券支持 1
-    拍卖 2
+    点券支持 1 ing
+    拍卖 2 ing
     统计书 3
     排行榜 4
-    自定义文本 5
+    自定义文本 5 ing
     自定义按钮 6
     价格统计 7
     交易 8
@@ -72,6 +74,7 @@ public class GlobalMarket extends JavaPlugin{
     private static Storage storage;
     private static Data data;
     private static Economy economy;
+    private static PlayerPointsAPI pointsAPI;
     private static ViewGuide guide;
 
     private BukkitTask marketTask;
@@ -85,6 +88,10 @@ public class GlobalMarket extends JavaPlugin{
     public static Economy getEconomy() {
         if (economy == null) setupEconomy();
         return economy;
+    }
+
+    public static PlayerPointsAPI getPointsAPI() {
+        return pointsAPI;
     }
 
     public static JavaPlugin getPlugin() {
@@ -105,6 +112,7 @@ public class GlobalMarket extends JavaPlugin{
 
         this.setupData();
         this.setupGuide();
+        this.setupPoint();
 
         // 注册事件
         this.getServer().getPluginManager().registerEvents( new PlayerEventListener(), this);
@@ -163,6 +171,10 @@ public class GlobalMarket extends JavaPlugin{
         }
     }
 
+    private void setupPoint(){
+        if (Config.POINT) pointsAPI = PlayerPoints.getInstance().getAPI();
+    }
+
     private void setupData(){
         YamlUtils.iniYamlUtils(plugin);
 
@@ -200,7 +212,7 @@ public class GlobalMarket extends JavaPlugin{
     private void setupGuide() {
         RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer().getServicesManager().getRegistration(ViewGuide.class);
         if (rsp == null) {
-            Bukkit.getLogger().warning("Gui not found!");
+            plugin.getLogger().warning("Gui not found!");
             return;
         }
         guide = rsp.getProvider();
@@ -222,7 +234,7 @@ public class GlobalMarket extends JavaPlugin{
     private static void setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            Bukkit.getLogger().warning("Economy not found!");
+            plugin.getLogger().warning("Economy not found!");
             return;
         }
         economy = rsp.getProvider();

@@ -105,7 +105,7 @@ public class SalePage implements ViewPage {
         ItemStack cancel = crashMap.get(26);
         ItemUtils.setItemValue(cancel, String.format("cancel %s", sale.getId()));
 
-        String end = (num.contains(".") ? "":"§7.0");
+        String end = (num.contains(".") || point ? "":"§7.0");
         ItemUtils.setLore(crashMap.get(4), "§7" + num + "§8§n7" + end, 0);
         ItemUtils.setLore(crashMap.get(5), "§7" + num + "§8§n8" + end, 0);
         ItemUtils.setLore(crashMap.get(6), "§7" + num + "§8§n9" + end, 0);
@@ -116,10 +116,16 @@ public class SalePage implements ViewPage {
         ItemUtils.setLore(crashMap.get(23), "§7" + num + "§8§n2" + end, 0);
         ItemUtils.setLore(crashMap.get(24), "§7" + num + "§8§n3" + end, 0);
         ItemUtils.setLore(crashMap.get(32), "§7" + num + "§8§n0" + end, 0);
-        if (num.endsWith(".")) {
-            ItemUtils.setLore(crashMap.get(33), "§7" + num + "§70", 0);
-        }else if (!num.contains(".")){
-            ItemUtils.setLore(crashMap.get(33), "§7" + num + "§9.§70", 0);
+
+        // 点券出售不能小数
+        if (point) {
+            crashMap.remove(33);
+        }else {
+            if (num.endsWith(".")) {
+                ItemUtils.setLore(crashMap.get(33), "§7" + num + "§70", 0);
+            }else if (!num.contains(".")){
+                ItemUtils.setLore(crashMap.get(33), "§7" + num + "§9.§70", 0);
+            }
         }
 
         return crashMap;
@@ -170,7 +176,13 @@ public class SalePage implements ViewPage {
                 if (!done) auction = !auction;
                 break;
             case 17:
-                if (!done && Config.POINT) point = !point;
+                if (!done && Config.POINT) {
+                    point = !point;
+                    if (point){
+                        // 点券不能有小数
+                        if (num.contains(".")) num = num.substring(0, num.indexOf("."));
+                    }
+                }
                 break;
             case 31:
                 if (num.length() > 0) num = num.substring(0, num.length()-1);
