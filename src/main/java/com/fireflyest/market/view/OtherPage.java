@@ -149,9 +149,9 @@ public class OtherPage implements ViewPage {
         // 下一页
         itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
         ItemStack market = MarketButton.MARKET.clone();
-        ItemUtils.addLore(market, "§f前往主市场");
         itemMap.put(51, market);
         ItemStack send = MarketButton.SEND.clone();
+        ItemUtils.setItemValue(send, String.format("send %s", target));
         ItemUtils.addLore(send, "§f拖住物品点击这里");
         itemMap.put(52, send);
         itemMap.put(53, MarketButton.CLOSE);

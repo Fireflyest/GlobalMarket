@@ -50,7 +50,6 @@ public class YamlUtils {
             if(method == null) continue;
             try {
                 field.set(null, method.invoke(config, key));
-//                System.out.println(key +  " = " + method.invoke(config, key));
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -69,12 +68,12 @@ public class YamlUtils {
                 boolean mkdirs = file.getParentFile().mkdirs();
                 boolean create =  file.createNewFile();
                 if (Config.DEBUG){
-                    Bukkit.getServer().getLogger().severe(mkdirs + " and " + create + ymlName+".yml");
+                    plugin.getLogger().severe(mkdirs + " and " + create + ymlName+".yml");
                 }
                 plugin.saveResource(ymlName+".yml", true);
             } catch (IOException e) {
                 e.printStackTrace();
-                Bukkit.getServer().getLogger().severe(String.format("无法创建文件 %s!", ymlName+".yml"));
+                plugin.getLogger().severe(String.format("无法创建文件 %s!", ymlName+".yml"));
             }
         }
 

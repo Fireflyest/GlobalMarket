@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    界面交互 0
     点券支持 1
     拍卖 2
     统计书 3
@@ -53,6 +52,7 @@ public class GlobalMarket extends JavaPlugin{
     价格统计 7
     交易 8
     收购 9
+    界面交互 √
     商品编辑 √
     快捷上架 √
      */
@@ -86,6 +86,11 @@ public class GlobalMarket extends JavaPlugin{
         if (economy == null) setupEconomy();
         return economy;
     }
+
+    public static JavaPlugin getPlugin() {
+        return plugin;
+    }
+
     public static ViewGuide getGuide() {
         return guide;
     }
@@ -162,7 +167,7 @@ public class GlobalMarket extends JavaPlugin{
         YamlUtils.iniYamlUtils(plugin);
 
         if(Config.SQL){
-            if(Config.DEBUG) Bukkit.getLogger().info("使用数据库存储");
+            if(Config.DEBUG) plugin.getLogger().info("使用数据库存储");
             // 数据库访问对象
             try {
                 storage = new SqlStorage(Config.URL, Config.USER, Config.PASSWORD);
@@ -171,7 +176,7 @@ public class GlobalMarket extends JavaPlugin{
                 e.printStackTrace();
             }
         }else{
-            if(Config.DEBUG) Bukkit.getLogger().info("使用本地存储");
+            if(Config.DEBUG) plugin.getLogger().info("使用本地存储");
             // 本地数据库访问对象
             String url = "jdbc:sqlite:" + getDataFolder() + "/storage.db";
 
