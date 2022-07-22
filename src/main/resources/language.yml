@@ -26,7 +26,7 @@ CommandError: '§6✦§f输入指令有误或该功能未开启(§3输入/market
 NotEnoughMoney: '§6✦§f%s没有足够的麦块币'
 NotEnoughItem: '§6✦§f没有足够的物品'
 NotEnoughSpace: '§6✦§f你没有足够的上架空间'
-NotPermission: '§6✦§f你没有使用该命令的权限'
+NotPermission: '§6✦§f你没有使用该命令的权限 %permission%'
 NotSelling: '§6✦§f商品在预售阶段'
 SellItem: '§6✦§f成功上架，可输入 §3/market mine §f查看自己出售的物品'
 BuyItem: '§6✦§f成功购买，请到背包查看吧'
@@ -47,11 +47,12 @@ SignError: '§6✦§f你的背包已满，无法签收物品'
 UserError: '§6✦§f玩家不存在'
 DataNull: '§6✦§f暂无数据'
 SendMail: '§6✦§f邮件已发送'
+SendItem: '§6✦§f使用指令 §3/market send [玩家] <数量> §f来邮寄物品，或将物品拖拽到菜单按钮上'
 HasMail: '§6✦§f你有新的邮件，打开看看吧'
 LimitMail: '§6✦§f如果邮件数量到达上限，将强制签收'
 Tax: '§6✦§f扣除§3%s的税收，金额为§3%s'
 TaxBurden: "§6✦§f您无法承担赋税！"
-SearchItem: '§6✦§f使用指令 §3/market search [物品] §f来搜索某个物品'
+SearchItem: '§6✦§f使用指令 §3/market search [物品] §f来搜索某个物品，或将物品拖拽到菜单按钮上'
 UnlimitedItem: "§6✦§f商品成功设置为无限"
 DiscountItem: "§6✦§f商品成功打§3%s§f折"
 RepriceItem: "§6✦§f商品修改价格为 §3%s§f"

@@ -34,6 +34,7 @@ public class Language {
     public static String USER_ERROR;
     public static String DATA_NULL;
     public static String SEND_MAIL;
+    public static String SEND_ITEM;
     public static String HAS_MAIL;
     public static String LIMIT_MAIL;
     public static String TAX;
