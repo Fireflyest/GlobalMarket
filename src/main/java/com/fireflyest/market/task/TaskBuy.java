@@ -93,7 +93,7 @@ public class TaskBuy extends Task{
             hasMoney = economy.has(player, cost);
         }
         if (!hasMoney){
-            this.executeInfo(String.format(Language.NOT_ENOUGH_MONEY, "你"));
+            this.executeInfo(Language.NOT_ENOUGH_MONEY.replace("%target%", ""));
             guide.refreshPage(playerName);
             return then;
         }

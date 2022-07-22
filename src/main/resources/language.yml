@@ -22,6 +22,7 @@ MailFromBuy: "商品购买"
 MailFromAuction: "拍卖行"
 MailFromCancel: "商品下架"
 
+# 提示文本 %s %player% %id% %...%等是变量
 CoinSymbol: '§6ɞ'
 PointSymbol: '§dɗ'
 CommandError: '§6✦§f输入指令有误或该功能未开启(§3输入/market help 查看帮助§f)'
