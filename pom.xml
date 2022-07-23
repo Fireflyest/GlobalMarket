@@ -26,11 +26,11 @@
                     <relocations>
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
-                            <shadedPattern>com.fireflyest.gui</shadedPattern>
+                            <shadedPattern>com.fireflyest.market.xseries</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.fireflyest.gui</shadedPattern>
+                            <shadedPattern>com.fireflyest.market.bstats</shadedPattern>
                         </relocation>
                     </relocations>
                     <artifactSet>
@@ -61,6 +61,8 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>

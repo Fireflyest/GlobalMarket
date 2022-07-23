@@ -5,9 +5,9 @@ import com.fireflyest.market.bean.User;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.util.SerializeUtil;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.util.ItemUtils;
+import org.fireflyest.craftgui.util.SerializeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

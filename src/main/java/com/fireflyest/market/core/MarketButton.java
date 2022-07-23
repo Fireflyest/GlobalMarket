@@ -317,6 +317,10 @@ public class MarketButton {
     private MarketButton(){
     }
 
+    public static void diyButton(){
+        
+    }
+
     public static void loreMailItem(ItemStack item, Mail mail){
         if (!"".equals(mail.getInfo())) ItemUtils.addLore(item, "§7by " + mail.getInfo());
         ItemUtils.addLore(item, "");
@@ -337,8 +341,8 @@ public class MarketButton {
 
     public static void loreSale(ItemStack item, Sale sale){
         ItemUtils.addLore(item, "");
-        // info
-        if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
+
+//        if (!"null".equals(sale.getDesc())) ItemUtils.addLore(item, "§f" + sale.getDesc());
         ItemUtils.addLore(item, "§e§m·                         ·");
 
         String symbol = (sale.isPoint() ? Language.POINT_SYMBOL : Language.COIN_SYMBOL);
