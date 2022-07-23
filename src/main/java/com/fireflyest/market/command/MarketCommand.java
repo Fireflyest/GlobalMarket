@@ -210,6 +210,14 @@ public class MarketCommand implements CommandExecutor {
                 player.closeInventory();
                 player.sendMessage(Language.SEARCH_ITEM);
                 break;
+            case "delete":
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                player.closeInventory();
+                player.sendMessage(Language.DELETE_ITEM);
+                break;
             case "send":
                 if(player == null) {
                     sender.sendMessage(Language.PLAYER_COMMAND);

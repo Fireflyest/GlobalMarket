@@ -48,6 +48,7 @@ public class MarketTab implements TabCompleter {
         user.add("reprice");
         user.add("desc");
         user.add("search");
+        user.add("delete");
 
         op.addAll(user);
     }

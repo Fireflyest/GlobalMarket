@@ -1,6 +1,7 @@
 package com.fireflyest.market;
 
 import com.fireflyest.market.bean.*;
+import com.fireflyest.market.command.MarketAdminCommand;
 import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
@@ -66,6 +67,7 @@ public class GlobalMarket extends JavaPlugin{
     public static final String AFFAIR_VIEW = "market.affair";
     public static final String SALE_VIEW = "market.sale";
     public static final String SEARCH_VIEW = "market.search";
+    public static final String ADMIN_VIEW = "market.admin";
 
     private static JavaPlugin plugin;
 
@@ -116,10 +118,14 @@ public class GlobalMarket extends JavaPlugin{
         this.getServer().getPluginManager().registerEvents( new PlayerEventListener(), this);
 
         // 注册指令
-        PluginCommand command = this.getCommand("market");
-        if(command!=null){
-            command.setExecutor(new MarketCommand());
-            command.setTabCompleter(new MarketTab());
+        PluginCommand commandMarket = this.getCommand("market");
+        if(commandMarket!=null){
+            commandMarket.setExecutor(new MarketCommand());
+            commandMarket.setTabCompleter(new MarketTab());
+        }
+        PluginCommand commandMarketAdmin = this.getCommand("marketadmin");
+        if(commandMarketAdmin!=null){
+            commandMarketAdmin.setExecutor(new MarketAdminCommand());
         }
 
         // 初始化管理
@@ -227,6 +233,7 @@ public class GlobalMarket extends JavaPlugin{
         guide.addView(AFFAIR_VIEW, new AffairView(Language.PLUGIN_NAME));
         guide.addView(SALE_VIEW, new SaleView(Language.PLUGIN_NAME));
         guide.addView(SEARCH_VIEW, new SearchView(Language.PLUGIN_NAME));
+        guide.addView(ADMIN_VIEW, new AdminView(Language.PLUGIN_NAME));
     }
 
     /**

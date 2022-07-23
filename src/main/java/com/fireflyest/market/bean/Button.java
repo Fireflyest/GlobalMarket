@@ -11,6 +11,12 @@ public class Button {
     public Button() {
     }
 
+    public Button(String target, String material, String display) {
+        this.target = target;
+        this.material = material;
+        this.display = display;
+    }
+
     public String getTarget() {
         return target;
     }

@@ -1,6 +1,8 @@
 package com.fireflyest.market.core;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.fireflyest.market.GlobalMarket;
+import com.fireflyest.market.bean.Button;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.data.Language;
@@ -10,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.item.ViewItemBuilder;
 import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 public class MarketButton {
 
@@ -27,6 +32,7 @@ public class MarketButton {
     public static ItemStack CLASSIFY;
     public static ItemStack SEND;
     public static ItemStack SIGN;
+    public static ItemStack DELETE;
     public static ItemStack MAIL;
     public static ItemStack TRANSPORT;
     public static ItemStack POINT;
@@ -36,7 +42,6 @@ public class MarketButton {
     public static ItemStack DONE;
     public static ItemStack EDIT;
     public static ItemStack CLEAR;
-    public static ItemStack UNDO;
     public static ItemStack DOT;
     public static ItemStack NUM0;
     public static ItemStack NUM1;
@@ -64,12 +69,6 @@ public class MarketButton {
     public static ItemStack PAGE_NEXT;
     public static ItemStack PAGE_PRE_DISABLE;
     public static ItemStack PAGE_NEXT_DISABLE;
-    public static ItemStack ADD_1;
-    public static ItemStack ADD_10;
-    public static ItemStack ADD_100;
-    public static ItemStack REDUCE_1;
-    public static ItemStack REDUCE_10;
-    public static ItemStack REDUCE_100;
 
     public static ItemStack EDIBLE;
     public static ItemStack ITEM;
@@ -87,6 +86,7 @@ public class MarketButton {
                 .command("mine")
                 .build();
         OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
+                .name("§3§l%player%的商店")
                 .build();
         MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
                 .name("§3§l市场")
@@ -127,6 +127,10 @@ public class MarketButton {
                 .name("§3§l全部签收")
                 .command("sign")
                 .build();
+        DELETE = new ViewItemBuilder(XMaterial.LAVA_BUCKET.parseMaterial())
+                .name("§3§l销毁")
+                .command("delete")
+                .build();
         SEND = new ViewItemBuilder(XMaterial.END_PORTAL_FRAME.parseMaterial())
                 .name("§3§l邮寄")
                 .command("send")
@@ -161,9 +165,6 @@ public class MarketButton {
                 .build();
         CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
                 .name("§3§l消除")
-                .build();
-        UNDO = new ViewItemBuilder(XMaterial.STRING.parseMaterial())
-                .name("§3§l还原")
                 .build();
         DOT = new ViewItemBuilder(XMaterial.STONE_BUTTON.parseMaterial())
                 .name("§3§l.")
@@ -248,30 +249,6 @@ public class MarketButton {
         PAGE_PRE_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
                 .name("§7§l◁")
                 .build();
-        ADD_1 = new ViewItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseMaterial())
-                .name("§e§l+1")
-                .command("add1")
-                .build();
-        ADD_10 = new ViewItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseMaterial())
-                .name("§e§l+10")
-                .command("add10")
-                .build();
-        ADD_100 = new ViewItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseMaterial())
-                .name("§e§l+100")
-                .command("add100")
-                .build();
-        REDUCE_1 = new ViewItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial())
-                .name("§c§l-1")
-                .command("reduce1")
-                .build();
-        REDUCE_10 = new ViewItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial())
-                .name("§c§l-10")
-                .command("reduce10")
-                .build();
-        REDUCE_100 = new ViewItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial())
-                .name("§c§l-100")
-                .command("reduce100")
-                .build();
 
         EDIBLE  = new ViewItemBuilder(XMaterial.CARROT.parseMaterial())
                 .name("§3§l食物")
@@ -318,7 +295,16 @@ public class MarketButton {
     }
 
     public static void diyButton(){
-        
+        List<Button> buttonList = GlobalMarket.getData().query(Button.class);
+        for (Button button : buttonList) {
+            try {
+                Field field = MarketButton.class.getField(button.getTarget().toUpperCase());
+                ItemStack buttonItem = ((ItemStack) field.get(null));
+                buttonItem.setType(Material.valueOf(button.getMaterial()));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public static void loreMailItem(ItemStack item, Mail mail){
