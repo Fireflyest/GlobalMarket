@@ -5,11 +5,11 @@ import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ChatUtils;
-import com.fireflyest.market.util.SerializeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.util.ItemUtils;
+import org.fireflyest.craftgui.util.SerializeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;

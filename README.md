@@ -1,30 +1,36 @@
+![banner](https://attachment.mcbbs.net/data/myattachment/forum/202207/11/112800bccbchfnyicwzhf2.png)
 # GlobalMarket - Free Trade Market
 ##### 一个基于游戏箱子界面的玩家交易市场插件
 在Minecraft多人游戏中，玩家在进行物品交易时，需要考虑他们在交易过程中的信任问题。
-本插件提供一个实时交易平台使玩家能够使用游戏币进行商品交易。
+为了保证玩家交易的安全性，本插件提供一个实时交易平台使玩家能够使用游戏币或点券进行商品交易。
 
-插件基于[Spigot](https://www.spigotmc.org/)核心开发，使用[ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)插件发送虚拟物品，将玩家交易商品展示在游戏容器中。
+插件基于[Spigot](https://www.spigotmc.org/)核心开发，使用ProtocolLib插件发送虚拟物品，将玩家交易商品展示在游戏容器中。
 玩家可在容器中点击物品进行对商品的查看、购买等操作。
 插件支持在1.13.x-1.18.x的服务端版本中运行。
-
-![市场图片](https://attachment.mcbbs.net/data/myattachment/forum/202007/31/182901yqwqs5dz50qwdxw6.png.thumb.jpg)
 
 ## 目录
 * [安装插件](#安装插件)
 * 功能和使用方法
-  * 出售物品
-  * 打折或修改价格
-  * 使用数据库存储
-  * 商品分类
-  * 牌子交互
-* 自定义配置
+  * 普通玩家
+    * 打折或修改价格
+    * 使用数据库存储
+    * 商品分类
+    * 牌子交互
+  * 管理员
+    * 自定义按钮
+    * 配置文件
+    * 数据统计
 * 权限与指令
 * 维护人员
 * 使用情况
 
 ## 安装插件
-在安装插件前，先确保已经添加前置插件[Vault](https://www.spigotmc.org/resources/vault.34315/)、ProtocolLib和CraftGUI以正常加载插件。
-将插件下载后放置于plugins文件夹，并重载服务器。
+1. 确保你的服务器有一个使用前置插件[Vault](https://www.spigotmc.org/resources/vault.34315/)的经济插件
+2. 添加前置插件[ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)用于显示虚拟物品按钮
+3. 添加前置插件CraftGUI用于展示容器界面
+4. 可选前置[PlayerPoints](https://www.spigotmc.org/resources/playerpoints.80745/)用于使用点券进行交易
+5. 下载插件后将其放置于服务器的plugins文件夹内，并重载服务器。
+
 ## 功能和使用方法
 ### 出售物品
 手持要交易的物品，输入指令`/market sell 价格 数量`便可将指定数量的手持物品出售。
