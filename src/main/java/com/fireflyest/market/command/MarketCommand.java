@@ -527,10 +527,13 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.desc"));
                     return;
                 }
-                // TODO: 2022/7/23
                 Sale sale = data.queryOne(Sale.class, "id", var2);
                 if (sale == null) {
                     sender.sendMessage(Language.DATA_NULL);
+                    return;
+                }
+                if (sale.isAuction()){
+                    sender.sendMessage(Language.TYPE_ERROR);
                     return;
                 }
                 sale.setDesc(var3);
