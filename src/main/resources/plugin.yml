@@ -15,6 +15,10 @@ commands:
     description: 打开市场
     usage: /market <help>
     aliases: gm
+  marketadmin:
+    description: 市场管理
+    usage: /marketadmin
+    aliases: [gma,ma]
 
 permissions:
   market.statistic:
@@ -27,7 +31,7 @@ permissions:
     description: 会员
     default: op
   market.admin:
-    description: 设置系统商店商品
+    description: 设置系统商店商品，编辑按钮
     default: op
   market.send:
     description: 邮寄物品

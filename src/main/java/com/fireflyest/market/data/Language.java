@@ -47,6 +47,8 @@ public class Language {
     public static String REPRICE_ITEM;
     public static String DESC_ITEM;
     public static String CLASSIFY_ITEM;
+    public static String DELETE_ITEM;
+    public static String BUTTON_ITEM;
 
     public static String MAIL_BUTTON;
     public static String MAIL_HOVER;
@@ -58,6 +60,7 @@ public class Language {
     public static String MARKET_MINE_NICK;
     public static String MARKET_OTHER_NICK;
     public static String MARKET_HOME_NICK;
+    public static String MARKET_ADMIN_NICK;
     public static String MARKET_MAIN_NORMAL_NICK;
     public static String MARKET_MAIN_AUCTION_NICK;
     public static String MARKET_MAIN_RETAIL_NICK;
