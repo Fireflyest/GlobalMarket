@@ -6,18 +6,18 @@ import org.fireflyest.craftgui.api.View;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeView implements View<HomePage> {
+public class AdminView implements View<AdminPage> {
 
-    public static final String NORMAL = Language.MARKET_HOME_NICK;
+    public static final String NORMAL = Language.MARKET_ADMIN_NICK;
 
-    private final Map<String, HomePage> pageMap = new HashMap<>();
+    private final Map<String, AdminPage> pageMap = new HashMap<>();
 
-    public HomeView(String title) {
-        pageMap.put(NORMAL, new HomePage(title));
+    public AdminView(String title) {
+        pageMap.put(NORMAL, new AdminPage(title, NORMAL, 1));
     }
 
     @Override
-    public HomePage getFirstPage(String target){
+    public AdminPage getFirstPage(String target){
         return pageMap.get(target);
     }
 

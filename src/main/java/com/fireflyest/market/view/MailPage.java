@@ -201,6 +201,7 @@ public class MailPage implements ViewPage {
         itemMap.put(0, MarketButton.MINE);
         itemMap.put(9, MarketButton.MARKET);
         itemMap.put(18, MarketButton.SIGN);
+        itemMap.put(27, MarketButton.DELETE);
         itemMap.put(45, MarketButton.CLOSE);
     }
 

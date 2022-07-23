@@ -1,7 +1,9 @@
 package com.fireflyest.market.listener;
 
 import com.cryptomorin.xseries.XSound;
+import com.fireflyest.market.bean.Button;
 import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.data.Data;
 import com.fireflyest.market.task.*;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.event.ViewClickEvent;
@@ -34,6 +36,7 @@ public class PlayerEventListener implements Listener {
     private final Sound pageSound;
 
     private final ViewGuide guide;
+    private final Data data;
 
     private final MarketTasks.TaskManager taskManager;
 
@@ -44,6 +47,7 @@ public class PlayerEventListener implements Listener {
         this.pageSound = XSound.ITEM_BOOK_PAGE_TURN.parseSound();
 
         this.guide = GlobalMarket.getGuide();
+        this.data = GlobalMarket.getData();
 
         this.taskManager = MarketTasks.getTaskManager();
     }
@@ -99,9 +103,13 @@ public class PlayerEventListener implements Listener {
             return;
         }
 
-        if (value.contains("send")){
+        if (value.startsWith("send")){
             if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
             player.performCommand("market send");
+            return;
+        }
+        if (value.startsWith("button")){
+            if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
             return;
         }
 
@@ -148,6 +156,20 @@ public class PlayerEventListener implements Listener {
             String target = value.split(" ")[1];
             taskManager.putTask(new TaskSend(player.getName(), target, placeItem.clone(), 0, false));
             event.setHandBack(false);
+        }else if ("delete".equals(value)){
+            event.setHandBack(false);
+        }else if (value.contains("button")){
+            String target = value.split(" ")[1];
+            String material = event.getCursorItem().getType().name();
+            Button button = data.queryOne(Button.class, "target", target);
+            if (button == null) {
+                button = new Button(target, event.getCursorItem().getType().name(), "");
+                data.insert(button);
+            }else {
+                button.setMaterial(material);
+                data.update(button);
+            }
+            player.sendMessage(Language.BUTTON_ITEM);
         }
     }
 
