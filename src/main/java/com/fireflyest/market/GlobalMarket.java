@@ -44,13 +44,13 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    自定义按钮 6 ing
     自定义文本 5 ing
     统计书 3
     排行榜 4
     价格统计 7
     交易 8
     收购 9
+    自定义按钮 √
     拍卖 √
     点券支持 √
     界面交互 √
