@@ -1,15 +1,13 @@
 package com.fireflyest.market;
 
+import com.fireflyest.market.bean.*;
+import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
 import com.fireflyest.market.task.TaskHeat;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.fireflyest.craftgui.api.ViewGuide;
-import com.fireflyest.market.bean.Mail;
-import com.fireflyest.market.bean.Note;
-import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.bean.User;
 import com.fireflyest.market.command.MarketCommand;
 import com.fireflyest.market.command.MarketTab;
 import com.fireflyest.market.core.MarketManager;
@@ -45,10 +43,10 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    自定义按钮 6
+    自定义按钮 6 ing
+    自定义文本 5 ing
     统计书 3
     排行榜 4
-    自定义文本 5 ing
     价格统计 7
     交易 8
     收购 9
@@ -128,6 +126,8 @@ public class GlobalMarket extends JavaPlugin{
         MarketManager.initMarketManager();
         // 任务处理线程
         MarketTasks.initMarketTasks(this);
+        // 自定义按钮
+        MarketButton.diyButton();
 
         // 若有自动下架，建立监控线程
         if(Config.LIMIT_TIME == -1) return;
@@ -204,6 +204,7 @@ public class GlobalMarket extends JavaPlugin{
         data.createTable(Sale.class);
         data.createTable(Mail.class);
         data.createTable(Note.class);
+        data.createTable(Button.class);
     }
 
     /**

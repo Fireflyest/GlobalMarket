@@ -1,5 +1,3 @@
 # Project exclude paths
 /target/
 /.idea/
-/dependency-reduced-pom.xml
-/src/main/java/com/fireflyest/market/SqlTest.java

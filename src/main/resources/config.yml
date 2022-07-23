@@ -9,10 +9,11 @@ Url: 'jdbc:mysql://localhost:3306/mc_market?useSSL=false&serverTimezone=UTC'
 User: 'root'
 Password: '123456'
 
-# 点券支持
-Point: true
-# Collect: false 该功能在版本${project.version}未完成，请勿改成true
-# Trade: false 该功能在版本${project.version}未完成，请勿改成true
+# 点券交易
+Point: false
+
+# Collect: false
+# Trade: false
 
 # 物品几天后自动下架，请输入正整数，输入-1为关闭限制
 LimitTime: 7
