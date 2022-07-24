@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    自定义文本 5 ing
+    多语言 自定义文本 5 ing
     统计书 3
     排行榜 4
     价格统计 7
@@ -70,7 +70,7 @@ public class GlobalMarket extends JavaPlugin{
     public static final String SEARCH_VIEW = "market.search";
     public static final String ADMIN_VIEW = "market.admin";
 
-    private static JavaPlugin plugin;
+    private static GlobalMarket plugin;
 
     private static Storage storage;
     private static Data data;
@@ -95,7 +95,7 @@ public class GlobalMarket extends JavaPlugin{
         return pointsAPI;
     }
 
-    public static JavaPlugin getPlugin() {
+    public static GlobalMarket getPlugin() {
         return plugin;
     }
 
@@ -183,7 +183,7 @@ public class GlobalMarket extends JavaPlugin{
         if (Config.POINT) pointsAPI = PlayerPoints.getInstance().getAPI();
     }
 
-    private void setupData(){
+    public void setupData(){
         YamlUtils.iniYamlUtils(plugin);
 
         if(Config.SQL){
@@ -218,7 +218,7 @@ public class GlobalMarket extends JavaPlugin{
     /**
      * 界面初始化
      */
-    private void setupGuide() {
+    public void setupGuide() {
         RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer().getServicesManager().getRegistration(ViewGuide.class);
         if (rsp == null) {
             plugin.getLogger().warning("Gui not found!");

@@ -2,6 +2,7 @@ package com.fireflyest.market.command;
 
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
+import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
@@ -19,10 +20,12 @@ public class MarketAdminCommand  implements CommandExecutor {
 
     private final ViewGuide guide;
     private final MarketTasks.TaskManager taskManager;
+    private final GlobalMarket globalMarket;
 
     public MarketAdminCommand() {
         this.guide = GlobalMarket.getGuide();
         this.taskManager = MarketTasks.getTaskManager();
+        this.globalMarket = GlobalMarket.getPlugin();
     }
 
     @Override
@@ -42,8 +45,8 @@ public class MarketAdminCommand  implements CommandExecutor {
 //                this.executeCommand(sender, args[0], args[1], args[2]);
 //                break;
             default:
+                this.executeCommand(sender);
         }
-        this.executeCommand(sender);
 
         return true;
     }
@@ -65,17 +68,36 @@ public class MarketAdminCommand  implements CommandExecutor {
 
     private void executeCommand(CommandSender sender, String var1){
         Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+
+        if(!sender.hasPermission("market.admin")){
+            sender.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.admin"));
             return;
         }
 
-        if(!player.hasPermission("market.admin")){
-            player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.admin"));
-            return;
+        switch (var1){
+            case "reload":
+                sender.sendMessage(Language.RELOADING);
+                globalMarket.setupData();
+                globalMarket.setupGuide();
+                MarketButton.diyButton();
+                sender.sendMessage(Language.RELOADED);
+                break;
+            case "test":
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                for (int i = 0; i < 60; i++) {
+                    player.performCommand(String.format( "market sell %d 1", i));
+                }
+                break;
+            case "version":
+                sender.sendMessage(Language.TITLE + "The plugin version is " + Language.VERSION);
+                break;
+            case "update":
+                break;
+            default:
         }
-
-        // TODO: 2022/7/24  
         
     }
 

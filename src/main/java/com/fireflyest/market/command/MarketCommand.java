@@ -102,19 +102,6 @@ public class MarketCommand implements CommandExecutor {
                         "§9其中§7p§9表玩家，§7a§9表数量，§7m§9表价格，§7<>§9表示可选，§7[]§9表示必填"
                         );
                 break;
-            case "reload":
-                if(!sender.isOp())return;
-                sender.sendMessage(Language.RELOADING);
-                YamlUtils.loadConfig();
-                sender.sendMessage(Language.RELOADED);
-                break;
-            case "test":
-                if (player != null && player.isOp()){
-                    for (int i = 0; i < 60; i++) {
-                        player.performCommand(String.format( "market sell %d 1", i));
-                    }
-                }
-                break;
             case "mine":{
                 if(player == null) {
                     sender.sendMessage(Language.PLAYER_COMMAND);
