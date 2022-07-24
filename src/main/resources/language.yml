@@ -1,12 +1,12 @@
 Version: '${project.version}'
 PlayerCommand: '§c该指令只能由玩家使用!'
-Reloading: '§f配置文件重载中...'
-Reloaded: '§f配置文件重载完成!'
+Reloading: '§f配置重载中...'
+Reloaded: '§f配置重载完成!'
 
 #显示在提示信息
 Title: '§6✦§f'
 #显示在界面
-PluginName: '§f§l[§0GlobeMarket§f§l]'
+PluginName: '§f§l[§2§lGlobe§e§lMarket§f§l]'
 MarketHomeNick: '导航界面'
 MarketAdminNick: '管理界面'
 MarketMailNick: '%s的邮箱'
@@ -64,3 +64,5 @@ DescItem: "§6✦§f成功给商品§3%s§f设置简介"
 ClassifyItem: "§6✦§f物品所属分类§3%classify%"
 DeleteItem: "§6✦§f将物品拖拽到菜单的销毁按钮上进行销毁"
 ButtonItem: "§6✦§f新按钮将在下次重新启动时生效"
+
+# 按钮展示名称
