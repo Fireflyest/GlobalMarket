@@ -18,8 +18,8 @@
     * 牌子交互
   * 管理员
     * 自定义按钮
-    * 配置文件
     * 数据统计
+* 配置文件
 * 权限与指令
 * 维护人员
 * 使用情况
@@ -29,7 +29,7 @@
 2. 添加前置插件[ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)用于显示虚拟物品按钮
 3. 添加前置插件CraftGUI用于展示容器界面
 4. 可选前置[PlayerPoints](https://www.spigotmc.org/resources/playerpoints.80745/)用于使用点券进行交易
-5. 下载插件后将其放置于服务器的plugins文件夹内，并重载服务器。
+5. 下载本插件后将其放置于服务器的plugins文件夹内，并重载服务器。
 
 ## 功能和使用方法
 ### 出售物品
