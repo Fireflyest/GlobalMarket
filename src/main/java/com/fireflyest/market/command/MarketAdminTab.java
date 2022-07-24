@@ -15,10 +15,15 @@ public class MarketAdminTab implements TabCompleter {
     public MarketAdminTab(){
         op.add("cancel");
         op.add("black");
+        op.add("info");
+        op.add("version");
+        op.add("update");
+        op.add("reload");
+        op.add("test");
     }
 
     public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args){
-        if(command.getName().equalsIgnoreCase("market") || command.getName().equalsIgnoreCase("gm")){
+        if(command.getName().equalsIgnoreCase("marketadmin") || command.getName().equalsIgnoreCase("gma")){
             List<String> tab = new ArrayList<>();
             if(args.length == 1){
                 for(String sub : op){

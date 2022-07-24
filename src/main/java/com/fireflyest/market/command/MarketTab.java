@@ -18,9 +18,6 @@ public class MarketTab implements TabCompleter {
     };
 
     public MarketTab(){
-        op.add("reload");
-        op.add("default");
-
         op.add("admin");
         op.add("statistic");
 
