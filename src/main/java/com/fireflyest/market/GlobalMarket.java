@@ -2,6 +2,7 @@ package com.fireflyest.market;
 
 import com.fireflyest.market.bean.*;
 import com.fireflyest.market.command.MarketAdminCommand;
+import com.fireflyest.market.command.MarketAdminTab;
 import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.TaskCancel;
@@ -126,6 +127,7 @@ public class GlobalMarket extends JavaPlugin{
         PluginCommand commandMarketAdmin = this.getCommand("marketadmin");
         if(commandMarketAdmin!=null){
             commandMarketAdmin.setExecutor(new MarketAdminCommand());
+            commandMarketAdmin.setTabCompleter(new MarketAdminTab());
         }
 
         // 初始化管理

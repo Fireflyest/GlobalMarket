@@ -14,11 +14,11 @@ commands:
   market:
     description: 打开市场
     usage: /market <help>
-    aliases: gm
+    aliases: mk
   marketadmin:
     description: 市场管理
     usage: /marketadmin
-    aliases: [gma,ma]
+    aliases: [mka,gma,ma]
 
 permissions:
   market.statistic:

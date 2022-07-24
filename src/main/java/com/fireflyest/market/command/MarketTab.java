@@ -54,11 +54,11 @@ public class MarketTab implements TabCompleter {
     }
 
     public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args){
-        if(command.getName().equalsIgnoreCase("market") || command.getName().equalsIgnoreCase("gm")){
+        if(command.getName().equalsIgnoreCase("market") || command.getName().equalsIgnoreCase("mk")){
             List<String> tab = new ArrayList<>();
             if(args.length == 1){
                 for(String sub : sender.isOp()?op:user){
-                    if(sub.contains(args[0]))tab.add(sub);
+                    if(sub.startsWith(args[0]))tab.add(sub);
                 }
             }else if(args.length == 2){
                 if("sell".equalsIgnoreCase(args[0]) || "auction".equalsIgnoreCase(args[0])){
