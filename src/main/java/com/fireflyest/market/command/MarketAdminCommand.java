@@ -2,7 +2,6 @@ package com.fireflyest.market.command;
 
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
@@ -31,8 +30,7 @@ public class MarketAdminCommand  implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!label.equalsIgnoreCase("marketadmin")
-                && !label.equalsIgnoreCase("gma")
-                && !label.equalsIgnoreCase("ma")) return true;
+                && !label.equalsIgnoreCase("mka")) return true;
 
         switch (args.length) {
             case 1:
@@ -76,10 +74,10 @@ public class MarketAdminCommand  implements CommandExecutor {
 
         switch (var1){
             case "reload":
-                sender.sendMessage(Language.RELOADING);
+                sender.sendMessage(Language.PLUGIN_NAME + Language.RELOADING);
                 globalMarket.setupData();
                 globalMarket.setupGuide();
-                sender.sendMessage(Language.RELOADED);
+                sender.sendMessage(Language.PLUGIN_NAME + Language.RELOADED);
                 break;
             case "test":
                 if(player == null) {

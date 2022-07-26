@@ -23,7 +23,7 @@ public class MarketAdminTab implements TabCompleter {
     }
 
     public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args){
-        if(command.getName().equalsIgnoreCase("marketadmin") || command.getName().equalsIgnoreCase("gma")){
+        if(command.getName().equalsIgnoreCase("marketadmin") || command.getName().equalsIgnoreCase("mka")){
             List<String> tab = new ArrayList<>();
             if(args.length == 1){
                 for(String sub : op){

@@ -3,7 +3,7 @@ name: GlobalMarket
 prefix: GlobalMarket
 version: '${project.version}'
 description: 环球市场插件，作者QQ746969484(备注来意)
-api-version: 1.13
+api-version: 1.14
 authors: [Fireflyest]
 website: https://www.mcbbs.net/thread-1090611-1-1.html
 depend: [Vault,CraftGUI]
@@ -18,7 +18,7 @@ commands:
   marketadmin:
     description: 市场管理
     usage: /marketadmin
-    aliases: [mka,gma,ma]
+    aliases: [mka]
 
 permissions:
   market.statistic:

@@ -189,7 +189,7 @@ public class GlobalMarket extends JavaPlugin{
         YamlUtils.iniYamlUtils(plugin);
 
         if(Config.SQL){
-            if(Config.DEBUG) plugin.getLogger().info("使用数据库存储");
+            if(Config.DEBUG) plugin.getLogger().info("Using remote database.");
             // 数据库访问对象
             try {
                 storage = new SqlStorage(Config.URL, Config.USER, Config.PASSWORD);
@@ -198,7 +198,7 @@ public class GlobalMarket extends JavaPlugin{
                 e.printStackTrace();
             }
         }else{
-            if(Config.DEBUG) plugin.getLogger().info("使用本地存储");
+            if(Config.DEBUG) plugin.getLogger().info("Using sqlite.");
             // 本地数据库访问对象
             String url = "jdbc:sqlite:" + getDataFolder() + "/storage.db";
 
