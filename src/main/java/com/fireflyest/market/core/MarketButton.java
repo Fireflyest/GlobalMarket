@@ -5,6 +5,7 @@ import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Button;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.Sale;
+import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.TimeUtils;
 import org.bukkit.Material;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class MarketButton {
 
-    public static ItemStack AIR;
+    public static ItemStack AIR = new ViewItemBuilder(Material.AIR).build();
     public static ItemStack MINE;
     public static ItemStack OTHER;
     public static ItemStack MARKET;
@@ -79,8 +80,243 @@ public class MarketButton {
     public static ItemStack KNOWLEDGE;
     public static ItemStack SEARCH;
 
-    static {
-        AIR = new ViewItemBuilder(Material.AIR).build();
+    private MarketButton(){
+    }
+
+    public static void loadButton(){
+        if ("zh-CN".equals(Config.LANG)){
+            loadChineseMenuButton();
+        }else {
+            loadManuButton();
+        }
+
+        List<Button> buttonList = GlobalMarket.getData().query(Button.class);
+        for (Button button : buttonList) {
+            try {
+                Field field = MarketButton.class.getField(button.getTarget().toUpperCase());
+                ItemStack buttonItem = ((ItemStack) field.get(null));
+                buttonItem.setType(Material.valueOf(button.getMaterial()));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void loadManuButton() {
+        //<editor-fold defaultstate="collapsed" desc="translate">
+        MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
+                .name("§3§lMine")
+                .command("mine")
+                .build();
+        OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
+                .name("§3§lShop of %player%")
+                .build();
+        MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
+                .name("§3§lMarket")
+                .command(" ")
+                .build();
+        AUCTION = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§3§lAuction")
+                .command("auction")
+                .build();
+        COLLECT = new ViewItemBuilder(XMaterial.BUCKET.parseMaterial())
+                .name("§3§lCollect")
+                .command("collect")
+                .build();
+        RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
+                .name("§3§lRetail")
+                .command("retail")
+                .build();
+        WAIT = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
+                .name("§3§lWaiting")
+                .build();
+        TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
+                .name("§3§lTrade")
+                .command("trade")
+                .build();
+        DATA = new ViewItemBuilder(XMaterial.BOOK.parseMaterial())
+                .name("§3§lPersonal Data")
+                .command("data")
+                .build();
+        STATISTIC = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
+                .name("§3§lMarket Statistic")
+                .command("statistic")
+                .build();
+        CLASSIFY = new ViewItemBuilder(XMaterial.ENDER_EYE.parseMaterial())
+                .name("§3§lClassify")
+                .command("classify")
+                .build();
+        SIGN = new ViewItemBuilder(XMaterial.FEATHER.parseMaterial())
+                .name("§3§lSign All")
+                .command("sign")
+                .build();
+        DELETE = new ViewItemBuilder(XMaterial.LAVA_BUCKET.parseMaterial())
+                .name("§3§lDestroy")
+                .command("delete")
+                .build();
+        SEND = new ViewItemBuilder(XMaterial.END_PORTAL_FRAME.parseMaterial())
+                .name("§3§lSend Mail")
+                .command("send")
+                .build();
+        MAIL = new ViewItemBuilder(XMaterial.GRINDSTONE.parseMaterial())
+                .name("§3§lMail Box")
+                .command("mail")
+                .build();
+        TRANSPORT = new ViewItemBuilder(XMaterial.CHEST_MINECART.parseMaterial())
+                .name("§3§lTransport vehicle")
+                .build();
+        POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
+                .name("§3§lPoint")
+                .command("point")
+                .build();
+        COIN = new ViewItemBuilder(XMaterial.SUNFLOWER.parseMaterial())
+                .name("§3§lCoin")
+                .build();
+        ADMIN = new ViewItemBuilder(XMaterial.ITEM_FRAME.parseMaterial())
+                .name("§3§lAuthority")
+                .command("admin")
+                .build();
+        CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
+                .name("§c§lClose")
+                .command("close")
+                .build();
+        DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
+                .name("§3§lPut On Sale")
+                .build();
+        EDIT = new ViewItemBuilder(XMaterial.NAME_TAG.parseMaterial())
+                .name("§3§lEdit")
+                .build();
+        CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
+                .name("§3§lClear")
+                .build();
+        DOT = new ViewItemBuilder(XMaterial.STONE_BUTTON.parseMaterial())
+                .name("§3§l.")
+                .build();
+        NUM0 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l0")
+                .build();
+        NUM1 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l1")
+                .build();
+        NUM2 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l2")
+                .build();
+        NUM3 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l3")
+                .build();
+        NUM4 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l4")
+                .build();
+        NUM5 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l5")
+                .build();
+        NUM6 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l6")
+                .build();
+        NUM7 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l7")
+                .build();
+        NUM8 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l8")
+                .build();
+        NUM9 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l9")
+                .build();
+        BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
+                .name(" ")
+                .build();
+        SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
+                .name("§fShelves")
+                .command("sell")
+                .build();
+        SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
+                .name("§fShelves")
+                .command("sell")
+                .build();
+        SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
+                .name("§fShelves")
+                .command("sell")
+                .build();
+        BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§lBuy One")
+                .build();
+        BUY_8 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§lBuy Some")
+                .build();
+        BUY_ALL = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§lBuy All")
+                .build();
+        CANCEL = new ViewItemBuilder(XMaterial.HOPPER.parseMaterial())
+                .name("§3§lCancel")
+                .build();
+        BID_10 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
+                .name("§e§lBid")
+                .build();
+        BID_100 = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§e§lBid")
+                .build();
+        BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
+                .name("§e§lBid")
+                .build();
+        PAGE_NEXT = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
+                .name("§a§l▶")
+                .command("page next")
+                .build();
+        PAGE_PRE = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
+                .name("§a§l◀")
+                .command("page pre")
+                .build();
+        PAGE_NEXT_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
+                .name("§7§l▷")
+                .build();
+        PAGE_PRE_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
+                .name("§7§l◁")
+                .build();
+
+        EDIBLE  = new ViewItemBuilder(XMaterial.CARROT.parseMaterial())
+                .name("§3§lFoods")
+                .lore("§fThey are all edible")
+                .command("classify edible")
+                .build();
+        ITEM  = new ViewItemBuilder(XMaterial.STICK.parseMaterial())
+                .name("§3§lItem")
+                .lore("§fVarious item")
+                .command("classify item")
+                .build();
+        BLOCK  = new ViewItemBuilder(XMaterial.QUARTZ_BLOCK.parseMaterial())
+                .name("§3§lBlock")
+                .lore("§fMaterial of construction")
+                .command("classify block")
+                .build();
+        BURNABLE  = new ViewItemBuilder(XMaterial.COAL.parseMaterial())
+                .name("§3§lBurnable")
+                .lore("§fRoaring flame")
+                .command("classify burnable")
+                .build();
+        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
+                .name("§3§lInteractable")
+                .lore("§fSome block interactable")
+                .command("classify interactable")
+                .build();
+        EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
+                .name("§3§lEquip")
+                .lore("§fTo survive")
+                .command("classify equip")
+                .build();
+        KNOWLEDGE  = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
+                .name("§3§lknowledge")
+                .lore("§fKnowledge is power")
+                .command("classify knowledge")
+                .build();
+        SEARCH  = new ViewItemBuilder(XMaterial.COMPASS.parseMaterial())
+                .name("§3§lSearch")
+                .command("search")
+                .build();
+        //</editor-fold>
+    }
+
+    private static void loadChineseMenuButton() {
+        //<editor-fold defaultstate="collapsed" desc="translate">
         MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
                 .name("§3§l我的")
                 .command("mine")
@@ -289,22 +525,7 @@ public class MarketButton {
                 .name("§3§l搜索")
                 .command("search")
                 .build();
-    }
-
-    private MarketButton(){
-    }
-
-    public static void diyButton(){
-        List<Button> buttonList = GlobalMarket.getData().query(Button.class);
-        for (Button button : buttonList) {
-            try {
-                Field field = MarketButton.class.getField(button.getTarget().toUpperCase());
-                ItemStack buttonItem = ((ItemStack) field.get(null));
-                buttonItem.setType(Material.valueOf(button.getMaterial()));
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        //</editor-fold>
     }
 
     public static void loreMailItem(ItemStack item, Mail mail){
@@ -335,13 +556,11 @@ public class MarketButton {
 
         if (sale.getPrice() == -1){ // 预售物品
             ItemUtils.addLore(item, "§f[§8预售§f]");
-
             ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
+
         }else if (sale.isAuction()){ // 拍卖物品
             ItemUtils.addLore(item, "§f[§e拍卖§f]");
-
             ItemUtils.addLore(item, "§3§l拍卖人§7: §f"+sale.getOwner());
-
             if(sale.getPrice() != sale.getCost()){
                 ItemUtils.addLore(item, "§3§l起拍价§7: §f§m"+sale.getPrice());
                 ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost() + symbol);
@@ -353,9 +572,7 @@ public class MarketButton {
         }else { // 普通物品
             ItemUtils.addLore(item, "§f[§7零售§f]"
                     + (sale.isAdmin() ? "[§c无限§f]" : ""));
-
-            ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
-
+            if (! sale.isAdmin()) ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
             if(sale.getPrice() != sale.getCost()){
                 ItemUtils.addLore(item, "§3§l原价§7: §f§m"+sale.getPrice() + symbol);
                 ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost() + symbol);
