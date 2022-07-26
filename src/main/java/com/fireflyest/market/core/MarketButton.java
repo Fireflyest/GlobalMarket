@@ -337,10 +337,10 @@ public class MarketButton {
         UNLIMITED_TEXT = "[§cUnlimited§f]";
         SELLER_TEXT = "§3§lSeller§7: §f%s";
         AUCTIONER_TEXT = "§3§lAuctioner§7: §f%s";
-        START_PRICE_TEXT = "§3§lStart price§7: §f§m%s%s";
-        PRESENT_PRICE_TEXT = "§3§lPresent price§7: §f%s%s";
+        START_PRICE_TEXT = "§3§lStart Price§7: §f§m%s%s";
+        PRESENT_PRICE_TEXT = "§3§lPresent Price§7: §f%s%s";
         BID_TIME_TEXT = "§7The §3%s§7 bid";
-        ORIGINAL_PRICE_TEXT = "§3§lOriginal price§7: §f§m%s%s";
+        ORIGINAL_PRICE_TEXT = "§3§lOriginal Price§7: §f§m%s%s";
         PRICE_TEXT = "§3§lPrice§7: §f%s%s";
 
         MARKET_RECORD_TEXT = "§e§lMarket Record";

@@ -9,7 +9,6 @@ import com.fireflyest.market.util.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.ItemUtils;
 import org.fireflyest.craftgui.util.SerializeUtil;
 import org.fireflyest.craftgui.util.TranslateUtils;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +46,7 @@ public class TaskSell extends Task{
 
         String stack = SerializeUtil.serializeItemStack(item);
         String meta = SerializeUtil.serializeItemMeta(item);
-        Sale sale = new Sale(0, stack, meta, ItemUtils.getItemValue(item), new Date().getTime(), playerName, "", price, price, 3, itemName, auction, point);
+        Sale sale = new Sale(0, stack, meta, "", new Date().getTime(), playerName, "", price, price, 3, itemName, auction, point);
 
         MarketManager.addSale(sale, item.getType());
 
