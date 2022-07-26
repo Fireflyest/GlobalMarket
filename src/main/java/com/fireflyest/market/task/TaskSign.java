@@ -19,19 +19,24 @@ import java.util.UUID;
 public class TaskSign extends Task{
 
     private final int id;
+    private final boolean reflash;
 
     private final Economy economy;
     private final PlayerPointsAPI pointsAPI;
 
     public TaskSign(@NotNull String playerName, int id) {
+        this(playerName, id, true);
+    }
+
+    public TaskSign(@NotNull String playerName, int id, boolean reflash) {
         super(playerName);
         this.id = id;
+        this.reflash = reflash;
 
         this.economy = GlobalMarket.getEconomy();
         this.pointsAPI = GlobalMarket.getPointsAPI();
 
         this.type = MarketTasks.MAIL_TASK;
-
     }
 
     @Override
@@ -73,6 +78,8 @@ public class TaskSign extends Task{
         }
 
         MarketManager.removeMail(mail);
+
+        if (reflash) guide.refreshPage(playerName);
 
         return then;
     }

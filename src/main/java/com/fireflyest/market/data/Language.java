@@ -24,6 +24,7 @@ public class Language {
     public static String TYPE_ERROR;
     public static String CANCEL_ITEM;
     public static String CANCEL_ERROR;
+    public static String CANCEL_ADMIN;
     public static String AUCTION_ITEM;
     public static String AUCTION_FINISH;
     public static String AUCTION_STEP;
