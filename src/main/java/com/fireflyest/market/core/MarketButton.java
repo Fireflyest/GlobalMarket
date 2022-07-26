@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.item.ViewItemBuilder;
 import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
+import org.omg.CORBA.ORB;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -58,7 +59,6 @@ public class MarketButton {
     public static ItemStack SELL;
     public static ItemStack SELL_VIP;
     public static ItemStack SELL_OP;
-
     public static ItemStack BUY_1;
     public static ItemStack BUY_8;
     public static ItemStack BUY_ALL;
@@ -79,6 +79,22 @@ public class MarketButton {
     public static ItemStack EQUIP;
     public static ItemStack KNOWLEDGE;
     public static ItemStack SEARCH;
+
+    public static String PREPARE_TEXT;
+    public static String SELLER_TEXT;
+    public static String BUYER_TEXT;
+    public static String AUCTIONER_TEXT;
+    public static String AUCTION_TEXT;
+    public static String BID_TIME_TEXT;
+    public static String START_PRICE_TEXT;
+    public static String RETAIL_TEXT;
+    public static String UNLIMITED_TEXT;
+    public static String ORIGINAL_PRICE_TEXT;
+    public static String PRESENT_PRICE_TEXT;
+    public static String PRICE_TEXT;
+    public static String MARKET_RECORD_TEXT;
+    public static String SALE_ITEM_TEXT;
+    public static String REWARD_TEXT;
 
     private MarketButton(){
     }
@@ -103,7 +119,8 @@ public class MarketButton {
     }
 
     private static void loadManuButton() {
-        //<editor-fold defaultstate="collapsed" desc="translate">
+        // 加载物品
+        //<editor-fold defaultstate="collapsed" desc="loadManuButton">
         MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
                 .name("§3§lMine")
                 .command("mine")
@@ -313,10 +330,27 @@ public class MarketButton {
                 .command("search")
                 .build();
         //</editor-fold>
+        // 文本
+        PREPARE_TEXT = "§f[§8Prepare§f]";
+        AUCTION_TEXT = "§f[§eAuction§f]";
+        RETAIL_TEXT = "§f[§7Retail§f]";
+        UNLIMITED_TEXT = "[§cUnlimited§f]";
+        SELLER_TEXT = "§3§lSeller§7: §f%s";
+        AUCTIONER_TEXT = "§3§lAuctioner§7: §f%s";
+        START_PRICE_TEXT = "§3§lStart price§7: §f§m%s%s";
+        PRESENT_PRICE_TEXT = "§3§lPresent price§7: §f%s%s";
+        BID_TIME_TEXT = "§7The §3%s§7 bid";
+        ORIGINAL_PRICE_TEXT = "§3§lOriginal price§7: §f§m%s%s";
+        PRICE_TEXT = "§3§lPrice§7: §f%s%s";
+
+        MARKET_RECORD_TEXT = "§e§lMarket Record";
+        SALE_ITEM_TEXT = "§3§lSale item§7: %s";
+        REWARD_TEXT = "§3§lReward§7: %s%s";
     }
 
     private static void loadChineseMenuButton() {
-        //<editor-fold defaultstate="collapsed" desc="translate">
+        // 加载物品
+        //<editor-fold defaultstate="collapsed" desc="loadChineseMenuButton">
         MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
                 .name("§3§l我的")
                 .command("mine")
@@ -526,6 +560,22 @@ public class MarketButton {
                 .command("search")
                 .build();
         //</editor-fold>
+        // 文本
+        PREPARE_TEXT = "§f[§8预售§f]";
+        AUCTION_TEXT = "§f[§e拍卖§f]";
+        RETAIL_TEXT = "§f[§7零售§f]";
+        UNLIMITED_TEXT = "[§c无限§f]";
+        SELLER_TEXT = "§3§l卖家§7: §f%s";
+        AUCTIONER_TEXT = "§3§l拍卖人§7: §f%s";
+        START_PRICE_TEXT = "§3§l起拍价§7: §f§m%s%s";
+        PRESENT_PRICE_TEXT = "§3§l现价§7: §f%s%s";
+        BID_TIME_TEXT = "§7第§3%s§7次叫价";
+        ORIGINAL_PRICE_TEXT = "§3§l原价§7: §f§m%s%s";
+        PRICE_TEXT = "§3§l价格§7: §f%s%s";
+
+        MARKET_RECORD_TEXT = "§e§l交易记录";
+        SALE_ITEM_TEXT = "§3§l交易物品§7: %s";
+        REWARD_TEXT = "§3§l收获§7: %s%s";
     }
 
     public static void loreMailItem(ItemStack item, Mail mail){
@@ -555,29 +605,29 @@ public class MarketButton {
         String symbol = (sale.isPoint() ? Language.POINT_SYMBOL : Language.COIN_SYMBOL);
 
         if (sale.getPrice() == -1){ // 预售物品
-            ItemUtils.addLore(item, "§f[§8预售§f]");
-            ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
+            ItemUtils.addLore(item, PREPARE_TEXT);
+            ItemUtils.addLore(item, String.format(SELLER_TEXT, sale.getOwner()));
 
         }else if (sale.isAuction()){ // 拍卖物品
-            ItemUtils.addLore(item, "§f[§e拍卖§f]");
-            ItemUtils.addLore(item, "§3§l拍卖人§7: §f"+sale.getOwner());
+            ItemUtils.addLore(item, AUCTION_TEXT);
+            ItemUtils.addLore(item, String.format(AUCTIONER_TEXT, sale.getOwner()));
             if(sale.getPrice() != sale.getCost()){
-                ItemUtils.addLore(item, "§3§l起拍价§7: §f§m"+sale.getPrice());
-                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost() + symbol);
-                ItemUtils.addLore(item, String.format("§7第§3%s§7次叫价", 3 - sale.getHeat()));
+                ItemUtils.addLore(item, String.format(START_PRICE_TEXT, sale.getPrice(), symbol));
+                ItemUtils.addLore(item, String.format(PRESENT_PRICE_TEXT, sale.getCost(), symbol));
+                ItemUtils.addLore(item, String.format(BID_TIME_TEXT, 3 - sale.getHeat()));
             }else {
-                ItemUtils.addLore(item, "§3§l起拍价§7: §f"+sale.getPrice() + symbol);
+                ItemUtils.addLore(item, String.format(START_PRICE_TEXT, sale.getPrice(), symbol));
             }
 
         }else { // 普通物品
-            ItemUtils.addLore(item, "§f[§7零售§f]"
-                    + (sale.isAdmin() ? "[§c无限§f]" : ""));
-            if (! sale.isAdmin()) ItemUtils.addLore(item, "§3§l卖家§7: §f"+sale.getOwner());
+            ItemUtils.addLore(item, RETAIL_TEXT
+                    + (sale.isAdmin() ? UNLIMITED_TEXT : ""));
+            if (! sale.isAdmin()) ItemUtils.addLore(item, String.format(SELLER_TEXT, sale.getOwner()));
             if(sale.getPrice() != sale.getCost()){
-                ItemUtils.addLore(item, "§3§l原价§7: §f§m"+sale.getPrice() + symbol);
-                ItemUtils.addLore(item, "§3§l现价§7: §f"+sale.getCost() + symbol);
+                ItemUtils.addLore(item, String.format(ORIGINAL_PRICE_TEXT, sale.getPrice(), symbol));
+                ItemUtils.addLore(item, String.format(PRESENT_PRICE_TEXT, sale.getPrice(), symbol));
             }else {
-                ItemUtils.addLore(item, "§3§l价格§7: §f"+sale.getPrice() + symbol);
+                ItemUtils.addLore(item, String.format(PRICE_TEXT, sale.getPrice(), symbol));
             }
         }
     }
@@ -585,11 +635,10 @@ public class MarketButton {
     @NotNull
     public static ItemStack getRecordItem(String name, String buyer, double cost, boolean point){
         return new ViewItemBuilder(XMaterial.WRITTEN_BOOK.parseMaterial())
-                .name("§e§l交易记录")
-                .command("record")
-                .lore("§3§l出售的物品§7: " + name)
-                .lore("§3§l买家§7: " + buyer)
-                .lore("§3§l收获§7: " + cost + (point ? Language.POINT_SYMBOL : Language.COIN_SYMBOL))
+                .name(MARKET_RECORD_TEXT)
+                .lore(String.format(SALE_ITEM_TEXT, name))
+                .lore(String.format(BUYER_TEXT, buyer))
+                .lore(String.format(REWARD_TEXT,  cost, (point ? Language.POINT_SYMBOL : Language.COIN_SYMBOL)))
                 .build();
     }
 

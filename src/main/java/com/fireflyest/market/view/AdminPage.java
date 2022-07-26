@@ -1,7 +1,6 @@
 package com.fireflyest.market.view;
 
 import com.fireflyest.market.core.MarketButton;
-import com.fireflyest.market.data.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -53,23 +52,21 @@ public class AdminPage implements ViewPage {
 
         int pos = 18, num = -1;
         for (Field field : MarketButton.class.getDeclaredFields()) {
-            if ("instance".equals(field.getName()) || "AIR".equals(field.getName())) continue;
+            if (field.getType() != ItemStack.class || "AIR".equals(field.getName())) continue;
             num++;
             if (num < (page-1)*33){
                 continue;
             }
             String key = field.getName().toLowerCase();
-            if (field.getType().equals(ItemStack.class)){
-                ItemStack button;
-                try {
-                    button = ((ItemStack) field.get(null)).clone();
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-                ItemUtils.setItemValue(button, "button " + key);
-                crashMap.put(pos, button);
-                pos++;
+            ItemStack button;
+            try {
+                button = ((ItemStack) field.get(null)).clone();
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
+            ItemUtils.setItemValue(button, "button " + key);
+            crashMap.put(pos, button);
+            pos++;
             if (pos > 50) break;
         }
 
