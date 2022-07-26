@@ -5,6 +5,7 @@ public class Config {
     public static boolean DEBUG;
 
     public static String VERSION;
+    public static String LANG;
     public static boolean SQL;
     public static String URL;
     public static String USER;

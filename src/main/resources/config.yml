@@ -3,6 +3,9 @@ Version: '${project.version}'
 # 反馈bug联系QQ: 746969484
 Debug: false
 
+# 语言，除了zh-CN其他都是英语
+Lang: zh-CN
+
 # SQL参数(高一点的版本需要在url加上'useSSL=false')
 Sql: false
 Url: 'jdbc:mysql://localhost:3306/mc_market?useSSL=false&serverTimezone=UTC'
