@@ -3,6 +3,17 @@ PlayerCommand: '§c该指令只能由玩家使用!'
 Reloading: '§f配置重载中...'
 Reloaded: '§f配置重载完成!'
 
+Help: '§e§m =               §f§l[§aGlobe§eMarket§f§l]§e§m               = §r\n
+§b/market                             §f - 环球市场\n
+§b/market sell [m] <a>              §f - 出售物品\n
+§b/market auction [m] <a>          §f - 拍卖物品\n
+§b/market discount [id] [a]        §f - 商品打折\n
+§b/market send [p] <a>             §f - 发送邮件\n
+§b/market other [p]                 §f - 他人商店\n
+§b/market quick                      §f - 快捷上架\n
+§b/market search [..]               §f - 搜索物品\n
+§9其中§7p§9表玩家，§7a§9表数量，§7m§9表价格，§7<>§9表示可选，§7[]§9表示必填'
+
 #显示在提示信息
 Title: '§6✦§f'
 #显示在界面
