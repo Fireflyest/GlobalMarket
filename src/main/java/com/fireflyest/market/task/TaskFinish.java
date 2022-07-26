@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.ItemUtils;
 import org.fireflyest.craftgui.util.SerializeUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -98,7 +97,6 @@ public class TaskFinish extends Task{
         }
         // 发送物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-        if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
         then.add(new TaskSend(Language.MAIL_FROM_AUCTION, buyer, item));
 
         // 更新市场
