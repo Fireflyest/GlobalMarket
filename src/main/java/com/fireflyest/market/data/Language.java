@@ -3,6 +3,7 @@ package com.fireflyest.market.data;
 public class Language {
 
     public static String VERSION;
+    public static String HELP;
     public static String TITLE;
     public static String PLAYER_COMMAND;
     public static String RELOADING;
