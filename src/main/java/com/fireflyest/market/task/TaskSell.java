@@ -59,7 +59,7 @@ public class TaskSell extends Task{
         // 广播
         if(!Config.SELL_BROADCAST || price == -1) return then;
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            ChatUtils.sendItemButton(onlinePlayer, auction, item, String.format("/market affair %s", sale.getId()), playerName);
+            ChatUtils.sendItemButton(onlinePlayer, item, String.format("/market affair %s", sale.getId()), playerName);
         }
         return then;
     }

@@ -152,7 +152,6 @@ public class OtherPage implements ViewPage {
         itemMap.put(51, market);
         ItemStack send = MarketButton.SEND.clone();
         ItemUtils.setItemValue(send, String.format("send %s", target));
-        ItemUtils.addLore(send, "§f拖住物品点击这里");
         itemMap.put(52, send);
         itemMap.put(53, MarketButton.CLOSE);
     }

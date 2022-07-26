@@ -6,6 +6,10 @@ import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
+import com.fireflyest.market.util.ChatUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.fireflyest.craftgui.util.SerializeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -51,6 +55,12 @@ public class TaskEdit extends Task{
             sale.setPrice(price);
             sale.setAuction(auction);
             sale.setPoint(point);
+
+            if(Config.SELL_BROADCAST){
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    ChatUtils.sendItemButton(onlinePlayer, SerializeUtil.deserialize(sale.getStack(), sale.getMeta()), String.format("/market affair %s", sale.getId()), playerName);
+                }
+            }
         }
         sale.setCost(price);
 
