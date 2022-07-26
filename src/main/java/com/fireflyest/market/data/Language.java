@@ -18,6 +18,7 @@ public class Language {
     public static String NOT_PERMISSION;
     public static String NOT_SELLING;
     public static String SELL_ITEM;
+    public static String SELL_ITEM_BROADCAST;
     public static String BUY_ITEM;
     public static String BUY_ERROR;
     public static String TYPE_ERROR;
@@ -56,6 +57,7 @@ public class Language {
     public static String MAIL_FROM_BUY;
     public static String MAIL_FROM_AUCTION;
     public static String MAIL_FROM_CANCEL;
+    public static String MAIL_FULL;
 
     public static String MARKET_MAIL_NICK;
     public static String MARKET_MINE_NICK;
@@ -67,6 +69,13 @@ public class Language {
     public static String MARKET_MAIN_RETAIL_NICK;
     public static String MARKET_MAIN_ADMIN_NICK;
     public static String MARKET_MAIN_POINT_NICK;
+    public static String CLASSIFY_EDIBLE_TITLE;
+    public static String CLASSIFY_BLOCK_TITLE;
+    public static String CLASSIFY_INTERACTABLE_TITLE;
+    public static String CLASSIFY_BURNABLE_TITLE;
+    public static String CLASSIFY_EQUIP_TITLE;
+    public static String CLASSIFY_ITEM_TITLE;
+    public static String CLASSIFY_KNOWLEDGE_TITLE;
 
     private Language(){
     }

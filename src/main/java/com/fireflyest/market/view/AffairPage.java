@@ -74,20 +74,20 @@ public class AffairPage implements ViewPage {
             if(sale.isAuction()){
                 // 拍卖
                 ItemStack add1 = MarketButton.BID_10.clone();
-                ItemUtils.addLore(add1, "§3§l增加§7:§f 10");
-                ItemUtils.addLore(add1, "§3§l当前§7:§f "+sale.getCost() + symbol);
+                ItemUtils.addLore(add1, "§3§l+§f 10");
+                ItemUtils.addLore(add1, String.format(MarketButton.PRESENT_PRICE_TEXT, sale.getCost(), symbol));
                 ItemUtils.setItemValue(add1, "add "+sale.getId()+" 10");
                 crashMap.put(13, add1);
 
                 ItemStack add2 = MarketButton.BID_100.clone();
-                ItemUtils.addLore(add2, "§3§l增加§7:§f 100");
-                ItemUtils.addLore(add2, "§3§l当前§7:§f "+sale.getCost() + symbol);
+                ItemUtils.addLore(add2, "§3§l+§f 100");
+                ItemUtils.addLore(add2, String.format(MarketButton.PRESENT_PRICE_TEXT, sale.getCost(), symbol));
                 ItemUtils.setItemValue(add2, "add "+sale.getId()+" 100");
                 crashMap.put(14, add2);
 
                 ItemStack add3 = MarketButton.BID_1000.clone();
-                ItemUtils.addLore(add3, "§3§l增加§7:§f 1000");
-                ItemUtils.addLore(add3, "§3§l当前§7:§f "+sale.getCost() + symbol);
+                ItemUtils.addLore(add3, "§3§l+§f 1000");
+                ItemUtils.addLore(add3, String.format(MarketButton.PRESENT_PRICE_TEXT, sale.getCost(), symbol));
                 ItemUtils.setItemValue(add3, "add "+sale.getId()+" 1000");
                 crashMap.put(15, add3);
             }else {
@@ -95,31 +95,31 @@ public class AffairPage implements ViewPage {
                 if (Config.BUY_PARTIAL && !sale.isPoint()){
                     // 直售
                     ItemStack buy1 = MarketButton.BUY_1.clone();
-                    ItemUtils.addLore(buy1, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount) + symbol);
+                    ItemUtils.addLore(buy1, String.format(MarketButton.PRICE_TEXT, ConvertUtils.formatDouble(sale.getCost()/amount), symbol));
                     ItemUtils.setItemValue(buy1, "buy "+sale.getId()+" 1");
                     buy1.setAmount(1);
                     crashMap.put(13, buy1);
                     if(amount > 8){
                         ItemStack buy2 = MarketButton.BUY_8.clone();
-                        ItemUtils.addLore(buy2, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()/amount * 8) + symbol);
+                        ItemUtils.addLore(buy2, String.format(MarketButton.PRICE_TEXT, ConvertUtils.formatDouble(sale.getCost()/amount * 8), symbol));
                         ItemUtils.setItemValue(buy2, "buy "+sale.getId()+" 8");
                         buy2.setAmount(8);
                         crashMap.put(14, buy2);
                         ItemStack buy3 = MarketButton.BUY_ALL.clone();
-                        ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()) + symbol);
+                        ItemUtils.addLore(buy3, String.format(MarketButton.PRICE_TEXT, ConvertUtils.formatDouble(sale.getCost()), symbol));
                         ItemUtils.setItemValue(buy3, "buy "+sale.getId());
                         buy3.setAmount(amount);
                         crashMap.put(15, buy3);
                     }else {
                         ItemStack buy3 = MarketButton.BUY_ALL.clone();
-                        ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()) + symbol);
+                        ItemUtils.addLore(buy3, String.format(MarketButton.PRICE_TEXT, ConvertUtils.formatDouble(sale.getCost()), symbol));
                         ItemUtils.setItemValue(buy3, "buy "+sale.getId());
                         buy3.setAmount(amount);
                         crashMap.put(14, buy3);
                     }
                 }else {
                     ItemStack buy3 = MarketButton.BUY_ALL.clone();
-                    ItemUtils.addLore(buy3, "§3§l价格§7:§f "+ ConvertUtils.formatDouble(sale.getCost()) + symbol);
+                    ItemUtils.addLore(buy3, String.format(MarketButton.PRICE_TEXT, ConvertUtils.formatDouble(sale.getCost()), symbol));
                     ItemUtils.setItemValue(buy3, "buy "+sale.getId());
                     buy3.setAmount(amount);
                     crashMap.put(14, buy3);

@@ -387,7 +387,7 @@ public class MarketCommand implements CommandExecutor {
                 }
                 taskManager.putTask(new TaskDiscount(player.getName(), ConvertUtils.parseInt(var2), ConvertUtils.parseInt(var3)));
 
-                player.sendMessage(String.format(Language.DISCOUNT_ITEM, var3));
+                player.sendMessage( Language.DISCOUNT_ITEM.replace("%discount%", String.valueOf(var3)));
                 break;
             }
             case "point" :
@@ -456,7 +456,9 @@ public class MarketCommand implements CommandExecutor {
                         if (economy.has(player, tax)) {
                             // 扣钱
                             economy.withdrawPlayer(player, tax);
-                            player.sendMessage(String.format(Language.TAX, Config.TAX_RATE, tax));
+                            player.sendMessage(Language.TAX
+                                    .replace("%rate%", String.valueOf(Config.TAX_RATE))
+                                    .replace("%money%", String.valueOf(tax)));
                         } else {
                             player.sendMessage(Language.TAX_BURDEN);
                             return;
@@ -489,7 +491,7 @@ public class MarketCommand implements CommandExecutor {
                     return;
                 }
                 taskManager.putTask(new TaskReprice(player.getName(), ConvertUtils.parseInt(var2), ConvertUtils.parseDouble(var3)));
-                player.sendMessage(String.format(Language.REPRICE_ITEM, var3));
+                player.sendMessage(Language.REPRICE_ITEM.replace("%price%", String.valueOf(var3)));
                 break;
             }
             case "desc" : {
@@ -508,7 +510,7 @@ public class MarketCommand implements CommandExecutor {
                 }
                 sale.setDesc(var3);
                 data.update(sale);
-                player.sendMessage(String.format(Language.DESC_ITEM, var2));
+                player.sendMessage(Language.DESC_ITEM.replace("%id%", String.valueOf(var2)));
                 break;
             }
             case "buy" :
