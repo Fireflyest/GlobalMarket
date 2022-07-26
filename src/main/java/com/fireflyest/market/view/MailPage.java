@@ -137,7 +137,7 @@ public class MailPage implements ViewPage {
         ItemStack transport = MarketButton.TRANSPORT.clone();
         int stagnate = (mails.size() - m);
         if (stagnate > 0) {
-            ItemUtils.addLore(transport, String.format("§f库存过多，有§3%s§f件物品滞留", stagnate));
+            ItemUtils.addLore(transport, Language.MAIL_FULL.replace("%amount%", String.valueOf(stagnate)));
         }
         crashMap.put(53, transport);
 

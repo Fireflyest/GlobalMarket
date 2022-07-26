@@ -1,6 +1,7 @@
 package com.fireflyest.market.view;
 
 import com.fireflyest.market.core.MarketButton;
+import com.fireflyest.market.data.Language;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
@@ -161,19 +162,19 @@ public class ClassifyPage implements ViewPage {
     private String getSubtitle(String target){
         switch (target){
             case ClassifyView.EDIBLE:
-                return "食品";
+                return Language.CLASSIFY_EDIBLE_TITLE;
             case ClassifyView.BLOCK:
-                return "方块";
+                return Language.CLASSIFY_BLOCK_TITLE;
             case ClassifyView.INTERACTABLE:
-                return "功能方块";
+                return Language.CLASSIFY_INTERACTABLE_TITLE;
             case ClassifyView.BURNABLE:
-                return "可燃物";
+                return Language.CLASSIFY_BURNABLE_TITLE;
             case ClassifyView.EQUIP:
-                return "装备";
+                return Language.CLASSIFY_EQUIP_TITLE;
             case ClassifyView.ITEM:
-                return "物品";
+                return Language.CLASSIFY_ITEM_TITLE;
             case ClassifyView.KNOWLEDGE:
-                return "知识";
+                return Language.CLASSIFY_KNOWLEDGE_TITLE;
             default:
                 return "";
         }

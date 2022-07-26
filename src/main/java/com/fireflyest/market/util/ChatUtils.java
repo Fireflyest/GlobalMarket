@@ -3,10 +3,7 @@ package com.fireflyest.market.util;
 import com.cryptomorin.xseries.XMaterial;
 import com.fireflyest.market.data.Language;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -58,26 +55,15 @@ public class ChatUtils {
     }
 
     @SuppressWarnings("deprecation")
-    public static void sendItemButton(Player player, boolean auction, ItemStack item, String command, String name) {
+    public static void sendItemButton(Player player, ItemStack item, String command, String name) {
         int version = XMaterial.getVersion();
         if (version <= 12) return;
         ItemMeta meta = item.getItemMeta();
         String hover, info, display = item.getType().name();
+        // 提示文本
+        info = Language.SELL_ITEM_BROADCAST.replace("%player%", name);
         // 悬浮文本
         StringBuilder hoverBuilder = new StringBuilder();
-        // 提示文本
-        StringBuilder infoBuilder = new StringBuilder();
-        infoBuilder.append(Language.TITLE)
-                .append("玩家§3")
-                .append(name)
-                .append("§f在环球市场");
-        if(auction){
-            infoBuilder.append("§3拍卖 §f");
-        }else {
-            infoBuilder.append("§3出售 §f");
-        }
-        info = infoBuilder.toString();
-
         if(meta != null){
             if(!"".equals(meta.getDisplayName())){
                 display = meta.getDisplayName();

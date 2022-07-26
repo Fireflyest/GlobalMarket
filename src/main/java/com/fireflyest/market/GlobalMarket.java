@@ -47,12 +47,12 @@ import java.util.stream.Collectors;
 public class GlobalMarket extends JavaPlugin{
 
     /*
-    多语言 自定义文本 5 ing
     统计书 3
     排行榜 4
     价格统计 7
     交易 8
     收购 9
+    多语言 自定义文本 √
     自定义按钮 √
     拍卖 √
     点券支持 √
