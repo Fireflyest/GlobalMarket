@@ -79,7 +79,6 @@ public class MarketAdminCommand  implements CommandExecutor {
                 sender.sendMessage(Language.RELOADING);
                 globalMarket.setupData();
                 globalMarket.setupGuide();
-                MarketButton.diyButton();
                 sender.sendMessage(Language.RELOADED);
                 break;
             case "test":

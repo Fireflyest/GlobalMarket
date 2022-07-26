@@ -33,6 +33,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.fireflyest.craftgui.util.SerializeUtil;
+import org.fireflyest.craftgui.util.TranslateUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -112,6 +114,8 @@ public class GlobalMarket extends JavaPlugin{
         new Metrics(this, 15549);
 
         this.setupData();
+        if (Config.DEBUG) SerializeUtil.setDebug(true);
+
         this.setupGuide();
         this.setupPoint();
 
@@ -134,8 +138,6 @@ public class GlobalMarket extends JavaPlugin{
         MarketManager.initMarketManager();
         // 任务处理线程
         MarketTasks.initMarketTasks(this);
-        // 自定义按钮
-        MarketButton.diyButton();
 
         // 若有自动下架，建立监控线程
         if(Config.LIMIT_TIME == -1) return;
@@ -219,6 +221,11 @@ public class GlobalMarket extends JavaPlugin{
      * 界面初始化
      */
     public void setupGuide() {
+        // 加载按钮
+        MarketButton.loadButton();
+        // 设置物品别名
+        TranslateUtils.setLanguage(Config.LANG);
+
         RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer().getServicesManager().getRegistration(ViewGuide.class);
         if (rsp == null) {
             plugin.getLogger().warning("Gui not found!");

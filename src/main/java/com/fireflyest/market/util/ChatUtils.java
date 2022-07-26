@@ -1,12 +1,12 @@
 package com.fireflyest.market.util;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.fireflyest.market.data.Language;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -59,7 +59,8 @@ public class ChatUtils {
 
     @SuppressWarnings("deprecation")
     public static void sendItemButton(Player player, boolean auction, ItemStack item, String command, String name) {
-        if(Bukkit.getVersion().contains("1.12"))return;
+        int version = XMaterial.getVersion();
+        if (version <= 12) return;
         ItemMeta meta = item.getItemMeta();
         String hover, info, display = item.getType().name();
         // 悬浮文本
@@ -84,6 +85,7 @@ public class ChatUtils {
                 display = TranslateUtils.translate(item.getType());
             }
             hoverBuilder.append(display);
+            hoverBuilder.append("\n");
             if(meta.hasLore() && meta.getLore() != null){
                 meta.getLore().forEach(s -> hoverBuilder.append(s).append("\n"));
             }
@@ -94,7 +96,6 @@ public class ChatUtils {
                 .append(" ")
                 .append(n2l(integer))
                 .append("\n"));
-        hoverBuilder.append("点击查看");
         hover = hoverBuilder.toString();
 
         player.spigot().sendMessage(new ComponentBuilder(info)
