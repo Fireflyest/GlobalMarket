@@ -118,7 +118,11 @@ public class PlayerEventListener implements Listener {
             if (value.contains("affair") || value.contains("edit")){
                 event.setRefresh(false);
 
-                taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(value.split(" ")[1])));
+                if (player.hasPermission("market.admin") && value.contains("affair")){
+                    player.performCommand("marketadmin cancel " + value.split(" ")[1]);
+                }else {
+                    taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(value.split(" ")[1])));
+                }
                 player.playSound(player.getLocation(), cancelSound, 1F, 1F);
             }
         } else { // 执行指令

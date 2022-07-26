@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.item.ViewItemBuilder;
 import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
-import org.omg.CORBA.ORB;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -336,6 +335,7 @@ public class MarketButton {
         RETAIL_TEXT = "§f[§7Retail§f]";
         UNLIMITED_TEXT = "[§cUnlimited§f]";
         SELLER_TEXT = "§3§lSeller§7: §f%s";
+        BUYER_TEXT = "§3§lBuyer§7: §f%s";
         AUCTIONER_TEXT = "§3§lAuctioner§7: §f%s";
         START_PRICE_TEXT = "§3§lStart Price§7: §f§m%s%s";
         PRESENT_PRICE_TEXT = "§3§lPresent Price§7: §f%s%s";
@@ -566,6 +566,7 @@ public class MarketButton {
         RETAIL_TEXT = "§f[§7零售§f]";
         UNLIMITED_TEXT = "[§c无限§f]";
         SELLER_TEXT = "§3§l卖家§7: §f%s";
+        BUYER_TEXT = "§3§l买家§7: §f%s";
         AUCTIONER_TEXT = "§3§l拍卖人§7: §f%s";
         START_PRICE_TEXT = "§3§l起拍价§7: §f§m%s%s";
         PRESENT_PRICE_TEXT = "§3§l现价§7: §f%s%s";

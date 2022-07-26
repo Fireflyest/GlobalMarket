@@ -17,7 +17,7 @@ public class TaskSignAll extends Task{
 
     @Override
     public @NotNull List<Task> execute() {
-        data.query(Mail.class, "owner", playerName).forEach(mail -> then.add(new TaskSign(playerName, mail.getId())));
+        data.query(Mail.class, "owner", playerName).forEach(mail -> then.add(new TaskSign(playerName, mail.getId(), false)));
         if (then.size() == 0) guide.refreshPage(playerName);
         return then;
     }
