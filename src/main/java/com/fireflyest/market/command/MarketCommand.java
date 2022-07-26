@@ -13,7 +13,6 @@ import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Data;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ConvertUtils;
-import com.fireflyest.market.util.YamlUtils;
 import com.fireflyest.market.view.HomeView;
 import com.fireflyest.market.view.MainView;
 import net.milkbowl.vault.economy.Economy;
@@ -84,23 +83,7 @@ public class MarketCommand implements CommandExecutor {
         Player player = (sender instanceof Player)? (Player)sender : null;
         switch (var1){
             case "help":
-                sender.sendMessage(
-                        "§e§m =               §f§l[§eGlobeMarket§f§l]§e§m               =\n"+
-                        "§b/market                            §f - 环球市场\n"+
-                        "§b/market help                      §f - 指令帮助\n"+
-                        "§b/market mine                      §f - 个人市场\n"+
-                        "§b/market mail                       §f - 个人邮箱\n"+
-                        "§b/market clean                     §f - 全部签收\n"+
-                        "§b/market sell [m] <a>              §f - 出售物品\n"+
-                        "§b/market auction [m] <a>          §f - 拍卖物品\n"+
-                        "§b/market discount [id] [a]        §f - 商品打折\n"+
-                        "§b/market reprice [id] [a]          §f - 价格修改\n"+
-                        "§b/market send [p] <a>             §f - 发送邮件\n"+
-                        "§b/market statistic <p|id>          §f - 统计数据\n"+
-                        "§b/market other [p]                 §f - 他人商店\n"+
-                        "§b/market classify <type>         §f - 分类商店\n"+
-                        "§9其中§7p§9表玩家，§7a§9表数量，§7m§9表价格，§7<>§9表示可选，§7[]§9表示必填"
-                        );
+                sender.sendMessage(Language.HELP.replace("\\n", "\n"));
                 break;
             case "mine":{
                 if(player == null) {
