@@ -11,7 +11,6 @@ import com.fireflyest.market.data.Language;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.ItemUtils;
 import org.fireflyest.craftgui.util.SerializeUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,7 +66,6 @@ public class TaskBuy extends Task{
         }
         // 解析物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-        if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
         // 购买数量
         String itemName = sale.getNickname();
         boolean buyAll = num == 0, point = sale.isPoint();

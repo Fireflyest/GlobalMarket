@@ -10,7 +10,6 @@ import com.fireflyest.market.util.ConvertUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.ItemUtils;
 import org.fireflyest.craftgui.util.SerializeUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,7 +56,6 @@ public class TaskSign extends Task{
 
         mail.setSigned(true);
         ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
-        if(!"null".equals(mail.getNbt()) && !"".equals(mail.getNbt())) ItemUtils.setItemValue(item, mail.getNbt());
 
         if (mail.isRecord()){
             if (mail.isPoint()){

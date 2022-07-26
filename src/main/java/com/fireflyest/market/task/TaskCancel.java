@@ -6,7 +6,6 @@ import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
 import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.ItemUtils;
 import org.fireflyest.craftgui.util.SerializeUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +40,6 @@ public class TaskCancel extends Task{
 
         // 解析物品
         ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-        if(!"null".equals(sale.getNbt()) && !"".equals(sale.getNbt())) ItemUtils.setItemValue(item, sale.getNbt());
 
         // 减少正在出售的数量
         User user = MarketManager.getUser(sale.getOwner());
