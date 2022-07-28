@@ -176,7 +176,6 @@ public class MinePage implements ViewPage {
         itemMap.put(0, head);
         itemMap.put(9, MarketButton.MAIL);
         itemMap.put(18, MarketButton.DATA);
-        itemMap.put(27, MarketButton.MARKET);
 
         // 上一页
         if (page == 1){
@@ -187,7 +186,7 @@ public class MinePage implements ViewPage {
         // 下一页
         itemMap.put(53, MarketButton.PAGE_NEXT_DISABLE);
 
-        itemMap.put(45, MarketButton.CLOSE);
+        itemMap.put(45, MarketButton.BACK);
     }
 
     @Override

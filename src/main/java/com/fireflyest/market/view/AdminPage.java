@@ -140,7 +140,7 @@ public class AdminPage implements ViewPage {
         itemMap.put(53, MarketButton.PAGE_NEXT_DISABLE);
 
         itemMap.put(0, MarketButton.STATISTIC);
-        itemMap.put(8, MarketButton.CLOSE);
+        itemMap.put(8, MarketButton.BACK.clone());
     }
 
     @Override
