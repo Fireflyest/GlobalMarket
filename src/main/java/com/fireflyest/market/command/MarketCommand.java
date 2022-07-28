@@ -433,14 +433,6 @@ public class MarketCommand implements CommandExecutor {
                         }
                     }
                 }
-                // 禁止交易记录
-                if (item.getType().equals(XMaterial.WRITTEN_BOOK.parseMaterial())) {
-                    String value = ItemUtils.getItemValue(item);
-                    if (value.equals("record")) {
-                        player.sendMessage(Language.TYPE_ERROR);
-                        return;
-                    }
-                }
 
                 // 判断物品是否足够
                 int has = item.getAmount();

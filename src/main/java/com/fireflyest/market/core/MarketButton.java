@@ -29,6 +29,7 @@ public class MarketButton {
     public static ItemStack WAIT;
     public static ItemStack TRADE;
     public static ItemStack DATA;
+    public static ItemStack SALE_DATA;
     public static ItemStack STATISTIC;
     public static ItemStack CLASSIFY;
     public static ItemStack SEND;
@@ -40,6 +41,7 @@ public class MarketButton {
     public static ItemStack COIN;
     public static ItemStack ADMIN;
     public static ItemStack CLOSE;
+    public static ItemStack BACK;
     public static ItemStack DONE;
     public static ItemStack EDIT;
     public static ItemStack CLEAR;
@@ -154,6 +156,9 @@ public class MarketButton {
                 .name("§3§lPersonal Data")
                 .command("data")
                 .build();
+        SALE_DATA = new ViewItemBuilder(XMaterial.KNOWLEDGE_BOOK.parseMaterial())
+                .name("§3§lSale Data")
+                .build();
         STATISTIC = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
                 .name("§3§lMarket Statistic")
                 .command("statistic")
@@ -195,6 +200,10 @@ public class MarketButton {
         CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
                 .name("§c§lClose")
                 .command("close")
+                .build();
+        BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
+                .name("§c§lBack")
+                .command(" ")
                 .build();
         DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
                 .name("§3§lPut On Sale")
@@ -382,8 +391,11 @@ public class MarketButton {
                 .command("trade")
                 .build();
         DATA = new ViewItemBuilder(XMaterial.BOOK.parseMaterial())
-                .name("§3§l个人统计")
+                .name("§3§l个人数据")
                 .command("data")
+                .build();
+        SALE_DATA = new ViewItemBuilder(XMaterial.KNOWLEDGE_BOOK.parseMaterial())
+                .name("§3§l商品数据")
                 .build();
         STATISTIC = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
                 .name("§3§l市场统计")
@@ -426,6 +438,10 @@ public class MarketButton {
         CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
                 .name("§c§l关闭")
                 .command("close")
+                .build();
+        BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
+                .name("§c§l返回")
+                .command(" ")
                 .build();
         DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
                 .name("§3§l发售")
