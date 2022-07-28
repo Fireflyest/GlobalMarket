@@ -195,8 +195,8 @@ public class AffairPage implements ViewPage {
 
         ItemStack head = MarketButton.OTHER.clone();
         itemMap.put(8, head);
-        itemMap.put(17, MarketButton.MARKET);
-        itemMap.put(26, MarketButton.CLOSE);
+        itemMap.put(17, MarketButton.SALE_DATA);
+        itemMap.put(26, MarketButton.BACK);
     }
 
     @Override
