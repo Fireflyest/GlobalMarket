@@ -40,8 +40,19 @@ public class ChatUtils {
      * @param hover 指令提示
      * @param command 所执行指令
      */
-    @SuppressWarnings("deprecation")
     public static void sendCommandButton(Player player, String display, String hover, String command) {
+        sendCommandButton(player, display, hover, command, "");
+    }
+
+    /**
+     * 发送一个可执行指令的按钮文本
+     * @param player 玩家
+     * @param display 文本
+     * @param hover 指令提示
+     * @param command 所执行指令
+     */
+    @SuppressWarnings("deprecation")
+    public static void sendCommandButton(Player player, String display, String hover, String command, String info) {
         player.spigot().sendMessage(new ComponentBuilder(LEFT)
                 .append(display)
                 .color(ChatColor.YELLOW)
@@ -50,6 +61,7 @@ public class ChatUtils {
                 .append(RIGHT)
                 .reset()
                 .color(ChatColor.WHITE)
+                .append(info)
                 .create()
         );
     }
