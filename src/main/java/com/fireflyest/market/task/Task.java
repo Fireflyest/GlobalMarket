@@ -1,6 +1,7 @@
 package com.fireflyest.market.task;
 
 import com.fireflyest.market.GlobalMarket;
+import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public abstract class Task {
     protected final String playerName;
     protected final Player player;
 
-    protected int type;
+    protected int type = MarketTasks.SALE_TASK;
 
     public Task(@NotNull String playerName){
         this.playerName = playerName;
