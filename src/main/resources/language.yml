@@ -79,7 +79,7 @@ LimitMail: '§6✦§f如果邮件数量到达上限，将强制签收'
 Tax: '§6✦§f扣除§3%rate%§f的税收，金额为§3%money%'
 TaxBurden: "§6✦§f您无法承担赋税！"
 SearchItem: '§6✦§f使用指令 §3/market search [物品] §f搜索某个物品，或将物品拖拽到菜单搜索按钮上'
-UnlimitedItem: "§6✦§f商品成功设置为 §3%unlimited%"
+UnlimitedItem: "§6✦§f商品设置无限状态为 §3%unlimited%"
 DiscountItem: "§6✦§f商品成功打§3%discount%§f折"
 RepriceItem: "§6✦§f商品修改价格为 §3%price%§f"
 DescItem: "§6✦§f成功给商品§3%id%§f设置简介"
