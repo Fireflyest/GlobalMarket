@@ -33,6 +33,10 @@ public class TaskAdmin extends Task{
             this.executeInfo(Language.DATA_NULL);
             return then;
         }
+        if (sale.isAuction()){
+            this.executeInfo(Language.TYPE_ERROR);
+            return then;
+        }
         sale.setAdmin(!sale.isAdmin());
         data.update(sale);
         this.executeInfo(Language.UNLIMITED_ITEM.replace("%unlimited%", sale.isAdmin() ? "无限":"普通"));
