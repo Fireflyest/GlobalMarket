@@ -1,6 +1,5 @@
 package com.fireflyest.market.command;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.task.*;
 import org.fireflyest.craftgui.api.ViewGuide;
@@ -23,7 +22,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -199,6 +197,14 @@ public class MarketCommand implements CommandExecutor {
                 }
                 player.closeInventory();
                 player.sendMessage(Language.SEND_ITEM);
+                break;
+            case "sell":
+                if(player == null) {
+                    sender.sendMessage(Language.PLAYER_COMMAND);
+                    return;
+                }
+                player.sendMessage(Language.SELL_ITEM_PREPARE);
+                guide.refreshPage(player.getName());
                 break;
             case "sign":
                 if(player == null) {

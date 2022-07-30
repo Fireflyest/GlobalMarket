@@ -25,7 +25,7 @@ public class ReflectUtils {
     public static Object invokeGet(Object obj, String field){
         Class<?> clazz = obj.getClass();
         try {
-            String name = field.substring(0,1).toUpperCase() + field.substring(1).toLowerCase();
+            String name = field.substring(0,1).toUpperCase() + field.substring(1);
             Method method = getMethod(clazz, "get" + name);
             if (method == null) method = getMethod(clazz, "is" + name);
             if (method == null) return null;
@@ -44,7 +44,7 @@ public class ReflectUtils {
      */
     public static <T> void invokeSet(T t, String field, Object value){
         Class<?> clazz = t.getClass();
-        String name = field.substring(0,1).toUpperCase() + field.substring(1).toLowerCase();
+        String name = field.substring(0,1).toUpperCase() + field.substring(1);
         Method method = getMethod(clazz, "set" + name, getBaseClass(value.getClass()));
         try {
             if (method != null) {

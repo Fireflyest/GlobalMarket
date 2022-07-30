@@ -18,6 +18,7 @@ public class Language {
     public static String NOT_PERMISSION;
     public static String NOT_SELLING;
     public static String SELL_ITEM;
+    public static String SELL_ITEM_PREPARE;
     public static String SELL_ITEM_BROADCAST;
     public static String BUY_ITEM;
     public static String BUY_ERROR;
