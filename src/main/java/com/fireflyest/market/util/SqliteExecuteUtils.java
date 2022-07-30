@@ -20,11 +20,11 @@ public class SqliteExecuteUtils {
 
         //获取所有成员变量
         for (int i = 0; i < fields.size(); i++) {
-            String fieldName = fields.get(i).getName();
+            String fieldName = String.format("`%s`", fields.get(i).getName());
             String type = javaType2SQLType(fields.get(i).getType().getTypeName());
             builder.append(fieldName).append(" ").append(type);
             if ("id".equals(getPriKey(clazz))){
-                if(fieldName.equals("id")){
+                if(fieldName.equals("`id`")){
                     builder.append(" NOT NULL PRIMARY KEY AUTOINCREMENT");
                 }
             }else {
@@ -84,7 +84,7 @@ public class SqliteExecuteUtils {
         for(Field field : fields){
             if(amount > 0) update.append(",");
             if(priKey.equalsIgnoreCase(field.getName()))continue;
-            update.append(field.getName()).append("=").append("'").append(ReflectUtils.invokeGet(t, field.getName())).append("'");
+            update.append(String.format("`%s`", field.getName())).append("=").append("'").append(ReflectUtils.invokeGet(t, field.getName())).append("'");
             amount++;
         }
         String table = getTable(clazz);
@@ -124,13 +124,13 @@ public class SqliteExecuteUtils {
                 fieldString.append(",");
                 dataString.append(",");
             }
-            fieldString.append(field.getName());
+            fieldString.append(String.format("`%s`", field.getName()));
             dataString.append("'").append(ReflectUtils.invokeGet(obj, field.getName())).append("'");
             amount++;
         }
         String data = dataString.toString().replace("'true'", "1").replace("'false'", "0");
         String table = getTable(clazz);
-        return String.format("insert into %s (%s) values (%s)", table, fieldString.toString(), data);
+        return String.format("insert into %s (%s) values (%s)", table, fieldString, data);
     }
 
     private static String addCondition(String sql, String key, Object value) {
@@ -138,7 +138,7 @@ public class SqliteExecuteUtils {
         if(data.equals("true") || data.equals("false")){
             data = data.replace("true", "1").replace("false", "0");
         }
-        return sql + String.format(" where %s='%s'", key, data);
+        return sql + String.format(" where `%s`='%s'", key, data);
     }
 
     private static String addCondition(String sql, String condition) {
