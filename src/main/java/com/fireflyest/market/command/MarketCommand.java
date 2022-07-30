@@ -263,14 +263,7 @@ public class MarketCommand implements CommandExecutor {
                     player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.admin"));
                     return;
                 }
-                Sale sale = data.queryOne(Sale.class, "id", var2);
-                if (sale == null) {
-                    sender.sendMessage(Language.DATA_NULL);
-                    return;
-                }
-                sale.setAdmin(!sale.isAdmin());
-                data.update(sale);
-                player.sendMessage(Language.UNLIMITED_ITEM);
+                taskManager.putTask(new TaskAdmin(player.getName(), ConvertUtils.parseInt(var2)));
                 break;
             case "classify":{
                 guide.openView(player, GlobalMarket.CLASSIFY_VIEW, var2);
