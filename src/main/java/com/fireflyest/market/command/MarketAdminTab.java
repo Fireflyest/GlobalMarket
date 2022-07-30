@@ -15,9 +15,7 @@ public class MarketAdminTab implements TabCompleter {
     public MarketAdminTab(){
         op.add("cancel");
         op.add("black");
-        op.add("info");
         op.add("version");
-        op.add("update");
         op.add("reload");
         op.add("test");
     }

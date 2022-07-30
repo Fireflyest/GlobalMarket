@@ -91,8 +91,6 @@ public class MarketAdminCommand  implements CommandExecutor {
             case "version":
                 sender.sendMessage(Language.TITLE + "The plugin version is " + Language.VERSION);
                 break;
-            case "update":
-                break;
             default:
         }
         
