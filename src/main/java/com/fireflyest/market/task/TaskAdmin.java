@@ -39,8 +39,7 @@ public class TaskAdmin extends Task{
         }
         sale.setAdmin(!sale.isAdmin());
         data.update(sale);
-        this.executeInfo(Language.UNLIMITED_ITEM.replace("%unlimited%", sale.isAdmin() ? "无限":"普通"));
-
+        this.executeInfo(Language.UNLIMITED_ITEM.replace("%unlimited%",  String.valueOf(sale.isAdmin())));
         return then;
     }
 }

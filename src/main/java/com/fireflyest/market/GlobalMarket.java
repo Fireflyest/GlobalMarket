@@ -48,6 +48,7 @@ public class GlobalMarket extends JavaPlugin{
 
     /*
     统计书 3
+    材质
     排行榜 4
     价格统计 7
     交易 8
