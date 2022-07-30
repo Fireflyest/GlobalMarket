@@ -130,6 +130,10 @@ public class AffairPage implements ViewPage {
             crashMap.put(14, MarketButton.WAIT);
         }
 
+        // 商品数据
+        ItemStack data = crashMap.get(17);
+        ItemUtils.setItemValue(data, String.format("data %s", sale.getId()));
+
         // 添加皮肤
         ItemStack head = crashMap.get(8);
         ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, sale.getOwner()));

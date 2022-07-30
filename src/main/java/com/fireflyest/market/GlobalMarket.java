@@ -167,7 +167,7 @@ public class GlobalMarket extends JavaPlugin{
     @Override
     public void onDisable() {
         try {
-            storage.close();
+            if (storage != null) storage.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -176,9 +176,7 @@ public class GlobalMarket extends JavaPlugin{
         Bukkit.getScheduler().cancelTasks(this);
 
         // 自动下架监控
-        if (marketTask != null) {
-            marketTask.cancel();
-        }
+        if (marketTask != null) marketTask.cancel();
     }
 
     private void setupPoint(){
