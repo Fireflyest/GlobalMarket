@@ -1,6 +1,6 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.gui.api.View;
+import org.fireflyest.craftgui.api.View;
 
 import java.util.HashMap;
 import java.util.Map;
