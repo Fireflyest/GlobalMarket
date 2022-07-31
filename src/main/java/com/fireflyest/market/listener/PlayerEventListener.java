@@ -148,21 +148,33 @@ public class PlayerEventListener implements Listener {
         if("".equals(value))return;
 
         if ("sell".equals(value)){
+            if(!player.hasPermission("market.sell")){ // 快捷上架
+                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.sell"));
+                return;
+            }
             taskManager.putTask(new TaskSell(player.getName(), false, false, -1, placeItem.clone()));
             event.setHandBack(false);
-        }else if ("search".equals(value)){
+        }else if ("search".equals(value)){ // 搜索同材料物品
+            if(!player.hasPermission("market.search")){
+                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.search"));
+                return;
+            }
             String displayName = TranslateUtils.translate(placeItem.getType());
             player.performCommand(String.format("market search %s", displayName));
-        }else if ("classify".equals(value)){
+        }else if ("classify".equals(value)){ // 分查看物品类型
             String classify = MarketManager.getClassify(placeItem.getType()).toString();
             player.sendMessage(Language.CLASSIFY_ITEM.replace("%classify%", classify));
-        }else if (value.contains("send")){
+        }else if (value.contains("send")){ // 发送邮件
+            if(!player.hasPermission("market.send")){
+                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.send"));
+                return;
+            }
             String target = value.split(" ")[1];
             taskManager.putTask(new TaskSend(player.getName(), target, placeItem.clone(), 0, false));
             event.setHandBack(false);
-        }else if ("delete".equals(value)){
+        }else if ("delete".equals(value)){ // 邮箱界面的垃圾桶
             event.setHandBack(false);
-        }else if (value.contains("button")){
+        }else if (value.contains("button")){ // 自定义按钮
             String target = value.split(" ")[1];
             String material = event.getCursorItem().getType().name();
             Button button = data.queryOne(Button.class, "target", target);
