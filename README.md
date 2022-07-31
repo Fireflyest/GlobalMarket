@@ -22,6 +22,7 @@
 * 配置文件
 * 权限与指令
 * 维护人员
+* 使用情况
 
 ## 安装插件
 1. 确保你的服务器有一个使用前置插件[Vault](https://www.spigotmc.org/resources/vault.34315/)的经济插件
