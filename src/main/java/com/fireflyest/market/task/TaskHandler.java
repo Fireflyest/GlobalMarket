@@ -11,16 +11,17 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class TaskHandler {
 
     private boolean enable;
-
+    private static int succeedNum = 0;
+    private static int failNum = 0;
     private BukkitTask bukkitTask;
     private final JavaPlugin plugin;
     private final ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(512);
 
     public TaskHandler(@NotNull JavaPlugin plugin){
-        this.enable = true;
-
         this.plugin = plugin;
+
         // 多线程任务
+        this.enable = true;
         this.bukkitTask = new BukkitRunnable() {
             @Override
             public void run() {
@@ -29,10 +30,17 @@ public class TaskHandler {
         }.runTaskAsynchronously(plugin);
     }
 
+    public static int getFailNum() {
+        return failNum;
+    }
+
+    public static int getSucceedNum() {
+        return succeedNum;
+    }
+
     public void restart(){
         this.stop();
         this.enable = true;
-        // 多线程任务
         this.bukkitTask = new BukkitRunnable() {
             @Override
             public void run() {
@@ -88,11 +96,15 @@ public class TaskHandler {
                     continue;
                 }
                 taskQueue.addAll(taskQueue.take().execute());
+                // 统计数量
+                succeedNum++;
             } catch (InterruptedException e) {
                 plugin.getLogger().severe("error on taskQueue take, handler stop!");
+                failNum++;
                 this.stop();
             } catch (Exception e) {
                 plugin.getLogger().severe("error on task execute, handler stop!");
+                failNum++;
                 this.stop();
             }
         }
