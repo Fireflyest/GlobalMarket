@@ -14,13 +14,18 @@ import java.util.List;
 public class TaskCancel extends Task{
 
     private final int id;
+    private final boolean reflash;
 
     public TaskCancel(@NotNull String playerName, int id) {
+       this(playerName, id, false);
+    }
+
+    public TaskCancel(@NotNull String playerName, int id, boolean reflash) {
         super(playerName);
         this.id = id;
+        this.reflash = reflash;
 
         this.type = MarketTasks.SALE_TASK;
-
     }
 
     @Override
@@ -34,6 +39,7 @@ public class TaskCancel extends Task{
         }
         // 判断操作者是否商品主人
         if(!sale.getOwner().equals(playerName)){
+            guide.refreshPage(playerName);
             this.executeInfo(Language.CANCEL_ERROR);
             return then;
         }
@@ -52,6 +58,8 @@ public class TaskCancel extends Task{
 
         // 发送邮件
         then.add(new TaskSend(Language.MAIL_FROM_CANCEL, sale.getOwner(), item));
+
+        if (reflash) guide.refreshPage(playerName);
 
         return then;
     }

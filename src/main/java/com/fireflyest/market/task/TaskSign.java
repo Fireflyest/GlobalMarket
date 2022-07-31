@@ -72,14 +72,14 @@ public class TaskSign extends Task{
                 economy.depositPlayer(player, mail.getPrice());
                 player.sendMessage(Language.AFFAIR_FINISH.replace("%money%", ConvertUtils.formatDouble(mail.getPrice())) + Language.COIN_SYMBOL);
             }
+            MarketManager.removeMail(mail);
         }else {
+            MarketManager.removeMail(mail);
+            if (reflash) guide.refreshPage(playerName);
+
             player.sendMessage(Language.SIGN_FINISH);
             player.getInventory().addItem(item);
         }
-
-        MarketManager.removeMail(mail);
-
-        if (reflash) guide.refreshPage(playerName);
 
         return then;
     }

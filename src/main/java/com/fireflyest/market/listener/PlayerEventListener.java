@@ -5,6 +5,7 @@ import com.fireflyest.market.bean.Button;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Data;
 import com.fireflyest.market.task.*;
+import org.bukkit.Material;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.event.ViewClickEvent;
 import com.fireflyest.market.GlobalMarket;
@@ -140,7 +141,7 @@ public class PlayerEventListener implements Listener {
 
         ItemStack placeItem = event.getCursorItem();
         ItemStack clickItem = event.getCurrentItem();
-        if(placeItem == null || clickItem == null) return;
+        if(placeItem == null || clickItem == null || clickItem.getType() == Material.AIR) return;
 
         Player player = (Player)event.getWhoClicked();
 
