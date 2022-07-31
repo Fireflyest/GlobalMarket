@@ -1,28 +1,23 @@
 package com.fireflyest.market.core;
 
-import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.task.*;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MarketTasks {
 
     public static final int SALE_TASK = 1;
     public static final int MAIL_TASK = 2;
 
-    private static TaskHandler saleHandler;
-    private static TaskHandler mailHandler;
+    private static final Map<Integer, TaskHandler> handlerMap = new HashMap<>();
 
     public interface TaskManager{
         void putTask(Task task);
     }
 
-    private static final TaskManager taskManager = task -> {
-        if (task.getType() == SALE_TASK){
-            saleHandler.put(task);
-        }else if (task.getType() == MAIL_TASK){
-            mailHandler.put(task);
-        }
-    };
+    private static final TaskManager taskManager = task -> handlerMap.get(task.getType()).put(task);
 
     private MarketTasks(){
     }
@@ -32,13 +27,14 @@ public class MarketTasks {
     }
 
     public static void initMarketTasks(JavaPlugin plugin){
-        saleHandler = new TaskHandler(plugin);
-        mailHandler = new TaskHandler(plugin);
+        handlerMap.put(SALE_TASK, new TaskHandler(plugin));
+        handlerMap.put(MAIL_TASK, new TaskHandler(plugin));
     }
 
     public static void close(){
-        if (saleHandler != null) saleHandler.stop();
-        if (mailHandler != null) mailHandler.stop();
+        for (TaskHandler handler : handlerMap.values()) {
+            handler.stop();
+        }
     }
 
 
