@@ -148,7 +148,7 @@ public class MarketAdminCommand  implements CommandExecutor {
                 int saleId = ConvertUtils.parseInt(var2);
                 Sale sale = MarketManager.getSale(saleId);
                 if (sale == null) return;
-                taskManager.putTask(new TaskCancel(sale.getOwner(), saleId));
+                taskManager.putTask(new TaskCancel(sale.getOwner(), saleId, true));
                 player.sendMessage(Language.CANCEL_ADMIN);
                 break;
             case "black":

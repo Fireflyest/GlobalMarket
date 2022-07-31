@@ -1,5 +1,6 @@
 package com.fireflyest.market.core;
 
+import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.task.*;
 import org.bukkit.plugin.java.JavaPlugin;
 

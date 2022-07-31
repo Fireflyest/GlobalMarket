@@ -1,5 +1,6 @@
 package com.fireflyest.market.task;
 
+import com.fireflyest.market.data.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -11,13 +12,26 @@ public class TaskHandler {
 
     private boolean enable;
 
-    private final BukkitTask bukkitTask;
-
+    private BukkitTask bukkitTask;
+    private final JavaPlugin plugin;
     private final ArrayBlockingQueue<Task> taskQueue = new ArrayBlockingQueue<>(512);
 
     public TaskHandler(@NotNull JavaPlugin plugin){
         this.enable = true;
 
+        this.plugin = plugin;
+        // 多线程任务
+        this.bukkitTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                loop();
+            }
+        }.runTaskAsynchronously(plugin);
+    }
+
+    public void restart(){
+        this.stop();
+        this.enable = true;
         // 多线程任务
         this.bukkitTask = new BukkitRunnable() {
             @Override
@@ -32,6 +46,10 @@ public class TaskHandler {
      * @param task 任务
      */
     public void put(Task task){
+        if (!enable) {
+            if (Config.DEBUG) plugin.getLogger().info("The handler restarting! ");
+            this.restart();
+        }
         try {
             synchronized (taskQueue){
                 taskQueue.put(task);
@@ -69,10 +87,13 @@ public class TaskHandler {
                     }
                     continue;
                 }
-                // 执行任务
                 taskQueue.addAll(taskQueue.take().execute());
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                plugin.getLogger().severe("error on taskQueue take, handler stop!");
+                this.stop();
+            } catch (Exception e) {
+                plugin.getLogger().severe("error on task execute, handler stop!");
+                this.stop();
             }
         }
     }

@@ -36,7 +36,7 @@ public abstract class Task {
     }
 
     @NotNull
-    public abstract List<Task> execute();
+    public abstract List<Task> execute() throws Exception;
 
     public void executeInfo(@NotNull String info){
         if (player == null) return;
