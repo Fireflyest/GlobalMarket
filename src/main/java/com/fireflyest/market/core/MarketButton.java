@@ -184,7 +184,7 @@ public class MarketButton {
                 .command("mail")
                 .build();
         TRANSPORT = new ViewItemBuilder(XMaterial.CHEST_MINECART.parseMaterial())
-                .name("§3§lTransport vehicle")
+                .name("§3§lTransport Vehicle")
                 .build();
         POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
                 .name("§3§lPoint")
