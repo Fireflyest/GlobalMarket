@@ -353,8 +353,8 @@ public class MarketButton {
         PRICE_TEXT = "§3§lPrice§7: §f%s%s";
 
         MARKET_RECORD_TEXT = "§e§lMarket Record";
-        SALE_ITEM_TEXT = "§3§lSale item§7: %s";
-        REWARD_TEXT = "§3§lReward§7: %s%s";
+        SALE_ITEM_TEXT = "§3§lSale item§f: %s";
+        REWARD_TEXT = "§3§lReward§f: %s%s";
     }
 
     private static void loadChineseMenuButton() {
@@ -591,8 +591,8 @@ public class MarketButton {
         PRICE_TEXT = "§3§l价格§7: §f%s%s";
 
         MARKET_RECORD_TEXT = "§e§l交易记录";
-        SALE_ITEM_TEXT = "§3§l交易物品§7: %s";
-        REWARD_TEXT = "§3§l收获§7: %s%s";
+        SALE_ITEM_TEXT = "§3§l交易物品§f: %s";
+        REWARD_TEXT = "§3§l收获§f: %s%s";
     }
 
     public static void loreMailItem(ItemStack item, Mail mail){
