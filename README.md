@@ -1,4 +1,4 @@
-![banner](https://attachment.mcbbs.net/data/myattachment/forum/202207/11/112800bccbchfnyicwzhf2.png)
+![banner](https://attachment.mcbbs.net/data/myattachment/forum/202208/01/095315xb0ciuzks5cgb0i5.png)
 # GlobalMarket - Free Trade Market
 ##### 一个基于游戏箱子界面的玩家交易市场插件
 在Minecraft多人游戏中，玩家在进行物品交易时，需要考虑他们在交易过程中的信任问题。
@@ -45,8 +45,6 @@ Password: '123456'
 手持物品蹲着右键牌子，可以快捷上架商品。
 
 如果在创建牌子的时候第一行输入`market`第二行输入`mail`并保存，右键牌子可以打开邮箱
-
-![牌子交互](https://attachment.mcbbs.net/data/myattachment/forum/202008/29/112613bgdpi3ttif3w9pd2.png.thumb.jpg)
 
 ### 自定义按钮
 输入`/mka`打开管理员菜单，找到你要替换的按钮，将新的按钮放上去
