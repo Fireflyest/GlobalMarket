@@ -642,7 +642,7 @@ public class MarketButton {
             if (! sale.isAdmin()) ItemUtils.addLore(item, String.format(SELLER_TEXT, sale.getOwner()));
             if(sale.getPrice() != sale.getCost()){
                 ItemUtils.addLore(item, String.format(ORIGINAL_PRICE_TEXT, sale.getPrice(), symbol));
-                ItemUtils.addLore(item, String.format(PRESENT_PRICE_TEXT, sale.getPrice(), symbol));
+                ItemUtils.addLore(item, String.format(PRESENT_PRICE_TEXT, sale.getCost(), symbol));
             }else {
                 ItemUtils.addLore(item, String.format(PRICE_TEXT, sale.getPrice(), symbol));
             }
