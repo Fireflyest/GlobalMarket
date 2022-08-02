@@ -339,6 +339,7 @@ public class MarketButton {
                 .build();
         //</editor-fold>
         // 文本
+        //<editor-fold desc="loadManuText">
         PREPARE_TEXT = "§f[§8Prepare§f]";
         AUCTION_TEXT = "§f[§eAuction§f]";
         RETAIL_TEXT = "§f[§7Retail§f]";
@@ -355,6 +356,7 @@ public class MarketButton {
         MARKET_RECORD_TEXT = "§e§lMarket Record";
         SALE_ITEM_TEXT = "§3§lSale item§f: %s";
         REWARD_TEXT = "§3§lReward§f: %s%s";
+        //</editor-fold>
     }
 
     private static void loadChineseMenuButton() {
@@ -577,6 +579,7 @@ public class MarketButton {
                 .build();
         //</editor-fold>
         // 文本
+        //<editor-fold desc="loadChineseText">
         PREPARE_TEXT = "§f[§8预售§f]";
         AUCTION_TEXT = "§f[§e拍卖§f]";
         RETAIL_TEXT = "§f[§7零售§f]";
@@ -593,6 +596,7 @@ public class MarketButton {
         MARKET_RECORD_TEXT = "§e§l交易记录";
         SALE_ITEM_TEXT = "§3§l交易物品§f: %s";
         REWARD_TEXT = "§3§l收获§f: %s%s";
+        //</editor-fold>
     }
 
     public static void loreMailItem(ItemStack item, Mail mail){

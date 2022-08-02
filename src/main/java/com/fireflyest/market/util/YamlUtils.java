@@ -110,6 +110,7 @@ public class YamlUtils {
         config = setup("config");
         initFile(config, Config.class);
 
+        // 获取默认语言
         if ("?".equals(Config.LANG)){
             String lang = Locale.getDefault().toLanguageTag();
             YamlUtils.setConfigData("Lang", lang);
@@ -119,7 +120,7 @@ public class YamlUtils {
         FileConfiguration lang;
         if (Objects.equals(Config.LANG, "zh-CN")){
             lang = setup("language_zh");
-        }else {
+        } else {
             lang = setup("language_en");
         }
         initFile(lang, Language.class);
