@@ -17,7 +17,7 @@ Help: "§e§m =               §f§l[§aGlobal§eMarket§f§l]§e§m            
 #显示在提示信息
 Title: "§6✦§f"
 #显示在界面
-PluginName: "§f§l[§2§lG§e§lM§f§l]"
+PluginName: "§f§l[§2§lGlobal§e§lMarket§f§l]"
 MarketHomeNick: "导航界面"
 MarketAdminNick: "管理界面"
 MarketMailNick: "%s的邮箱"
