@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * @author Fireflyest
@@ -108,7 +109,12 @@ public class YamlUtils {
         config = setup("config");
         initFile(config, Config.class);
 
-        FileConfiguration lang = setup("language");
+        FileConfiguration lang;
+        if (Objects.equals(Config.LANG, "zh-CN")){
+            lang = setup("language");
+        }else {
+            lang = setup("language_en");
+        }
         initFile(lang, Language.class);
         
     }
