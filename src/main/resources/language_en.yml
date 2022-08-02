@@ -1,9 +1,9 @@
-Version: '3.2.0'
-PlayerCommand: '§cThis command can only be used by players!'
-Reloading: '§fConfiguration overloading...'
-Reloaded: '§fConfiguration overload complete!'
+Version: "3.2.0"
+PlayerCommand: "§cThis command can only be used by players!"
+Reloading: "§fConfiguration overloading..."
+Reloaded: "§fConfiguration overload complete!"
 
-Help: '§e§m =               §f§l[§aGlobe§eMarket§f§l]§e§m               = §r\n
+Help: "§e§m =               §f§l[§aGlobal§eMarket§f§l]§e§m               = §r\n
 §b/market                             §f - Open GUI\n
 §b/market sell [m] <a>              §f - Sell items\n
 §b/market auction [m] <a>          §f - Auction items\n
@@ -12,25 +12,25 @@ Help: '§e§m =               §f§l[§aGlobe§eMarket§f§l]§e§m             
 §b/market other [p]                 §f - Others store\n
 §b/market quick                      §f - Quick sell\n
 §b/market search [..]               §f - Search for items\n
-§9And §7p§9 represents a player，§7a§9 represents amount，§7m§9 represents price，§7<>§9 indicates optional，§7[]§9 indicates required'
+§9And §7p§9 represents a player，§7a§9 represents amount，§7m§9 represents price，§7<>§9 indicates optional，§7[]§9 indicates required"
 
-Title: '§6✦§f'
+Title: "§6✦§f"
 # Display in the interface
-PluginName: '§f§l[§2§lGlobe§e§lMarket§f§l]'
-MarketHomeNick: 'Navigation'
-MarketAdminNick: 'Management'
-MarketMailNick: '%s mailbox'
-MarketOtherNick: '%s store'
-MarketMineNick: 'Personal'
-MarketMainNormalNick: 'Market'
-MarketMainAdminNick: 'System store'
-MarketMainPointNick: 'Points transaction'
-MarketMainAuctionNick: 'Auction house'
-MarketMainRetailNick: 'Retail store'
+PluginName: "§f§l[§2§lG§e§lM§f§l]"
+MarketHomeNick: "Navigation"
+MarketAdminNick: "Management"
+MarketMailNick: "%s's mailbox"
+MarketOtherNick: "%s's store"
+MarketMineNick: "Personal"
+MarketMainNormalNick: "Market"
+MarketMainAdminNick: "System store"
+MarketMainPointNick: "Points store"
+MarketMainAuctionNick: "Auction house"
+MarketMainRetailNick: "Retail store"
 ClassifyEdibleTitle: "Food"
 ClassifyBlockTitle: "Block"
 ClassifyInteractableTitle: "Interactable"
-ClassifyBurnableTitle: "可燃物"
+ClassifyBurnableTitle: "Burnable"
 ClassifyEquipTitle: "Equip"
 ClassifyItemTitle: "Item"
 ClassifyKnowledgeTitle: "Knowledge"
@@ -42,42 +42,42 @@ MailFromCancel: "off shelves"
 MailFull: "§fThere are too many item and §3%amount%§f items are stranded"
 
 # Prompt text
-CoinSymbol: '§6ɞ'
-PointSymbol: '§dɗ'
-CommandError: '§6✦§fThe input command is incorrect or the command is not turned on(§3Enter/market help§f)'
-NotEnoughMoney: '§6✦§f%target% unable to bear the transaction price'
-NotEnoughItem: '§6✦§fNot enough items'
-NotEnoughSpace: '§6✦§fYou dont have enough space on the shelves'
-NotPermission: '§6✦§fYou do not have permission to use this command %permission%'
-NotSelling: '§6✦§fGoods are in the pre-sale stage'
-SellItem: '§6✦§fSuccessfully，enter §3/market mine §fview items you sell'
-SellItemPrepare: '§6✦§fUse §3/market sell [price] <amount> §fsell items to the market，or use shelves button on personal interface '
-SellItemBroadcast: '§6✦§fPlayer §3%player%§f sell '
-BuyItem: '§6✦§fSuccessful purchase, please check your mailbox'
-BuyError: '§6✦§fYou cant buy things you sell yourself'
-TypeError: '§6✦§fThe sale type of the article does not conform to'
-CancelItem: '§6✦§fPlease check your mailbox for items off the shelf'
-CancelError: '§6✦§fYou are not the owner of this sale'
-CancelAdmin: '§6✦§fForced off the shelf'
-AuctionItem: '§6✦§fSuccessfully participated in the auction'
-AuctionFinish: '§6✦§fAuction %id% end, Please go to the mailbox to receive the income'
-AuctionStep: '§6✦§fAuction goods §3%id% §fhighest bid §3%money%§f, the §3%num%§f times'
-AuctionBid: '§6✦§fPlayer §3%player% §ffor auction goods §3%id% §fbid §3%money%§f'
-AuctionFlow: '§6✦§fYour auction item §3%id% §fis out of stock'
-AffairFinish: '§6✦§fTransaction gains：§3%money%§f'
-SignFinish: '§6✦§fYou signed for an item'
-FullMail: '§6✦§fMailbox is full'
-SendError: '§6✦§fYou cant email yourself'
-SignError: '§6✦§fYour backpack is full and cannot sign for items'
-UserError: '§6✦§fPlayer does not exist'
-DataNull: '§6✦§fNo data temporarily'
-SendMail: '§6✦§fMail sent'
-SendItem: '§6✦§fUse §3/market send [player] <amount> §fto mail items，Or drag the item onto the menu Mail button'
-HasMail: '§6✦§fYou have a new email. Open it and have a look'
-LimitMail: '§6✦§fIf the number of mail reaches the maximum, it will be forced to sign in'
-Tax: '§6✦§fDeduct §3%rate% §ftax，about §3%money%'
+CoinSymbol: "§6ɞ"
+PointSymbol: "§dɗ"
+CommandError: "§6✦§fThe input command is incorrect or the command is not turned on(§3Enter/market help§f)"
+NotEnoughMoney: "§6✦§f%target% unable to bear the transaction price"
+NotEnoughItem: "§6✦§fNot enough items"
+NotEnoughSpace: "§6✦§fYou dont have enough space on the shelves"
+NotPermission: "§6✦§fYou do not have permission to use this command %permission%"
+NotSelling: "§6✦§fGoods are in the pre-sale stage"
+SellItem: "§6✦§fSuccessfully，enter §3/market mine §fview items you sell"
+SellItemPrepare: "§6✦§fUse §3/market sell [price] <amount> §fsell items to the market，or use shelves button on personal interface "
+SellItemBroadcast: "§6✦§fPlayer §3%player%§f sell "
+BuyItem: "§6✦§fSuccessful purchase, please check your mailbox"
+BuyError: "§6✦§fYou cant buy things you sell yourself"
+TypeError: "§6✦§fThe sale type of the article does not conform to"
+CancelItem: "§6✦§fPlease check your mailbox for items off the shelf"
+CancelError: "§6✦§fYou are not the owner of this sale"
+CancelAdmin: "§6✦§fForced off the shelf"
+AuctionItem: "§6✦§fSuccessfully participated in the auction"
+AuctionFinish: "§6✦§fAuction %id% end, Please go to the mailbox to receive the income"
+AuctionStep: "§6✦§fAuction goods §3%id% §fhighest bid §3%money%§f, the §3%num%§f times"
+AuctionBid: "§6✦§fPlayer §3%player% §ffor auction goods §3%id% §fbid §3%money%§f"
+AuctionFlow: "§6✦§fYour auction item §3%id% §fis out of stock"
+AffairFinish: "§6✦§fTransaction gains：§3%money%§f"
+SignFinish: "§6✦§fYou signed for an item"
+FullMail: "§6✦§fMailbox is full"
+SendError: "§6✦§fYou cant email yourself"
+SignError: "§6✦§fYour backpack is full and cannot sign for items"
+UserError: "§6✦§fPlayer does not exist"
+DataNull: "§6✦§fNo data temporarily"
+SendMail: "§6✦§fMail sent"
+SendItem: "§6✦§fUse §3/market send [player] <amount> §fto mail items，Or drag the item onto the menu Mail button"
+HasMail: "§6✦§fYou have a new email. Open it and have a look"
+LimitMail: "§6✦§fIf the number of mail reaches the maximum, it will be forced to sign in"
+Tax: "§6✦§fDeduct §3%rate% §ftax，about §3%money%"
 TaxBurden: "§6✦§fYou cannot pay taxes！"
-SearchItem: '§6✦§fUse §3/market search [...] §fsearch for an item, or drag an item to the menu search button'
+SearchItem: "§6✦§fUse §3/market search [...] §fsearch for an item, or drag an item to the menu search button"
 UnlimitedItem: "§6✦§fThe infinite status of the product is set to §3%unlimited%"
 DiscountItem: "§6✦§f0.§3%discount%§f discount on goods successfully"
 RepriceItem: "§6✦§fThe modified price of the commodity is §3%price%§f"
