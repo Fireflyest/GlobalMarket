@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -108,6 +109,12 @@ public class YamlUtils {
 
         config = setup("config");
         initFile(config, Config.class);
+
+        if ("?".equals(Config.LANG)){
+            String lang = Locale.getDefault().toLanguageTag();
+            YamlUtils.setConfigData("Lang", lang);
+            Config.LANG = lang;
+        }
 
         FileConfiguration lang;
         if (Objects.equals(Config.LANG, "zh-CN")){
