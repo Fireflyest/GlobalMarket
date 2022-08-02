@@ -118,7 +118,7 @@ public class YamlUtils {
 
         FileConfiguration lang;
         if (Objects.equals(Config.LANG, "zh-CN")){
-            lang = setup("language");
+            lang = setup("language_zh");
         }else {
             lang = setup("language_en");
         }
