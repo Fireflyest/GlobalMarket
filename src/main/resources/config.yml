@@ -4,7 +4,7 @@ Version: '${project.version}'
 Debug: false
 
 # 语言，除了zh-CN其他都是英语
-Lang: zh-CN
+Lang: '?'
 
 # SQL参数(高一点的版本需要在url加上'useSSL=false')
 Sql: false

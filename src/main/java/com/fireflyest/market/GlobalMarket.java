@@ -38,6 +38,7 @@ import org.fireflyest.craftgui.util.TranslateUtils;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
