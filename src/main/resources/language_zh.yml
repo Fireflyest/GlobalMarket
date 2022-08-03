@@ -3,7 +3,7 @@ PlayerCommand: "§c该指令只能由玩家使用!"
 Reloading: "§f配置重载中..."
 Reloaded: "§f配置重载完成!"
 
-Help: "§e§m =               §f§l[§aGlobal§eMarket§f§l]§e§m               = §r\n
+Help: "§e§m =               §f§l[§aGlobalMarket§f§l]§e§m               = §r\n
 §b/market                             §f - 环球市场\n
 §b/market sell [m] <a>              §f - 出售物品\n
 §b/market auction [m] <a>          §f - 拍卖物品\n
@@ -17,7 +17,7 @@ Help: "§e§m =               §f§l[§aGlobal§eMarket§f§l]§e§m            
 #显示在提示信息
 Title: "§6✦§f"
 #显示在界面
-PluginName: "§7§l[§2§lGlobal§e§lMarket§7§l]"
+PluginName: "§7§l[§2§lGlobalMarket§7§l]"
 MarketHomeNick: "导航界面"
 MarketAdminNick: "管理界面"
 MarketMailNick: "%s的邮箱"
