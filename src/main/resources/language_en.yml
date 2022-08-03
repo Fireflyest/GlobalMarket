@@ -3,7 +3,7 @@ PlayerCommand: "§cThis command can only be used by players!"
 Reloading: "§fConfiguration overloading..."
 Reloaded: "§fConfiguration overload complete!"
 
-Help: "§e§m =               §f§l[§aGlobal§eMarket§f§l]§e§m               = §r\n
+Help: "§e§m =               §f§l[§aGlobalMarket§f§l]§e§m               = §r\n
 §b/market                             §f - Open GUI\n
 §b/market sell [m] <a>              §f - Sell items\n
 §b/market auction [m] <a>          §f - Auction items\n
@@ -16,7 +16,7 @@ Help: "§e§m =               §f§l[§aGlobal§eMarket§f§l]§e§m            
 
 Title: "§6✦§f"
 # Display in the interface
-PluginName: "§7§l[§2§lG§e§lM§7§l]"
+PluginName: "§7§l[§2§lGM§7§l]"
 MarketHomeNick: "Navigation"
 MarketAdminNick: "Management"
 MarketMailNick: "%s's mailbox"
