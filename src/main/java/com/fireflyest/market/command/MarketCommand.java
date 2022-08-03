@@ -104,7 +104,7 @@ public class MarketCommand implements CommandExecutor {
                     sender.sendMessage(Language.PLAYER_COMMAND);
                     return;
                 }
-                MarketStatistic.statisticData(player);
+                MarketStatistic.dataPlayer(player);
                 break;
             case "mail":{
                 if(player == null) {
@@ -302,7 +302,7 @@ public class MarketCommand implements CommandExecutor {
                 break;
             case "data":
                 int target = ConvertUtils.parseInt(var2);
-                MarketStatistic.statisticSale(player, target);
+                MarketStatistic.dataSale(player, target);
                 break;
             case "other":{
                 if(!player.hasPermission("market.other")){

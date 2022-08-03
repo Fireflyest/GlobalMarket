@@ -68,8 +68,6 @@ public class ChatUtils {
 
     @SuppressWarnings("deprecation")
     public static void sendItemButton(Player player, ItemStack item, String command, String name) {
-        int version = XMaterial.getVersion();
-        if (version <= 12) return;
         ItemMeta meta = item.getItemMeta();
         String hover, info, display = item.getType().name();
         // 提示文本
