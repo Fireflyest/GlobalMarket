@@ -66,20 +66,36 @@ public class MarketStatistic {
      * @param id 商品id
      */
     public static void dataSale(Player player, int id){
-        Sale sale = MarketManager.getSale(id);
-        if(sale == null){
-            player.sendMessage(Language.DATA_NULL);
-            return;
-        }
-        player.sendMessage("§e§m =                                             = ");
-        player.sendMessage(Language.TITLE+"§f商品信息");
-        player.sendMessage("§3卖家§7: §f"+sale.getOwner());
-        player.sendMessage("§3买家§7: §f"+sale.getBuyer());
-        player.sendMessage("§3原价§7: §f"+sale.getPrice());
-        player.sendMessage("§3现价§7: §f"+sale.getCost());
-        player.sendMessage("§3拍卖§7: §f"+sale.isAuction());
-        player.sendMessage("§3热度§7: §f"+sale.getHeat());
-        player.sendMessage("§e§m =                                             = ");
+        player.closeInventory();
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+
+                Sale sale = MarketManager.getSale(id);
+                if(sale == null){
+                    player.sendMessage(Language.DATA_NULL);
+                    return;
+                }
+
+                ItemStack book = new ViewItemBuilder(XMaterial.WRITTEN_BOOK.parseMaterial()).build();
+                BookMeta bookMeta = ((BookMeta) book.getItemMeta());
+                ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
+                        .append("\n")
+                        .append("------------------");
+
+                componentBuilder.append(String.format(MarketButton.SALE_HEAT, sale.getHeat())).append("\n");
+
+                if (bookMeta != null) {
+                    bookMeta.setAuthor(player.getName());
+                    bookMeta.setTitle(Language.PLUGIN_NAME.replace("§f", "§0"));
+                    bookMeta.spigot().addPage(componentBuilder.create());
+                }
+                book.setItemMeta(bookMeta);
+
+                player.openBook(book);
+            }
+        }.runTaskAsynchronously(GlobalMarket.getPlugin());
     }
 
     /**
@@ -88,20 +104,41 @@ public class MarketStatistic {
      * @param name 目标玩家
      */
     public static void statisticPlayer(Player player, String name){
-        User user = MarketManager.getUser(name);
-        if(user == null || "".equals(user.getUuid())){
-            player.sendMessage(Language.USER_ERROR);
-            return;
-        }
-        player.sendMessage("§e§m =                                             = ");
-        player.sendMessage(Language.TITLE+"§f玩家§3"+user.getName()+"§f注册于"+ TimeUtils.getTime(user.getRegister()));
-        player.sendMessage("§3信誉度§7: §f"+user.getCredit());
-        player.sendMessage("§3黑名单§7: §f"+user.isBlack());
-        player.sendMessage("§3在出售§7: §f"+user.getSelling());
-        player.sendMessage("§3累计交易数量§7: §f"+user.getAmount());
-        player.sendMessage("§3累计交易金额§7: §f"+user.getMoney());
-        player.sendMessage("§f输入§3: §3/market data §f查看目前商品信息");
-        player.sendMessage("§e§m =                                             = ");
+        player.closeInventory();
+
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+
+                User user = MarketManager.getUser(name);
+                if(user == null || "".equals(user.getUuid())){
+                    player.sendMessage(Language.USER_ERROR);
+                    return;
+                }
+
+                ItemStack book = new ViewItemBuilder(XMaterial.WRITTEN_BOOK.parseMaterial()).build();
+                BookMeta bookMeta = ((BookMeta) book.getItemMeta());
+                ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
+                        .append("\n")
+                        .append("------------------");
+
+                componentBuilder.append(String.format(MarketButton.PLAYER_CREDIT, user.getCredit())).append("\n")
+                        .append(String.format(MarketButton.PLAYER_BLACK, user.isBlack())).append("\n")
+                        .append(String.format(MarketButton.PLAYER_SELLING, user.getSelling())).append("\n")
+                        .append(String.format(MarketButton.TOTAL_SALE_AMOUNT, user.getAmount())).append("\n")
+                        .append(String.format(MarketButton.TOTAL_SALE_PRICE, user.getMoney())).append("\n");
+
+                if (bookMeta != null) {
+                    bookMeta.setAuthor(player.getName());
+                    bookMeta.setTitle(Language.PLUGIN_NAME.replace("§f", "§0"));
+                    bookMeta.spigot().addPage(componentBuilder.create());
+                }
+                book.setItemMeta(bookMeta);
+
+                player.openBook(book);
+            }
+        }.runTaskAsynchronously(GlobalMarket.getPlugin());
     }
 
     /**

@@ -16,7 +16,7 @@ Help: "§e§m =               §f§l[§aGlobal§eMarket§f§l]§e§m            
 
 Title: "§6✦§f"
 # Display in the interface
-PluginName: "§0§l[§2§lG§e§lM§0§l]"
+PluginName: "§7§l[§2§lG§e§lM§7§l]"
 MarketHomeNick: "Navigation"
 MarketAdminNick: "Management"
 MarketMailNick: "%s's mailbox"
