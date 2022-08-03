@@ -102,6 +102,10 @@ public class MarketButton {
     public static String CIRCULATE_PRICE;
     public static String CIRCULATE_AMOUNT;
     public static String MAX_PRICE;
+    public static String SALE_HEAT;
+    public static String PLAYER_CREDIT;
+    public static String PLAYER_BLACK;
+    public static String PLAYER_SELLING;
 
     private MarketButton(){
     }
@@ -370,6 +374,13 @@ public class MarketButton {
         CIRCULATE_PRICE = "§3§lCirculate Price§7: §0%s";
         CIRCULATE_AMOUNT = "§3§lCirculate Amount§7: §0%s";
         MAX_PRICE = "§3§lMax Price§7: §0%s";
+
+        SALE_HEAT = "§3§lSale Heat§7: §0%s";
+
+        PLAYER_CREDIT = "§3§lPlayer Credit§7: §0%s";
+        PLAYER_BLACK = "§3§lPlayer Black§7: §0%s";
+        PLAYER_SELLING = "§3§lPlayer Selling§7: §0%s";
+
         //</editor-fold>
     }
 
@@ -618,6 +629,12 @@ public class MarketButton {
         CIRCULATE_PRICE = "§3§l总交易金额§7: §0%s";
         CIRCULATE_AMOUNT = "§3§l总交易数量§7: §0%s";
         MAX_PRICE = "§3§l最高交易金额§7: §0%s";
+
+        SALE_HEAT = "§3§l热度§7: §0%s";
+
+        PLAYER_CREDIT = "§3§l信誉度§7: §0%s";
+        PLAYER_BLACK = "§3§l黑名单§7: §0%s";
+        PLAYER_SELLING = "§3§l在售§7: §0%s";
         //</editor-fold>
     }
 
