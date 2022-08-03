@@ -96,6 +96,12 @@ public class MarketButton {
     public static String MARKET_RECORD_TEXT;
     public static String SALE_ITEM_TEXT;
     public static String REWARD_TEXT;
+    public static String TOTAL_SALE_PRICE;
+    public static String TOTAL_SALE_AMOUNT;
+    public static String TOTAL_SALE_LIST;
+    public static String CIRCULATE_PRICE;
+    public static String CIRCULATE_AMOUNT;
+    public static String MAX_PRICE;
 
     private MarketButton(){
     }
@@ -356,6 +362,14 @@ public class MarketButton {
         MARKET_RECORD_TEXT = "§e§lMarket Record";
         SALE_ITEM_TEXT = "§3§lSale item§f: %s";
         REWARD_TEXT = "§3§lReward§f: %s%s";
+
+        TOTAL_SALE_PRICE = "§3§lTotal Sales Price§7: §0%s";
+        TOTAL_SALE_AMOUNT = "§3§lTotal Sales Amount§7: §0%s";
+        TOTAL_SALE_LIST = "§3§lTotal Sales§7: ";
+
+        CIRCULATE_PRICE = "§3§lCirculate Price§7: §0%s";
+        CIRCULATE_AMOUNT = "§3§lCirculate Amount§7: §0%s";
+        MAX_PRICE = "§3§lMax Price§7: §0%s";
         //</editor-fold>
     }
 
@@ -596,6 +610,14 @@ public class MarketButton {
         MARKET_RECORD_TEXT = "§e§l交易记录";
         SALE_ITEM_TEXT = "§3§l交易物品§f: %s";
         REWARD_TEXT = "§3§l收获§f: %s%s";
+
+        TOTAL_SALE_PRICE = "§3§l商品总金额§7: §0%s";
+        TOTAL_SALE_AMOUNT = "§3§l商品数量§7: §0%s";
+        TOTAL_SALE_LIST = "§3§l商品编号§7: ";
+
+        CIRCULATE_PRICE = "§3§l总交易金额§7: §0%s";
+        CIRCULATE_AMOUNT = "§3§l总交易数量§7: §0%s";
+        MAX_PRICE = "§3§l最高交易金额§7: §0%s";
         //</editor-fold>
     }
 
