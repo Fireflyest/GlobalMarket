@@ -18,7 +18,7 @@ public class TimeUtils {
      * @return int
      */
     public static int getYear(){
-        return Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
+        return Calendar.getInstance().get(Calendar.YEAR);
     }
 
     /**
@@ -26,7 +26,7 @@ public class TimeUtils {
      * @return int
      */
     public static int getMonth(){
-        return Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH)+1;
+        return Calendar.getInstance().get(Calendar.MONTH)+1;
     }
 
     /**
@@ -34,7 +34,7 @@ public class TimeUtils {
      * @return int
      */
     public static int getDay(){
-        return Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
+        return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
     }
 
     /**
@@ -42,7 +42,7 @@ public class TimeUtils {
      * @return int
      */
     public static int getHour(){
-        return Calendar.getInstance(Locale.CHINA).get(Calendar.HOUR);
+        return Calendar.getInstance().get(Calendar.HOUR);
     }
 
     /**
@@ -50,7 +50,7 @@ public class TimeUtils {
      * @return int
      */
     public static int getMinute(){
-        return Calendar.getInstance(Locale.CHINA).get(Calendar.MINUTE);
+        return Calendar.getInstance().get(Calendar.MINUTE);
     }
 
     /**
@@ -58,7 +58,7 @@ public class TimeUtils {
      * @return int
      */
     public static int getSecond(){
-        return Calendar.getInstance(Locale.CHINA).get(Calendar.SECOND);
+        return Calendar.getInstance().get(Calendar.SECOND);
     }
 
     /**
@@ -67,7 +67,7 @@ public class TimeUtils {
      */
     public static String getTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-        return sdf.format(Calendar.getInstance(Locale.CHINA).getTime());
+        return sdf.format(Calendar.getInstance().getTime());
     }
 
     /**
@@ -76,7 +76,7 @@ public class TimeUtils {
      */
     public static String getTimeToday(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(Calendar.getInstance(Locale.CHINA).getTime());
+        return sdf.format(Calendar.getInstance().getTime());
     }
 
     /**
@@ -93,7 +93,7 @@ public class TimeUtils {
      * @return long
      */
     public static long getDate(){
-        return Calendar.getInstance(Locale.CHINA).getTime().getTime();
+        return Calendar.getInstance().getTime().getTime();
     }
 
 
