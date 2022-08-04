@@ -17,7 +17,7 @@ Help: "§e§m =               §f§l[§aGlobalMarket§f§l]§e§m               
 #显示在提示信息
 Title: "§6✦§f"
 #显示在界面
-PluginName: "§7§l[§2§lGlobalMarket§7§l]"
+PluginName: "§6§l[§2§lGlobalMarket§6§l]"
 MarketHomeNick: "导航界面"
 MarketAdminNick: "管理界面"
 MarketMailNick: "%s的邮箱"
@@ -49,7 +49,7 @@ CommandError: "§6✦§f输入指令有误或该功能未开启(§3输入/market
 NotEnoughMoney: "§6✦§f%target%无法承担交易价格"
 NotEnoughItem: "§6✦§f没有足够的物品"
 NotEnoughSpace: "§6✦§f你没有足够的上架空间"
-NotPermission: "§6✦§f你没有使用该命令的权限 %permission%"
+NotPermission: "§6✦§f你没有使用该命令的权限 §3%permission%"
 NotSelling: "§6✦§f商品在预售阶段"
 SellItem: "§6✦§f成功上架，可输入 §3/market mine §f查看自己出售的物品"
 SellItemPrepare: "§6✦§f使用指令 §3/market sell [价格] <数量> §f将物品出售到市场，或者将物品拖至个人界面货架上"
