@@ -10,7 +10,7 @@
 
 ## 目录
 * [安装插件](#安装插件)
-* 功能和使用方法
+* [功能和使用方法](#功能和使用方法)
   * 使用数据库存储
   * 牌子交互
   * 自定义按钮
@@ -21,12 +21,11 @@
 ## 安装插件
 1. 确保你的服务器有一个使用前置插件[Vault](https://www.spigotmc.org/resources/vault.34315/)的经济插件
 2. 添加前置插件[ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)用于显示虚拟物品按钮
-3. 添加前置插件CraftGUI用于展示容器界面
+3. 添加前置插件[CraftGUI](https://github.com/Fireflyest/CraftGUI)用于展示容器界面
 4. 可选前置[PlayerPoints](https://www.spigotmc.org/resources/playerpoints.80745/)用于使用点券进行交易
 5. 下载本插件后将其放置于服务器的plugins文件夹内，并重载服务器。
 
 ## 功能和使用方法
-
 ### 使用数据库存储
 如果想多个服务器使用同一个市场数据，只需要让他们连接到同一个数据库即可。
 在插件的config.yml中修改Sql为true并填写其他配置信息，使插件能够连接数据库。
