@@ -20,7 +20,7 @@
     </content>
     <orderEntry type="jdk" jdkName="11" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="CraftGUI-1.0.6" level="project" />
+    <orderEntry type="library" name="CraftGUI-api" level="project" />
     <orderEntry type="library" name="PlayerPoints-3.2.4" level="project" />
     <orderEntry type="library" name="Maven: org.bstats:bstats-bukkit:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.bstats:bstats-base:3.0.0" level="project" />
