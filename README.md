@@ -96,29 +96,28 @@ BuyPartial: true
 ## 权限与指令
 其中p表玩家，a表数量，m表价格，()表示可选，[]表示必填
 
-前面带*的权限是op默认拥有，普通玩家没有的
 
-| 指令                      | 功能        | 权限                 |
-|-------------------------|-----------|--------------------|
-| /mk admin [id]          | 将商品设置为无限  | * market.admin     |
-| /mk statistic (p)       | 统计数据      | * market.statistic |
-| /mk mine                | 打开个人商店    |                    |
-| /mk mail                | 打开邮箱      |                    |
-| /mk data (id)           | 查看个人或商品数据 |                    |
-| /mk sign                | 一次性签收所有邮件 | market.sign        |
-| /mk other [p]           | 打开他人的商店   | market.other       |
-| /mk quick               | 快捷上架      |                    |
-| /mk sell [m] (a)        | 出售商品      | market.sell        |
-| /mk auction [m] (a)     | 拍卖商品      | market.auction     |
-| /mk discount [id] [1~9] | 商品打折      | market.discount    |
-| /mk reprice [id] [m]    | 商品重新定价    | market.reprice     |
-| /mk send [p] (a)        | 邮寄物品      | market.send        |
-| /mk desc [id] [desc]    | 给商品添加描述   | market.desc        |
-| /mk search [something]  | 搜索商品      | market.search      |
-| /mka                    | 按钮编辑      | * market.admin     |
-| /mka check              | 查看最新版本    | * market.admin     |
-| /mka reload             | 重载配置      | * market.admin     |
-|                         | 更多上架空间    | * market.vip       |
+| 指令                      | 功能        | 权限               | 默认   |
+|-------------------------|-----------|------------------|------|
+| /mk admin [id]          | 将商品设置为无限  | market.admin     | op   |
+| /mk statistic (p)       | 统计数据      | market.statistic | op   |
+| /mk mine                | 打开个人页面    |                  |      |
+| /mk mail                | 打开邮箱      |                  |      |
+| /mk data (id)           | 查看个人或商品数据 |                  |      |
+| /mk sign                | 一次性签收所有邮件 | market.sign      | true |
+| /mk other [p]           | 打开他人的商店   | market.other     | true |
+| /mk quick               | 快捷上架      | market.quick     | true |
+| /mk sell [m] (a)        | 出售商品      | market.sell      | true |
+| /mk auction [m] (a)     | 拍卖商品      | market.auction   | true |
+| /mk discount [id] [1~9] | 商品打折      | market.discount  | true |
+| /mk reprice [id] [m]    | 商品重新定价    | market.reprice   | true |
+| /mk send [p] (a)        | 邮寄物品      | market.send      | true |
+| /mk desc [id] [desc]    | 给商品添加描述   | market.desc      | true |
+| /mk search [something]  | 搜索商品      | market.search    | true |
+| /mka                    | 按钮编辑      | market.admin     | op   |
+| /mka check              | 查看最新版本    | market.admin     | op   |
+| /mka reload             | 重载配置      | market.admin     | op   |
+|                         | 更多上架空间    | market.vip       | op   |
 
 ## 维护人员
 [@Fireflyest](https://github.com/Fireflyest) QQ: 746969484

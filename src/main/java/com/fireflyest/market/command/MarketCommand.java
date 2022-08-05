@@ -222,6 +222,10 @@ public class MarketCommand implements CommandExecutor {
                     sender.sendMessage(Language.PLAYER_COMMAND);
                     return;
                 }
+                if(!player.hasPermission("market.quick")){
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.quick"));
+                    return;
+                }
                 if(player.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
                     player.sendMessage(Language.NOT_ENOUGH_ITEM);
                     return;
