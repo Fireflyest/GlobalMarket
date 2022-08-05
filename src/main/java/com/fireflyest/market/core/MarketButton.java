@@ -160,6 +160,34 @@ public class MarketButton {
         PAGE_PRE_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
                 .name("§7§l◁")
                 .build();
+        CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
+                .name("§c§l❌")
+                .command("close")
+                .build();
+        DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
+                .name("§3§l✔")
+                .build();
+        CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
+                .name("§3§l←")
+                .build();
+        SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
+                .name("§f§l[↓]")
+                .command("sell")
+                .build();
+        SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
+                .name("§e§l[↓]")
+                .command("sell")
+                .build();
+        SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
+                .name("§c§l[↓]")
+                .command("sell")
+                .build();
+        WAIT = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
+                .name("§3§l...")
+                .build();
+        OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
+                .name("§3§lShop of %player%")
+                .build();
     }
 
     private MarketButton(){
@@ -183,16 +211,13 @@ public class MarketButton {
             }
         }
     }
-
+//⛏⚒🔱〽⚠♻
     private static void loadManuButton() {
         // 加载物品
         //<editor-fold defaultstate="collapsed" desc="loadManuButton">
         MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
                 .name("§3§lMine")
                 .command("mine")
-                .build();
-        OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
-                .name("§3§lShop of %player%")
                 .build();
         MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
                 .name("§3§lMarket")
@@ -209,9 +234,6 @@ public class MarketButton {
         RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
                 .name("§3§lRetail")
                 .command("retail")
-                .build();
-        WAIT = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
-                .name("§3§lWaiting")
                 .build();
         TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
                 .name("§3§lTrade")
@@ -262,34 +284,12 @@ public class MarketButton {
                 .name("§3§lAuthority")
                 .command("admin")
                 .build();
-        CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
-                .name("§c§lClose")
-                .command("close")
-                .build();
         BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
                 .name("§c§lBack")
                 .command(" ")
                 .build();
-        DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
-                .name("§3§lPut On Sale")
-                .build();
         EDIT = new ViewItemBuilder(XMaterial.NAME_TAG.parseMaterial())
                 .name("§3§lEdit")
-                .build();
-        CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
-                .name("§3§lClear")
-                .build();
-        SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
-                .name("§fShelves")
-                .command("sell")
-                .build();
-        SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
-                .name("§fShelves")
-                .command("sell")
-                .build();
-        SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
-                .name("§fShelves")
-                .command("sell")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
                 .name("§e§lBuy One")
@@ -397,9 +397,6 @@ public class MarketButton {
                 .name("§3§l我的")
                 .command("mine")
                 .build();
-        OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
-                .name("§3§l%player%的商店")
-                .build();
         MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
                 .name("§3§l市场")
                 .command(" ")
@@ -415,9 +412,6 @@ public class MarketButton {
         RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
                 .name("§3§l零售")
                 .command("retail")
-                .build();
-        WAIT = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
-                .name("§3§l敬请期待")
                 .build();
         TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
                 .name("§3§l以物易物")
@@ -468,34 +462,12 @@ public class MarketButton {
                 .name("§3§l官方")
                 .command("admin")
                 .build();
-        CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
-                .name("§c§l关闭")
-                .command("close")
-                .build();
         BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
                 .name("§c§l返回")
                 .command(" ")
                 .build();
-        DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
-                .name("§3§l发售")
-                .build();
         EDIT = new ViewItemBuilder(XMaterial.NAME_TAG.parseMaterial())
                 .name("§3§l修改")
-                .build();
-        CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
-                .name("§3§l消除")
-                .build();
-        SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
-                .name("§f货架")
-                .command("sell")
-                .build();
-        SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
-                .name("§f货架")
-                .command("sell")
-                .build();
-        SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
-                .name("§f货架")
-                .command("sell")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
                 .name("§e§l单件")
