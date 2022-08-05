@@ -117,6 +117,7 @@ BuyPartial: true
 | /mka                    | 按钮编辑      | * market.admin     |
 | /mka check              | 查看最新版本    | * market.admin     |
 | /mka reload             | 重载配置      | * market.admin     |
+|                         | 更多上架空间    | * market.vip       |
 
 ## 维护人员
 [@Fireflyest](https://github.com/Fireflyest) QQ: 746969484

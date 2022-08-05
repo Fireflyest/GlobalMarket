@@ -30,6 +30,9 @@ permissions:
   market.vip:
     description: 会员
     default: op
+  market.svip:
+    description: 超级会员
+    default: op
   market.admin:
     description: 设置系统商店商品，编辑按钮
     default: op
