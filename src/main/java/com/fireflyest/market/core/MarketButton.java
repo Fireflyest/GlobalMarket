@@ -109,6 +109,59 @@ public class MarketButton {
     public static String PLAYER_STATIC_AMOUNT;
     public static String PLAYER_STATIC_MONEY;
 
+    static {
+        DOT = new ViewItemBuilder(XMaterial.STONE_BUTTON.parseMaterial())
+                .name("§3§l.")
+                .build();
+        NUM0 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l0")
+                .build();
+        NUM1 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l1")
+                .build();
+        NUM2 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l2")
+                .build();
+        NUM3 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l3")
+                .build();
+        NUM4 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l4")
+                .build();
+        NUM5 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l5")
+                .build();
+        NUM6 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l6")
+                .build();
+        NUM7 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l7")
+                .build();
+        NUM8 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l8")
+                .build();
+        NUM9 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
+                .name("§3§l9")
+                .build();
+        BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
+                .name(" ")
+                .build();
+        PAGE_NEXT = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
+                .name("§a§l▶")
+                .command("page next")
+                .build();
+        PAGE_PRE = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
+                .name("§a§l◀")
+                .command("page pre")
+                .build();
+        PAGE_NEXT_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
+                .name("§7§l▷")
+                .build();
+        PAGE_PRE_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
+                .name("§7§l◁")
+                .build();
+    }
+
     private MarketButton(){
     }
 
@@ -226,42 +279,6 @@ public class MarketButton {
         CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
                 .name("§3§lClear")
                 .build();
-        DOT = new ViewItemBuilder(XMaterial.STONE_BUTTON.parseMaterial())
-                .name("§3§l.")
-                .build();
-        NUM0 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l0")
-                .build();
-        NUM1 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l1")
-                .build();
-        NUM2 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l2")
-                .build();
-        NUM3 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l3")
-                .build();
-        NUM4 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l4")
-                .build();
-        NUM5 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l5")
-                .build();
-        NUM6 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l6")
-                .build();
-        NUM7 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l7")
-                .build();
-        NUM8 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l8")
-                .build();
-        NUM9 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l9")
-                .build();
-        BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
-                .name(" ")
-                .build();
         SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
                 .name("§fShelves")
                 .command("sell")
@@ -294,20 +311,6 @@ public class MarketButton {
                 .build();
         BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
                 .name("§e§lBid")
-                .build();
-        PAGE_NEXT = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
-                .name("§a§l▶")
-                .command("page next")
-                .build();
-        PAGE_PRE = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
-                .name("§a§l◀")
-                .command("page pre")
-                .build();
-        PAGE_NEXT_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
-                .name("§7§l▷")
-                .build();
-        PAGE_PRE_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
-                .name("§7§l◁")
                 .build();
 
         EDIBLE  = new ViewItemBuilder(XMaterial.CARROT.parseMaterial())
@@ -482,42 +485,6 @@ public class MarketButton {
         CLEAR = new ViewItemBuilder(XMaterial.REPEATER.parseMaterial())
                 .name("§3§l消除")
                 .build();
-        DOT = new ViewItemBuilder(XMaterial.STONE_BUTTON.parseMaterial())
-                .name("§3§l.")
-                .build();
-        NUM0 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l0")
-                .build();
-        NUM1 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l1")
-                .build();
-        NUM2 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l2")
-                .build();
-        NUM3 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l3")
-                .build();
-        NUM4 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l4")
-                .build();
-        NUM5 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l5")
-                .build();
-        NUM6 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l6")
-                .build();
-        NUM7 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l7")
-                .build();
-        NUM8 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l8")
-                .build();
-        NUM9 = new ViewItemBuilder(XMaterial.WHITE_BANNER.parseMaterial())
-                .name("§3§l9")
-                .build();
-        BLANK = new ViewItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial())
-                .name(" ")
-                .build();
         SELL = new ViewItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
                 .name("§f货架")
                 .command("sell")
@@ -550,20 +517,6 @@ public class MarketButton {
                 .build();
         BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
                 .name("§e§l叫价")
-                .build();
-        PAGE_NEXT = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
-                .name("§a§l▶")
-                .command("page next")
-                .build();
-        PAGE_PRE = new ViewItemBuilder(XMaterial.LIME_DYE.parseMaterial())
-                .name("§a§l◀")
-                .command("page pre")
-                .build();
-        PAGE_NEXT_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
-                .name("§7§l▷")
-                .build();
-        PAGE_PRE_DISABLE = new ViewItemBuilder(XMaterial.GRAY_DYE.parseMaterial())
-                .name("§7§l◁")
                 .build();
 
         EDIBLE  = new ViewItemBuilder(XMaterial.CARROT.parseMaterial())
