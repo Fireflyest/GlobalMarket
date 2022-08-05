@@ -113,7 +113,7 @@ public class MarketButton {
     }
 
     public static void loadButton(){
-        if ("zh-CN".equals(Config.LANG)){
+        if ("zh-CN".equals(Config.LANG) || "zh-TW".equals(Config.LANG) || "zh-HK".equals(Config.LANG)){
             loadChineseMenuButton();
         }else {
             loadManuButton();
