@@ -39,6 +39,9 @@ permissions:
   market.send:
     description: 邮寄物品
     default: true
+  market.quick:
+    description: 快捷上架
+    default: true
   market.sign:
     description: 一键签收所有物品
     default: true

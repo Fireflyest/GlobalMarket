@@ -149,8 +149,8 @@ public class PlayerEventListener implements Listener {
         if("".equals(value))return;
 
         if ("sell".equals(value)){
-            if(!player.hasPermission("market.sell")){ // 快捷上架
-                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.sell"));
+            if(!player.hasPermission("market.quick")){ // 快捷上架
+                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.quick"));
                 return;
             }
             taskManager.putTask(new TaskSell(player.getName(), false, false, -1, placeItem.clone()));
