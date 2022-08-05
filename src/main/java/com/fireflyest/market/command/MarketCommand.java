@@ -409,9 +409,14 @@ public class MarketCommand implements CommandExecutor {
                 }
                 ItemStack item = player.getInventory().getItemInMainHand();
                 // 判断最大数量 op无限制
-                if (Config.LIMIT_AMOUNT && !player.isOp()) {
+                if (Config.LIMIT_AMOUNT && !player.hasPermission("market.admin")) {
                     User user = MarketManager.getUser(player.getName());
-                    int limit = player.hasPermission("market.vip") ? Config.LIMIT_AMOUNT_NUM_VIP : Config.LIMIT_AMOUNT_NUM;
+                    int limit = Config.LIMIT_AMOUNT_NUM;
+                    if (player.hasPermission("market.vip")){
+                        limit = Config.LIMIT_AMOUNT_NUM_VIP;
+                    } else if (player.hasPermission("market.svip")) {
+                        limit = Config.LIMIT_AMOUNT_NUM_VIP;
+                    }
                     if (user.getSelling() > limit) {
                         player.sendMessage(Language.NOT_ENOUGH_SPACE);
                         return;
