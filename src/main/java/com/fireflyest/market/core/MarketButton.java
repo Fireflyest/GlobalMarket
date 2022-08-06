@@ -196,7 +196,15 @@ public class MarketButton {
     public static void loadButton(){
         if ("zh-CN".equals(Config.LANG) || "zh-TW".equals(Config.LANG) || "zh-HK".equals(Config.LANG)){
             loadChineseMenuButton();
-        }else {
+        }  else if (Config.LANG.startsWith("de")) {
+            loadManuButton();
+        } else if (Config.LANG.startsWith("fr")) {
+            loadManuButton();
+        } else if (Config.LANG.startsWith("ja")) {
+            loadManuButton();
+        } else if (Config.LANG.startsWith("ru")) {
+            loadManuButton();
+        } else {
             loadManuButton();
         }
 
