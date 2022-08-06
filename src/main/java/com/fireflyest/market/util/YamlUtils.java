@@ -122,6 +122,14 @@ public class YamlUtils {
             lang = setup("language_zh");
         } else if (Objects.equals(Config.LANG, "zh-TW")) {
             lang = setup("language_zhf");
+        } else if (Config.LANG.startsWith("de")) {
+            lang = setup("language_de");
+        } else if (Config.LANG.startsWith("fr")) {
+            lang = setup("language_fr");
+        } else if (Config.LANG.startsWith("ja")) {
+            lang = setup("language_ja");
+        } else if (Config.LANG.startsWith("ru")) {
+            lang = setup("language_ru");
         } else {
             lang = setup("language_en");
         }
