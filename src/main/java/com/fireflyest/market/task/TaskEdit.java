@@ -57,9 +57,7 @@ public class TaskEdit extends Task{
             sale.setPoint(point);
 
             if(Config.SELL_BROADCAST){
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    ChatUtils.sendItemButton(onlinePlayer, SerializeUtil.deserialize(sale.getStack(), sale.getMeta()), String.format("/market affair %s", sale.getId()), playerName);
-                }
+                ChatUtils.sendItemButton(SerializeUtil.deserialize(sale.getStack(), sale.getMeta()), String.format("/market affair %s", sale.getId()), playerName);
             }
         }
         sale.setCost(price);
