@@ -16,7 +16,7 @@ public class User {
     //信誉度
     private int credit;
 
-    //总交易金额
+    //总交易金额（准备弃用，无法记录是否点券）
     private double money;
 
     //交易量

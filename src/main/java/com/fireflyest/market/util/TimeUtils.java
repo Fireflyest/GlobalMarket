@@ -2,6 +2,7 @@ package com.fireflyest.market.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -77,6 +78,15 @@ public class TimeUtils {
     public static String getTimeToday(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(Calendar.getInstance().getTime());
+    }
+
+    /**
+     * 获取日期字符串
+     * @return String
+     */
+    public static String getTimeDay(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
     }
 
     /**

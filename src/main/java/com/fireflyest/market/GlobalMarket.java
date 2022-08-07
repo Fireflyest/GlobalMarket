@@ -212,7 +212,7 @@ public class GlobalMarket extends JavaPlugin{
         data.createTable(User.class);
         data.createTable(Sale.class);
         data.createTable(Mail.class);
-        data.createTable(Note.class);
+        data.createTable(Circulation.class);
         data.createTable(Button.class);
     }
 

@@ -5,24 +5,26 @@ package com.fireflyest.market.bean;
  * 2021/5/5 12:51
  */
 
-public class Note {
+public class Circulation {
 
     private String day;
 
-    private double money;
+    private double coin;
+    private int point;
 
     private int amount;
 
     private double max;
 
-    public Note() {
+    public Circulation() {
     }
 
-    public Note(String day, double money, int amount, double max) {
+    public Circulation(String day) {
         this.day = day;
-        this.money = money;
-        this.amount = amount;
-        this.max = max;
+        this.coin = 0;
+        this.point = 0;
+        this.amount = 0;
+        this.max = 0;
     }
 
     public String getDay() {
@@ -33,12 +35,20 @@ public class Note {
         this.day = day;
     }
 
-    public double getMoney() {
-        return money;
+    public double getCoin() {
+        return coin;
     }
 
-    public void setMoney(double money) {
-        this.money = money;
+    public void setCoin(double coin) {
+        this.coin = coin;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
     }
 
     public int getAmount() {
