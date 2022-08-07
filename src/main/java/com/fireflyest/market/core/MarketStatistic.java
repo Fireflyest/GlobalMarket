@@ -183,8 +183,8 @@ public class MarketStatistic {
                 componentBuilder.append(String.format(MarketButton.PLAYER_CREDIT, user.getCredit())).append("\n")
                         .append(String.format(MarketButton.PLAYER_BLACK, user.isBlack())).append("\n")
                         .append(String.format(MarketButton.PLAYER_SELLING, user.getSelling())).append("\n")
-                        .append(String.format(MarketButton.PLAYER_STATIC_AMOUNT, user.getAmount())).append("\n")
-                        .append(String.format(MarketButton.PLAYER_STATIC_MONEY, user.getMoney())).append("\n")
+                        .append(String.format(MarketButton.PLAYER_STATISTIC_AMOUNT, user.getAmount())).append("\n")
+                        .append(String.format(MarketButton.PLAYER_STATISTIC_MONEY, user.getMoney())).append("\n")
                         .append("\n")
                         .append(user.getName());
 

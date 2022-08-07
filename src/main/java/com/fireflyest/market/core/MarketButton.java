@@ -106,8 +106,8 @@ public class MarketButton {
     public static String PLAYER_CREDIT;
     public static String PLAYER_BLACK;
     public static String PLAYER_SELLING;
-    public static String PLAYER_STATIC_AMOUNT;
-    public static String PLAYER_STATIC_MONEY;
+    public static String PLAYER_STATISTIC_AMOUNT;
+    public static String PLAYER_STATISTIC_MONEY;
 
     static {
         DOT = new ViewItemBuilder(XMaterial.STONE_BUTTON.parseMaterial())
@@ -390,11 +390,11 @@ public class MarketButton {
 
         SALE_HEAT = "§3§lSale Heat§7: §0%s";
 
-        PLAYER_CREDIT = "§3§lPlayer Credit§7: §0%s";
-        PLAYER_BLACK = "§3§lPlayer Black§7: §0%s";
-        PLAYER_SELLING = "§3§lPlayer Selling§7: §0%s";
-        PLAYER_STATIC_AMOUNT = "§3§lPlayer Static Amount§7: §0%s";
-        PLAYER_STATIC_MONEY = "§3§lPlayer Static Money§7: §0%s";
+        PLAYER_CREDIT = "§3§lCredit§7: §0%s";
+        PLAYER_BLACK = "§3§lBlacklist§7: §0%s";
+        PLAYER_SELLING = "§3§lSelling§7: §0%s";
+        PLAYER_STATISTIC_AMOUNT = "§3§lTransaction Amount§7: §0%s";
+        PLAYER_STATISTIC_MONEY = "§3§lTransaction Money§7: §0%s";
         //</editor-fold>
     }
 
@@ -564,8 +564,8 @@ public class MarketButton {
         PLAYER_CREDIT = "§3§l信誉度§7: §0%s";
         PLAYER_BLACK = "§3§l黑名单§7: §0%s";
         PLAYER_SELLING = "§3§l在售§7: §0%s";
-        PLAYER_STATIC_AMOUNT = "§3§l累计交易数量§7: §0%s";
-        PLAYER_STATIC_MONEY = "§3§l累计交易金额§7: §0%s";
+        PLAYER_STATISTIC_AMOUNT = "§3§l累计交易数量§7: §0%s";
+        PLAYER_STATISTIC_MONEY = "§3§l累计交易金额§7: §0%s";
         //</editor-fold>
     }
 
