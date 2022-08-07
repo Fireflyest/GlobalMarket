@@ -188,6 +188,13 @@ public class MarketButton {
         OTHER = new ViewItemBuilder(XMaterial.PLAYER_HEAD.parseMaterial())
                 .name("§3§lShop of %player%")
                 .build();
+        EDIT = new ViewItemBuilder(XMaterial.NAME_TAG.parseMaterial())
+                .name("§3§l✍")
+                .build();
+        BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
+                .name("§c§l«")
+                .command(" ")
+                .build();
     }
 
     private MarketButton(){
@@ -292,13 +299,6 @@ public class MarketButton {
                 .name("§3§lAuthority")
                 .command("admin")
                 .build();
-        BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
-                .name("§c§lBack")
-                .command(" ")
-                .build();
-        EDIT = new ViewItemBuilder(XMaterial.NAME_TAG.parseMaterial())
-                .name("§3§lEdit")
-                .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
                 .name("§e§lBuy One")
                 .build();
@@ -384,8 +384,8 @@ public class MarketButton {
         TOTAL_SALE_AMOUNT = "§3§lTotal Sales Amount§7: §0%s";
         TOTAL_SALE_LIST = "§3§lTotal Sales§7: ";
 
-        CIRCULATE_PRICE = "§3§lCirculate Price§7: §0%s";
-        CIRCULATE_AMOUNT = "§3§lCirculate Amount§7: §0%s";
+        CIRCULATE_PRICE = "§3§lCirculate§7: §0%s";
+        CIRCULATE_AMOUNT = "§3§lAmount§7: §0%s";
         MAX_PRICE = "§3§lMax Price§7: §0%s";
 
         SALE_HEAT = "§3§lSale Heat§7: §0%s";
@@ -469,13 +469,6 @@ public class MarketButton {
         ADMIN = new ViewItemBuilder(XMaterial.ITEM_FRAME.parseMaterial())
                 .name("§3§l官方")
                 .command("admin")
-                .build();
-        BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
-                .name("§c§l返回")
-                .command(" ")
-                .build();
-        EDIT = new ViewItemBuilder(XMaterial.NAME_TAG.parseMaterial())
-                .name("§3§l修改")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
                 .name("§e§l单件")
@@ -562,8 +555,8 @@ public class MarketButton {
         TOTAL_SALE_AMOUNT = "§3§l商品数量§7: §0%s";
         TOTAL_SALE_LIST = "§3§l商品编号§7: ";
 
-        CIRCULATE_PRICE = "§3§l总交易金额§7: §0%s";
-        CIRCULATE_AMOUNT = "§3§l总交易数量§7: §0%s";
+        CIRCULATE_PRICE = "§3§l交易金额§7: §0%s";
+        CIRCULATE_AMOUNT = "§3§l交易数量§7: §0%s";
         MAX_PRICE = "§3§l最高交易金额§7: §0%s";
 
         SALE_HEAT = "§3§l热度§7: §0%s";

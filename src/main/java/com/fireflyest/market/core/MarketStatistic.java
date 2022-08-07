@@ -2,7 +2,7 @@ package com.fireflyest.market.core;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.fireflyest.market.GlobalMarket;
-import com.fireflyest.market.bean.Note;
+import com.fireflyest.market.bean.Circulation;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
 import com.fireflyest.market.data.Language;
@@ -10,6 +10,7 @@ import com.fireflyest.market.util.TimeUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -17,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.fireflyest.craftgui.item.ViewItemBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MarketStatistic {
@@ -35,23 +37,78 @@ public class MarketStatistic {
             @Override
             public void run() {
 
-                Note note = MarketManager.getTodayNote();
-
+                // 书
                 ItemStack book = new ViewItemBuilder(XMaterial.WRITTEN_BOOK.parseMaterial()).build();
                 BookMeta bookMeta = ((BookMeta) book.getItemMeta());
-                ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
-                        .append("\n")
-                        .append("------------------");
 
-                componentBuilder.append(String.format(MarketButton.CIRCULATE_PRICE, note.getMoney())).append("\n")
-                        .append(String.format(MarketButton.CIRCULATE_AMOUNT, note.getAmount())).append("\n")
-                        .append(String.format(MarketButton.MAX_PRICE, note.getMax())).append("\n")
-                        .append("\n")
-                        .append(TimeUtils.getTimeToday());
+                Date today = new Date();
+                for (int i = 0; i < 7; i++) {
+                    String dayStr = TimeUtils.getTimeDay(DateUtils.addDays(today, -i));
+                    Circulation circulation = MarketManager.getCirculation(dayStr);
+
+                    // 页面
+                    ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
+                            .append("\n")
+                            .append("------------------");
+                    componentBuilder
+                            .append(String.format(MarketButton.CIRCULATE_PRICE + Language.COIN_SYMBOL, circulation.getCoin())).append("\n")
+                            .append(String.format(MarketButton.CIRCULATE_PRICE + Language.POINT_SYMBOL, circulation.getPoint())).append("\n")
+                            .append(String.format(MarketButton.CIRCULATE_AMOUNT, circulation.getAmount())).append("\n")
+                            .append(String.format(MarketButton.MAX_PRICE, circulation.getMax())).append("\n")
+                            .append("\n")
+                            .append(dayStr);
+                    // 添加
+                    if (bookMeta != null) {
+                        bookMeta.spigot().addPage(componentBuilder.create());
+                    }
+                }
+
+
+//                // 三天的记录
+//                Date now = new Date();
+//                Date dateYesterday = DateUtils.addDays(now, -1);
+//                Date dateBeforeYesterday = DateUtils.addDays(now, -2);
+//                Circulation circulation = MarketManager.getCirculation(TimeUtils.getTimeDay(now));
+//                Circulation circulationYesterday = MarketManager.getCirculation(TimeUtils.getTimeDay(dateYesterday));
+//                Circulation circulationBeforeYesterday = MarketManager.getCirculation(TimeUtils.getTimeDay(dateBeforeYesterday));
+//
+//                // 第一页
+//                ComponentBuilder componentBuilderToday = new ComponentBuilder(Language.PLUGIN_NAME)
+//                        .append("\n")
+//                        .append("------------------");
+//                componentBuilderToday
+//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.COIN_SYMBOL, circulation.getCoin())).append("\n")
+//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.POINT_SYMBOL, circulation.getPoint())).append("\n")
+//                        .append(String.format(MarketButton.CIRCULATE_AMOUNT, circulation.getAmount())).append("\n")
+//                        .append(String.format(MarketButton.MAX_PRICE, circulation.getMax())).append("\n")
+//                        .append("\n")
+//                        .append(TimeUtils.getTimeDay(now));
+//                // 第二页
+//                ComponentBuilder componentBuilderYesterday = new ComponentBuilder(Language.PLUGIN_NAME)
+//                        .append("\n")
+//                        .append("------------------");
+//                componentBuilderYesterday
+//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.COIN_SYMBOL, circulationYesterday.getCoin())).append("\n")
+//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.POINT_SYMBOL, circulationYesterday.getPoint())).append("\n")
+//                        .append(String.format(MarketButton.CIRCULATE_AMOUNT, circulationYesterday.getAmount())).append("\n")
+//                        .append(String.format(MarketButton.MAX_PRICE, circulationYesterday.getMax())).append("\n")
+//                        .append("\n")
+//                        .append(TimeUtils.getTimeDay(dateYesterday));
+//                // 第三页
+//                ComponentBuilder componentBuilderBeforeYesterday = new ComponentBuilder(Language.PLUGIN_NAME)
+//                        .append("\n")
+//                        .append("------------------");
+//                componentBuilderBeforeYesterday
+//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.COIN_SYMBOL, circulationBeforeYesterday.getCoin())).append("\n")
+//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.POINT_SYMBOL, circulationBeforeYesterday.getPoint())).append("\n")
+//                        .append(String.format(MarketButton.CIRCULATE_AMOUNT, circulationBeforeYesterday.getAmount())).append("\n")
+//                        .append(String.format(MarketButton.MAX_PRICE, circulationBeforeYesterday.getMax())).append("\n")
+//                        .append("\n")
+//                        .append(TimeUtils.getTimeDay(dateBeforeYesterday));
+
                 if (bookMeta != null) {
                     bookMeta.setAuthor(player.getName());
                     bookMeta.setTitle(Language.PLUGIN_NAME.replace("§f", "§0"));
-                    bookMeta.spigot().addPage(componentBuilder.create());
                 }
                 book.setItemMeta(bookMeta);
 

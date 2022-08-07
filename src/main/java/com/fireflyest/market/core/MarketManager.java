@@ -1,13 +1,14 @@
 package com.fireflyest.market.core;
 
 import com.cryptomorin.xseries.XMaterial;
+import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Mail;
-import com.fireflyest.market.bean.Note;
+import com.fireflyest.market.bean.Circulation;
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
 import com.fireflyest.market.data.Data;
@@ -60,14 +61,13 @@ public class MarketManager {
         return Bukkit.getOfflinePlayer(UUID.fromString(user.getUuid()));
     }
 
-    public static Note getTodayNote(){
-        String day = TimeUtils.getTimeToday();
-        Note todayNote = data.queryOne(Note.class, "day", day);
-        if (todayNote == null || !todayNote.getDay().equals(day)){
-            todayNote = new Note(day, 0, 0, 0);
-            data.insert(todayNote);
+    public static Circulation getCirculation(String day){
+        Circulation circulation = data.queryOne(Circulation.class, "day", day);
+        if (circulation == null || !circulation.getDay().equals(day)){
+            circulation = new Circulation(day);
+            data.insert(circulation);
         }
-        return todayNote;
+        return circulation;
     }
 
     public static List<Sale> getPlayerSales(String playerName){
@@ -125,12 +125,16 @@ public class MarketManager {
     public static void removeMail(Mail mail){
         data.delete(mail);
         refreshMail(mail);
-        // 记录
-        Note note = MarketManager.getTodayNote();
-        note.setAmount(note.getAmount() + 1);
-        note.setMoney(note.getMoney() + mail.getPrice());
-        if (mail.getPrice() > note.getMax()) note.setMax(mail.getPrice());
-        data.update(note);
+        // 记录 三天内
+        Circulation circulation = MarketManager.getCirculation(TimeUtils.getTimeToday());
+        circulation.setAmount(circulation.getAmount() + 1);
+        if (mail.isPoint()){
+            circulation.setPoint((int) (circulation.getPoint() + mail.getPrice()));
+        }else {
+            circulation.setCoin(circulation.getCoin() + mail.getPrice());
+        }
+        if (mail.getPrice() > circulation.getMax()) circulation.setMax(mail.getPrice());
+        data.update(circulation);
     }
 
     public static void refreshMail(Mail mail){
