@@ -78,7 +78,9 @@ public class MinePage implements ViewPage {
         crashMap.putAll(itemMap);
 
         // 添加皮肤
-        ItemStack head = crashMap.get(0);
+        ItemStack head = MarketButton.OTHER.clone();
+        ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, target));
+        ItemUtils.setItemValue(head, String.format("other %s", target));
         OfflinePlayer offlinePlayer = MarketManager.getOfflinePlayer(target);
         org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(head, offlinePlayer);
         if (offlinePlayer != null && offlinePlayer.isOnline()) {
@@ -186,10 +188,8 @@ public class MinePage implements ViewPage {
         for (int i = 1; i < 53; i+=9){
             itemMap.put(i, MarketButton.BLANK);
         }
-        ItemStack head = MarketButton.OTHER.clone();
-        ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, target));
-        ItemUtils.setItemValue(head, String.format("other %s", target));
-        itemMap.put(0, head);
+
+        itemMap.put(0, MarketButton.OTHER);
         itemMap.put(9, MarketButton.MAIL);
         itemMap.put(18, MarketButton.DATA);
 
