@@ -204,7 +204,7 @@ public class MarketButton {
         if ("zh-CN".equals(Config.LANG) || "zh-TW".equals(Config.LANG) || "zh-HK".equals(Config.LANG)){
             loadChineseMenuButton();
         }  else if (Config.LANG.startsWith("de")) {
-            loadManuButton();
+            loadGermanMenuButton();
         } else if (Config.LANG.startsWith("fr")) {
             loadFrenchMenuButton();
         } else if (Config.LANG.startsWith("ja")) {
