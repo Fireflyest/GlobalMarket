@@ -14,7 +14,7 @@ public class MysqlExecuteUtils {
 
     public static String createTable(Class<?> clazz){
         //建表指令
-        String tableName = getTable(clazz);
+        String tableName = String.format("`%s`", getTable(clazz));
         StringBuilder builder = new StringBuilder("create table if not exists ").append(tableName).append("(");
         List<Field> fields = ReflectUtils.getClassFields(clazz);
 
@@ -40,37 +40,37 @@ public class MysqlExecuteUtils {
 
     public static <T> String query(Class<T> clazz){
         String table = getTable(clazz);
-        return String.format("select * from %s", table);
+        return String.format("select * from `%s`", table);
     }
 
     public static <T> String query(Class<T> clazz, String condition){
         String table = getTable(clazz);
-        String sql = String.format("select * from %s", table);
+        String sql = String.format("select * from `%s`", table);
         return addCondition(sql, condition);
     }
 
     public static <T> String query(Class<T> clazz, String key, Object value){
         String table = getTable(clazz);
-        String sql = String.format("select * from %s", table);
+        String sql = String.format("select * from `%s`", table);
         return addCondition(sql, key, value);
     }
 
     public static <T> String query(Class<T> clazz, int start, int amount){
         String table = getTable(clazz);
-        String sql = String.format("select * from %s", table);
+        String sql = String.format("select * from `%s`", table);
         return addLimit(sql, start, amount);
     }
 
     public static <T> String query(Class<T> clazz, String condition, int start, int amount){
         String table = getTable(clazz);
-        String sql = String.format("select * from %s", table);
+        String sql = String.format("select * from `%s`", table);
         sql = addCondition(sql, condition);
         return addLimit(sql, start, amount);
     }
 
     public static <T> String query(Class<T> clazz, String key, Object value, int start, int amount){
         String table = getTable(clazz);
-        String sql = String.format("select * from %s", table);
+        String sql = String.format("select * from `%s`", table);
         sql = addCondition(sql, key, value);
         return addLimit(sql, start, amount);
     }
@@ -84,24 +84,24 @@ public class MysqlExecuteUtils {
         for(Field field : fields){
             if(amount > 0) update.append(",");
             if(priKey.equalsIgnoreCase(field.getName()))continue;
-            update.append(String.format("`%s`", field.getName())).append("=").append("'").append(ReflectUtils.invokeGet(t, field.getName())).append("'");
+            update.append(String.format("`%s`", field.getName())).append("=").append("`").append(ReflectUtils.invokeGet(t, field.getName())).append("`");
             amount++;
         }
         String table = getTable(clazz);
         String value = String.valueOf(ReflectUtils.invokeGet(t, priKey));
-        String data = update.toString().replace("'true'", "1").replace("'false'", "0");
-        return String.format("update %s set %s where %s='%s'", table, data, priKey, value);
+        String data = update.toString().replace("`true`", "1").replace("`false`", "0");
+        return String.format("update `%s` set %s where `%s`=`%s`", table, data, priKey, value);
     }
 
     public static <T> String delete(Class<T> clazz, String key, Object value){
         String table = getTable(clazz);
-        String sql = String.format("delete from %s", table);
+        String sql = String.format("delete from `%s`", table);
         return addCondition(sql, key, value);
     }
 
     public static <T> String delete(Class<T> clazz, String condition){
         String table = getTable(clazz);
-        String sql = String.format("delete from %s", table);
+        String sql = String.format("delete from `%s`", table);
         return addCondition(sql, condition);
     }
 
@@ -124,12 +124,12 @@ public class MysqlExecuteUtils {
                 dataString.append(",");
             }
             fieldString.append(String.format("`%s`", field.getName()));
-            dataString.append("'").append(ReflectUtils.invokeGet(obj, field.getName())).append("'");
+            dataString.append("`").append(ReflectUtils.invokeGet(obj, field.getName())).append("`");
             amount++;
         }
-        String data = dataString.toString().replace("'true'", "1").replace("'false'", "0");
+        String data = dataString.toString().replace("`true`", "1").replace("`false`", "0");
         String table = getTable(clazz);
-        return String.format("insert into %s (%s) values (%s)", table, fieldString, data);
+        return String.format("insert into `%s` (%s) values (%s)", table, fieldString, data);
     }
 
     private static String addCondition(String sql, String key, Object value) {
@@ -137,7 +137,7 @@ public class MysqlExecuteUtils {
         if(data.equals("true") || data.equals("false")){
             data = data.replace("true", "1").replace("false", "0");
         }
-        return sql + String.format(" where `%s`='%s'", key, data);
+        return sql + String.format(" where `%s`=`%s`", key, data);
     }
 
     private static String addCondition(String sql, String condition) {
