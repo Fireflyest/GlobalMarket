@@ -90,6 +90,7 @@ public class MinePage implements ViewPage {
                 admin = player.hasPermission("market.admin");
             }
         }
+        crashMap.put(0, head);
 
         List<Sale> sales = storage.inquiryList(sql, Sale.class);
         int i = 0, j = 0, m = (page-1)*35;
