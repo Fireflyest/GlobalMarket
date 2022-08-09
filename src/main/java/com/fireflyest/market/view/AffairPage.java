@@ -131,11 +131,12 @@ public class AffairPage implements ViewPage {
         }
 
         // 商品数据
-        ItemStack data = crashMap.get(17);
+        ItemStack data = MarketButton.SALE_DATA.clone();
         ItemUtils.setItemValue(data, String.format("data %s", sale.getId()));
+        crashMap.put(17, data);
 
         // 添加皮肤
-        ItemStack head = crashMap.get(8);
+        ItemStack head = MarketButton.OTHER.clone();
         ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, sale.getOwner()));
         ItemUtils.setSkullOwner(head, MarketManager.getOfflinePlayer(sale.getOwner()));
         ItemUtils.setItemValue(head, String.format("other %s", sale.getOwner()));
@@ -197,8 +198,7 @@ public class AffairPage implements ViewPage {
         itemMap.put(19, MarketButton.BLANK);
         itemMap.put(20, MarketButton.BLANK);
 
-        ItemStack head = MarketButton.OTHER.clone();
-        itemMap.put(8, head);
+        itemMap.put(8, MarketButton.OTHER);
         itemMap.put(17, MarketButton.SALE_DATA);
         itemMap.put(26, MarketButton.BACK);
     }
