@@ -96,7 +96,7 @@ public class MarketAdminCommand  implements CommandExecutor {
                 break;
             case "version":
                 sender.sendMessage(Language.PLUGIN_NAME);
-                sender.sendMessage(Language.TITLE + String.format("§3§lVersion§7: §fv%s",  Language.VERSION));
+                sender.sendMessage(Language.TITLE + String.format("§3§lVersion§7: §fv%s",  globalMarket.getDescription().getVersion()));
                 break;
             case "check":
                 new BukkitRunnable(){

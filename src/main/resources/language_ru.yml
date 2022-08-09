@@ -3,8 +3,8 @@
 
 Version: "3.2.0"
 PlayerCommand: "§cThis command can only be used by players!"
-Reloading: "§fConfiguration overloading..."
-Reloaded: "§fConfiguration overload complete!"
+Reloading: "§fConfiguration reloading..."
+Reloaded: "§fConfiguration reload complete!"
 
 Help: "§e§m =               §f§l[§aGlobalMarket§f§l]§e§m               = §r\n
 §b/market                             §f - Open GUI\n
@@ -59,9 +59,9 @@ SellItemBroadcast: "§6✦§fPlayer §3%player%§f sell "
 BuyItem: "§6✦§fSuccessful purchase, please check your mailbox"
 BuyError: "§6✦§fYou cant buy things you sell yourself"
 TypeError: "§6✦§fThe sale type of the article does not conform to"
-CancelItem: "§6✦§fPlease check your mailbox for items off the shelf"
-CancelError: "§6✦§fYou are not the owner of this sale"
-CancelAdmin: "§6✦§fForced off the shelf"
+CancelItem: "§6✦§fPlease check your mailbox for items off the shelves"
+CancelError: "§6✦§fYou are not the owner of this goods"
+CancelAdmin: "§6✦§fForced off the shelves"
 AuctionItem: "§6✦§fSuccessfully participated in the auction"
 AuctionFinish: "§6✦§fAuction %id% end, Please go to the mailbox to receive the income"
 AuctionStep: "§6✦§fAuction goods §3%id% §fhighest bid §3%money%§f, the §3%num%§f times"

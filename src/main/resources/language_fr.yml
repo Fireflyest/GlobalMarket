@@ -2,81 +2,81 @@
 
 
 Version: "3.2.0"
-PlayerCommand: "§cThis command can only be used by players!"
-Reloading: "§fConfiguration overloading..."
-Reloaded: "§fConfiguration overload complete!"
+PlayerCommand: "§cCette commande ne peut être utilisée que par les joueurs!"
+Reloading: "§fConfiguration en cours de rechargement..."
+Reloaded: "§fConfiguration recharge terminée!"
 
 Help: "§e§m =               §f§l[§aGlobalMarket§f§l]§e§m               = §r\n
-§b/market                             §f - Open GUI\n
-§b/market sell [m] <a>              §f - Sell items\n
-§b/market auction [m] <a>          §f - Auction items\n
-§b/market discount [id] [a]        §f - Discount of goods\n
-§b/market send [p] <a>             §f - Send mail\n
-§b/market other [p]                 §f - Others store\n
-§b/market quick                      §f - Quick sell\n
-§b/market search [..]               §f - Search for items\n
-§9And §7p§9 represents a player，§7a§9 represents amount，§7m§9 represents price，§7<>§9 indicates optional，§7[]§9 indicates required"
+§b/market                             §f - Ouvrir GUI\n
+§b/market sell [m] <a>              §f - Articles à vendre\n
+§b/market auction [m] <a>          §f - Articles vendus aux enchères\n
+§b/market discount [id] [a]        §f - Rabais sur les produits\n
+§b/market send [p] <a>             §f - Envoyer une lettre\n
+§b/market other [p]                 §f - Autres magasins\n
+§b/market quick                      §f - Magasin personnel\n
+§b/market search [..]               §f - Rechercher des éléments\n
+§9 §7p§9 player，§7a§9 amount，§7m§9 price，§7<>§9 optional，§7[]§9 required"
 
 Title: "§6✦§f"
 # Display in the interface
 PluginName: "§6§l[§2§lGMK§6§l]"
 MarketHomeNick: "Navigation"
-MarketAdminNick: "Management"
-MarketMailNick: "%s's Mailbox"
-MarketOtherNick: "%s's Store"
-MarketMineNick: "Personal"
-MarketMainNormalNick: "Market"
-MarketMainAdminNick: "System Store"
-MarketMainPointNick: "Points Store"
-MarketMainAuctionNick: "Auction House"
-MarketMainRetailNick: "Retail Store"
-ClassifyEdibleTitle: "Food"
+MarketAdminNick: "Gestion"
+MarketMailNick: "La boîte aux lettres de %s"
+MarketOtherNick: "Le magasin de %s"
+MarketMineNick: "Particuliers"
+MarketMainNormalNick: "Marché"
+MarketMainAdminNick: "Le magasin de Système"
+MarketMainPointNick: "Le magasin de Points"
+MarketMainAuctionNick: "Maison de vente aux enchères"
+MarketMainRetailNick: "Magasins de détail"
+ClassifyEdibleTitle: "Comestible"
 ClassifyBlockTitle: "Block"
-ClassifyInteractableTitle: "Interactable"
-ClassifyBurnableTitle: "Burnable"
-ClassifyEquipTitle: "Equip"
+ClassifyInteractableTitle: "Interactive"
+ClassifyBurnableTitle: "Combustible"
+ClassifyEquipTitle: "Equipement"
 ClassifyItemTitle: "Item"
-ClassifyKnowledgeTitle: "Knowledge"
+ClassifyKnowledgeTitle: "Connaissances"
 MailButton: "Mailbox"
-MailHover: "Click to open the email interface"
-MailFromBuy: "purchase"
-MailFromAuction: "auction house"
-MailFromCancel: "off shelves"
-MailFull: "§fThere are too many item and §3%amount%§f items are stranded"
+MailHover: "Cliquez pour ouvrir l'interface e - mail"
+MailFromBuy: "achats"
+MailFromAuction: "Maison de vente aux enchères"
+MailFromCancel: "off shelves"                                                                         # I don't know how to express it.
+MailFull: "§fTrop d'articles,  §3%amount%§f articles échoués"
 
 # Prompt text
 CoinSymbol: "§6ɞ"
 PointSymbol: "§dɗ"
-CommandError: "§6✦§fThe input command is incorrect or the command is not turned on(§3Enter/market help§f)"
-NotEnoughMoney: "§6✦§f%target% unable to bear the transaction price"
-NotEnoughItem: "§6✦§fNot enough items"
-NotEnoughSpace: "§6✦§fYou dont have enough space on the shelves"
-NotPermission: "§6✦§fYou do not have permission to use this command §3%permission%"
-NotSelling: "§6✦§fGoods are in the pre-sale stage"
-SellItem: "§6✦§fSuccessfully，enter §3/market mine §fview items you sell"
-SellItemPrepare: "§6✦§fUse §3/market sell [price] <amount> §fsell items to the market，or use shelves button on personal interface "
-SellItemBroadcast: "§6✦§fPlayer §3%player%§f sell "
-BuyItem: "§6✦§fSuccessful purchase, please check your mailbox"
-BuyError: "§6✦§fYou cant buy things you sell yourself"
-TypeError: "§6✦§fThe sale type of the article does not conform to"
-CancelItem: "§6✦§fPlease check your mailbox for items off the shelf"
-CancelError: "§6✦§fYou are not the owner of this sale"
-CancelAdmin: "§6✦§fForced off the shelf"
+CommandError: "§6✦§fL'instruction saisie est incorrecte ou l'instruction n'est pas activée(§3Enter/market help§f)"
+NotEnoughMoney: "§6✦§f%target% ne peut pas payer le prix de transaction"
+NotEnoughItem: "§6✦§fItems insuffisant"
+NotEnoughSpace: "§6✦§fIl n'y a pas assez d'espace sur l'étagère"
+NotPermission: "§6✦§fVous n'avez pas la permission d'utiliser cette commande §3%permission%"
+NotSelling: "§6✦§fLa marchandise est en pré - vente"
+SellItem: "§6✦§fÇa marche，enter §3/market mine §fpour voir ce que vous vendez"
+SellItemPrepare: "§6✦§fUse §3/market sell [price] <amount> §fsell items to the market，or use shelves button on personal interface "  # ..
+SellItemBroadcast: "§6✦§fPlayer §3%player%§f vente "
+BuyItem: "§6✦§fAchat réussi, veuillez vérifier votre boîte aux lettres"
+BuyError: "§6✦§fTu ne peux pas acheter ce que tu vends."
+TypeError: "§6✦§fLe type de vente de l'article n'est pas conforme aux exigences"
+CancelItem: "§6✦§fVeuillez vérifier s'il y a des articles sur l'étagère dans votre boîte aux lettres"
+CancelError: "§6✦§fVous n'êtes pas le propriétaire de cette cargaison"
+CancelAdmin: "§6✦§fForced off the shelf"                                                                 # I don't know how to express it.
 AuctionItem: "§6✦§fSuccessfully participated in the auction"
-AuctionFinish: "§6✦§fAuction %id% end, Please go to the mailbox to receive the income"
-AuctionStep: "§6✦§fAuction goods §3%id% §fhighest bid §3%money%§f, the §3%num%§f times"
-AuctionBid: "§6✦§fPlayer §3%player% §ffor auction goods §3%id% §fbid §3%money%§f"
-AuctionFlow: "§6✦§fYour auction item §3%id% §fis out of stock"
-AffairFinish: "§6✦§fTransaction gains：§3%money%§f"
-SignFinish: "§6✦§fYou signed for an item"
-FullMail: "§6✦§fMailbox is full"
-SendError: "§6✦§fYou cant email yourself"
-SignError: "§6✦§fYour backpack is full and cannot sign for items"
+AuctionFinish: "§6✦§fAuction %id% end, Please go to the mailbox to receive the income"  # ..
+AuctionStep: "§6✦§fAuction goods §3%id% §fhighest bid §3%money%§f, the §3%num%§f times"  # ..
+AuctionBid: "§6✦§fPlayer §3%player% §ffor auction goods §3%id% §fbid §3%money%§f"  # ..
+AuctionFlow: "§6✦§fYour auction item §3%id% §fis out of stock"  # ..
+AffairFinish: "§6✦§fProduits de la transaction：§3%money%§f"
+SignFinish: "§6✦§fYou signed for an item"   # ..
+FullMail: "§6✦§fBoîte aux lettres pleine"
+SendError: "§6✦§fTu ne peux pas t'envoyer un e - mail"
+SignError: "§6✦§fYour backpack is full and cannot sign for items" # ...
 UserError: "§6✦§fPlayer does not exist"
-DataNull: "§6✦§fNo data temporarily"
+DataNull: "§6✦§fAucune donnée disponible pour le moment"
 SendMail: "§6✦§fMail sent"
 SendItem: "§6✦§fUse §3/market send [player] <amount> §fto mail items，Or drag the item onto the menu Mail button"
-HasMail: "§6✦§fYou have a new email. Open it and have a look"
+HasMail: "§6✦§fVous avez un nouveau courrier. Ouvre - le et regarde"
 LimitMail: "§6✦§fIf the number of mail reaches the maximum, it will be forced to sign in"
 Tax: "§6✦§fDeduct §3%rate% §ftax，about §3%money%"
 TaxBurden: "§6✦§fYou cannot pay taxes！"
