@@ -2,10 +2,10 @@ main: com.fireflyest.market.GlobalMarket
 name: GlobalMarket
 prefix: GlobalMarket
 version: '${project.version}'
-description: 环球市场插件，作者QQ746969484(备注来意)
+description: 环球市场插件，自由交易的平台
 api-version: 1.14
 authors: [Fireflyest]
-website: https://www.mcbbs.net/thread-1090611-1-1.html
+website: https://www.spigotmc.org/resources/globalmarket.103933/
 depend: [Vault,CraftGUI]
 load: POSTWORLD
 softdepend: [PlayerPoints,EssentialEconomy,Economy,CMI]

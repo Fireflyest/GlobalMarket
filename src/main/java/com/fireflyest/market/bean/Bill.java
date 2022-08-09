@@ -3,6 +3,7 @@ package com.fireflyest.market.bean;
 /**
  * @author Fireflyest
  * @since 2022/8/7
+ * 交易记录留存
  */
 public class Bill {
 

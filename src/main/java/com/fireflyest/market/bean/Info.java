@@ -2,6 +2,9 @@ package com.fireflyest.market.bean;
 
 import java.util.*;
 
+/**
+ * 转成json在商品的desc中
+ */
 public class Info {
 
     private String type;
