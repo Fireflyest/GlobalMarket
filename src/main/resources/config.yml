@@ -1,18 +1,17 @@
 Version: '${project.version}'
 
-# 反馈bug联系QQ: 746969484
 Debug: false
 
-# 语言，除了zh-CN其他都是英语
+# zh-CN zh-TW en
 Lang: '?'
 
-# SQL参数(高一点的版本需要在url加上'useSSL=false')
+# SQL连接参数
 Sql: false
 Url: 'jdbc:mysql://localhost:3306/{DATABASE}?useSSL=false&serverTimezone=UTC'
 User: 'root'
 Password: '123456'
 
-# 点券交易
+# 开启点券交易
 Point: false
 
 # Collect: false
@@ -21,25 +20,25 @@ Point: false
 # 物品几天后自动下架，请输入正整数，输入-1为关闭限制
 LimitTime: 7
 
-# 上架限制
+# 上架限制，使用物品的lore进行判断
 LimitLore: false
 LimitLoreList: 私有,vip,绑定
 
-# 数量限制
+# 上架数量限制
 LimitAmount: true
 LimitAmountNum: 35
 LimitAmountNumVip: 56
 
-# 上架提示
+# 上架公告
 SellBroadcast: true
 
-# 邮箱限制
+# 邮箱数量限制
 LimitMail: true
 LimitMailNum: 50
 
-# 上架最大金额(默认99999999)
+# 上架最大金额
 MaxPrice: 99999999
-# 上架税，防止玩家随意高价上架物品，不退还
+# 上架税
 Tax: true
 # 起征点
 TaxThreshold: 100000

@@ -176,11 +176,9 @@ public class MarketButton {
                 .build();
         SELL_VIP = new ViewItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
                 .name("§e§l[↓]")
-                .command("sell")
                 .build();
         SELL_OP = new ViewItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial())
                 .name("§c§l[↓]")
-                .command("sell")
                 .build();
         WAIT = new ViewItemBuilder(XMaterial.PAINTING.parseMaterial())
                 .name("§3§l...")

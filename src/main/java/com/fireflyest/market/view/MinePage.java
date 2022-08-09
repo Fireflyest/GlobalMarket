@@ -2,6 +2,8 @@ package com.fireflyest.market.view;
 
 import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketManager;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
@@ -44,6 +46,9 @@ public class MinePage implements ViewPage {
     private ViewPage next = null;
     private ViewPage pre = null;
 
+    private boolean vip;
+    private boolean admin;
+
     public MinePage(String title, String target, int page, int size) {
         this.storage = GlobalMarket.getStorage();
         this.title = title;
@@ -72,6 +77,18 @@ public class MinePage implements ViewPage {
         crashMap.clear();
         crashMap.putAll(itemMap);
 
+        // 添加皮肤
+        ItemStack head = crashMap.get(0);
+        OfflinePlayer offlinePlayer = MarketManager.getOfflinePlayer(target);
+        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(head, offlinePlayer);
+        if (offlinePlayer != null && offlinePlayer.isOnline()) {
+            Player player = offlinePlayer.getPlayer();
+            if (player != null) {
+                vip = player.hasPermission("market.vip");
+                admin = player.hasPermission("market.admin");
+            }
+        }
+
         List<Sale> sales = storage.inquiryList(sql, Sale.class);
         int i = 0, j = 0, m = (page-1)*35;
         for (Sale sale : sales) {
@@ -97,8 +114,10 @@ public class MinePage implements ViewPage {
                     sell = MarketButton.SELL.clone();
                 }else if (m < Config.LIMIT_AMOUNT_NUM_VIP){
                     sell = MarketButton.SELL_VIP.clone();
+                    if (vip) ItemUtils.setItemValue(sell, "sell");
                 }else {
                     sell = MarketButton.SELL_OP.clone();
+                    if (admin) ItemUtils.setItemValue(sell, "sell");
                 }
                 crashMap.put(i * 9 + 2 + j, sell);
                 m++;
@@ -110,9 +129,6 @@ public class MinePage implements ViewPage {
         if (sales.size() != 0){
             crashMap.put(53, MarketButton.PAGE_NEXT);
         }
-        // 添加皮肤
-        ItemStack head = crashMap.get(0);
-        org.fireflyest.craftgui.util.ItemUtils.setSkullOwner(head, MarketManager.getOfflinePlayer(target));
         return crashMap;
     }
 
