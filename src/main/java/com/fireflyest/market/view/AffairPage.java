@@ -140,6 +140,7 @@ public class AffairPage implements ViewPage {
         ItemUtils.setDisplayName(head, "§3§l" + String.format(Language.MARKET_OTHER_NICK, sale.getOwner()));
         ItemUtils.setSkullOwner(head, MarketManager.getOfflinePlayer(sale.getOwner()));
         ItemUtils.setItemValue(head, String.format("other %s", sale.getOwner()));
+        crashMap.put(8, head);
 
         return crashMap;
     }
