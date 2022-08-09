@@ -84,13 +84,13 @@ public class MysqlExecuteUtils {
         for(Field field : fields){
             if(amount > 0) update.append(",");
             if(priKey.equalsIgnoreCase(field.getName()))continue;
-            update.append(String.format("`%s`", field.getName())).append("=").append("`").append(ReflectUtils.invokeGet(t, field.getName())).append("`");
+            update.append(String.format("`%s`", field.getName())).append("=").append("'").append(ReflectUtils.invokeGet(t, field.getName())).append("'");
             amount++;
         }
         String table = getTable(clazz);
-        String value = String.valueOf(ReflectUtils.invokeGet(t, priKey));
-        String data = update.toString().replace("`true`", "1").replace("`false`", "0");
-        return String.format("update `%s` set %s where `%s`=`%s`", table, data, priKey, value);
+        String value = String.valueOf(ReflectUtils.invokeGet(t, priKey)).replace("'", "''");
+        String data = update.toString().replace("'true'", "1").replace("'false'", "0");
+        return String.format("update `%s` set %s where `%s`='%s'", table, data, priKey, value);
     }
 
     public static <T> String delete(Class<T> clazz, String key, Object value){
@@ -124,10 +124,12 @@ public class MysqlExecuteUtils {
                 dataString.append(",");
             }
             fieldString.append(String.format("`%s`", field.getName()));
-            dataString.append("`").append(ReflectUtils.invokeGet(obj, field.getName())).append("`");
+            dataString.append("'")
+                    .append(String.valueOf(ReflectUtils.invokeGet(obj, field.getName())).replace("'", "''"))
+                    .append("'");
             amount++;
         }
-        String data = dataString.toString().replace("`true`", "1").replace("`false`", "0");
+        String data = dataString.toString().replace("'true'", "1").replace("'false'", "0");
         String table = getTable(clazz);
         return String.format("insert into `%s` (%s) values (%s)", table, fieldString, data);
     }
@@ -137,7 +139,7 @@ public class MysqlExecuteUtils {
         if(data.equals("true") || data.equals("false")){
             data = data.replace("true", "1").replace("false", "0");
         }
-        return sql + String.format(" where `%s`=`%s`", key, data);
+        return sql + String.format(" where `%s`='%s'", key, data.replace("'", "''"));
     }
 
     private static String addCondition(String sql, String condition) {
