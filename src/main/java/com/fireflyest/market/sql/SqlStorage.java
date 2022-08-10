@@ -50,6 +50,8 @@ public class SqlStorage implements Storage {
                         ReflectUtils.invokeSet(t, field.getName(), resultSet.getBoolean(field.getName()));
                     } else if (long.class.equals(field.getType())) {
                         ReflectUtils.invokeSet(t, field.getName(), resultSet.getLong(field.getName()));
+                    } else if (String.class.equals(field.getType())) {
+                        ReflectUtils.invokeSet(t, field.getName(), resultSet.getString(field.getName()));
                     } else {
                         ReflectUtils.invokeSet(t, field.getName(), resultSet.getObject(field.getName()));
                     }
