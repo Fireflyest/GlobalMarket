@@ -2,6 +2,8 @@ package com.fireflyest.market.util;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Fireflyest
@@ -21,16 +23,18 @@ public class MysqlExecuteUtils {
         //获取所有成员变量
         for (int i = 0; i < fields.size(); i++) {
             String fieldName = String.format("`%s`", fields.get(i).getName());
-            String type = javaType2SQLType(fields.get(i).getType().getTypeName());
+            String fieldType = fields.get(i).getType().getTypeName();
+            String type = javaType2SQLType(fieldType);
+            if ("java.lang.String".equals(fieldType) && i == 0){
+                type = "varchar(63)";
+            }
             builder.append(fieldName).append(" ").append(type);
             if ("id".equals(getPriKey(clazz))){
                 if(fieldName.equals("`id`")){
                     builder.append(" primary key not null auto_increment");
                 }
             }else {
-                if(i == 0){
-                    builder.append(" primary key not null");
-                }
+                if(i == 0) builder.append(" primary key not null");
             }
             if(i != fields.size()-1)builder.append(",");
         }
@@ -124,8 +128,9 @@ public class MysqlExecuteUtils {
                 dataString.append(",");
             }
             fieldString.append(String.format("`%s`", field.getName()));
+            String value = String.valueOf(ReflectUtils.invokeGet(obj, field.getName())).replace("'", "''");
             dataString.append("'")
-                    .append(String.valueOf(ReflectUtils.invokeGet(obj, field.getName())).replace("'", "''"))
+                    .append(value)
                     .append("'");
             amount++;
         }
@@ -179,13 +184,14 @@ public class MysqlExecuteUtils {
             case "short":
                 return "tinyint";
             case "java.lang.String":
-                return "varchar(255)";
+                return "varchar(1024)";
             case "java.sql.Date":
                 return "datetime";
             case "java.lang.Double":
-                return "double";
             case "java.lang.Float":
-                return "float";
+            case "double":
+            case "float":
+                return "decimal";
             case "java.lang.Integer":
                 return "integer";
             default:

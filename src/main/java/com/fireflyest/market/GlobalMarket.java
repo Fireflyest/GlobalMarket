@@ -115,8 +115,6 @@ public class GlobalMarket extends JavaPlugin{
         new Metrics(this, 15549);
 
         this.setupData();
-        if (Config.DEBUG) SerializeUtil.setDebug(true);
-
         this.setupGuide();
         this.setupPoint();
 
@@ -224,6 +222,8 @@ public class GlobalMarket extends JavaPlugin{
         MarketButton.loadButton();
         // 设置物品别名
         TranslateUtils.setLanguage(Config.LANG);
+        SerializeUtil.setDebug(Config.DEBUG);
+        SerializeUtil.setMysql(Config.SQL);
 
         RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer().getServicesManager().getRegistration(ViewGuide.class);
         if (rsp == null) {

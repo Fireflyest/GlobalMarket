@@ -21,16 +21,18 @@ public class SqliteExecuteUtils {
         //获取所有成员变量
         for (int i = 0; i < fields.size(); i++) {
             String fieldName = String.format("`%s`", fields.get(i).getName());
-            String type = javaType2SQLType(fields.get(i).getType().getTypeName());
+            String fieldType = fields.get(i).getType().getTypeName();
+            String type = javaType2SQLType(fieldType);
+            if ("java.lang.String".equals(fieldType) && i == 0){
+                type = "varchar(63)";
+            }
             builder.append(fieldName).append(" ").append(type);
             if ("id".equals(getPriKey(clazz))){
                 if(fieldName.equals("`id`")){
                     builder.append(" NOT NULL PRIMARY KEY AUTOINCREMENT");
                 }
             }else {
-                if(i == 0){
-                    builder.append(" primary key not null");
-                }
+                if(i == 0) builder.append(" primary key not null");
             }
             if(i != fields.size()-1)builder.append(",");
         }
@@ -125,8 +127,9 @@ public class SqliteExecuteUtils {
                 dataString.append(",");
             }
             fieldString.append(String.format("`%s`", field.getName()));
+            String value = String.valueOf(ReflectUtils.invokeGet(obj, field.getName())).replace("'", "''");
             dataString.append("'")
-                    .append(String.valueOf(ReflectUtils.invokeGet(obj, field.getName())).replace("'", "''"))
+                    .append(value)
                     .append("'");
             amount++;
         }
@@ -178,9 +181,11 @@ public class SqliteExecuteUtils {
             case "short":
                 return "integer";
             case "java.lang.String":
-                return "text(255)";
+                return "varchar(1024)";
             case "java.lang.Double":
             case "java.lang.Float":
+            case "float":
+            case "double":
                 return "real";
             default:
         }
