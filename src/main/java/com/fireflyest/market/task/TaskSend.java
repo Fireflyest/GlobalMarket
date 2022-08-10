@@ -3,6 +3,7 @@ package com.fireflyest.market.task;
 import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ChatUtils;
 import org.bukkit.Bukkit;
@@ -40,7 +41,7 @@ public class TaskSend extends Task{
     @Override
     public @NotNull List<Task> execute() {
         String stack = SerializeUtil.serializeItemStack(item);
-        String meta = SerializeUtil.serializeItemMeta(item);
+        String meta = SerializeUtil.serializeItemMeta(item, Config.SQL);
         Mail mail = new Mail(0, stack, meta, "", new Date().getTime(), target, playerName, false, price > 0, price, point);
 
         MarketManager.addMail(mail);
