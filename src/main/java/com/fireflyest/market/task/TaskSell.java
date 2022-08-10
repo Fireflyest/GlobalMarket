@@ -45,7 +45,7 @@ public class TaskSell extends Task{
         }
 
         String stack = SerializeUtil.serializeItemStack(item);
-        String meta = SerializeUtil.serializeItemMeta(item);
+        String meta = SerializeUtil.serializeItemMeta(item, Config.SQL);
         Sale sale = new Sale(0, stack, meta, "", new Date().getTime(), playerName, "", price, price, 3, itemName, auction, point);
 
         MarketManager.addSale(sale, item.getType());
