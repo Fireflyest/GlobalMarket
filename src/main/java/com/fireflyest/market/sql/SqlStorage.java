@@ -42,7 +42,17 @@ public class SqlStorage implements Storage {
             while (resultSet.next()){
                 T t = aClass.getDeclaredConstructor().newInstance();
                 for(Field field : ReflectUtils.getClassFields(aClass)){
-                    ReflectUtils.invokeSet(t, field.getName(), resultSet.getObject(field.getName()));
+                    if (float.class.equals(field.getType())) {
+                        ReflectUtils.invokeSet(t, field.getName(), resultSet.getFloat(field.getName()));
+                    } else if (double.class.equals(field.getType())) {
+                        ReflectUtils.invokeSet(t, field.getName(), resultSet.getDouble(field.getName()));
+                    } else if (boolean.class.equals(field.getType())) {
+                        ReflectUtils.invokeSet(t, field.getName(), resultSet.getBoolean(field.getName()));
+                    } else if (long.class.equals(field.getType())) {
+                        ReflectUtils.invokeSet(t, field.getName(), resultSet.getLong(field.getName()));
+                    } else {
+                        ReflectUtils.invokeSet(t, field.getName(), resultSet.getObject(field.getName()));
+                    }
                 }
                 list.add(t);
             }
