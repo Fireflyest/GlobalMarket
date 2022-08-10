@@ -1,5 +1,6 @@
 package com.fireflyest.market.data;
 
+import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.bean.User;
 import com.fireflyest.market.util.MysqlExecuteUtils;
 import com.fireflyest.market.util.SqliteExecuteUtils;

@@ -43,9 +43,7 @@ public class SqLiteStorage implements Storage {
 //            System.out.println("s = " + s);
             while (resultSet.next()){
                 T t = aClass.getDeclaredConstructor().newInstance();
-//                System.out.println(" ================================================ ");
                 for(Field field : ReflectUtils.getClassFields(aClass)){
-//                    System.out.println(field.getName() + " = " + resultSet.getObject(field.getName()));
                     if (float.class.equals(field.getType())) {
                         ReflectUtils.invokeSet(t, field.getName(), resultSet.getFloat(field.getName()));
                     } else if (double.class.equals(field.getType())) {
@@ -77,7 +75,6 @@ public class SqLiteStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-//            this.notify();
             SqliteUtils.close(statement);
         }
     }
@@ -91,7 +88,6 @@ public class SqLiteStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-//            this.notify();
             SqliteUtils.close(statement);
         }
     }
@@ -114,7 +110,6 @@ public class SqLiteStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-//            this.notify();
             SqliteUtils.close(resultSet, statement);
         }
         return id;
@@ -122,7 +117,6 @@ public class SqLiteStorage implements Storage {
 
     @Override
     public void createTable(String s) {
-//        System.out.println("s = " + s);
         Statement statement = null;
         try {
             statement = connection.createStatement();
@@ -130,7 +124,6 @@ public class SqLiteStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-//            this.notify();
             SqliteUtils.close(statement);
         }
     }
