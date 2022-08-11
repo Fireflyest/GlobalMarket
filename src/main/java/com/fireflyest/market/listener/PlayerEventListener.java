@@ -5,7 +5,10 @@ import com.fireflyest.market.bean.Button;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Data;
 import com.fireflyest.market.task.*;
+import com.fireflyest.market.util.YamlUtils;
 import org.bukkit.Material;
+import org.bukkit.event.entity.VillagerAcquireTradeEvent;
+import org.bukkit.inventory.meta.BookMeta;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.event.ViewClickEvent;
 import com.fireflyest.market.GlobalMarket;
@@ -29,6 +32,8 @@ import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.event.ViewPlaceEvent;
 import org.fireflyest.craftgui.util.ItemUtils;
 import org.fireflyest.craftgui.util.TranslateUtils;
+
+import java.util.Objects;
 
 public class PlayerEventListener implements Listener {
 
@@ -223,6 +228,17 @@ public class PlayerEventListener implements Listener {
         if(!event.getPlayer().hasPermission("market.create"))return;
         if("market".equalsIgnoreCase(event.getLine(0))){
             event.setLine(0, Language.PLUGIN_NAME);
+        }
+    }
+
+
+    @EventHandler
+    public void onVillagerAcquireTrade(VillagerAcquireTradeEvent event) {
+        for (ItemStack ingredient : event.getRecipe().getIngredients()) {
+            if (ingredient.getType() != Material.WRITTEN_BOOK) continue;
+            BookMeta bookMeta = ((BookMeta) ingredient.getItemMeta());
+            if (bookMeta == null) continue;
+            if (Objects.equals(bookMeta.getAuthor(), Language.PLUGIN_NAME)) event.setCancelled(true);
         }
     }
 

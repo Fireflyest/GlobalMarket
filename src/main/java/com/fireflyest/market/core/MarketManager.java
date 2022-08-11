@@ -124,7 +124,6 @@ public class MarketManager {
 
     public static void removeMail(Mail mail){
         data.delete(mail);
-        refreshMail(mail);
         // 记录 三天内
         Circulation circulation = MarketManager.getCirculation(TimeUtils.getTimeToday());
         circulation.setAmount(circulation.getAmount() + 1);

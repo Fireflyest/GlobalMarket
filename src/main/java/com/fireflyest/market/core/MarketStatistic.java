@@ -63,52 +63,9 @@ public class MarketStatistic {
                     }
                 }
 
-
-//                // 三天的记录
-//                Date now = new Date();
-//                Date dateYesterday = DateUtils.addDays(now, -1);
-//                Date dateBeforeYesterday = DateUtils.addDays(now, -2);
-//                Circulation circulation = MarketManager.getCirculation(TimeUtils.getTimeDay(now));
-//                Circulation circulationYesterday = MarketManager.getCirculation(TimeUtils.getTimeDay(dateYesterday));
-//                Circulation circulationBeforeYesterday = MarketManager.getCirculation(TimeUtils.getTimeDay(dateBeforeYesterday));
-//
-//                // 第一页
-//                ComponentBuilder componentBuilderToday = new ComponentBuilder(Language.PLUGIN_NAME)
-//                        .append("\n")
-//                        .append("------------------");
-//                componentBuilderToday
-//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.COIN_SYMBOL, circulation.getCoin())).append("\n")
-//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.POINT_SYMBOL, circulation.getPoint())).append("\n")
-//                        .append(String.format(MarketButton.CIRCULATE_AMOUNT, circulation.getAmount())).append("\n")
-//                        .append(String.format(MarketButton.MAX_PRICE, circulation.getMax())).append("\n")
-//                        .append("\n")
-//                        .append(TimeUtils.getTimeDay(now));
-//                // 第二页
-//                ComponentBuilder componentBuilderYesterday = new ComponentBuilder(Language.PLUGIN_NAME)
-//                        .append("\n")
-//                        .append("------------------");
-//                componentBuilderYesterday
-//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.COIN_SYMBOL, circulationYesterday.getCoin())).append("\n")
-//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.POINT_SYMBOL, circulationYesterday.getPoint())).append("\n")
-//                        .append(String.format(MarketButton.CIRCULATE_AMOUNT, circulationYesterday.getAmount())).append("\n")
-//                        .append(String.format(MarketButton.MAX_PRICE, circulationYesterday.getMax())).append("\n")
-//                        .append("\n")
-//                        .append(TimeUtils.getTimeDay(dateYesterday));
-//                // 第三页
-//                ComponentBuilder componentBuilderBeforeYesterday = new ComponentBuilder(Language.PLUGIN_NAME)
-//                        .append("\n")
-//                        .append("------------------");
-//                componentBuilderBeforeYesterday
-//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.COIN_SYMBOL, circulationBeforeYesterday.getCoin())).append("\n")
-//                        .append(String.format(MarketButton.CIRCULATE_PRICE + Language.POINT_SYMBOL, circulationBeforeYesterday.getPoint())).append("\n")
-//                        .append(String.format(MarketButton.CIRCULATE_AMOUNT, circulationBeforeYesterday.getAmount())).append("\n")
-//                        .append(String.format(MarketButton.MAX_PRICE, circulationBeforeYesterday.getMax())).append("\n")
-//                        .append("\n")
-//                        .append(TimeUtils.getTimeDay(dateBeforeYesterday));
-
                 if (bookMeta != null) {
                     bookMeta.setAuthor(player.getName());
-                    bookMeta.setTitle(Language.PLUGIN_NAME.replace("§f", "§0"));
+                    bookMeta.setTitle(Language.PLUGIN_NAME);
                 }
                 book.setItemMeta(bookMeta);
 

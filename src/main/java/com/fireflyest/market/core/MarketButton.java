@@ -8,8 +8,10 @@ import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.TimeUtils;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.fireflyest.craftgui.item.ViewItemBuilder;
 import org.fireflyest.craftgui.util.ItemUtils;
 import org.jetbrains.annotations.NotNull;
@@ -910,7 +912,7 @@ public class MarketButton {
     }
 
     public static void loreMailItem(ItemStack item, Mail mail){
-        if (!"".equals(mail.getInfo())) ItemUtils.addLore(item, "§7by " + mail.getInfo());
+        if (!"".equals(mail.getInfo())) ItemUtils.addLore(item, "§7from " + mail.getInfo());
         ItemUtils.addLore(item, "");
         ItemUtils.addLore(item, "§e§m·                         ·");
         ItemUtils.addLore(item, "§f" + TimeUtils.getTime(mail.getAppear()));
@@ -964,13 +966,31 @@ public class MarketButton {
     }
 
     @NotNull
-    public static ItemStack getRecordItem(String name, String buyer, double cost, boolean point){
-        return new ViewItemBuilder(XMaterial.WRITTEN_BOOK.parseMaterial())
+    public static ItemStack getRecordItem(String itemName, String buyer, double cost, boolean point){
+        ItemStack mail = new ViewItemBuilder(XMaterial.WRITTEN_BOOK.parseMaterial())
                 .name(MARKET_RECORD_TEXT)
-                .lore(String.format(SALE_ITEM_TEXT, name))
+                .lore(String.format(SALE_ITEM_TEXT, itemName))
                 .lore(String.format(BUYER_TEXT, buyer))
                 .lore(String.format(REWARD_TEXT,  cost, (point ? Language.POINT_SYMBOL : Language.COIN_SYMBOL)))
                 .build();
+        if (Config.MARKET_RECORD) {
+            BookMeta meta = ((BookMeta) mail.getItemMeta());
+            if (meta != null) {
+                ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
+                        .append("\n")
+                        .append("------------------\n")
+                        .append(String.format(SALE_ITEM_TEXT.replace("§f", "§0"), itemName)).append("\n")
+                        .append(String.format(BUYER_TEXT.replace("§f", "§0"), buyer)).append("\n")
+                        .append(String.format(REWARD_TEXT.replace("§f", "§0"), cost, (point ? Language.POINT_SYMBOL : Language.COIN_SYMBOL))).append("\n")
+                        .append("\n")
+                        .append(TimeUtils.getTimeToday());
+                meta.spigot().addPage(componentBuilder.create());
+                meta.setTitle(Language.PLUGIN_NAME);
+                meta.setAuthor(Language.PLUGIN_NAME);
+            }
+            mail.setItemMeta(meta);
+        }
+        return mail;
     }
 
 }

@@ -47,3 +47,6 @@ TaxRate: 0.002
 
 # 零散购买，关闭后玩家只能一次性全买
 BuyPartial: true
+
+# 交易记录
+MarketRecord: true
