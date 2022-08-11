@@ -195,7 +195,7 @@ public class MysqlExecuteUtils {
             case "java.lang.Float":
             case "double":
             case "float":
-                return "decimal";
+                return "decimal(10,2)";
             case "java.lang.Integer":
                 return "integer";
             default:

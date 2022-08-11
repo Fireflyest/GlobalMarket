@@ -372,7 +372,7 @@ public class MarketButton {
         AUCTIONER_TEXT = "§3§lAuctioner§7: §f%s";
         START_PRICE_TEXT = "§3§lStart Price§7: §f§m%s%s";
         PRESENT_PRICE_TEXT = "§3§lPresent Price§7: §f%s%s";
-        BID_TIME_TEXT = "§7The §3%s§7 bid";
+        BID_TIME_TEXT = "§7The §3%s§7 Confirmation";
         ORIGINAL_PRICE_TEXT = "§3§lOriginal Price§7: §f§m%s%s";
         PRICE_TEXT = "§3§lPrice§7: §f%s%s";
 
@@ -543,7 +543,7 @@ public class MarketButton {
         AUCTIONER_TEXT = "§3§l拍卖人§7: §f%s";
         START_PRICE_TEXT = "§3§l起拍价§7: §f§m%s%s";
         PRESENT_PRICE_TEXT = "§3§l现价§7: §f%s%s";
-        BID_TIME_TEXT = "§7第§3%s§7次叫价";
+        BID_TIME_TEXT = "§7第§3%s§7次确认价格";
         ORIGINAL_PRICE_TEXT = "§3§l原价§7: §f§m%s%s";
         PRICE_TEXT = "§3§l价格§7: §f%s%s";
 
@@ -714,7 +714,7 @@ public class MarketButton {
         AUCTIONER_TEXT = "§3§lPropriétaire§7: §f%s";
         START_PRICE_TEXT = "§3§lPrix de départ§7: §f§m%s%s";
         PRESENT_PRICE_TEXT = "§3§lPrix courants§7: §f%s%s";
-        BID_TIME_TEXT = "§7The §3%s§7 bid";
+        BID_TIME_TEXT = "§7The §3%s§7 Confirmation";
         ORIGINAL_PRICE_TEXT = "§3§lPrix d'origine§7: §f§m%s%s";
         PRICE_TEXT = "§3§lPrix§7: §f%s%s";
 
@@ -885,7 +885,7 @@ public class MarketButton {
         AUCTIONER_TEXT = "§3§lVersteigerer§7: §f%s";
         START_PRICE_TEXT = "§3§lAusgangspreis§7: §f§m%s%s";
         PRESENT_PRICE_TEXT = "§3§lGegenwärtiger Preis§7: §f%s%s";
-        BID_TIME_TEXT = "§7The §3%s§7 bid";
+        BID_TIME_TEXT = "§7The §3%s§7 Bestätigung";
         ORIGINAL_PRICE_TEXT = "§3§lOriginalpreis§7: §f§m%s%s";
         PRICE_TEXT = "§3§lPreis§7: §f%s%s";
 
