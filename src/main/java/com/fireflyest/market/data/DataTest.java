@@ -33,6 +33,10 @@ public class DataTest {
         System.out.println("Sql = " + MysqlExecuteUtils.delete(user));
         System.out.println("Sql = " + MysqlExecuteUtils.update(user));
         System.out.println("Sql = " + MysqlExecuteUtils.query(User.class, "name", "aa'a"));
+
+        System.out.println("------------------- ");
+
+        System.out.println("Sale = " + MysqlExecuteUtils.createTable(Sale.class));
     }
 
 }

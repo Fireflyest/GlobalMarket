@@ -98,7 +98,11 @@ public class MarketStatistic {
                         .append("\n")
                         .append("------------------");
 
-                componentBuilder.append(String.format(MarketButton.SALE_HEAT, sale.getHeat())).append("\n");
+                if (sale.isAuction()){
+
+                } else {
+                    componentBuilder.append(String.format(MarketButton.SALE_HEAT, sale.getHeat())).append("\n");
+                }
 
                 if (bookMeta != null) {
                     bookMeta.setAuthor(player.getName());
