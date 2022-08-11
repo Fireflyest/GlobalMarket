@@ -100,10 +100,12 @@ public class TaskHandler {
                 succeedNum++;
             } catch (InterruptedException e) {
                 plugin.getLogger().severe("error on taskQueue take, handler stop!");
+                if (Config.DEBUG) e.printStackTrace();
                 failNum++;
                 this.stop();
             } catch (Exception e) {
                 plugin.getLogger().severe("error on task execute, handler stop!");
+                if (Config.DEBUG) e.printStackTrace();
                 failNum++;
                 this.stop();
             }
