@@ -23,8 +23,12 @@ public class SqliteExecuteUtils {
             String fieldName = String.format("`%s`", fields.get(i).getName());
             String fieldType = fields.get(i).getType().getTypeName();
             String type = javaType2SQLType(fieldType);
-            if ("java.lang.String".equals(fieldType) && i == 0){
-                type = "varchar(63)";
+            if ("java.lang.String".equals(fieldType)){
+                if (i == 0) {
+                    type = "varchar(63)";
+                } if ("uuid".equals(fields.get(i).getName())){
+                    type = "varchar(36)";
+                }
             }
             builder.append(fieldName).append(" ").append(type);
             if ("id".equals(getPriKey(clazz))){
@@ -181,7 +185,7 @@ public class SqliteExecuteUtils {
             case "short":
                 return "integer";
             case "java.lang.String":
-                return "varchar(1024)";
+                return "varchar(2048)";
             case "java.lang.Double":
             case "java.lang.Float":
             case "float":
@@ -189,7 +193,7 @@ public class SqliteExecuteUtils {
                 return "real";
             default:
         }
-        return "text(31)";
+        return "varchar(31)";
     }
 
 }
