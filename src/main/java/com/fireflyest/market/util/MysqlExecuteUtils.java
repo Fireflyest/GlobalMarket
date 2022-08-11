@@ -2,8 +2,6 @@ package com.fireflyest.market.util;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Fireflyest
@@ -30,6 +28,8 @@ public class MysqlExecuteUtils {
                     type = "varchar(63)";
                 } if ("uuid".equals(fields.get(i).getName())){
                     type = "varchar(36)";
+                } if ("meta".equals(fields.get(i).getName())){
+                    type = "text";
                 }
             }
             builder.append(fieldName).append(" ").append(type);
@@ -188,7 +188,7 @@ public class MysqlExecuteUtils {
             case "short":
                 return "tinyint";
             case "java.lang.String":
-                return "varchar(2048)";
+                return "varchar(1024)";
             case "java.sql.Date":
                 return "datetime";
             case "java.lang.Double":
