@@ -5,6 +5,7 @@ import com.fireflyest.market.bean.Mail;
 import com.fireflyest.market.bean.User;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.util.ConvertUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -73,6 +74,9 @@ public class TaskSign extends Task{
                 player.sendMessage(Language.AFFAIR_FINISH.replace("%money%", ConvertUtils.formatDouble(mail.getPrice())) + Language.COIN_SYMBOL);
             }
             MarketManager.removeMail(mail);
+            if (reflash) guide.refreshPage(playerName);
+
+            if (Config.MARKET_RECORD) player.getInventory().addItem(item);
         }else {
             MarketManager.removeMail(mail);
             if (reflash) guide.refreshPage(playerName);
