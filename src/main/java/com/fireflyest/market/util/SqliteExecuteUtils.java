@@ -28,6 +28,8 @@ public class SqliteExecuteUtils {
                     type = "varchar(63)";
                 } if ("uuid".equals(fields.get(i).getName())){
                     type = "varchar(36)";
+                } if ("meta".equals(fields.get(i).getName())){
+                    type = "text";
                 }
             }
             builder.append(fieldName).append(" ").append(type);
@@ -185,7 +187,7 @@ public class SqliteExecuteUtils {
             case "short":
                 return "integer";
             case "java.lang.String":
-                return "varchar(2048)";
+                return "varchar(1024)";
             case "java.lang.Double":
             case "java.lang.Float":
             case "float":
