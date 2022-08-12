@@ -96,7 +96,7 @@ public class MarketStatistic {
                 BookMeta bookMeta = ((BookMeta) book.getItemMeta());
                 ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
                         .append("\n")
-                        .append("------------------");
+                        .append("------------------\n");
 
                 if (sale.isAuction()){
 
@@ -139,7 +139,7 @@ public class MarketStatistic {
                 BookMeta bookMeta = ((BookMeta) book.getItemMeta());
                 ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
                         .append("\n")
-                        .append("------------------");
+                        .append("------------------\n");
 
                 componentBuilder.append(String.format(MarketButton.PLAYER_CREDIT, user.getCredit())).append("\n")
                         .append(String.format(MarketButton.PLAYER_BLACK, user.isBlack())).append("\n")
@@ -191,7 +191,7 @@ public class MarketStatistic {
                 BookMeta bookMeta = ((BookMeta) book.getItemMeta());
                 ComponentBuilder componentBuilder = new ComponentBuilder(Language.PLUGIN_NAME)
                         .append("\n")
-                        .append("------------------");
+                        .append("------------------\n");
 
                 componentBuilder.append(String.format(MarketButton.TOTAL_SALE_PRICE, cost)).append("\n")
                         .append(String.format(MarketButton.TOTAL_SALE_AMOUNT, amount)).append("\n")

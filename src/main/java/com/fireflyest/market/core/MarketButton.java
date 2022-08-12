@@ -201,16 +201,16 @@ public class MarketButton {
     }
 
     public static void loadButton(){
-        if ("zh-CN".equals(Config.LANG) || "zh-TW".equals(Config.LANG) || "zh-HK".equals(Config.LANG)){
+        if (Config.LANG.startsWith("zh")){
             loadChineseMenuButton();
         }  else if (Config.LANG.startsWith("de")) {
             loadGermanMenuButton();
         } else if (Config.LANG.startsWith("fr")) {
             loadFrenchMenuButton();
         } else if (Config.LANG.startsWith("ja")) {
-            loadManuButton();
+            loadJapaneseManuButton();
         } else if (Config.LANG.startsWith("ru")) {
-            loadManuButton();
+            loadRussianMenuButton();
         } else {
             loadManuButton();
         }
@@ -398,174 +398,345 @@ public class MarketButton {
         //</editor-fold>
     }
 
-    private static void loadChineseMenuButton() {
+    private static void loadRussianMenuButton() {
         // 加载物品
         //<editor-fold defaultstate="collapsed" desc="loadMenuButton">
         MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
-                .name("§3§l我的")
+                .name("§3§lмой")
                 .command("mine")
                 .build();
         MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
-                .name("§3§l市场")
+                .name("§3§lрынок")
                 .command(" ")
                 .build();
         AUCTION = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
-                .name("§3§l拍卖")
+                .name("§3§lаукцион")
                 .command("auction")
                 .build();
         COLLECT = new ViewItemBuilder(XMaterial.BUCKET.parseMaterial())
-                .name("§3§l收购")
+                .name("§3§lкупить")
                 .command("collect")
                 .build();
         RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
-                .name("§3§l零售")
+                .name("§3§lрозница")
                 .command("retail")
                 .build();
         TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
-                .name("§3§l以物易物")
+                .name("§3§lбартер")
                 .command("trade")
                 .build();
         DATA = new ViewItemBuilder(XMaterial.BOOK.parseMaterial())
-                .name("§3§l个人数据")
+                .name("§3§lличные данные")
                 .command("data")
                 .build();
         SALE_DATA = new ViewItemBuilder(XMaterial.KNOWLEDGE_BOOK.parseMaterial())
-                .name("§3§l商品数据")
+                .name("§3§lДанные продукта")
                 .build();
         STATISTIC = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
-                .name("§3§l市场统计")
+                .name("§3§lСтатистика рынка")
                 .command("statistic")
                 .build();
         CLASSIFY = new ViewItemBuilder(XMaterial.ENDER_EYE.parseMaterial())
-                .name("§3§l分类")
+                .name("§3§lКлассификация")
                 .command("classify")
                 .build();
         SIGN = new ViewItemBuilder(XMaterial.FEATHER.parseMaterial())
-                .name("§3§l全部签收")
+                .name("§3§lВсе подписано")
                 .command("sign")
                 .build();
         DELETE = new ViewItemBuilder(XMaterial.LAVA_BUCKET.parseMaterial())
-                .name("§3§l销毁")
+                .name("§3§lмусорное ведро")
                 .command("delete")
                 .build();
         SEND = new ViewItemBuilder(XMaterial.END_PORTAL_FRAME.parseMaterial())
-                .name("§3§l邮寄")
+                .name("§3§lотправить по почте")
                 .command("send")
                 .build();
         MAIL = new ViewItemBuilder(XMaterial.GRINDSTONE.parseMaterial())
-                .name("§3§l邮箱")
+                .name("§3§lпочтовый ящик")
                 .command("mail")
                 .build();
         TRANSPORT = new ViewItemBuilder(XMaterial.CHEST_MINECART.parseMaterial())
-                .name("§3§l运输车")
+                .name("§3§lгрузовик")
                 .build();
         POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
-                .name("§3§l点券")
+                .name("§3§lPoints")
                 .command("point")
                 .build();
         COIN = new ViewItemBuilder(XMaterial.SUNFLOWER.parseMaterial())
-                .name("§3§l金币")
+                .name("§3§lCoins")
                 .build();
         ADMIN = new ViewItemBuilder(XMaterial.ITEM_FRAME.parseMaterial())
-                .name("§3§l官方")
+                .name("§3§lофициальный")
                 .command("admin")
                 .build();
         BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
-                .name("§e§l单件")
+                .name("§e§lОдин")
                 .build();
         BUY_8 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
-                .name("§e§l部分")
+                .name("§e§lчасть")
                 .build();
         BUY_ALL = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
-                .name("§e§l一口价")
+                .name("§e§lвсе")
                 .build();
         CANCEL = new ViewItemBuilder(XMaterial.HOPPER.parseMaterial())
-                .name("§3§l下架")
+                .name("§3§lОтмена")
                 .build();
         BID_10 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
-                .name("§e§l叫价")
+                .name("§e§lставка")
                 .build();
         BID_100 = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
-                .name("§e§l叫价")
+                .name("§e§lставка")
                 .build();
         BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
-                .name("§e§l叫价")
+                .name("§e§lставка")
                 .build();
 
         EDIBLE  = new ViewItemBuilder(XMaterial.CARROT.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EDIBLE_TITLE)
-                .lore("§f吃货专区")
+                .lore("§fчто-нибудь съесть")
                 .command("classify edible")
                 .build();
         ITEM  = new ViewItemBuilder(XMaterial.STICK.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_ITEM_TITLE)
-                .lore("§f杂七杂八的东西")
+                .lore("§fразличные вещи")
                 .command("classify item")
                 .build();
         BLOCK  = new ViewItemBuilder(XMaterial.QUARTZ_BLOCK.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_BLOCK_TITLE)
-                .lore("§f搭积木")
+                .lore("§fстроительные блоки")
                 .command("classify block")
                 .build();
         BURNABLE  = new ViewItemBuilder(XMaterial.COAL.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_BURNABLE_TITLE)
-                .lore("§f燃烧吧，烈焰")
+                .lore("§fгореть, пламя")
                 .command("classify burnable")
                 .build();
         INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
-                .lore("§f似乎是魔法在运作")
+                .lore("§fКажется, магия работает")
                 .command("classify interactable")
                 .build();
         EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
-                .lore("§f要生存只能战斗")
+                .lore("§fвооружись")
                 .command("classify equip")
                 .build();
         KNOWLEDGE  = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_KNOWLEDGE_TITLE)
-                .lore("§f知识的力量")
+                .lore("§fсила знания")
                 .command("classify knowledge")
                 .build();
         SEARCH  = new ViewItemBuilder(XMaterial.COMPASS.parseMaterial())
-                .name("§3§l搜索")
+                .name("§3§lпоиск")
                 .command("search")
                 .build();
         //</editor-fold>
         // 文本
         //<editor-fold desc="loadMenuText">
-        PREPARE_TEXT = "§f[§8预售§f]";
-        AUCTION_TEXT = "§f[§e拍卖§f]";
-        RETAIL_TEXT = "§f[§7零售§f]";
-        UNLIMITED_TEXT = "[§c无限§f]";
-        SELLER_TEXT = "§3§l卖家§7: §f%s";
-        BUYER_TEXT = "§3§l买家§7: §f%s";
-        AUCTIONER_TEXT = "§3§l拍卖人§7: §f%s";
-        START_PRICE_TEXT = "§3§l起拍价§7: §f§m%s%s";
-        PRESENT_PRICE_TEXT = "§3§l现价§7: §f%s%s";
-        BID_TIME_TEXT = "§7第§3%s§7次确认价格";
-        ORIGINAL_PRICE_TEXT = "§3§l原价§7: §f§m%s%s";
-        PRICE_TEXT = "§3§l价格§7: §f%s%s";
+        PREPARE_TEXT = "§f[§8Предпродажа§f]";
+        AUCTION_TEXT = "§f[§eаукцион§f]";
+        RETAIL_TEXT = "§f[§7розница§f]";
+        UNLIMITED_TEXT = "[§cнеограниченный§f]";
+        SELLER_TEXT = "§3§lпродавца§7: §f%s";
+        BUYER_TEXT = "§3§lпокупатель§7: §f%s";
+        AUCTIONER_TEXT = "§3§lаукционист§7: §f%s";
+        START_PRICE_TEXT = "§3§lСтартовая цена§7: §f§m%s%s";
+        PRESENT_PRICE_TEXT = "§3§lтекущая цена§7: §f%s%s";
+        BID_TIME_TEXT = "§3%s§72-е подтверждение";
+        ORIGINAL_PRICE_TEXT = "§3§lисходная цена§7: §f§m%s%s";
+        PRICE_TEXT = "§3§lцена§7: §f%s%s";
 
-        MARKET_RECORD_TEXT = "§e§l交易记录";
-        SALE_ITEM_TEXT = "§3§l交易物品§f: %s";
-        REWARD_TEXT = "§3§l收获§f: %s%s";
+        MARKET_RECORD_TEXT = "§e§lЗапись транзакции";
+        SALE_ITEM_TEXT = "§3§lтоварный§f: %s";
+        REWARD_TEXT = "§3§lнаграда§f: %s%s";
 
-        TOTAL_SALE_PRICE = "§3§l商品总金额§7: §0%s";
-        TOTAL_SALE_AMOUNT = "§3§l商品数量§7: §0%s";
-        TOTAL_SALE_LIST = "§3§l商品编号§7: ";
+        TOTAL_SALE_PRICE = "§3§lИтоговая цена§7: §0%s";
+        TOTAL_SALE_AMOUNT = "§3§lколичество товаров§7: §0%s";
+        TOTAL_SALE_LIST = "§3§lНомер продукта§7: ";
 
-        CIRCULATE_PRICE = "§3§l交易金额§7: §0%s";
-        CIRCULATE_AMOUNT = "§3§l交易数量§7: §0%s";
-        MAX_PRICE = "§3§l最高交易金额§7: §0%s";
+        CIRCULATE_PRICE = "§3§lСумма сделки§7: §0%s";
+        CIRCULATE_AMOUNT = "§3§lКоличество транзакций§7: §0%s";
+        MAX_PRICE = "§3§lМаксимальная сумма транзакции§7: §0%s";
 
-        SALE_HEAT = "§3§l热度§7: §0%s";
+        SALE_HEAT = "§3§lнагревать§7: §0%s";
 
-        PLAYER_CREDIT = "§3§l信誉度§7: §0%s";
-        PLAYER_BLACK = "§3§l黑名单§7: §0%s";
-        PLAYER_SELLING = "§3§l在售§7: §0%s";
-        PLAYER_STATISTIC_AMOUNT = "§3§l累计交易数量§7: §0%s";
-        PLAYER_STATISTIC_MONEY = "§3§l累计交易金额§7: §0%s";
+        PLAYER_CREDIT = "§3§lрепутация§7: §0%s";
+        PLAYER_BLACK = "§3§lчерный список§7: §0%s";
+        PLAYER_SELLING = "§3§lв наличии§7: §0%s";
+        PLAYER_STATISTIC_AMOUNT = "§3§lСовокупное количество транзакций§7: §0%s";
+        PLAYER_STATISTIC_MONEY = "§3§lСовокупная сумма транзакции§7: §0%s";
+        //</editor-fold>
+    }
+
+    private static void loadJapaneseManuButton() {
+        // 加载物品
+        //<editor-fold defaultstate="collapsed" desc="loadMenuButton">
+        MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
+                .name("§3§l私の")
+                .command("mine")
+                .build();
+        MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
+                .name("§3§l市場")
+                .command(" ")
+                .build();
+        AUCTION = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§3§l競売")
+                .command("auction")
+                .build();
+        COLLECT = new ViewItemBuilder(XMaterial.BUCKET.parseMaterial())
+                .name("§3§l購入")
+                .command("collect")
+                .build();
+        RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
+                .name("§3§l小売")
+                .command("retail")
+                .build();
+        TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
+                .name("§3§lバーター")
+                .command("trade")
+                .build();
+        DATA = new ViewItemBuilder(XMaterial.BOOK.parseMaterial())
+                .name("§3§l個人データ")
+                .command("data")
+                .build();
+        SALE_DATA = new ViewItemBuilder(XMaterial.KNOWLEDGE_BOOK.parseMaterial())
+                .name("§3§l製品データ")
+                .build();
+        STATISTIC = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
+                .name("§3§l市場統計")
+                .command("statistic")
+                .build();
+        CLASSIFY = new ViewItemBuilder(XMaterial.ENDER_EYE.parseMaterial())
+                .name("§3§l分類")
+                .command("classify")
+                .build();
+        SIGN = new ViewItemBuilder(XMaterial.FEATHER.parseMaterial())
+                .name("§3§lすべて署名")
+                .command("sign")
+                .build();
+        DELETE = new ViewItemBuilder(XMaterial.LAVA_BUCKET.parseMaterial())
+                .name("§3§lゴミ箱")
+                .command("delete")
+                .build();
+        SEND = new ViewItemBuilder(XMaterial.END_PORTAL_FRAME.parseMaterial())
+                .name("§3§l郵送で送る")
+                .command("send")
+                .build();
+        MAIL = new ViewItemBuilder(XMaterial.GRINDSTONE.parseMaterial())
+                .name("§3§l郵便受け")
+                .command("mail")
+                .build();
+        TRANSPORT = new ViewItemBuilder(XMaterial.CHEST_MINECART.parseMaterial())
+                .name("§3§lトラック")
+                .build();
+        POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
+                .name("§3§lPoints")
+                .command("point")
+                .build();
+        COIN = new ViewItemBuilder(XMaterial.SUNFLOWER.parseMaterial())
+                .name("§3§lCoins")
+                .build();
+        ADMIN = new ViewItemBuilder(XMaterial.ITEM_FRAME.parseMaterial())
+                .name("§3§l権威ある市場")
+                .command("admin")
+                .build();
+        BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l一")
+                .build();
+        BUY_8 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l部")
+                .build();
+        BUY_ALL = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l即購入")
+                .build();
+        CANCEL = new ViewItemBuilder(XMaterial.HOPPER.parseMaterial())
+                .name("§3§l取消")
+                .build();
+        BID_10 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
+                .name("§e§l入札")
+                .build();
+        BID_100 = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§e§l入札")
+                .build();
+        BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
+                .name("§e§l入札")
+                .build();
+
+        EDIBLE  = new ViewItemBuilder(XMaterial.CARROT.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_EDIBLE_TITLE)
+                .lore("§fフードゾーン")
+                .command("classify edible")
+                .build();
+        ITEM  = new ViewItemBuilder(XMaterial.STICK.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_ITEM_TITLE)
+                .lore("§f雑多なこと")
+                .command("classify item")
+                .build();
+        BLOCK  = new ViewItemBuilder(XMaterial.QUARTZ_BLOCK.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_BLOCK_TITLE)
+                .lore("§fビルディングブロック")
+                .command("classify block")
+                .build();
+        BURNABLE  = new ViewItemBuilder(XMaterial.COAL.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_BURNABLE_TITLE)
+                .lore("§f燃やす、炎")
+                .command("classify burnable")
+                .build();
+        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
+                .lore("§f魔法が効いているようです")
+                .command("classify interactable")
+                .build();
+        EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
+                .lore("§f戦うだけで生き残るために")
+                .command("classify equip")
+                .build();
+        KNOWLEDGE  = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_KNOWLEDGE_TITLE)
+                .lore("§f知識の力")
+                .command("classify knowledge")
+                .build();
+        SEARCH  = new ViewItemBuilder(XMaterial.COMPASS.parseMaterial())
+                .name("§3§l検索")
+                .command("search")
+                .build();
+        //</editor-fold>
+        // 文本
+        //<editor-fold desc="loadMenuText">
+        PREPARE_TEXT = "§f[§8プレセール§f]";
+        AUCTION_TEXT = "§f[§e競売§f]";
+        RETAIL_TEXT = "§f[§7小売§f]";
+        UNLIMITED_TEXT = "[§c無制限§f]";
+        SELLER_TEXT = "§3§l売り手§7: §f%s";
+        BUYER_TEXT = "§3§l買い手§7: §f%s";
+        AUCTIONER_TEXT = "§3§l競売人§7: §f%s";
+        START_PRICE_TEXT = "§3§l開始価格§7: §f§m%s%s";
+        PRESENT_PRICE_TEXT = "§3§l現在の価格§7: §f%s%s";
+        BID_TIME_TEXT = "§3%s§7回目の料金確認";
+        ORIGINAL_PRICE_TEXT = "§3§l元値§7: §f§m%s%s";
+        PRICE_TEXT = "§3§l価格§7: §f%s%s";
+
+        MARKET_RECORD_TEXT = "§e§l取引記録";
+        SALE_ITEM_TEXT = "§3§l貿易品§f: %s";
+        REWARD_TEXT = "§3§l褒美§f: %s%s";
+
+        TOTAL_SALE_PRICE = "§3§l商品の合計金額§7: §0%s";
+        TOTAL_SALE_AMOUNT = "§3§l製品数§7: §0%s";
+        TOTAL_SALE_LIST = "§3§l製品番号§7: ";
+
+        CIRCULATE_PRICE = "§3§l取引金額§7: §0%s";
+        CIRCULATE_AMOUNT = "§3§l取引回数§7: §0%s";
+        MAX_PRICE = "§3§l最大取引金額§7: §0%s";
+
+        SALE_HEAT = "§3§l熱§7: §0%s";
+
+        PLAYER_CREDIT = "§3§l信用度§7: §0%s";
+        PLAYER_BLACK = "§3§lブラックリスト§7: §0%s";
+        PLAYER_SELLING = "§3§l在庫あり§7: §0%s";
+        PLAYER_STATISTIC_AMOUNT = "§3§l累計取引数§7: §0%s";
+        PLAYER_STATISTIC_MONEY = "§3§l累計取引金額§7: §0%s";
         //</editor-fold>
     }
 
@@ -908,6 +1079,177 @@ public class MarketButton {
         PLAYER_SELLING = "§3§lIm Verkauf§7: §0%s";
         PLAYER_STATISTIC_AMOUNT = "§3§lStatistische Menge§7: §0%s";
         PLAYER_STATISTIC_MONEY = "§3§lGesamtbetrag§7: §0%s";
+        //</editor-fold>
+    }
+
+    private static void loadChineseMenuButton() {
+        // 加载物品
+        //<editor-fold defaultstate="collapsed" desc="loadMenuButton">
+        MINE = new ViewItemBuilder(XMaterial.ENDER_CHEST.parseMaterial())
+                .name("§3§l我的")
+                .command("mine")
+                .build();
+        MARKET = new ViewItemBuilder(XMaterial.CHEST.parseMaterial())
+                .name("§3§l市场")
+                .command(" ")
+                .build();
+        AUCTION = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§3§l拍卖")
+                .command("auction")
+                .build();
+        COLLECT = new ViewItemBuilder(XMaterial.BUCKET.parseMaterial())
+                .name("§3§l收购")
+                .command("collect")
+                .build();
+        RETAIL = new ViewItemBuilder(XMaterial.MAP.parseMaterial())
+                .name("§3§l零售")
+                .command("retail")
+                .build();
+        TRADE = new ViewItemBuilder(XMaterial.EMERALD.parseMaterial())
+                .name("§3§l以物易物")
+                .command("trade")
+                .build();
+        DATA = new ViewItemBuilder(XMaterial.BOOK.parseMaterial())
+                .name("§3§l个人数据")
+                .command("data")
+                .build();
+        SALE_DATA = new ViewItemBuilder(XMaterial.KNOWLEDGE_BOOK.parseMaterial())
+                .name("§3§l商品数据")
+                .build();
+        STATISTIC = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
+                .name("§3§l市场统计")
+                .command("statistic")
+                .build();
+        CLASSIFY = new ViewItemBuilder(XMaterial.ENDER_EYE.parseMaterial())
+                .name("§3§l分类")
+                .command("classify")
+                .build();
+        SIGN = new ViewItemBuilder(XMaterial.FEATHER.parseMaterial())
+                .name("§3§l全部签收")
+                .command("sign")
+                .build();
+        DELETE = new ViewItemBuilder(XMaterial.LAVA_BUCKET.parseMaterial())
+                .name("§3§l销毁")
+                .command("delete")
+                .build();
+        SEND = new ViewItemBuilder(XMaterial.END_PORTAL_FRAME.parseMaterial())
+                .name("§3§l邮寄")
+                .command("send")
+                .build();
+        MAIL = new ViewItemBuilder(XMaterial.GRINDSTONE.parseMaterial())
+                .name("§3§l邮箱")
+                .command("mail")
+                .build();
+        TRANSPORT = new ViewItemBuilder(XMaterial.CHEST_MINECART.parseMaterial())
+                .name("§3§l运输车")
+                .build();
+        POINT = new ViewItemBuilder(XMaterial.DIAMOND.parseMaterial())
+                .name("§3§l点券")
+                .command("point")
+                .build();
+        COIN = new ViewItemBuilder(XMaterial.SUNFLOWER.parseMaterial())
+                .name("§3§l金币")
+                .build();
+        ADMIN = new ViewItemBuilder(XMaterial.ITEM_FRAME.parseMaterial())
+                .name("§3§l官方")
+                .command("admin")
+                .build();
+        BUY_1 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l单件")
+                .build();
+        BUY_8 = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l部分")
+                .build();
+        BUY_ALL = new ViewItemBuilder(XMaterial.PRISMARINE_CRYSTALS.parseMaterial())
+                .name("§e§l一口价")
+                .build();
+        CANCEL = new ViewItemBuilder(XMaterial.HOPPER.parseMaterial())
+                .name("§3§l下架")
+                .build();
+        BID_10 = new ViewItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial())
+                .name("§e§l叫价")
+                .build();
+        BID_100 = new ViewItemBuilder(XMaterial.GOLD_INGOT.parseMaterial())
+                .name("§e§l叫价")
+                .build();
+        BID_1000 = new ViewItemBuilder(XMaterial.GOLD_BLOCK.parseMaterial())
+                .name("§e§l叫价")
+                .build();
+
+        EDIBLE  = new ViewItemBuilder(XMaterial.CARROT.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_EDIBLE_TITLE)
+                .lore("§f吃货专区")
+                .command("classify edible")
+                .build();
+        ITEM  = new ViewItemBuilder(XMaterial.STICK.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_ITEM_TITLE)
+                .lore("§f杂七杂八的东西")
+                .command("classify item")
+                .build();
+        BLOCK  = new ViewItemBuilder(XMaterial.QUARTZ_BLOCK.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_BLOCK_TITLE)
+                .lore("§f搭积木")
+                .command("classify block")
+                .build();
+        BURNABLE  = new ViewItemBuilder(XMaterial.COAL.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_BURNABLE_TITLE)
+                .lore("§f燃烧吧，烈焰")
+                .command("classify burnable")
+                .build();
+        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
+                .lore("§f似乎是魔法在运作")
+                .command("classify interactable")
+                .build();
+        EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
+                .lore("§f要生存只能战斗")
+                .command("classify equip")
+                .build();
+        KNOWLEDGE  = new ViewItemBuilder(XMaterial.BOOKSHELF.parseMaterial())
+                .name("§3§l" + Language.CLASSIFY_KNOWLEDGE_TITLE)
+                .lore("§f知识的力量")
+                .command("classify knowledge")
+                .build();
+        SEARCH  = new ViewItemBuilder(XMaterial.COMPASS.parseMaterial())
+                .name("§3§l搜索")
+                .command("search")
+                .build();
+        //</editor-fold>
+        // 文本
+        //<editor-fold desc="loadMenuText">
+        PREPARE_TEXT = "§f[§8预售§f]";
+        AUCTION_TEXT = "§f[§e拍卖§f]";
+        RETAIL_TEXT = "§f[§7零售§f]";
+        UNLIMITED_TEXT = "[§c无限§f]";
+        SELLER_TEXT = "§3§l卖家§7: §f%s";
+        BUYER_TEXT = "§3§l买家§7: §f%s";
+        AUCTIONER_TEXT = "§3§l拍卖人§7: §f%s";
+        START_PRICE_TEXT = "§3§l起拍价§7: §f§m%s%s";
+        PRESENT_PRICE_TEXT = "§3§l现价§7: §f%s%s";
+        BID_TIME_TEXT = "§7第§3%s§7次确认价格";
+        ORIGINAL_PRICE_TEXT = "§3§l原价§7: §f§m%s%s";
+        PRICE_TEXT = "§3§l价格§7: §f%s%s";
+
+        MARKET_RECORD_TEXT = "§e§l交易记录";
+        SALE_ITEM_TEXT = "§3§l交易物品§f: %s";
+        REWARD_TEXT = "§3§l收获§f: %s%s";
+
+        TOTAL_SALE_PRICE = "§3§l商品总金额§7: §0%s";
+        TOTAL_SALE_AMOUNT = "§3§l商品数量§7: §0%s";
+        TOTAL_SALE_LIST = "§3§l商品编号§7: ";
+
+        CIRCULATE_PRICE = "§3§l交易金额§7: §0%s";
+        CIRCULATE_AMOUNT = "§3§l交易数量§7: §0%s";
+        MAX_PRICE = "§3§l最高交易金额§7: §0%s";
+
+        SALE_HEAT = "§3§l热度§7: §0%s";
+
+        PLAYER_CREDIT = "§3§l信誉度§7: §0%s";
+        PLAYER_BLACK = "§3§l黑名单§7: §0%s";
+        PLAYER_SELLING = "§3§l在售§7: §0%s";
+        PLAYER_STATISTIC_AMOUNT = "§3§l累计交易数量§7: §0%s";
+        PLAYER_STATISTIC_MONEY = "§3§l累计交易金额§7: §0%s";
         //</editor-fold>
     }
 
