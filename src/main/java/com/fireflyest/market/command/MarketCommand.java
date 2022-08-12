@@ -421,7 +421,7 @@ public class MarketCommand implements CommandExecutor {
                     } else if (player.hasPermission("market.svip")) {
                         limit = Config.LIMIT_AMOUNT_NUM_VIP;
                     }
-                    if (user.getSelling() > limit) {
+                    if (user.getSelling() >= limit) {
                         player.sendMessage(Language.NOT_ENOUGH_SPACE);
                         return;
                     }
