@@ -2,6 +2,7 @@ package com.fireflyest.market.command;
 
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Sale;
+import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.core.MarketUpdate;
@@ -90,9 +91,10 @@ public class MarketAdminCommand  implements CommandExecutor {
                     sender.sendMessage(Language.PLAYER_COMMAND);
                     return;
                 }
-                for (int i = 0; i < 60; i++) {
-                    player.performCommand(String.format( "market sell %d 1", i));
-                }
+                player.getInventory().addItem(MarketButton.CLOSE.clone());
+//                for (int i = 0; i < 60; i++) {
+//                    player.performCommand(String.format( "market sell %d 1", i));
+//                }
                 break;
             case "version":
                 sender.sendMessage(Language.PLUGIN_NAME);
