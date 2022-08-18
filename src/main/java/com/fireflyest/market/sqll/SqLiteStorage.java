@@ -1,7 +1,6 @@
 package com.fireflyest.market.sqll;
 
 import com.fireflyest.market.data.Storage;
-import com.fireflyest.market.util.JdbcUtils;
 import com.fireflyest.market.util.ReflectUtils;
 import com.fireflyest.market.util.SqliteUtils;
 
@@ -110,7 +109,7 @@ public class SqLiteStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JdbcUtils.close(resultSet, preparedStatement);
+            SqliteUtils.close(resultSet, preparedStatement);
         }
         return id;
     }
