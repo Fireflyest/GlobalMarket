@@ -95,11 +95,10 @@ public class SqlStorage implements Storage {
     @Override
     public int insert(String s) {
         int id = 0;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.createStatement();
-            PreparedStatement preparedStatement = connection.prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()){
@@ -110,7 +109,7 @@ public class SqlStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JdbcUtils.close(resultSet, statement);
+            JdbcUtils.close(resultSet, preparedStatement);
         }
         return id;
     }

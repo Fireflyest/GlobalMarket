@@ -1,6 +1,7 @@
 package com.fireflyest.market.sqll;
 
 import com.fireflyest.market.data.Storage;
+import com.fireflyest.market.util.JdbcUtils;
 import com.fireflyest.market.util.ReflectUtils;
 import com.fireflyest.market.util.SqliteUtils;
 
@@ -94,11 +95,10 @@ public class SqLiteStorage implements Storage {
     @Override
     public int insert(String s) {
         int id = 0;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.createStatement();
-            PreparedStatement preparedStatement = connection.prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()){
@@ -109,7 +109,7 @@ public class SqLiteStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            SqliteUtils.close(resultSet, statement);
+            JdbcUtils.close(resultSet, preparedStatement);
         }
         return id;
     }
