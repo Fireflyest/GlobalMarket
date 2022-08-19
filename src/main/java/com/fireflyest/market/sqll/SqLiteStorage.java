@@ -104,7 +104,6 @@ public class SqLiteStorage implements Storage {
             if (resultSet.next()){
                 id = resultSet.getInt(1);//返回主键值
             }
-            preparedStatement.close();
             return id;
         } catch (SQLException e) {
             e.printStackTrace();
