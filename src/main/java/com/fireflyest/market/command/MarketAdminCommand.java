@@ -84,6 +84,7 @@ public class MarketAdminCommand  implements CommandExecutor {
                 sender.sendMessage(Language.PLUGIN_NAME + Language.RELOADING);
                 globalMarket.setupData();
                 globalMarket.setupGuide();
+                globalMarket.setupPoint();
                 sender.sendMessage(Language.PLUGIN_NAME + Language.RELOADED);
                 break;
             case "test":
