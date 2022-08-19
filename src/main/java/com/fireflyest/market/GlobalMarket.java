@@ -178,7 +178,7 @@ public class GlobalMarket extends JavaPlugin{
         if (marketTask != null) marketTask.cancel();
     }
 
-    private void setupPoint(){
+    public void setupPoint(){
         if (Config.POINT) pointsAPI = PlayerPoints.getInstance().getAPI();
     }
 
