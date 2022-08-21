@@ -196,8 +196,8 @@ public class MarketButton {
                 .name("§c§l«")
                 .command(" ")
                 .build();
-        THREAD = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
-                .name("§c§l♻")
+        THREAD = new ViewItemBuilder(XMaterial.COMPARATOR.parseMaterial())
+                .name("§3§l♻")
                 .build();
     }
 

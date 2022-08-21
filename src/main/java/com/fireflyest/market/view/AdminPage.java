@@ -71,6 +71,11 @@ public class AdminPage implements ViewPage {
             if (pos > 50) break;
         }
 
+        ItemStack thread = MarketButton.THREAD.clone();
+        float succeedRate = (TaskHandler.getSucceedNum() / (float)(TaskHandler.getSucceedNum() + TaskHandler.getFailNum())) * 100;
+        ItemUtils.addLore(thread, (succeedRate > 95 ? "§a" : "§c") + succeedRate + "%");
+        crashMap.put(1, thread);
+
         // 可以下一页
         if (pos > 18){
             crashMap.put(53, MarketButton.PAGE_NEXT);
@@ -141,10 +146,7 @@ public class AdminPage implements ViewPage {
         itemMap.put(53, MarketButton.PAGE_NEXT_DISABLE);
 
         itemMap.put(0, MarketButton.STATISTIC);
-        ItemStack thread = MarketButton.THREAD.clone();
-        float succeedRate = (TaskHandler.getSucceedNum() / (float)(TaskHandler.getSucceedNum() + TaskHandler.getFailNum())) * 100;
-        ItemUtils.addLore(thread, (succeedRate > 95 ? "§a" : "§c") + succeedRate + "%");
-        itemMap.put(1, thread);
+        itemMap.put(1, MarketButton.THREAD);
         itemMap.put(8, MarketButton.BACK.clone());
     }
 
