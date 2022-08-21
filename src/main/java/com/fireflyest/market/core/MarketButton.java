@@ -44,6 +44,7 @@ public class MarketButton {
     public static ItemStack ADMIN;
     public static ItemStack CLOSE;
     public static ItemStack BACK;
+    public static ItemStack THREAD;
     public static ItemStack DONE;
     public static ItemStack EDIT;
     public static ItemStack CLEAR;
@@ -165,7 +166,6 @@ public class MarketButton {
         CLOSE = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
                 .name("§c§l❌")
                 .command("close")
-                .model(5280000)
                 .build();
         DONE = new ViewItemBuilder(XMaterial.SLIME_BALL.parseMaterial())
                 .name("§3§l✔")
@@ -195,6 +195,9 @@ public class MarketButton {
         BACK = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
                 .name("§c§l«")
                 .command(" ")
+                .build();
+        THREAD = new ViewItemBuilder(XMaterial.REDSTONE.parseMaterial())
+                .name("§c§l♻")
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package com.fireflyest.market.view;
 
 import com.fireflyest.market.core.MarketButton;
+import com.fireflyest.market.task.TaskHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -140,6 +141,10 @@ public class AdminPage implements ViewPage {
         itemMap.put(53, MarketButton.PAGE_NEXT_DISABLE);
 
         itemMap.put(0, MarketButton.STATISTIC);
+        ItemStack thread = MarketButton.THREAD.clone();
+        float succeedRate = (TaskHandler.getSucceedNum() / (float)(TaskHandler.getSucceedNum() + TaskHandler.getFailNum())) * 100;
+        ItemUtils.addLore(thread, (succeedRate > 95 ? "§a" : "§c") + succeedRate + "%");
+        itemMap.put(1, thread);
         itemMap.put(8, MarketButton.BACK.clone());
     }
 
