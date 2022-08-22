@@ -1,8 +1,7 @@
 ![banner](https://attachment.mcbbs.net/data/myattachment/forum/202208/01/095315xb0ciuzks5cgb0i5.png)
 # GlobalMarket - Free Trade Market
-![GitHub all releases](https://img.shields.io/github/downloads/Fireflyest/GlobalMarket/total?style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/downloads/Fireflyest/GlobalMarket/latest/total?style=flat-square)
-![Spiget Downloads](https://img.shields.io/spiget/downloads/103933?label=spigot%20downloads&style=flat-square)![Spiget Rating](https://img.shields.io/spiget/rating/103933?style=flat-square)
+![Spiget Downloads](https://img.shields.io/spiget/downloads/103933?label=spigot%20downloads&style=flat-square)
+![Spiget Rating](https://img.shields.io/spiget/rating/103933?style=flat-square)
 ##### 一个基于游戏箱子界面的玩家交易市场插件
 在Minecraft多人游戏中，玩家在进行物品交易时，需要考虑他们在交易过程中的信任问题。
 为了保证玩家交易的安全性，本插件提供一个实时交易平台使玩家能够使用游戏币或点券进行商品交易。
@@ -125,4 +124,7 @@ BuyPartial: true
 [@Fireflyest](https://github.com/Fireflyest) QQ: 746969484
 
 ## 使用情况
+![GitHub all releases](https://img.shields.io/github/downloads/Fireflyest/GlobalMarket/total?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/Fireflyest/GlobalMarket/latest/total?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/Fireflyest/GlobalMarket?style=flat-square)
 ![bstats](https://bstats.org/signatures/bukkit/GlobalMarket.svg)
