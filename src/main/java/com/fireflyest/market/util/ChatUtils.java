@@ -70,70 +70,60 @@ public class ChatUtils {
     @SuppressWarnings("deprecation")
     public static void sendItemButton(ItemStack item, String command, String name) {
         ItemMeta meta = item.getItemMeta();
-        String hover, info, display = item.getType().name();
+        String info, display = null;
+        String type = item.getType().isItem() ? "item.minecraft." : "block.minecraft.";
+
         // 提示文本
         info = Language.SELL_ITEM_BROADCAST.replace("%player%", name);
-        // 悬浮文本
-        StringBuilder hoverBuilder = new StringBuilder();
-        if(meta != null){
-            if(!"".equals(meta.getDisplayName())){
-                display = meta.getDisplayName();
-            }else {
-                display = TranslateUtils.translate(item.getType());
-            }
-            hoverBuilder.append(display);
-            hoverBuilder.append("\n");
-            if(meta.hasLore() && meta.getLore() != null){
-                meta.getLore().forEach(s -> hoverBuilder.append(s).append("\n"));
-            }
-        }
-        item.getEnchantments().forEach((enchantment, integer) ->
-                hoverBuilder.append("§7")
-                .append(enchantment.getKey())
-                .append(" ")
-                .append(n2l(integer))
-                .append("\n"));
-        hover = hoverBuilder.toString();
 
-        Bukkit.spigot().broadcast(new ComponentBuilder(info)
-                .append(LEFT)
-                .append(display)
-                .color(ChatColor.YELLOW)
+        // 物品展示
+        ComponentBuilder componentBuilder = new ComponentBuilder();
+        // 展示名
+        if (meta == null) return;
+        if(!"".equals(meta.getDisplayName())) display = meta.getDisplayName();
+        if (display == null){
+            componentBuilder.append(new TranslatableComponent(type + item.getType().name().toLowerCase()));
+        } else {
+            componentBuilder.append(display);
+        }
+        // 附魔
+        item.getEnchantments().forEach((enchantment, integer) ->{
+            String key = "enchantment.minecraft."+enchantment.getKey().toString().replace("minecraft:", "");
+            componentBuilder.append("\n").color(ChatColor.GRAY).append(new TranslatableComponent(key)).append(" ").append(n2l(integer));
+        });
+        if(meta.hasLore() && meta.getLore() != null){
+            meta.getLore().forEach(s -> componentBuilder.append("\n").append(s));
+        }
+        // 发送文本
+        ComponentBuilder textBuilder = new ComponentBuilder(info).append(LEFT);
+        if (display == null){
+            textBuilder.append(new TranslatableComponent(type + item.getType().name().toLowerCase()));
+        } else {
+            textBuilder.append(display);
+        }
+        textBuilder.color(ChatColor.YELLOW)
                 .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
-                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create()))
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, componentBuilder.create()))
                 .append(RIGHT)
                 .reset()
                 .color(ChatColor.WHITE)
                 .append("§7×")
-                .append(String.format("§3%s§f", item.getAmount()))
-                .create()
-        );
+                .append(String.format("§3%s§f", item.getAmount()));
+        // 发送
+        Bukkit.spigot().broadcast(textBuilder.create());
     }
 
-    private static String n2l(int n){
-        switch (n){
-            case 1:
-            default:
-                return "I";
-            case 2:
-                return "II";
-            case 3:
-                return "III";
-            case 4:
-                return "IV";
-            case 5:
-                return "V";
-            case 6:
-                return "VI";
-            case 7:
-                return "VII";
-            case 8:
-                return "VIII";
-            case 9:
-                return "IX";
-            case 10:
-                return "X";
+    private static String n2l(int num){
+        String []roman = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        int[] nums = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        StringBuilder res = new StringBuilder();
+        for(int i=0; i<nums.length&&num>=0; i++){
+            while(nums[i]<=num){
+                num-=nums[i];
+                res.append(roman[i]);
+            }
         }
+        return res.toString();
     }
 
 }
