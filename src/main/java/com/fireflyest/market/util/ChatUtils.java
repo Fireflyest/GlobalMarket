@@ -71,7 +71,7 @@ public class ChatUtils {
     public static void sendItemButton(ItemStack item, String command, String name) {
         ItemMeta meta = item.getItemMeta();
         String info, display = null;
-        String type = item.getType().isItem() ? "item.minecraft." : "block.minecraft.";
+        String type = item.getType().isBlock() ? "block.minecraft." : "item.minecraft.";
 
         // 提示文本
         info = Language.SELL_ITEM_BROADCAST.replace("%player%", name);
