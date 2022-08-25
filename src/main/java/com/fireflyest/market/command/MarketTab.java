@@ -50,58 +50,55 @@ public class MarketTab implements TabCompleter {
         op.addAll(user);
     }
 
-    public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args){
-        if(command.getName().equalsIgnoreCase("market") || command.getName().equalsIgnoreCase("mk")){
-            List<String> tab = new ArrayList<>();
-            if(args.length == 1){
-                for(String sub : sender.isOp()?op:user){
-                    if(sub.startsWith(args[0]))tab.add(sub);
-                }
-            }else if(args.length == 2){
-                if("sell".equalsIgnoreCase(args[0]) || "auction".equalsIgnoreCase(args[0])){
-                    tab.add("[price]");
-                }else if("data".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
-                }else if("admin".equalsIgnoreCase(args[0])
-                        || "buy".equalsIgnoreCase(args[0])
-                        || "add".equalsIgnoreCase(args[0])
-                        || "affair".equalsIgnoreCase(args[0])
-                        || "finish".equalsIgnoreCase(args[0])
-                        || "edit".equalsIgnoreCase(args[0])
-                        || "discount".equalsIgnoreCase(args[0])
-                        || "desc".equalsIgnoreCase(args[0])){
-                    tab.add("[id]");
-                }else if("sign".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
-                }else if("search".equalsIgnoreCase(args[0])){
-                    tab.add("[something]");
-                }else if("classify".equalsIgnoreCase(args[0])){
-                    for(String type : classify){
-                        if(type.contains(args[1]))tab.add(type);
-                    }
-                }else if("send".equalsIgnoreCase(args[0]) || "statistic".equalsIgnoreCase(args[0]) || "other".equalsIgnoreCase(args[0])){
-                    return null;
-                }
-            }else if(args.length == 3){
-                if("sell".equalsIgnoreCase(args[0]) || "auction".equalsIgnoreCase(args[0]) || "send".equalsIgnoreCase(args[0])){
-                    tab.add("<number>");
-                }else if("discount".equalsIgnoreCase(args[0])){
-                    tab.add("1");
-                    tab.add("2");
-                    tab.add("3");
-                    tab.add("4");
-                    tab.add("5");
-                    tab.add("6");
-                    tab.add("7");
-                    tab.add("8");
-                    tab.add("9");
-                }else if("desc".equalsIgnoreCase(args[0])){
-                    tab.add("[desc]");
-                }
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args){
+        List<String> tab = new ArrayList<>();
+        if(args.length == 1){
+            for(String sub : sender.isOp()?op:user){
+                if(sub.startsWith(args[0]))tab.add(sub);
             }
-            return tab;
+        }else if(args.length == 2){
+            if("sell".equalsIgnoreCase(args[0]) || "auction".equalsIgnoreCase(args[0])){
+                tab.add("[price]");
+            }else if("data".equalsIgnoreCase(args[0])){
+                tab.add("<id>");
+            }else if("admin".equalsIgnoreCase(args[0])
+                    || "buy".equalsIgnoreCase(args[0])
+                    || "add".equalsIgnoreCase(args[0])
+                    || "affair".equalsIgnoreCase(args[0])
+                    || "finish".equalsIgnoreCase(args[0])
+                    || "edit".equalsIgnoreCase(args[0])
+                    || "discount".equalsIgnoreCase(args[0])
+                    || "desc".equalsIgnoreCase(args[0])){
+                tab.add("[id]");
+            }else if("sign".equalsIgnoreCase(args[0])){
+                tab.add("<id>");
+            }else if("search".equalsIgnoreCase(args[0])){
+                tab.add("[something]");
+            }else if("classify".equalsIgnoreCase(args[0])){
+                for(String type : classify){
+                    if(type.contains(args[1]))tab.add(type);
+                }
+            }else if("send".equalsIgnoreCase(args[0]) || "statistic".equalsIgnoreCase(args[0]) || "other".equalsIgnoreCase(args[0])){
+                return null;
+            }
+        }else if(args.length == 3){
+            if("sell".equalsIgnoreCase(args[0]) || "auction".equalsIgnoreCase(args[0]) || "send".equalsIgnoreCase(args[0])){
+                tab.add("<number>");
+            }else if("discount".equalsIgnoreCase(args[0])){
+                tab.add("1");
+                tab.add("2");
+                tab.add("3");
+                tab.add("4");
+                tab.add("5");
+                tab.add("6");
+                tab.add("7");
+                tab.add("8");
+                tab.add("9");
+            }else if("desc".equalsIgnoreCase(args[0])){
+                tab.add("[desc]");
+            }
         }
-        return null;
+        return tab;
     }
 
 }
