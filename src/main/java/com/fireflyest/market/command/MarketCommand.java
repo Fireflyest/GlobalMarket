@@ -43,7 +43,7 @@ public class MarketCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         switch (args.length) {
             case 1:
                 this.executeCommand(sender, args[0]);
