@@ -7,7 +7,6 @@ api-version: 1.14
 authors: [Fireflyest]
 website: https://www.spigotmc.org/resources/globalmarket.103933/
 depend: [Vault,CraftGUI]
-load: POSTWORLD
 softdepend: [PlayerPoints,EssentialEconomy,Economy,CMI]
 
 commands:
