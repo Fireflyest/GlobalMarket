@@ -22,25 +22,22 @@ public class MarketAdminTab implements TabCompleter {
         op.add("test");
     }
 
-    public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args){
-        if(command.getName().equalsIgnoreCase("marketadmin") || command.getName().equalsIgnoreCase("mka")){
-            List<String> tab = new ArrayList<>();
-            if(args.length == 1){
-                for(String sub : op){
-                    if(sub.startsWith(args[0]))tab.add(sub);
-                }
-            }else if(args.length == 2){
-                if("cancel".equalsIgnoreCase(args[0])){
-                    tab.add("<id>");
-                }else if ("black".equalsIgnoreCase(args[0])){
-                    return null;
-                }
-            }else if(args.length == 3){
-               return tab;
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args){
+        List<String> tab = new ArrayList<>();
+        if(args.length == 1){
+            for(String sub : op){
+                if(sub.startsWith(args[0]))tab.add(sub);
             }
-            return tab;
+        }else if(args.length == 2){
+            if("cancel".equalsIgnoreCase(args[0])){
+                tab.add("<id>");
+            }else if ("black".equalsIgnoreCase(args[0])){
+                return null;
+            }
+        }else if(args.length == 3){
+           return tab;
         }
-        return null;
+        return tab;
     }
 
 }

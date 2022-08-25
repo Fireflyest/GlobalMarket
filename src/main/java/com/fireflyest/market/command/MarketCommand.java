@@ -44,8 +44,6 @@ public class MarketCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, String label, String[] args) {
-        if(!label.equalsIgnoreCase("market") && !label.equalsIgnoreCase("mk")) return true;
-
         switch (args.length) {
             case 1:
                 this.executeCommand(sender, args[0]);
