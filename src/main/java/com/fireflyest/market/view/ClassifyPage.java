@@ -165,8 +165,6 @@ public class ClassifyPage implements ViewPage {
                 return Language.CLASSIFY_EDIBLE_TITLE;
             case ClassifyView.BLOCK:
                 return Language.CLASSIFY_BLOCK_TITLE;
-            case ClassifyView.INTERACTABLE:
-                return Language.CLASSIFY_INTERACTABLE_TITLE;
             case ClassifyView.BURNABLE:
                 return Language.CLASSIFY_BURNABLE_TITLE;
             case ClassifyView.EQUIP:

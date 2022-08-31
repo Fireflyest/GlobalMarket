@@ -29,6 +29,8 @@ public class Config {
     public static boolean BUY_PARTIAL;
     public static boolean MARKET_RECORD;
 
+    public static boolean DISABLE_CLASSIFY;
+
     private Config(){
     }
 }

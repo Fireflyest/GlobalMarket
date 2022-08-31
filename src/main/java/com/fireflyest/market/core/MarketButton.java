@@ -79,7 +79,6 @@ public class MarketButton {
     public static ItemStack ITEM;
     public static ItemStack BLOCK;
     public static ItemStack BURNABLE;
-    public static ItemStack INTERACTABLE;
     public static ItemStack EQUIP;
     public static ItemStack KNOWLEDGE;
     public static ItemStack SEARCH;
@@ -345,11 +344,6 @@ public class MarketButton {
                 .lore("§fRoaring flame")
                 .command("classify burnable")
                 .build();
-        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
-                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
-                .lore("§fSome block interactable")
-                .command("classify interactable")
-                .build();
         EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
                 .lore("§fTo survive")
@@ -515,11 +509,6 @@ public class MarketButton {
                 .name("§3§l" + Language.CLASSIFY_BURNABLE_TITLE)
                 .lore("§fгореть, пламя")
                 .command("classify burnable")
-                .build();
-        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
-                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
-                .lore("§fКажется, магия работает")
-                .command("classify interactable")
                 .build();
         EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
@@ -687,11 +676,6 @@ public class MarketButton {
                 .lore("§f燃やす、炎")
                 .command("classify burnable")
                 .build();
-        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
-                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
-                .lore("§f魔法が効いているようです")
-                .command("classify interactable")
-                .build();
         EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
                 .lore("§f戦うだけで生き残るために")
@@ -857,11 +841,6 @@ public class MarketButton {
                 .name("§3§l" + Language.CLASSIFY_BURNABLE_TITLE)
                 .lore("§fFlammes d'ours")
                 .command("classify burnable")
-                .build();
-        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
-                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
-                .lore("§fCertains blocs sont interactifs")
-                .command("classify interactable")
                 .build();
         EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
@@ -1029,11 +1008,6 @@ public class MarketButton {
                 .lore("§fRöhrende Flamme")
                 .command("classify burnable")
                 .build();
-        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
-                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
-                .lore("§fEinige Block interaktierbar")
-                .command("classify interactable")
-                .build();
         EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)
                 .lore("§fBewaffne dich")
@@ -1199,11 +1173,6 @@ public class MarketButton {
                 .name("§3§l" + Language.CLASSIFY_BURNABLE_TITLE)
                 .lore("§f燃烧吧，烈焰")
                 .command("classify burnable")
-                .build();
-        INTERACTABLE  = new ViewItemBuilder(XMaterial.FURNACE.parseMaterial())
-                .name("§3§l" + Language.CLASSIFY_INTERACTABLE_TITLE)
-                .lore("§f似乎是魔法在运作")
-                .command("classify interactable")
                 .build();
         EQUIP  = new ViewItemBuilder(XMaterial.GOLDEN_SWORD.parseMaterial())
                 .name("§3§l" + Language.CLASSIFY_EQUIP_TITLE)

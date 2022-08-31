@@ -14,7 +14,7 @@ public class MarketTab implements TabCompleter {
     private final List<String> op = new ArrayList<>();
 
     private final String[] classify = new String[]{
-            "edible", "item", "block", "burnable", "interactable", "equip", "knowledge"
+            "edible", "item", "block", "burnable", "equip", "knowledge"
     };
 
     public MarketTab(){

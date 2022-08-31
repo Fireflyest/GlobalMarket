@@ -50,3 +50,6 @@ BuyPartial: true
 
 # 交易记录
 MarketRecord: true
+
+# 关闭分类
+DisableClassify: false
