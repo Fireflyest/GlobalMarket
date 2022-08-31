@@ -173,10 +173,18 @@ public class MainPage implements ViewPage {
         // 下一页
         itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
 
-        itemMap.put(50, MarketButton.MINE);
-        itemMap.put(51, MarketButton.MAIL);
-        itemMap.put(52, MarketButton.CLASSIFY);
-        itemMap.put(53, MarketButton.CLOSE);
+        if (Config.DISABLE_CLASSIFY) {
+            itemMap.put(51, MarketButton.MINE);
+            itemMap.put(52, MarketButton.MAIL);
+            itemMap.put(53, MarketButton.CLOSE);
+        } else {
+            itemMap.put(50, MarketButton.MINE);
+            itemMap.put(51, MarketButton.MAIL);
+            itemMap.put(52, MarketButton.CLASSIFY);
+            itemMap.put(53, MarketButton.CLOSE);
+        }
+
+
     }
 
     @Override

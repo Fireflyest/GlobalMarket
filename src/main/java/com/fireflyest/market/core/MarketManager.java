@@ -1,8 +1,8 @@
 package com.fireflyest.market.core;
 
 import com.cryptomorin.xseries.XMaterial;
-import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.api.ViewPage;
@@ -15,7 +15,6 @@ import com.fireflyest.market.data.Data;
 import com.fireflyest.market.util.TimeUtils;
 import com.fireflyest.market.view.*;
 import com.google.common.base.Joiner;
-import org.bukkit.Material;
 
 import java.util.*;
 
@@ -160,9 +159,6 @@ public class MarketManager {
         }
         if(material.isBurnable() || material.isFlammable() || material.isFuel()){
             classifyList.add("burnable");
-        }
-        if(material.isInteractable()){
-            classifyList.add("interactable");
         }
         if (material.getMaxDurability() > 0){
             classifyList.add("equip");

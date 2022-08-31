@@ -77,7 +77,7 @@ public class ChatUtils {
         info = Language.SELL_ITEM_BROADCAST.replace("%player%", name);
 
         // 物品展示
-        ComponentBuilder componentBuilder = new ComponentBuilder();
+        ComponentBuilder componentBuilder = new ComponentBuilder("");
         // 展示名
         if (meta == null) return;
         if(!"".equals(meta.getDisplayName())) display = meta.getDisplayName();

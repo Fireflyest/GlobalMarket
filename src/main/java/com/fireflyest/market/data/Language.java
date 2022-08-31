@@ -73,7 +73,6 @@ public class Language {
     public static String MARKET_MAIN_POINT_NICK;
     public static String CLASSIFY_EDIBLE_TITLE;
     public static String CLASSIFY_BLOCK_TITLE;
-    public static String CLASSIFY_INTERACTABLE_TITLE;
     public static String CLASSIFY_BURNABLE_TITLE;
     public static String CLASSIFY_EQUIP_TITLE;
     public static String CLASSIFY_ITEM_TITLE;
