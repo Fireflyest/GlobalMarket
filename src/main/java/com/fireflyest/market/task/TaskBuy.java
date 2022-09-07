@@ -131,6 +131,7 @@ public class TaskBuy extends Task{
                     // 更新数量和价格
                     save.setAmount(saveAmount);
                     sale.setStack(SerializeUtil.serializeItemStack(save));
+                    sale.setMeta(SerializeUtil.serializeItemMeta(save));
                     sale.setPrice(sale.getPrice() - price);
                     sale.setCost(sale.getCost() - cost);
 
