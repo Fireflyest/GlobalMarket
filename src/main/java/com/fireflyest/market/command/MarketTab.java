@@ -35,6 +35,7 @@ public class MarketTab implements TabCompleter {
         user.add("other");
         user.add("classify");
         user.add("quick");
+        user.add("category");
 
         user.add("sell");
         user.add("point");
@@ -68,6 +69,7 @@ public class MarketTab implements TabCompleter {
                     || "finish".equalsIgnoreCase(args[0])
                     || "edit".equalsIgnoreCase(args[0])
                     || "discount".equalsIgnoreCase(args[0])
+                    || "category".equalsIgnoreCase(args[0])
                     || "desc".equalsIgnoreCase(args[0])){
                 tab.add("[id]");
             }else if("sign".equalsIgnoreCase(args[0])){
@@ -96,6 +98,8 @@ public class MarketTab implements TabCompleter {
                 tab.add("9");
             }else if("desc".equalsIgnoreCase(args[0])){
                 tab.add("[desc]");
+            }else if("category".equalsIgnoreCase(args[0])){
+                tab.add("[category]");
             }
         }
         return tab;

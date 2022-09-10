@@ -381,6 +381,15 @@ public class MarketCommand implements CommandExecutor {
                 taskManager.putTask(new TaskBid(player.getName(), id, add));
                 break;
             }
+            case "category": { // mk category [id] [category]
+                if (!player.hasPermission("market.category")) {
+                    player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.discount"));
+                    return;
+                }
+                int id = ConvertUtils.parseInt(var2);
+                taskManager.putTask(new TaskCategory(player.getName(), id, var3));
+                break;
+            }
             case "discount" : {
                 if (!player.hasPermission("market.discount")) {
                     player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.discount"));

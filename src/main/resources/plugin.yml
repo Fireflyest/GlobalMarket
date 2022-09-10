@@ -68,5 +68,8 @@ permissions:
   market.other:
     description: 打开他人商店
     default: true
+  market.category:
+    description: 设置商品分类
+    default: true
 
 
