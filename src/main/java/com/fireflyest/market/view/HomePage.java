@@ -2,11 +2,14 @@ package com.fireflyest.market.view;
 
 import com.fireflyest.market.core.MarketButton;
 import com.fireflyest.market.data.Config;
+import com.fireflyest.market.util.YamlUtils;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.fireflyest.craftgui.api.ViewPage;
 import com.fireflyest.market.data.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.item.ViewItemBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,6 +43,33 @@ public class HomePage implements ViewPage {
     public @NotNull Map<Integer, ItemStack> getItemMap(){
         crashMap.clear();
         crashMap.putAll(itemMap);
+
+        if (Config.CUSTOM_CLASSIFY) {
+            FileConfiguration category = YamlUtils.getCategory();
+            int pos = 0;
+            for (String categoryKey : category.getKeys(false)) {
+                String material = category.getString(String.format("%s.button", categoryKey));
+                String name = category.getString(String.format("%s.name", categoryKey));
+                if (name == null || material == null) continue;
+                ViewItemBuilder viewItemBuilder = new ViewItemBuilder(material)
+                        .name(name);
+                for (String l : category.getStringList(String.format("%s.lore", categoryKey))) {
+                    viewItemBuilder.lore(l);
+                }
+                ItemStack button = viewItemBuilder
+                        .command("classify " + categoryKey)
+                        .build();
+                crashMap.put(pos++, button);
+            }
+        } else {
+            crashMap.put(0, MarketButton.EDIBLE);
+            crashMap.put(1, MarketButton.ITEM);
+            crashMap.put(2, MarketButton.BLOCK);
+            crashMap.put(3, MarketButton.BURNABLE);
+            crashMap.put(4, MarketButton.EQUIP);
+            crashMap.put(5, MarketButton.KNOWLEDGE);
+        }
+
         return crashMap;
     }
 
@@ -88,13 +118,6 @@ public class HomePage implements ViewPage {
 
     @Override
     public void refreshPage() {
-        itemMap.put(0, MarketButton.EDIBLE);
-        itemMap.put(1, MarketButton.ITEM);
-        itemMap.put(2, MarketButton.BLOCK);
-        itemMap.put(3, MarketButton.BURNABLE);
-        itemMap.put(4, MarketButton.EQUIP);
-        itemMap.put(5, MarketButton.KNOWLEDGE);
-
         itemMap.put(8, MarketButton.SEARCH);
 
         itemMap.put(18, MarketButton.RETAIL);

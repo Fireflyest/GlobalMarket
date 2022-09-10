@@ -23,6 +23,7 @@ public class YamlUtils {
 
     private static JavaPlugin plugin;
     private static FileConfiguration config;
+    private static FileConfiguration category;
     private static File dataFolder;
 
     private YamlUtils(){
@@ -101,6 +102,10 @@ public class YamlUtils {
         }
     }
 
+    public static FileConfiguration getCategory() {
+        return category;
+    }
+
     /**
      * 加载配置文件
      */
@@ -134,7 +139,8 @@ public class YamlUtils {
             lang = setup("language_en");
         }
         initFile(lang, Language.class);
-        
+
+        category = setup("category");
     }
 
 }

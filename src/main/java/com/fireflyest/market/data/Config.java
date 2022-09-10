@@ -30,6 +30,7 @@ public class Config {
     public static boolean MARKET_RECORD;
 
     public static boolean DISABLE_CLASSIFY;
+    public static boolean CUSTOM_CLASSIFY;
 
     private Config(){
     }

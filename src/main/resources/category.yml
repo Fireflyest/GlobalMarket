@@ -1,0 +1,32 @@
+# 自定义分类，8个以内
+# 在 config.yml 设置 CustomClassify: true
+edible:
+  button: 'CARROT'
+  name: '§3Edible'
+  lore:
+    - '§fedible custom lore'
+item:
+  button: 'STICK'
+  name: '§3Item'
+  lore:
+    - '§fitem custom lore'
+block:
+  button: 'QUARTZ_BLOCK'
+  name: '§3Block'
+  lore:
+    - '§fblock custom lore'
+burnable:
+  button: 'COAL'
+  name: '§3Burnable'
+  lore:
+    - '§fburnable custom lore'
+equip:
+  button: 'GOLDEN_SWORD'
+  name: '§3Equip'
+  lore:
+    - '§fequip custom lore'
+knowledge:
+  button: 'BOOKSHELF'
+  name: '§3Knowledge'
+  lore:
+    - '§fknowledge custom lore'

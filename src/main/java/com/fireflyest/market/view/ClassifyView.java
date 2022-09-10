@@ -15,19 +15,18 @@ public class ClassifyView implements View<ClassifyPage> {
     public static final String KNOWLEDGE = "knowledge";
 
 
+    public final String title;
     private final Map<String, ClassifyPage> pageMap = new HashMap<>();
 
     public ClassifyView(String title) {
-        pageMap.put(EDIBLE, new ClassifyPage(title, EDIBLE, 1, 54));
-        pageMap.put(ITEM, new ClassifyPage(title, ITEM, 1, 54));
-        pageMap.put(BLOCK, new ClassifyPage(title, BLOCK, 1, 54));
-        pageMap.put(BURNABLE, new ClassifyPage(title, BURNABLE, 1, 54));
-        pageMap.put(EQUIP, new ClassifyPage(title, EQUIP, 1, 54));
-        pageMap.put(KNOWLEDGE, new ClassifyPage(title, KNOWLEDGE, 1, 54));
+        this.title = title;
     }
 
     @Override
     public ClassifyPage getFirstPage(String target){
+        if (! pageMap.containsKey(target)){
+            pageMap.put(target, new ClassifyPage(title, target, 1, 54));
+        }
         return pageMap.get(target);
     }
 

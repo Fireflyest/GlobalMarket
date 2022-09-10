@@ -51,5 +51,7 @@ BuyPartial: true
 # 交易记录
 MarketRecord: true
 
-# 关闭分类
+# 关闭主菜单的分类按钮
 DisableClassify: false
+# 自定义分类
+CustomClassify: false
