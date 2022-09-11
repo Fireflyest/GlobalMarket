@@ -92,7 +92,8 @@ public class MysqlExecuteUtils {
         for(Field field : fields){
             if(amount > 0) update.append(",");
             if(priKey.equalsIgnoreCase(field.getName()))continue;
-            update.append(String.format("`%s`", field.getName())).append("=").append("'").append(ReflectUtils.invokeGet(t, field.getName())).append("'");
+            String updateData = String.valueOf(ReflectUtils.invokeGet(t, field.getName())).replace("'", "''");
+            update.append(String.format("`%s`", field.getName())).append("=").append("'").append(updateData).append("'");
             amount++;
         }
         String table = getTable(clazz);

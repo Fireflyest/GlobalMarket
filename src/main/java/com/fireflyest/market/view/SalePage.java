@@ -59,6 +59,9 @@ public class SalePage implements ViewPage {
         crashMap.putAll(itemMap);
 
         sale = MarketManager.getSale(ConvertUtils.parseInt(target));
+
+        if (sale == null) return crashMap;
+
         done = sale.getPrice() != -1;
 
         if (done){
@@ -67,7 +70,6 @@ public class SalePage implements ViewPage {
             crashMap.put(19, MarketButton.DONE.clone());
         }
 
-        if (sale == null) return crashMap;
 
         // 为了展示
         sale.setAuction(auction);
