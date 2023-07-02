@@ -1,11 +1,5 @@
 package com.fireflyest.market.view;
 
-<<<<<<< HEAD
-import com.fireflyest.market.data.Language;
-import org.fireflyest.craftgui.api.View;
-
-=======
->>>>>>> 9bc3b8e (版本更新)
 import java.util.HashMap;
 
 import org.fireflyest.craftgui.api.View;

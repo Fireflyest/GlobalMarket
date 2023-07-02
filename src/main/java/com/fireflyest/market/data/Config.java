@@ -39,5 +39,7 @@ public class Config {
 
     public static boolean DISABLE_CLASSIFY;
 
+    public static boolean NAVIGATION_BUTTON;
+    
     public static boolean AUTO_CATEGORY;
 }

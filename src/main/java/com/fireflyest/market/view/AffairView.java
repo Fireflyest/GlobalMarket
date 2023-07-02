@@ -1,13 +1,5 @@
 package com.fireflyest.market.view;
 
-<<<<<<< HEAD
-import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketManager;
-import com.fireflyest.market.util.ConvertUtils;
-import org.fireflyest.craftgui.api.View;
-
-=======
->>>>>>> 9bc3b8e (版本更新)
 import java.util.HashMap;
 
 import org.bukkit.util.NumberConversions;
