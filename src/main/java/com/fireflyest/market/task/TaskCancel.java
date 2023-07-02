@@ -1,66 +1,65 @@
 package com.fireflyest.market.task;
 
-import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.bean.User;
-import com.fireflyest.market.core.MarketManager;
-import com.fireflyest.market.core.MarketTasks;
 import com.fireflyest.market.data.Language;
-import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.SerializeUtil;
-import org.jetbrains.annotations.NotNull;
+import com.fireflyest.market.service.MarketService;
 
-import java.util.List;
+import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.crafttask.api.Task;
+import org.fireflyest.util.SerializationUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class TaskCancel extends Task{
 
-    private final int id;
-    private final boolean reflash;
+    private final long id;
+    private final boolean refresh;
+    private final MarketService service;
+    private final ViewGuide guide;
 
-    public TaskCancel(@NotNull String playerName, int id) {
-       this(playerName, id, false);
+    public TaskCancel(@NotNull String playerName, MarketService service, ViewGuide guide, long id) {
+       this(playerName, service, guide, id, false);
     }
 
-    public TaskCancel(@NotNull String playerName, int id, boolean reflash) {
+    public TaskCancel(@NotNull String playerName, MarketService service, ViewGuide guide, long id, boolean refresh) {
         super(playerName);
         this.id = id;
-        this.reflash = reflash;
-
-        this.type = MarketTasks.SALE_TASK;
+        this.refresh = refresh;
+        this.service = service;
+        this.guide = guide;
     }
 
     @Override
-    public @NotNull List<Task> execute() {
-        Sale sale = MarketManager.getSale(id);
+    public void execute() {
+        String stack = service.selectTransactionStack(id);
+        String type = service.selectTransactionType(id);
+        String uid = service.selectMerchantUid(playerName);
+        String owner = service.selectTransactionOwner(id);
 
-        // 判断商品是否存在
-        if(null == sale){
-            this.executeInfo(Language.DATA_NULL);
-            return then;
+        if("".equals(stack)){
+            executeInfo(Language.DATA_ERROR);
+            return;
         }
+
         // 判断操作者是否商品主人
-        if(!sale.getOwner().equals(playerName)){
+        if(!owner.equals(uid) && !player.isOp()){
             guide.refreshPage(playerName);
             this.executeInfo(Language.CANCEL_ERROR);
-            return then;
+            return;
         }
 
-        // 解析物品
-        ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
+        // 非收购退还商品
+        if (!"order".equals(type) && !"adminorder".equals(type)) {
+            // 解析物品
+            ItemStack item = SerializationUtil.deserializeItemStack(stack);
+            // 发送邮件
+            this.followTasks().add(new TaskSend(Language.TEXT_MAIL_FROM_CANCEL, service, owner, item));
+        }
 
-        // 减少正在出售的数量
-        User user = MarketManager.getUser(sale.getOwner());
-        user.setSelling(user.getSelling() - 1);
-        data.update(user);
+        service.updateMerchantSelling("-1", owner);
+        service.deleteTransaction(id);
 
-        // 删除商品
-        MarketManager.removeSale(sale);
-        this.executeInfo(Language.CANCEL_ITEM);
+        this.executeInfo(Language.CANCEL_SUCCEED);     
 
-        // 发送邮件
-        then.add(new TaskSend(Language.MAIL_FROM_CANCEL, sale.getOwner(), item));
-
-        if (reflash) guide.refreshPage(playerName);
-
-        return then;
+        if (refresh) guide.refreshPage(playerName);
     }
 }

@@ -1,0 +1,124 @@
+Version: "${project.version}"
+
+PlayerCommand: "§6✦§c该指令只能由玩家使用!"
+Reloading: "§6✦§f配置重载中..."
+Reloaded: "§6✦§f配置重载完成!"
+CheckUpdate: "§6✦§f检测到新的版本\n§e§n%url%"
+CheckVersion: "§6✦§f当前最新版本§3%version%\n§e§n%url%"
+ErrorArgument: "§6✦§f指令参数类型错误或者参数缺失"
+NoPermission: "§6✦§f您没有这样做的权限§3%permission%"
+
+# 货币图标后缀
+CoinSymbol: "§6ɞ"
+PointSymbol: "§dɗ"
+
+# 提示文本
+RemindMail: §6✦§f您有邮件未签收
+MaximumMail: §6✦§f邮箱数量已上限
+SendMail: §6✦§f邮件已发送
+ReceiveMail: §6✦§f您接收到新的邮件
+
+RemindBid: §6✦§f玩家§3%player%§f对拍卖商品§3%id%§f叫价§3%money%§f
+SucceedBid: §6✦§f成功参与竞拍
+ConfirmBid: "§6✦§f拍卖商品§3%item%§f确认第§3%num%§f次"
+
+TransactionError: §6✦§f你不能购买你自己出售的物品
+TypeError: §6✦§f物品的出售类型不符合
+DataError: §6✦§f暂无数据
+SignError: §6✦§f无法签收邮件
+CancelError: §6✦§f你不是该商品的主人
+DiscountError: §6✦§f折扣范围应该在1~9
+RepriceError: §6✦§f超出定价范围
+AmountError: §6✦§f该货币类型不允许零散购买
+CurrencyError: §6✦§f该商品还未设置货币
+StarError: §6✦§f请过段时间再赞吧
+CreateError: §6✦§f黑名单用户无法创建交易
+
+SignSucceed: §6✦§f你签收了一个物品
+AffairSucceed: §6✦§f交易收获§3%money%
+CancelSucceed: §6✦§f交易已取消
+TransactionSucceed: §6✦§f交易成功
+StarSucceed: §6✦§f已为店铺点赞
+StoreSucceed: §6✦§f已为店铺更名
+
+TransactionBroadcast: "§6✦§f玩家§3%player%§f在全球市场上架"
+TransactionEdit:  §6✦§f交易类型修改成功
+TransactionFail: §6✦§f玩家%target%无法承担交易所需费用
+TransactionNum: §6✦§f超过商品剩余数量
+TransactionCreate: §6✦§f成功创建新的交易
+TransactionContraband: §6✦§f无法交易违禁品
+TransactionReprice: §6✦§f交易价格已更改为%price%
+TransactionSize: §6✦§f玩家§3%target%§f的额外上架空间为§3%num%
+AuctionFlow: §6✦§f你的拍卖商品§3%item%§f流拍了
+AuctionFinish: §6✦§f拍卖§3%item%§f结束，请到收件箱领取收益
+MaximumTransaction: §6✦§f交易数量已上限
+MerchantBlack: §6✦§f已更改玩家店铺封禁状态
+
+# 邮件信息文本
+TextMailButton: 打开邮箱
+TextMailHover: 点击打开邮箱界面
+TextMailFromCancel: 交易取消
+TextMailFromAuction: 拍卖行
+TextMailFromReward: 交易收获
+TextMailFromTransaction: 市场交易
+TextMailFromOrder: 市场收购
+TextMailStagnate: 还有%amount%件物品滞留
+
+# 交易物品信息
+GuiMarketRecord: "§e§l交易记录"
+GuiTransactionItem: "§3§l交易物品§f: %s"
+GuiReward: "§3§l收获§f: %s%s"
+GuiBuyer: "§3§l买家§7: §f%s"
+GuiSeller: "§3§l卖家§7: §f%s"
+GuiStartPrice: "§3§l起拍价§7: §f%s%s"
+GuiPresentPrice: "§3§l现价§7: §f%s%s"
+GuiOriginalPrice: "§3§l原价§7: §f§m%s%s"
+GuiPrice: "§3§l价格§7: §f%s%s"
+GuiOrderPrice: "§3§l收购价§7: §f%s%s"
+GuiHeat: "§3§l热度§7: §f%s"
+GuiAuctionConfirm: "§7第§3%s§7次确认"
+GuiAuctionPlayers: "§3§l参与者§7: §f%s"
+GuiDeadline: "§3§l剩余时间§7: §f%s"
+GuiCredit: "§3§l信誉度§7: §f%s"
+GuiAmount: "§3§l成交量§7: §f%s"
+GuiSelling: "§3§l在售§7: §f%s"
+GuiVisit: "§3§l浏览量§7: §f%s"
+GuiStar: "§3§l点赞§7: §f%s"
+GuiOwner: "§3§l店主§7: §f%s"
+GuiCurrencyItem: "§7将货币物品拖拽至此处"
+
+# 商品标签
+TagPrepare: "§f[§8预售§f]"
+TagAuction: "§f[§e拍卖§f]"
+TagRetail: "§f[§7零售§f]"
+TagOrder: "§f[§9收购§f]"
+TagAdmin: "§f[§c官方§f]"
+TagNew: "§f[§b新§f]"
+TagDeadline: "§f[§4即将下架§f]"
+TagHeat: "§f[§6🔥§f]"
+
+# 页面标题
+TitleMainPage: §0市场 §7#§8%page%
+TitleSearchPage: §0搜索§n%search% §7#§8%page%
+TitleRetailPage: §0零售 §7#§8%page%
+TitleAuctionPage: §0拍卖行 §7#§8%page%
+TitleOrderPage: §0收购 §7#§8%page%
+TitlePointPage: §0点券交易 §7#§8%page%
+TitleCoinPage: §0金币交易 §7#§8%page%
+TitleItemPage: §0物品交易 §7#§8%page%
+TitleAdminPage: §0官方市场 §7#§8%page%
+TitleHomePage: §0主菜单
+TitleManagePage: §0管理界面
+TitleStorePage: §0玩家商店 §7#§8%page%
+TitleMinePage: §0个人页面 §7#§8%page%
+TitleMailPage: §0邮箱页面 §7#§8%page%
+TitleEditPage: §0编辑交易 §7ID§8%page%
+TitleVisitPage: §0%player%的商店 §7#§8%page%
+TitleAffairPage: §0%item% §7ID§8%page%
+TitleCategory1Page: §0食物 §7#§8%page%
+TitleCategory2Page: §0物品 §7#§8%page%
+TitleCategory3Page: §0方块 §7#§8%page%
+TitleCategory4Page: §0可燃物与木制品 §7#§8%page%
+TitleCategory5Page: §0装备武器 §7#§8%page%
+TitleCategory6Page: §0附魔与药水 §7#§8%page%
+TitleCategory7Page: §0其他 §7#§8%page%

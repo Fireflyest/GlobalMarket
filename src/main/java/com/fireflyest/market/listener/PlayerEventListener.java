@@ -1,244 +1,127 @@
 package com.fireflyest.market.listener;
 
-import com.cryptomorin.xseries.XSound;
-import com.fireflyest.market.bean.Button;
-import com.fireflyest.market.core.MarketTasks;
-import com.fireflyest.market.data.Data;
-import com.fireflyest.market.task.*;
-import com.fireflyest.market.util.YamlUtils;
-import org.bukkit.Material;
-import org.bukkit.event.entity.VillagerAcquireTradeEvent;
-import org.bukkit.inventory.meta.BookMeta;
+import com.fireflyest.market.util.ChatUtils;
+
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.NumberConversions;
 import org.fireflyest.craftgui.api.ViewGuide;
-import org.fireflyest.craftgui.event.ViewClickEvent;
+import org.fireflyest.craftgui.button.ButtonAction;
 import com.fireflyest.market.GlobalMarket;
-import com.fireflyest.market.bean.User;
-import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.util.ChatUtils;
-import com.fireflyest.market.util.ConvertUtils;
-import com.fireflyest.market.util.TimeUtils;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
+import com.fireflyest.market.service.MarketService;
+import com.fireflyest.market.task.TaskAffirm;
+import com.fireflyest.market.task.TaskCreate;
+import com.fireflyest.market.task.TaskSend;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.event.ViewPlaceEvent;
-import org.fireflyest.craftgui.util.ItemUtils;
-import org.fireflyest.craftgui.util.TranslateUtils;
-
-import java.util.Objects;
+import org.fireflyest.crafttask.api.TaskHandler;
+import org.fireflyest.util.NetworkUtils;
+import org.fireflyest.util.SerializationUtil;
+import org.fireflyest.util.TimeUtils;
 
 public class PlayerEventListener implements Listener {
 
-    private final Sound clickSound;
-    private final Sound cancelSound;
-    private final Sound pageSound;
-
     private final ViewGuide guide;
-    private final Data data;
+    private final MarketService service;
+    private final TaskHandler handler;
 
-    private final MarketTasks.TaskManager taskManager;
-
-    public PlayerEventListener(){
-
-        this.clickSound = XSound.BLOCK_STONE_BUTTON_CLICK_OFF.parseSound();
-        this.cancelSound = XSound.BLOCK_ANVIL_PLACE.parseSound();
-        this.pageSound = XSound.ITEM_BOOK_PAGE_TURN.parseSound();
-
-        this.guide = GlobalMarket.getGuide();
-        this.data = GlobalMarket.getData();
-
-        this.taskManager = MarketTasks.getTaskManager();
+    public PlayerEventListener(MarketService service, ViewGuide guide, TaskHandler handler){
+        this.guide = guide;
+        this.service = service;
+        this.handler = handler;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
-        User user = MarketManager.getUser(playerName);
-        if (user == null) {
-            user = new User(playerName, player.getUniqueId().toString(), 100, 0.0, 0, false, TimeUtils.getDate(), 0);
-            MarketManager.addUser(user);
+
+        // 插入新玩家数据
+        String merchantUid = service.selectMerchantUid(playerName);
+        if ("".equals(merchantUid)) {
+            service.insertMerchant(playerName, player.getUniqueId(), TimeUtils.getTime());
         }
 
-        int mailAmount = MarketManager.getMailAmount(playerName);
+        // 邮箱提醒
+        int mailAmount = service.selectDeliveryIdByOwner(player.getUniqueId()).length;
         if (mailAmount > 0){
-            player.sendMessage(Language.HAS_MAIL);
-            ChatUtils.sendCommandButton(player, Language.MAIL_BUTTON, Language.MAIL_HOVER, "/market mail");
-            if (!Config.LIMIT_MAIL) return;
-            if (mailAmount > Config.LIMIT_MAIL_NUM - 5){
-                player.sendMessage(Language.LIMIT_MAIL);
-            }
-            if(mailAmount > Config.LIMIT_MAIL_NUM){
-                taskManager.putTask(new TaskSignAll(playerName));
+            player.sendMessage(Language.REMIND_MAIL);
+            ChatUtils.sendCommandButton(player, Language.TEXT_MAIL_BUTTON, Language.TEXT_MAIL_HOVER, "/market mail");
+
+            if (!Config.MAXIMUM_MAIL) return;
+            if (mailAmount > Config.MAXIMUM_MAIL_NUM){
+                player.sendMessage(Language.MAXIMUM_MAIL);
             }
         }
-    }
 
-    @EventHandler
-    public void onViewClick(ViewClickEvent event){
-        if(!event.getView().getTitle().contains(Language.PLUGIN_NAME)) return;
-
-        ItemStack item = event.getCurrentItem();
-        if(item == null) return;
-
-        Player player = (Player)event.getWhoClicked();
-
-        String value = ItemUtils.getItemValue(item);
-        if("".equals(value))return;
-
-        // 翻页
-        if (value.contains("page")){
-            // 不用刷新
-            event.setRefresh(false);
-
-            if (Config.DEBUG) GlobalMarket.getPlugin().getLogger().info("action -> " + value);
-            player.playSound(player.getLocation(), pageSound, 1F, 1F);
-            if (value.contains("pre")){
-                guide.prePage(player);
-            }else if (value.contains("next")){
-                guide.nextPage(player);
-            }
-            return;
-        }
-
-        if (value.startsWith("send")){
-            if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
-            player.performCommand("market send");
-            return;
-        }
-        if (value.startsWith("button")){
-            if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
-            return;
-        }
-
-        // 其他按钮点击，执行指令
-        if (event.isShiftClick()){ // 下架
-            if (value.contains("affair") || value.contains("edit")){
-                event.setRefresh(false);
-
-                if (player.hasPermission("market.admin") && value.contains("affair")){
-                    player.performCommand("marketadmin cancel " + value.split(" ")[1]);
-                }else {
-                    taskManager.putTask(new TaskCancel(player.getName(), ConvertUtils.parseInt(value.split(" ")[1])));
+        // 监测更新
+        if (Config.CHECK_UPDATE && player.isOp()) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    String version = GlobalMarket.getPlugin().getDescription().getVersion().replace("-beta", "");
+                    String url = NetworkUtils.checkUpdate("GlobalMarket", version);
+                    if (url != null) {
+                        player.sendMessage(Language.CHECK_UPDATE.replace("%url%", url));
+                    }
                 }
-                player.playSound(player.getLocation(), cancelSound, 1F, 1F);
-            }
-        } else { // 执行指令
-            event.setRefresh(false);
-
-            if (Config.DEBUG) GlobalMarket.getPlugin().getLogger().info("command -> " + "market "+ value);
-            player.performCommand("market "+ value);
-            if (clickSound != null) player.playSound(player.getLocation(), clickSound, 1F, 1F);
+            }.runTaskAsynchronously(GlobalMarket.getPlugin());
         }
     }
 
     @EventHandler
     public void onViewPlace(ViewPlaceEvent event) {
-        if(!event.getView().getTitle().contains(Language.PLUGIN_NAME)) return;
+        int action = event.getAction();
+        String view = event.getViewName(), value = event.getValue();
 
+        // 判断是否本插件相关的事件
+        if(view == null || !view.startsWith("market")) return;
+
+        // 获取点击到的物品，一般来说是有物品
         ItemStack placeItem = event.getCursorItem();
-        ItemStack clickItem = event.getCurrentItem();
-        if(placeItem == null || clickItem == null || clickItem.getType() == Material.AIR) return;
+        ItemStack item = event.getCurrentItem();
+        if(item == null) return;
 
+        // 获取点击的玩家
         Player player = (Player)event.getWhoClicked();
 
-        String value = ItemUtils.getItemValue(clickItem);
-        if("".equals(value))return;
-
-        if ("sell".equals(value)){
-            if(!player.hasPermission("market.quick")){ // 快捷上架
-                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.quick"));
-                return;
+        // 根据行为做反应
+        if (action == ButtonAction.ACTION_PLUGIN) {
+            switch (value) {
+                case "create":
+                case "createExtra":
+                case "createOver":
+                    handler.putTasks(GlobalMarket.TASK_MARKET, new TaskCreate(player.getName(), service, guide, "prepare", "coin", 0, placeItem.clone()));
+                    event.setHandBack(false);
+                    break;
+                case "search":
+                    guide.openView(player, GlobalMarket.SEARCH_VIEW, placeItem.getType().name());
+                    break;
+                case "destroy":
+                    event.setHandBack(false);
+                    break;
+                default:
+                    if (value.startsWith("send")) {
+                        String target = value.split(" ")[1];
+                        handler.putTasks(GlobalMarket.TASK_MAIL, new TaskSend(player.getName(), service, service.selectMerchantUid(target), placeItem.clone()));
+                        event.setHandBack(false);
+                    } else if (value.startsWith("currency")) {
+                        long id = NumberConversions.toLong(value.split(" ")[1]);
+                        ItemStack clone = placeItem.clone();
+                        clone.setAmount(1);
+                        handler.putTasks(GlobalMarket.TASK_MARKET, new TaskAffirm(player.getName(), service, guide, id, null, null, SerializationUtil.serializeItemStack(clone)));
+                    } else if (value.startsWith("logo")) {
+                        String target = value.split(" ")[1];
+                        service.updateMerchantLogo(target, placeItem.getType().name());
+                    }
+                    break;
             }
-            taskManager.putTask(new TaskSell(player.getName(), false, false, -1, placeItem.clone()));
-            event.setHandBack(false);
-        }else if ("search".equals(value)){ // 搜索同材料物品
-            if(!player.hasPermission("market.search")){
-                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.search"));
-                return;
-            }
-            String displayName = TranslateUtils.translate(placeItem.getType());
-            player.performCommand(String.format("market search %s", displayName));
-        }else if ("classify".equals(value)){ // 分查看物品类型
-            String classify = MarketManager.getClassify(placeItem.getType()).toString();
-            player.sendMessage(Language.CLASSIFY_ITEM.replace("%classify%", classify));
-        }else if (value.contains("send")){ // 发送邮件
-            if(!player.hasPermission("market.send")){
-                player.sendMessage(Language.NOT_PERMISSION.replace("%permission%", "market.send"));
-                return;
-            }
-            String target = value.split(" ")[1];
-            taskManager.putTask(new TaskSend(player.getName(), target, placeItem.clone(), 0, false));
-            event.setHandBack(false);
-        }else if ("delete".equals(value)){ // 邮箱界面的垃圾桶
-            event.setHandBack(false);
-        }else if (value.contains("button")){ // 自定义按钮
-            String target = value.split(" ")[1];
-            String material = event.getCursorItem().getType().name();
-            Button button = data.queryOne(Button.class, "target", target);
-            if (button == null) {
-                button = new Button(target, event.getCursorItem().getType().name(), "");
-                data.insert(button);
-            }else {
-                button.setMaterial(material);
-                data.update(button);
-            }
-            player.sendMessage(Language.BUTTON_ITEM);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event){
-        Player player = event.getPlayer();
-
-        // 右键牌子
-        if(event.hasBlock()){
-            Block block = event.getClickedBlock();
-            if(block == null)return;
-            if(!block.getType().name().contains("SIGN"))return;
-            Sign sign = (Sign)block.getState();
-
-            if(sign.getLine(0).contains("GlobeMarket")){
-
-                if("mail".equals(sign.getLine(1))){
-                    event.setCancelled(true);
-                    player.performCommand("market mail");
-                }else if (player.isSneaking()){
-                    event.setCancelled(true);
-                    player.performCommand("market quick");
-                }else {
-                    event.setCancelled(true);
-                    player.performCommand("market");
-                }
-            }
-        }
-
-    }
-
-    @EventHandler
-    public void onSignChange(SignChangeEvent event){
-        if(!event.getPlayer().hasPermission("market.create"))return;
-        if("market".equalsIgnoreCase(event.getLine(0))){
-            event.setLine(0, Language.PLUGIN_NAME);
-        }
-    }
-
-
-    @EventHandler
-    public void onVillagerAcquireTrade(VillagerAcquireTradeEvent event) {
-        for (ItemStack ingredient : event.getRecipe().getIngredients()) {
-            if (ingredient.getType() != Material.WRITTEN_BOOK) continue;
-            BookMeta bookMeta = ((BookMeta) ingredient.getItemMeta());
-            if (bookMeta == null) continue;
-            if (Objects.equals(bookMeta.getAuthor(), Language.PLUGIN_NAME)) event.setCancelled(true);
         }
     }
 

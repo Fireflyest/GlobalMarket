@@ -1,30 +1,33 @@
 package com.fireflyest.market.view;
 
+import java.util.HashMap;
+
 import org.fireflyest.craftgui.api.View;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fireflyest.market.data.MarketYaml;
+import com.fireflyest.market.service.MarketService;
 
-public class MineView implements View<MinePage> {
+public class MineView implements View<MinePage>{
 
-    private final Map<String, MinePage> pageMap = new HashMap<>();
+    private final HashMap<String, MinePage> pageMap = new HashMap<>();
 
-    private final String title;
-
-    public MineView(String title) {
-        this.title = title;
+    private final MarketService service;
+    private final MarketYaml yaml;
+    
+    public MineView(MarketService service, MarketYaml yaml) {
+        this.service = service;
+        this.yaml = yaml;
     }
 
     @Override
-    public MinePage getFirstPage(String target){
-        if (!pageMap.containsKey(target)){
-            pageMap.put(target, new MinePage(title, target, 1, 54));
-        }
+    public MinePage getFirstPage(String target) {
+        pageMap.computeIfAbsent(target, k -> new MinePage(target, 1, service, yaml));
         return pageMap.get(target);
     }
 
     @Override
     public void removePage(String target) {
-        pageMap.remove(target);
+        // 
     }
+    
 }

@@ -1,37 +1,45 @@
 package com.fireflyest.market.view;
 
+<<<<<<< HEAD
 import com.fireflyest.market.bean.Sale;
 import com.fireflyest.market.core.MarketManager;
 import com.fireflyest.market.util.ConvertUtils;
 import org.fireflyest.craftgui.api.View;
 
+=======
+>>>>>>> 9bc3b8e (版本更新)
 import java.util.HashMap;
-import java.util.Map;
 
-public class AffairView implements View<AffairPage> {
+import org.bukkit.util.NumberConversions;
+import org.fireflyest.craftgui.api.View;
 
-    private final Map<String, AffairPage> pageMap = new HashMap<>();
+import com.fireflyest.market.data.Language;
+import com.fireflyest.market.data.MarketYaml;
+import com.fireflyest.market.service.MarketService;
 
-    private final String title;
+public class AffairView implements View<AffairPage>{
 
-    public AffairView(String title) {
-        this.title = title;
+    private final HashMap<String, AffairPage> pageMap = new HashMap<>();
+
+    private final MarketService service;
+    private final MarketYaml yaml;
+    
+    public AffairView(MarketService service, MarketYaml yaml) {
+        this.service = service;
+        this.yaml = yaml;
     }
 
     @Override
-    public AffairPage getFirstPage(String target){
-        if (! pageMap.containsKey(target)){
-            Sale sale = MarketManager.getSale(ConvertUtils.parseInt(target));
-            if (sale != null) {
-                pageMap.put(target, new AffairPage(title, target));
-            }
-        }
+    public AffairPage getFirstPage(String target) {
+        int id = NumberConversions.toInt(target);
+        String nickname = service.selectTransactionNickname(id);
+        pageMap.computeIfAbsent(target, k -> new AffairPage(Language.TITLE_AFFAIR_PAGE.replace("%item%", nickname), target, id, service, yaml));
         return pageMap.get(target);
     }
 
     @Override
     public void removePage(String target) {
-        pageMap.remove(target);
+        // 
     }
-
+    
 }

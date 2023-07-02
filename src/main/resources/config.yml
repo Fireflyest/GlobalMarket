@@ -2,8 +2,8 @@ Version: '${project.version}'
 
 Debug: false
 
-# zh-CN zh-TW en
-Lang: '?'
+# 对应lang文件夹内的文件
+Lang: 'zh-CN'
 
 # SQL连接参数
 Sql: false
@@ -11,47 +11,53 @@ Url: 'jdbc:mysql://localhost:3306/{DATABASE}?useSSL=false&serverTimezone=UTC'
 User: 'root'
 Password: '123456'
 
-# 开启点券交易
-Point: false
+# 更新检查
+CheckUpdate: true
 
-# Collect: false
-# Trade: false
+# 开启交易方式
+PlayerPointMarket: true
+OrderMarket: true
+TradeMarket: false
 
 # 物品几天后自动下架，请输入正整数，输入-1为关闭限制
-LimitTime: 7
+TermOfValidity: 7
 
-# 上架限制，使用物品的lore进行判断
-LimitLore: false
-LimitLoreList: 私有,vip,绑定
+# 违禁品，使用物品的lore进行判断
+ContrabandLore: false
+ContrabandLoreList: 专属,vip,binding
 
 # 上架数量限制
-LimitAmount: true
-LimitAmountNum: 35
-LimitAmountNumVip: 56
+MaximumSale: true
+MaximumSaleNum: 35
+# 邮箱数量限制
+MaximumMail: true
+MaximumMailNum: 50
 
 # 上架公告
-SellBroadcast: true
-
-# 邮箱数量限制
-LimitMail: true
-LimitMailNum: 50
+ActionBroadcast: true
 
 # 上架最大金额
 MaxPrice: 99999999
-# 上架税
-Tax: true
-# 起征点
-TaxThreshold: 100000
-# 税率，百分比0~1
-TaxRate: 0.002
+
+# 手续费
+Commission: true
+# 多少额度开始收手续费
+CommissionThreshold: 100000
+# 百分比0~1
+CommissionRate: 0.002
 
 # 零散购买，关闭后玩家只能一次性全买
 BuyPartial: true
 
-# 交易记录
-MarketRecord: true
+# 是否在主页显示导航页面按钮
+NavigationButton: true
 
+<<<<<<< HEAD
 # 关闭主菜单的分类按钮
 DisableClassify: false
 # 自定义分类
 CustomClassify: false
+=======
+# 自动分类，非自定义分类情况下自动为商品分类
+AutoCategory: true
+>>>>>>> 9bc3b8e (版本更新)

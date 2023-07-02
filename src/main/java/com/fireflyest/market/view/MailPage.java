@@ -1,212 +1,151 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.market.core.MarketButton;
-import org.fireflyest.craftgui.api.ViewPage;
-import com.fireflyest.market.GlobalMarket;
-import com.fireflyest.market.bean.Mail;
-import com.fireflyest.market.data.Config;
-import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.Storage;
-import com.fireflyest.market.util.MysqlExecuteUtils;
-import com.fireflyest.market.util.SqliteExecuteUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.ItemUtils;
-import org.fireflyest.craftgui.util.SerializeUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-/**
- * @author Fireflyest
- * 2022/2/15 0:00
- */
+import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.api.ViewPage;
+import org.fireflyest.craftgui.view.TemplatePage;
+import org.fireflyest.util.ItemUtils;
+import org.fireflyest.util.SerializationUtil;
 
-public class MailPage implements ViewPage {
+import com.fireflyest.market.bean.Delivery;
+import com.fireflyest.market.core.MarketItem;
+import com.fireflyest.market.data.Language;
+import com.fireflyest.market.data.MarketYaml;
+import com.fireflyest.market.service.MarketService;
 
-    private final Map<Integer, ItemStack> itemMap = new HashMap<>();
-    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
+public class MailPage extends TemplatePage {
 
-    private final Inventory inventory;
-    private final String title;
-    private final String target;
-    private final int page;
-    private final int size;
-    private final String sql;
+    private final MarketService service;
+    private final MarketYaml yaml;
+    private int amount;
 
-    private final Storage storage;
-
-    private ViewPage next = null;
-    private ViewPage pre = null;
-
-    public MailPage(String title, String target, int page, int size) {
-        this.storage = GlobalMarket.getStorage();
-        this.title = title;
-        this.target = target;
-        this.page = page;
-        this.size = size;
-        String guiTitle = title;
-
-        if (target != null)  guiTitle += ("§9" + String.format(Language.MARKET_MAIL_NICK, target));    // 副标题
-
-        // 界面容器
-        this.inventory = Bukkit.createInventory(null, size, guiTitle);
-
-        if(Config.SQL){
-            sql = MysqlExecuteUtils.query(Mail.class, "owner", target, 0, 512);
-        }else {
-            sql = SqliteExecuteUtils.query(Mail.class, "owner", target, 0, 512);
-        }
+    protected MailPage(String target, int page, MarketService service, MarketYaml yaml) {
+        super(Language.TITLE_MAIL_PAGE, target, page, 54);
+        this.service = service;
+        this.yaml = yaml;
 
         this.refreshPage();
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getItemMap(){
-        crashMap.clear();
-        crashMap.putAll(itemMap);
+    public Map<Integer, ItemStack> getItemMap() {
+        asyncButtonMap.clear();
+        asyncButtonMap.putAll(buttonMap);
 
-        List<Mail> mails = storage.inquiryList(sql, Mail.class);
-        List<Mail> items = mails.stream().filter(mail -> !mail.isRecord()).collect(Collectors.toList());
-        List<Mail> records = mails.stream().filter(Mail::isRecord).collect(Collectors.toList());
-        int i = 0, j = 0, k, l = 0, m = 0, limit = 2;
-        if (records.size() == 0) {
+        // target为玩家uid
+        Delivery[] deliveries = service.selectDeliveryByOwner(target);;
+        List<Delivery> items = new ArrayList<>();
+        List<Delivery> records = new ArrayList<>();
+        for (Delivery delivery : deliveries) {
+            if (Language.TEXT_MAIL_FROM_REWARD.equals(delivery.getSender())) {
+                records.add(delivery);
+            } else {
+                items.add(delivery);
+            }
+        }
+
+        int limit = 2;
+        if (records.isEmpty()) {
             limit = 4;
-        }else if (records.size() < 14){
+        } else if (records.size() < 14) {
             limit = 3;
         }
-        for (Mail mail : items) {
-            if (j > 6){ // 到末尾
-                if (i < limit){ // 限制行以下就能再加一行，并且转到头
-                    i++;
-                    j = 0;
-                }else { // 超过行了，退出
-                    break;
-                }
-            }
-            ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
-            MarketButton.loreMailItem(item, mail);
-            crashMap.put(i * 9 + 2 + j, item);
-            m++;
-            j++;
-        }
-        if (j != 0){ // 如果这行有东西但是没有满
-            for (; j < 7; j++){ // 最后一行没有放满，填充空气
-                crashMap.put(i * 9 + 2 + j, MarketButton.AIR.clone());
-            }
-        }
-        if (m == 0){ // 如果没有物品直接首行开始
-            k = 0;
-        }else { // 有物品换行
-            k = i+1;
-        }
-        for (Mail mail : records) {
-            if (l > 6){ // 到末尾
-                if (k < 5){ // 五行以下就能再加一行，并且转到头
-                    k++;
-                    l = 0;
-                }else { // 已经五行了，退出
-                    break;
-                }
-            }else if (k == 5 && l > 4){
-                break;
-            }
-            ItemStack item = SerializeUtil.deserialize(mail.getStack(), mail.getMeta());
-            MarketButton.loreMailItem(item, mail);
-            crashMap.put(k * 9 + 2 + l, item);
-            m++;
-            l++;
-        }
-        while (k < 6){
-            for (; l < 7; l++){
-                if (k == 5 && l > 4){
-                    break;
-                }
-                crashMap.put(k * 9 + 2 + l, MarketButton.AIR.clone());
-            }
-            l = 0;
-            k++;
-        }
+        amount = 0;
+        int line = this.putItems(items, limit);
+        this.putRecords(records, line);
 
         // 滞留数量
-        ItemStack transport = MarketButton.TRANSPORT.clone();
-        int stagnate = (mails.size() - m);
+        ItemStack transport = yaml.getItemBuilder("transport").build();
+        int stagnate = (deliveries.length - amount);
         if (stagnate > 0) {
-            ItemUtils.addLore(transport, Language.MAIL_FULL.replace("%amount%", String.valueOf(stagnate)));
+            ItemUtils.addLore(transport, Language.TEXT_MAIL_STAGNATE.replace("%amount%", String.valueOf(stagnate)));
+            transport.setAmount(stagnate);
         }
-        crashMap.put(53, transport);
+        asyncButtonMap.put(53, transport);
 
-        return crashMap;
+        return asyncButtonMap;
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getButtonMap() {
-        return new HashMap<>(itemMap);
-    }
+    public void refreshPage() {
+        ItemStack blank = yaml.getItemBuilder("blank").build();
+        for (int i = 1; i < 53; i+=9){
+            buttonMap.put(i, blank);
+        }
 
-    @Override
-    public @Nullable ItemStack getItem(int slot) {
-        return crashMap.get(slot);
-    }
-
-    @Override
-    public @NotNull Inventory getInventory(){
-        return inventory;
-    }
-
-    @Override
-    public String getTarget() {
-        return target;
-    }
-
-    @Override
-    public int getPage() {
-        return page;
+        buttonMap.put(0, yaml.getItemBuilder("mine").build());
+        buttonMap.put(9, yaml.getItemBuilder("sign").build());
+        buttonMap.put(18, yaml.getItemBuilder("destroy").build());
+        buttonMap.put(45, yaml.getItemBuilder("back").build());
     }
 
     @Override
     public ViewPage getNext() {
-        if(next == null && page < 5){
-            next = new MailPage(title, target, page+1, size);
+        if(next == null && page < 30){
+            next = new MailPage(target, page + 1, service, yaml);
             next.setPre(this);
         }
         return next;
     }
 
-    @Override
-    public ViewPage getPre() {
-        return pre;
-    }
-
-    @Override
-    public void setPre(ViewPage pre) {
-        this.pre = pre;
-    }
-
-    @Override
-    public void setNext(ViewPage viewPage) {
-
-    }
-
-    @Override
-    public void refreshPage() {
-        for (int i = 1; i < 53; i+=9){
-            itemMap.put(i, MarketButton.BLANK);
+    private int putItems(List<Delivery> items, int limit) {
+        int i = 0, j = 0;
+      
+        for (Delivery mail : items) {
+            if (j > 6){ // 到末尾
+                if (i >= limit) {
+                    break;
+                }
+                i++;
+                j = 0;
+            }
+            ItemStack item = SerializationUtil.deserializeItemStack(mail.getStack());
+            MarketItem.loreMailData(item, mail);
+            asyncButtonMap.put(i * 9 + 2 + j, item);
+            amount++;
+            j++;
         }
-        itemMap.put(0, MarketButton.MINE);
-        itemMap.put(9, MarketButton.SIGN);
-        itemMap.put(18, MarketButton.DELETE);
-        itemMap.put(45, MarketButton.BACK);
+        if (j != 0){ // 如果这行有东西但是没有满
+            for (; j < 7; j++){ // 最后一行没有放满，填充空气
+                asyncButtonMap.put(i * 9 + 2 + j, yaml.getItemBuilder("air").build());
+            }
+        }
+
+        return amount == 0 ? 0 : i + 1; // 如果没有物品直接首行开始
     }
 
-    @Override
-    public void updateTitle(String s) {
-
+    private void putRecords(List<Delivery> records, int line) {
+        int l = 0;
+        for (Delivery mail : records) {
+            if (l > 6){ // 到末尾
+                if (line >= 5) { // 五行以下就能再加一行，并且转到头
+                    break;
+                }
+                line++;
+                l = 0;
+            }
+            if (line == 5 && l > 4){
+                break;
+            }
+            ItemStack item = SerializationUtil.deserializeItemStack(mail.getStack());
+            MarketItem.loreMailData(item, mail);
+            asyncButtonMap.put(line * 9 + 2 + l, item);
+            amount++;
+            l++;
+        }
+        while (line < 6){
+            for (; l < 7; l++){
+                if (line == 5 && l > 4){
+                    break;
+                }
+                asyncButtonMap.put(line * 9 + 2 + l, yaml.getItemBuilder("air").build());
+            }
+            l = 0;
+            line++;
+        }
     }
-
+    
 }

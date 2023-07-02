@@ -26,12 +26,6 @@ permissions:
   market.create:
     description: 创建牌子
     default: op
-  market.vip:
-    description: 会员
-    default: op
-  market.svip:
-    description: 超级会员
-    default: op
   market.admin:
     description: 设置系统商店商品，编辑按钮
     default: op
@@ -53,9 +47,6 @@ permissions:
   market.auction:
     description: 拍卖物品
     default: true
-  market.discount:
-    description: 折扣物品
-    default: true
   market.reprice:
     description: 修改价格
     default: true
@@ -65,6 +56,7 @@ permissions:
   market.search:
     description: 搜索商品
     default: true
+<<<<<<< HEAD
   market.other:
     description: 打开他人商店
     default: true
@@ -73,3 +65,8 @@ permissions:
     default: true
 
 
+=======
+  market.store:
+    description: 店铺更名
+    default: true
+>>>>>>> 9bc3b8e (版本更新)

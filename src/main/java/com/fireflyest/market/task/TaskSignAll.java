@@ -1,24 +1,39 @@
 package com.fireflyest.market.task;
 
-import com.fireflyest.market.bean.Mail;
-import com.fireflyest.market.core.MarketTasks;
-import org.jetbrains.annotations.NotNull;
+import com.fireflyest.market.service.MarketEconomy;
+import com.fireflyest.market.service.MarketService;
 
-import java.util.List;
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.crafttask.api.Task;
+import org.jetbrains.annotations.NotNull;
 
 public class TaskSignAll extends Task{
 
-    public TaskSignAll(@NotNull String playerName) {
+    private final MarketService service;
+    private final ViewGuide guide;
+    private final MarketEconomy economy;
+
+    public TaskSignAll(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide) {
         super(playerName);
-
-        this.type = MarketTasks.MAIL_TASK;
-
+        this.service = service;
+        this.economy = economy;
+        this.guide = guide;
     }
 
     @Override
-    public @NotNull List<Task> execute() {
-        data.query(Mail.class, "owner", playerName).forEach(mail -> then.add(new TaskSign(playerName, mail.getId(), false)));
-        if (then.size() == 0) guide.refreshPage(playerName);
-        return then;
+    public void execute() {
+        // 玩家不在线
+        if (player == null || !player.isOnline()) {
+            return;
+        }
+
+        long[] ids = service.selectDeliveryIdByOwner(player.getUniqueId());
+        for (long id : ids) {
+            this.followTasks().add(new TaskSign(playerName, service, economy, guide, id, false));
+        }
+
+        if (this.followTasks().isEmpty()) {
+            guide.refreshPage(playerName);
+        }
     }
 }

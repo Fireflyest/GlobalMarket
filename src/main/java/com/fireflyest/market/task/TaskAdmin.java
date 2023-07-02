@@ -1,45 +1,47 @@
 package com.fireflyest.market.task;
 
-import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketManager;
-import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Language;
-import org.jetbrains.annotations.NotNull;
+import com.fireflyest.market.service.MarketService;
 
-import java.util.List;
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.crafttask.api.Task;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * set sale admin
  *
  * @author Fireflyest
- * @since 2022/7/30
+ * @since 3.3
  */
-public class TaskAdmin extends Task{
+public class TaskAdmin extends Task {
 
+    private final MarketService service;
+    private final ViewGuide guide;
     private final int id;
 
-    public TaskAdmin(@NotNull String playerName, int id) {
+    public TaskAdmin(@NotNull String playerName, MarketService service, ViewGuide guide, int id) {
         super(playerName);
+        this.service = service;
+        this.guide = guide;
         this.id = id;
-
-        this.type = MarketTasks.SALE_TASK;
-
     }
 
     @Override
-    public @NotNull List<Task> execute() {
-        Sale sale = MarketManager.getSale(id);
-        if(null == sale){
-            this.executeInfo(Language.DATA_NULL);
-            return then;
+    public void execute() {
+        String type = service.selectTransactionType(id);
+
+        if("".equals(type)){
+            executeInfo(Language.DATA_ERROR);
+            return;
         }
-        if (sale.isAuction()){
+        if (!"retail".equals(type) && !"order".equals(type)){
             this.executeInfo(Language.TYPE_ERROR);
-            return then;
+            return;
         }
-        sale.setAdmin(!sale.isAdmin());
-        data.update(sale);
-        this.executeInfo(Language.UNLIMITED_ITEM.replace("%unlimited%",  String.valueOf(sale.isAdmin())));
-        return then;
+        service.updateTransactionType("admin" + type, id);
+        this.executeInfo(Language.TRANSACTION_EDIT);
+
+        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
     }
 }
