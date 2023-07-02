@@ -1,55 +1,62 @@
 package com.fireflyest.market.task;
 
-import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketManager;
-import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
+import com.fireflyest.market.service.MarketService;
+
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.crafttask.api.Task;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class TaskReprice extends Task{
+public class TaskReprice extends Task {
 
     private final int id;
 
-    private final double price;
+    private double price;
+    private final MarketService service;
+    private final ViewGuide guide;
 
-    public TaskReprice(@NotNull String playerName, int id, double price) {
+    public TaskReprice(@NotNull String playerName, MarketService service, ViewGuide guide, int id, double price) {
         super(playerName);
         this.id = id;
         this.price = price;
-
-        this.type = MarketTasks.SALE_TASK;
-
+        this.service = service;
+        this.guide = guide;
     }
 
     @Override
-    public @NotNull List<Task> execute() {
-        Sale sale = MarketManager.getSale(id);
-        if(null == sale){
-            this.executeInfo(Language.DATA_NULL);
-            return then;
+    public void execute() {
+        String transactionType = service.selectTransactionType(id);
+
+        if("".equals(transactionType)){
+            executeInfo(Language.DATA_ERROR);
+            return;
         }
-        if (sale.getPrice() == -1){
-            this.executeInfo(Language.NOT_SELLING);
-            return then;
+        if ("auction".equals(transactionType) || "trade".equals(transactionType)){
+            this.executeInfo(Language.TYPE_ERROR);
+            return;
         }
-        if(!sale.getOwner().equalsIgnoreCase(playerName)){
-            this.executeInfo(Language.BUY_ERROR);
-            return then;
+
+        if(!service.selectTransactionOwnerName(id).equalsIgnoreCase(playerName)){
+            this.executeInfo(Language.TRANSACTION_ERROR);
+            return;
         }
 
         if(price < 0 || price > Config.MAX_PRICE){
-            this.executeInfo(Language.COMMAND_ERROR);
+            this.executeInfo(Language.REPRICE_ERROR);
             guide.refreshPage(playerName);
-            return then;
+            return;
         }
 
-        sale.setCost(price);
+        if (!"coin".equals(service.selectTransactionCurrency(id))) {
+            price = (int) price;
+        }
+        if (service.selectTransactionPrice(id) == 0) {
+            service.updateTransactionPrice(price, id);
+        }
+        service.updateTransactionCost(price, id);
 
-        MarketManager.updateSale(sale);
-        guide.refreshPage(playerName);
-        return then;
+        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
     }
 }

@@ -5,7 +5,7 @@ package com.fireflyest.market.bean;
  * 2021/3/26 12:08
  */
 
-public class Mail extends Item{
+public class Mail {
 
     // 邮件主人
     private String owner;
@@ -29,7 +29,7 @@ public class Mail extends Item{
     }
 
     public Mail(int id, String stack, String meta, String nbt, long create, String owner, String info, boolean signed, boolean record, double price, boolean point) {
-        super(id, stack, meta, nbt, create);
+        // super(id, stack, meta, nbt, create);
         this.owner = owner;
         this.info = info;
         this.signed = signed;

@@ -1,122 +1,95 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.market.core.MarketButton;
-import com.fireflyest.market.data.Config;
-import org.fireflyest.craftgui.api.ViewPage;
-import com.fireflyest.market.data.Language;
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Fireflyest
- * 2022/2/15 0:00
- */
+import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.button.ButtonItemBuilder;
+import org.fireflyest.craftgui.view.TemplatePage;
 
-public class HomePage implements ViewPage {
+import com.fireflyest.market.data.Config;
+import com.fireflyest.market.data.Language;
+import com.fireflyest.market.data.MarketYaml;
 
-    private final Map<Integer, ItemStack> itemMap = new HashMap<>();
-    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
+public class HomePage extends TemplatePage {
 
-    private final Inventory inventory;
+    private final MarketYaml yaml;
 
-    public HomePage(String title) {
-        String guiTitle = title;
-
-        guiTitle += ("§9" + Language.MARKET_HOME_NICK);
-
-        // 界面容器
-        this.inventory = Bukkit.createInventory(null, 27, guiTitle);
+    protected HomePage(MarketYaml yaml) {
+        super(Language.TITLE_HOME_PAGE, "", 0, 27);
+        this.yaml = yaml;
 
         this.refreshPage();
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getItemMap(){
-        crashMap.clear();
-        crashMap.putAll(itemMap);
-        return crashMap;
-    }
-
-    @Override
-    public @NotNull Map<Integer, ItemStack> getButtonMap() {
-        return new HashMap<>(itemMap);
-    }
-
-    @Override
-    public @Nullable ItemStack getItem(int slot) {
-        return crashMap.get(slot);
-    }
-
-    @Override
-    public @NotNull Inventory getInventory(){
-        return inventory;
-    }
-
-    @Override
-    public String getTarget() {
-        return HomeView.NORMAL;
-    }
-
-    @Override
-    public int getPage() {
-        return 0;
-    }
-
-    @Override
-    public ViewPage getNext() {
-        return null;
-    }
-
-    @Override
-    public ViewPage getPre() {
-        return null;
-    }
-
-    @Override
-    public void setPre(ViewPage pre) {
-    }
-
-    @Override
-    public void setNext(ViewPage viewPage) {
+    public Map<Integer, ItemStack> getItemMap() {
+        asyncButtonMap.clear();
+        asyncButtonMap.putAll(buttonMap);
+        return buttonMap;
     }
 
     @Override
     public void refreshPage() {
-        itemMap.put(0, MarketButton.EDIBLE);
-        itemMap.put(1, MarketButton.ITEM);
-        itemMap.put(2, MarketButton.BLOCK);
-        itemMap.put(3, MarketButton.BURNABLE);
-        itemMap.put(4, MarketButton.EQUIP);
-        itemMap.put(5, MarketButton.KNOWLEDGE);
+        buttonMap.put(0, ((ButtonItemBuilder)yaml.getItemBuilder("category1"))
+                .actionOpenPage("market.category.category1")
+                .build());
+        buttonMap.put(1, ((ButtonItemBuilder)yaml.getItemBuilder("category2"))
+                .actionOpenPage("market.category.category2")
+                .build());
+        buttonMap.put(2, ((ButtonItemBuilder)yaml.getItemBuilder("category3"))
+                .actionOpenPage("market.category.category3")
+                .build());
+        buttonMap.put(3, ((ButtonItemBuilder)yaml.getItemBuilder("category4"))
+                .actionOpenPage("market.category.category4")
+                .build());
+        buttonMap.put(4, ((ButtonItemBuilder)yaml.getItemBuilder("category5"))
+                .actionOpenPage("market.category.category5")
+                .build());
+        buttonMap.put(5, ((ButtonItemBuilder)yaml.getItemBuilder("category6"))
+                .actionOpenPage("market.category.category6")
+                .build());
+        buttonMap.put(6, ((ButtonItemBuilder)yaml.getItemBuilder("category7"))
+                .actionOpenPage("market.category.category7")
+                .build());
 
-        itemMap.put(8, MarketButton.SEARCH);
+        buttonMap.put(8, yaml.getItemBuilder("search").build());
 
-        itemMap.put(18, MarketButton.RETAIL);
-        itemMap.put(19, MarketButton.AUCTION);
-        itemMap.put(20, MarketButton.ADMIN);
+        buttonMap.put(18, ((ButtonItemBuilder)yaml.getItemBuilder("admin"))
+                .actionOpenPage("market.main.admin")
+                .build());
+        buttonMap.put(19, ((ButtonItemBuilder)yaml.getItemBuilder("auction"))
+                .actionOpenPage("market.main.auction")
+                .build());
+        buttonMap.put(20, ((ButtonItemBuilder)yaml.getItemBuilder("retail"))
+                .actionOpenPage("market.main.retail")
+                .build());
         int pos = 21;
-        if (Config.POINT) itemMap.put(pos++, MarketButton.POINT);
-        if (Config.COLLECT) itemMap.put(pos++, MarketButton.COLLECT);
-        if (Config.TRADE) itemMap.put(pos, MarketButton.TRADE);
-
-        for (int i = 9; i < 17; i++) {
-            itemMap.put(i, MarketButton.BLANK);
+        if (Config.ORDER_MARKET) {
+            buttonMap.put(pos++, ((ButtonItemBuilder)yaml.getItemBuilder("order"))
+                    .actionOpenPage("market.main.order")
+                    .build());
         }
-        itemMap.put(7, MarketButton.BLANK);
-        itemMap.put(25, MarketButton.BLANK);
+        if (Config.PLAYER_POINT_MARKET) {
+            buttonMap.put(pos++, ((ButtonItemBuilder)yaml.getItemBuilder("point"))
+                    .actionOpenPage("market.main.point")
+                    .build());
+        }
+        if (Config.TRADE_MARKET) {
+            buttonMap.put(pos, ((ButtonItemBuilder)yaml.getItemBuilder("trade"))
+                    .actionOpenPage("market.main.trade")
+                    .build());
+        }
 
-        itemMap.put(26, MarketButton.BACK);
+        ItemStack blank = yaml.getItemBuilder("blank").build();
+        for (int i = 9; i < 17; i++) {
+            buttonMap.put(i, blank);
+        }
+        buttonMap.put(7, blank);
+        buttonMap.put(25, blank);
+
+        buttonMap.put(17, yaml.getItemBuilder("store").build());
+        buttonMap.put(26, yaml.getItemBuilder("back").build());
+
     }
-
-    @Override
-    public void updateTitle(String s) {
-
-    }
-
+    
 }

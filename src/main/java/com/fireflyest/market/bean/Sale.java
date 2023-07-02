@@ -5,7 +5,7 @@ package com.fireflyest.market.bean;
  * 2021/3/26 12:08
  */
 
-public class Sale extends Item{
+public class Sale {
 
     // 商品主人
     private String owner;
@@ -44,7 +44,7 @@ public class Sale extends Item{
     }
 
     public Sale(int id, String stack, String meta, String nbt, long create, String owner, String buyer, double price, double cost, int heat, String nickname, boolean auction, boolean point) {
-        super(id, stack, meta, nbt, create);
+        // super(id, stack, meta, nbt, create);
         this.buyer = buyer;
         this.owner = owner;
         this.price = price;

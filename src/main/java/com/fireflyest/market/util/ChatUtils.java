@@ -1,6 +1,5 @@
 package com.fireflyest.market.util;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.fireflyest.market.data.Language;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
@@ -8,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.fireflyest.craftgui.util.TranslateUtils;
 
 /**
  *
@@ -74,7 +72,7 @@ public class ChatUtils {
         String type = item.getType().isBlock() ? "block.minecraft." : "item.minecraft.";
 
         // 提示文本
-        info = Language.SELL_ITEM_BROADCAST.replace("%player%", name);
+        info = Language.TRANSACTION_BROADCAST.replace("%player%", name);
 
         // 物品展示
         ComponentBuilder componentBuilder = new ComponentBuilder("");

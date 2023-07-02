@@ -1,160 +1,81 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.market.core.MarketButton;
-import org.fireflyest.craftgui.api.ViewPage;
-import com.fireflyest.market.GlobalMarket;
-import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.data.Config;
-import com.fireflyest.market.data.Storage;
-import com.fireflyest.market.util.MysqlExecuteUtils;
-import com.fireflyest.market.util.SqliteExecuteUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.util.SerializeUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-/**
- * @author Fireflyest
- * 2022/2/15 0:00
- */
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.fireflyest.craftgui.api.ViewPage;
+import org.fireflyest.craftgui.view.TemplatePage;
+import org.fireflyest.util.SerializationUtil;
 
-public class SearchPage implements ViewPage {
+import com.fireflyest.market.bean.Transaction;
+import com.fireflyest.market.core.MarketItem;
+import com.fireflyest.market.data.MarketYaml;
+import com.fireflyest.market.service.MarketService;
 
-    private final Map<Integer, ItemStack> itemMap = new HashMap<>();
-    private final Map<Integer, ItemStack> crashMap = new HashMap<>();
+public class SearchPage extends TemplatePage {
 
-    private final Inventory inventory;
-    private final String title;
-    private final String target;
-    private final int page;
-    private final int size;
-    private final String sql;
+    private final MarketService service;
+    private final MarketYaml yaml;
 
-    private final Storage storage;
-
-    private ViewPage next = null;
-    private ViewPage pre = null;
-
-    public SearchPage(String title, String target, int page, int size) {
-        this.storage = GlobalMarket.getStorage();
-        this.title = title;
-        this.target = target;
-        this.page = page;
-        this.size = size;
-        String guiTitle = title;
-
-        if (target != null)  guiTitle += ("§9" + target);    // 副标题
-        if (page != 0) guiTitle += (" §7#§8" + page);          // 给标题加上页码
-
-        // 界面容器
-        this.inventory = Bukkit.createInventory(null, size, guiTitle);
-
-        String condition = String.format(" where nickname like '%s' or meta like '%s'", "%" + target +"%", "%" + target +"%");
-        if(Config.SQL){
-            sql = MysqlExecuteUtils.query(Sale.class, condition,(page-1)*45, page*45);
-        }else {
-            sql = SqliteExecuteUtils.query(Sale.class, condition,(page-1)*45, page*45);
-        }
+    protected SearchPage(String title, String target, int page, MarketService service, MarketYaml yaml) {
+        super(title, target, page, 54);
+        this.service = service;
+        this.yaml = yaml;
 
         this.refreshPage();
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getItemMap(){
-        crashMap.clear();
-        crashMap.putAll(itemMap);
+    public Map<Integer, ItemStack> getItemMap() {
+        asyncButtonMap.clear();
+        asyncButtonMap.putAll(buttonMap);
 
-        List<Sale> sales = storage.inquiryList(sql, Sale.class);
+        Transaction[] transactions;
+        transactions = service.selectTransactionBySearch(target, (page - 1) * 45, page * 45);
         // 可以下一页
-        if (sales.size() != 0){
-            crashMap.put(46, MarketButton.PAGE_NEXT);
+        if (transactions.length != 0){
+            asyncButtonMap.put(46, yaml.getItemBuilder("pageNext").build());
         }
+
+        // 放置商品
         for (int i = 0; i < 45; i++) {
-            if(i < sales.size()){
-                Sale sale = sales.get(i);
-                ItemStack item = SerializeUtil.deserialize(sale.getStack(), sale.getMeta());
-                MarketButton.loreSaleItem(item, sale);
-                crashMap.put(i, item);
+            if(i < transactions.length){
+                Transaction transaction = transactions[i];
+                ItemStack item = SerializationUtil.deserializeItemStack(transaction.getStack());
+                MarketItem.loreItemData(item, transaction);
+                asyncButtonMap.put(i, item);
             }else {
-                crashMap.put(i, MarketButton.AIR.clone());
+                asyncButtonMap.put(i, new ItemStack(Material.AIR));
             }
         }
-        return crashMap;
-    }
 
-    @Override
-    public @NotNull Map<Integer, ItemStack> getButtonMap() {
-        return new HashMap<>(itemMap);
-    }
-
-    @Override
-    public @Nullable ItemStack getItem(int slot) {
-        return crashMap.get(slot);
-    }
-
-    @Override
-    public @NotNull Inventory getInventory(){
-        return inventory;
-    }
-
-    @Override
-    public String getTarget() {
-        return target;
-    }
-
-    @Override
-    public int getPage() {
-        return page;
-    }
-
-    @Override
-    public ViewPage getNext() {
-        if(next == null && page < 30){
-            next = new SearchPage(title, target, page+1, size);
-            next.setPre(this);
-        }
-        return next;
-    }
-
-    @Override
-    public ViewPage getPre() {
-        return pre;
-    }
-
-    @Override
-    public void setPre(ViewPage pre) {
-        this.pre = pre;
-    }
-
-    @Override
-    public void setNext(ViewPage viewPage) {
+        return asyncButtonMap;
     }
 
     @Override
     public void refreshPage() {
         // 上一页
         if (page == 1){
-            itemMap.put(45, MarketButton.PAGE_PRE_DISABLE);
+            buttonMap.put(45, yaml.getItemBuilder("pagePreDisable").build());
         }else {
-            itemMap.put(45, MarketButton.PAGE_PRE);
+            buttonMap.put(45, yaml.getItemBuilder("pagePre").build());
         }
         // 下一页
-        itemMap.put(46, MarketButton.PAGE_NEXT_DISABLE);
+        buttonMap.put(46, yaml.getItemBuilder("pageNextDisable").build());
 
-        itemMap.put(51, MarketButton.MARKET);
-        itemMap.put(52, MarketButton.SEARCH);
-        itemMap.put(53, MarketButton.CLOSE);
+        buttonMap.put(51, yaml.getItemBuilder("mine").build());
+        buttonMap.put(52, yaml.getItemBuilder("mail").build());
+        buttonMap.put(53, yaml.getItemBuilder("back").build());
     }
 
     @Override
-    public void updateTitle(String s) {
-
+    public ViewPage getNext() {
+        if(next == null && page < 30){
+            next = new SearchPage(title, target, page+1, service, yaml);
+            next.setPre(this);
+        }
+        return next;
     }
 
 }

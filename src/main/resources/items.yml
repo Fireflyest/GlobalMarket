@@ -1,0 +1,306 @@
+# 按钮行为
+# 返回 1  关闭 2  页面编辑 7
+# 前一页 11  下一页 12  跳转页面 13  打开页面 14
+# 玩家指令 15  控制台指令 16  双重玩家指令 17
+air:
+  material: AIR
+blank: 
+  material: WHITE_STAINED_GLASS_PANE
+  name: " "
+
+# 预售编辑界面
+dot: 
+  material: STONE_BUTTON
+  name: "§3§l."
+key0:
+  material: WHITE_BANNER
+  name: "§3§l0"
+key1:
+  material: WHITE_BANNER
+  name: "§3§l1"
+key2:
+  material: WHITE_BANNER
+  name: "§3§l2"
+key3:
+  material: WHITE_BANNER
+  name: "§3§l3"
+key4:
+  material: WHITE_BANNER
+  name: "§3§l4"
+key5:
+  material: WHITE_BANNER
+  name: "§3§l5"
+key6:
+  material: WHITE_BANNER
+  name: "§3§l6"
+key7:
+  material: WHITE_BANNER
+  name: "§3§l7"
+key8:
+  material: WHITE_BANNER
+  name: "§3§l8"
+key9:
+  material: WHITE_BANNER
+  name: "§3§l9"
+done:
+  type: button
+  material: SLIME_BALL
+  name: "§a§l✔"
+delete:
+  material: REPEATER
+  name: "§3§l←"
+edit:
+  type: button
+  material: NAME_TAG
+  name: "§3§l✍"
+  lore: 
+  - "&f点击确定修改"
+edit_disable:
+  type: button
+  material: NAME_TAG
+  name: "§3§l✍"
+  lore: 
+  - "&f无法修改"
+
+# 页面按钮
+pagePre:
+  type: button
+  material: LIME_DYE
+  name: "§a§l◁"
+  action: 11
+pageNext:
+  type: button
+  material: LIME_DYE
+  name: "§a§l▷"
+  action: 12
+pagePreDisable:
+  material: GRAY_DYE
+  name: "§7§l◁"
+pageNextDisable:
+  material: GRAY_DYE
+  name: "§7§l▷"
+close:
+  type: button
+  material: REDSTONE
+  name: "§c§l❌"
+  action: 2
+back:
+  type: button
+  material: REDSTONE
+  name: "§c§l«"
+  action: 1
+
+# 市场按钮
+market:
+  type: button
+  material: CHEST
+  name: "§a§l总市场"
+  action: 14
+  value: market.main.normal
+auction:
+  type: button
+  material: GOLD_INGOT
+  name: "§a§l拍卖"
+retail:
+  type: button
+  material: MAP
+  name: "§a§l零售"
+order:
+  type: button
+  material: BOWL
+  name: "§a§l收购"
+adminretail:
+  type: button
+  material: MAP
+  name: "§a§l无限出售"
+adminorder:
+  type: button
+  material: BOWL
+  name: "§a§l无限收购"
+trade:
+  type: button
+  material: IRON_HORSE_ARMOR
+  name: "§a§l交易"
+item:
+  type: button
+  material: EMERALD
+  name: "§a§l物品"
+  lore: 
+  - "&f拖拽物品至此处切换货币"
+coin:
+  type: button
+  material: SUNFLOWER
+  name: "§a§l金币"
+point:
+  type: button
+  material: DIAMOND
+  name: "§a§l点券"
+admin:
+  type: button
+  material: NETHER_STAR
+  name: "§a§l官方"
+mine:
+  type: button
+  material: ENDER_CHEST
+  name: "§a§l我的"
+  action: 15
+  value: market mine
+mail:
+  type: button
+  material: GRINDSTONE
+  name: "§a§l邮箱"
+  action: 15
+  value: market mail
+create:
+  type: button
+  material: LIME_STAINED_GLASS_PANE
+  name: "§f§l[↓]"
+  action: 8
+  value: create
+createExtra:
+  type: button
+  material: GREEN_STAINED_GLASS_PANE
+  name: "§f§l[↓]"
+  action: 8
+  value: createExtra
+createOver:
+  type: button
+  material: GRAY_STAINED_GLASS_PANE
+  name: "§f§l[↓]"
+  action: 8
+  value: createOver
+wait:
+  type: button
+  material: PAINTING
+  name: "§a§l..."
+visit:
+  type: button
+  material: PLAYER_HEAD
+  name: "§a§l%target%的商店"
+merchant:
+  material: BOOK
+  name: "§a§l商家数据"
+transaction:
+  material: KNOWLEDGE_BOOK
+  name: "§a§l商品数据"
+statistic:
+  material: BOOKSHELF
+  name: "§a§l统计数据"
+home:
+  type: button
+  material: ENDER_EYE
+  name: "§a§l分类"
+  action: 14
+  value: market.home.normal
+sign:
+  material: FEATHER
+  name: "§a§l签收"
+destroy:
+  type: button
+  material: LAVA_BUCKET
+  name: "§a§l销毁"
+  action: 8
+  value: search
+send:
+  type: button
+  material: END_PORTAL_FRAME
+  name: "§a§l邮寄"
+transport:
+  material: CHEST_MINECART
+  name: "§a§l运输车"
+buy1:
+  type: button
+  material: PRISMARINE_CRYSTALS
+  name: "§a§lx1"
+buy8:
+  type: button
+  material: PRISMARINE_CRYSTALS
+  amount: 8
+  name: "§a§lx8"
+buy:
+  type: button
+  material: PRISMARINE_CRYSTALS
+  name: "§a§lx%amount%"
+cancel:
+  type: button
+  material: HOPPER
+  name: "§a§l取消交易"
+bid10:
+  type: button
+  material: OAK_SIGN
+  name: "§a§l+10"
+bid100:
+  type: button
+  material: OAK_SIGN
+  name: "§a§l+100"
+bid1000:
+  type: button
+  material: OAK_SIGN
+  name: "§a§l+1000"
+search:
+  type: button
+  material: COMPASS
+  name: "§a§l搜索"
+  action: 8
+  value: search
+store:
+  type: button
+  material: ITEM_FRAME
+  name: "§a§l店铺"
+  action: 14
+  value: market.store.normal
+star:
+  type: button
+  material: FIREWORK_ROCKET
+  name: "§a§l点赞"
+logo:
+  type: button
+  material: CHEST
+  name: "§a§l店铺图标"
+  lore: 
+  - "&f拖拽物品至此处更换图标"
+reload:
+  type: button
+  material: STRING
+  name: "§a§l重载配置"
+  action: 15
+  value: mka reload
+check:
+  type: button
+  material: GLOWSTONE_DUST
+  name: "§a§l检查更新"
+  action: 15
+  value: mka check
+
+# 可自定义分类按钮
+categoryNone:
+  material: BLACK_STAINED_GLASS_PANE
+  name: "§a§l类别"
+category1:
+  type: button
+  material: CARROT
+  name: "§a§l食物"
+category2:
+  type: button
+  material: STICK
+  name: "§a§l物品"
+category3:
+  type: button
+  material: QUARTZ_BLOCK
+  name: "§a§l方块"
+category4:
+  type: button
+  material: COAL
+  name: "§a§l可燃物与木制品"
+category5:
+  type: button
+  material: GOLDEN_SWORD
+  name: "§a§l装备武器"
+category6:
+  type: button
+  material: BOOKSHELF
+  name: "§a§l附魔与药水"
+category7:
+  type: button
+  material: ENDER_PEARL
+  name: "§a§l其他"

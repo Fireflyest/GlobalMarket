@@ -1,28 +1,28 @@
 package com.fireflyest.market.view;
 
-import com.fireflyest.market.data.Language;
 import org.fireflyest.craftgui.api.View;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fireflyest.market.data.MarketYaml;
 
 public class HomeView implements View<HomePage> {
 
-    public static final String NORMAL = Language.MARKET_HOME_NICK;
+    private final MarketYaml yaml;
+    private HomePage homePage;
 
-    private final Map<String, HomePage> pageMap = new HashMap<>();
-
-    public HomeView(String title) {
-        pageMap.put(NORMAL, new HomePage(title));
+    public HomeView(MarketYaml yaml) {
+        this.yaml = yaml;
     }
 
     @Override
-    public HomePage getFirstPage(String target){
-        return pageMap.get(target);
+    public HomePage getFirstPage(String target) {
+        if (homePage == null) {
+            homePage = new HomePage(yaml);
+        }
+        return homePage;
     }
 
     @Override
     public void removePage(String target) {
-        pageMap.remove(target);
+        //
     }
 }

@@ -1,57 +1,53 @@
 package com.fireflyest.market.task;
 
-import com.fireflyest.market.bean.Sale;
-import com.fireflyest.market.core.MarketManager;
-import com.fireflyest.market.core.MarketTasks;
+import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Language;
+import com.fireflyest.market.service.MarketService;
+
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.crafttask.api.Task;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class TaskDiscount extends Task{
+public class TaskDiscount extends Task {
 
     private final int id;
     private final int num;
+    private final MarketService service;
+    private final ViewGuide guide;
 
-    public TaskDiscount(@NotNull String playerName, int id, int num) {
+    public TaskDiscount(@NotNull String playerName, MarketService service, ViewGuide guide, int id, int num) {
         super(playerName);
         this.id = id;
         this.num = num;
-
-        this.type = MarketTasks.SALE_TASK;
-
+        this.service = service;
+        this.guide = guide;
     }
 
     @Override
-    public @NotNull List<Task> execute() {
-        Sale sale = MarketManager.getSale(id);
-        if(null == sale){
-            this.executeInfo(Language.DATA_NULL);
-            return then;
+    public void execute() {
+        String type = service.selectTransactionType(id);
+
+        if("".equals(type)){
+            executeInfo(Language.DATA_ERROR);
+            return;
         }
-        if (sale.getPrice() == -1){
-            this.executeInfo(Language.NOT_SELLING);
-            return then;
-        }
-        if(!sale.getOwner().equalsIgnoreCase(playerName)){
-            this.executeInfo(Language.BUY_ERROR);
-            return then;
-        }
-        // 判断是否拍卖物
-        if(sale.isAuction()){
+        if (!"retail".equals(type) && !"adminretail".equals(type)){
             this.executeInfo(Language.TYPE_ERROR);
-            return then;
+            return;
+        }
+
+        if(!service.selectTransactionOwnerName(id).equalsIgnoreCase(playerName)){
+            this.executeInfo(Language.TRANSACTION_ERROR);
+            return;
         }
         // 判断打折数值
         if(num >= 10 || num < 0){
-            this.executeInfo(Language.COMMAND_ERROR);
-            return then;
+            this.executeInfo(Language.DISCOUNT_ERROR);
+            return;
         }
 
-        sale.setCost(sale.getPrice()*num*0.1);
+        service.updateTransactionCost(service.selectTransactionPrice(id) * num * 0.1, id);
 
-        MarketManager.updateSale(sale);
-
-        return then;
+        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
     }
 }
