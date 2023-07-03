@@ -36,7 +36,7 @@ public class TaskSend extends Task{
     }
 
     public TaskSend(@NotNull String playerName, MarketService service, @NotNull String targetUid, @NotNull ItemStack item) {
-        this(playerName, service, targetUid, item, 0, "", "");
+        this(playerName, service, targetUid, item, 0, "item", SerializationUtil.serializeItemStack(item));
     }
 
     @Override

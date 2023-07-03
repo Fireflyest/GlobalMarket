@@ -46,6 +46,9 @@ done:
   type: button
   material: SLIME_BALL
   name: "§a§l✔"
+  lore: 
+  - "&f确定发售"
+  - "&f确定后无法修改类型和货币"
 delete:
   material: REPEATER
   name: "§3§l←"
@@ -54,7 +57,7 @@ edit:
   material: NAME_TAG
   name: "§3§l✍"
   lore: 
-  - "&f点击确定修改"
+  - "&f确定修改价格"
 edit_disable:
   type: button
   material: NAME_TAG
@@ -193,8 +196,11 @@ home:
   action: 14
   value: market.home.normal
 sign:
+  type: button
   material: FEATHER
   name: "§a§l签收"
+  action: 15
+  value: market sign
 destroy:
   type: button
   material: LAVA_BUCKET

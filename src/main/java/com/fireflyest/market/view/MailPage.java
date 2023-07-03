@@ -117,6 +117,11 @@ public class MailPage extends TemplatePage {
         return amount == 0 ? 0 : i + 1; // 如果没有物品直接首行开始
     }
 
+    /**
+     * 交易记录
+     * @param records 数据
+     * @param line 行
+     */
     private void putRecords(List<Delivery> records, int line) {
         int l = 0;
         for (Delivery mail : records) {
