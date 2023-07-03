@@ -28,12 +28,11 @@ public class TaskSignAll extends Task{
         }
 
         long[] ids = service.selectDeliveryIdByOwner(player.getUniqueId());
-        for (long id : ids) {
-            this.followTasks().add(new TaskSign(playerName, service, economy, guide, id, false));
-        }
 
-        if (this.followTasks().isEmpty()) {
-            guide.refreshPage(playerName);
+        int num = 0;
+        for (long id : ids) {
+            num++;
+            this.followTasks().add(new TaskSign(playerName, service, economy, guide, id, num == ids.length));
         }
     }
 }

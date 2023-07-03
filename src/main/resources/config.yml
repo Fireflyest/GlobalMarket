@@ -23,7 +23,7 @@ TradeMarket: false
 TermOfValidity: 7
 
 # 违禁品，使用物品的lore进行判断
-ContrabandLore: false
+ContrabandLore: true
 ContrabandLoreList: 专属,vip,binding
 
 # 上架数量限制

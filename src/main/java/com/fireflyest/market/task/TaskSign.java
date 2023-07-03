@@ -22,7 +22,7 @@ public class TaskSign extends Task {
     private final ViewGuide guide;
 
     public TaskSign(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide, long id) {
-        this(playerName, service, economy, guide, id, true);
+        this(playerName, service, economy, guide, id, false);
     }
 
     public TaskSign(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide, long id, boolean refresh) {
@@ -48,35 +48,41 @@ public class TaskSign extends Task {
             return;
         }
 
-        service.deleteDelivery(id);
-        if (refresh) {
-            guide.refreshPage(playerName);
-        }
-
         switch (delivery.getCurrency()) {
             case "coin":
                 economy.getEconomy().depositPlayer(player, delivery.getPrice());
-                player.sendMessage(Language.AFFAIR_SUCCEED.replace("%money%", economy.getEconomy().format(delivery.getPrice())) + Language.COIN_SYMBOL);
+                this.executeInfo(Language.AFFAIR_SUCCEED.replace("%money%", economy.getEconomy().format(delivery.getPrice())) + Language.COIN_SYMBOL);
+                service.deleteDelivery(id);
                 break;
             case "point":
                 int get = (int)Math.floor(delivery.getPrice());
                 economy.gPlayerPointsAPI().give(UUID.fromString(delivery.getOwner()), get);
-                player.sendMessage(Language.AFFAIR_SUCCEED.replace("%money%", String.valueOf(get)) + Language.POINT_SYMBOL);
+                this.executeInfo(Language.AFFAIR_SUCCEED.replace("%money%", String.valueOf(get)) + Language.POINT_SYMBOL);
+                service.deleteDelivery(id);
                 break;
             case "item":
+            default:
                 // 判断背包是否满
                 if(player.getInventory().firstEmpty() == -1){
                     this.executeInfo(Language.SIGN_ERROR);
                     return;
                 }
+                if ("".equals(delivery.getExtras())) {
+                    delivery.setExtras(delivery.getStack());
+                }
                 ItemStack item = SerializationUtil.deserializeItemStack(delivery.getExtras());
-                item.setAmount((int)delivery.getPrice());
+                int price = (int)delivery.getPrice();
+                if (0 != price) {
+                    item.setAmount(price);
+                }
+                service.deleteDelivery(id);
                 player.getInventory().addItem(item);
-                player.sendMessage(Language.SIGN_SUCCEED);
-                break;
-            default:
+                this.executeInfo(Language.SIGN_SUCCEED);
                 break;
         }
 
+        if (refresh) {
+            guide.refreshPage(playerName);
+        }
     }
 }

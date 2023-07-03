@@ -118,6 +118,30 @@ public class EditPage extends TemplatePage {
             edition.setCurrency("item");
             edition.setExtras(transaction.getExtras());
         }
+
+        switch (transaction.getType()) {
+            case "retail":
+            case "adminretail":
+            case "order":
+            case "adminorder":
+                asyncButtonMap.put(35, yaml.getItemBuilder("edit").build());
+                prepare = false;
+                break;
+            case "auction":
+                if (transaction.getPrice() == transaction.getCost()) {
+                    asyncButtonMap.put(35, yaml.getItemBuilder("edit").build());
+                } else {
+                    asyncButtonMap.put(35, yaml.getItemBuilder("edit_disable").build());
+                }
+                prepare = false;
+                break;
+            case "prepare":
+            default:
+                asyncButtonMap.put(35, yaml.getItemBuilder("done").build());
+                prepare = true;
+                break;
+        }
+
         switch(edition.getCurrency()) {
             case "coin":
                 asyncButtonMap.put(8, ((ButtonItemBuilder)yaml.getItemBuilder(edition.getCurrency())).actionEdit().build());
@@ -157,27 +181,6 @@ public class EditPage extends TemplatePage {
             case "prepare":
             default:
                 asyncButtonMap.put(17, ((ButtonItemBuilder)yaml.getItemBuilder("wait")).actionEdit().build());
-                break;
-        }
-
-        switch (transaction.getType()) {
-            case "retail":
-            case "adminretail":
-            case "order":
-            case "adminorder":
-                asyncButtonMap.put(35, yaml.getItemBuilder("edit").build());
-                break;
-            case "auction":
-                if (transaction.getPrice() == transaction.getCost()) {
-                    asyncButtonMap.put(35, yaml.getItemBuilder("edit").build());
-                } else {
-                    asyncButtonMap.put(35, yaml.getItemBuilder("edit_disable").build());
-                }
-                break;
-            case "prepare":
-            default:
-                asyncButtonMap.put(35, yaml.getItemBuilder("done").build());
-                prepare = true;
                 break;
         }
 
