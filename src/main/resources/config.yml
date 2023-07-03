@@ -52,12 +52,5 @@ BuyPartial: true
 # 是否在主页显示导航页面按钮
 NavigationButton: true
 
-<<<<<<< HEAD
-# 关闭主菜单的分类按钮
-DisableClassify: false
-# 自定义分类
-CustomClassify: false
-=======
 # 自动分类，非自定义分类情况下自动为商品分类
 AutoCategory: true
->>>>>>> 9bc3b8e (版本更新)

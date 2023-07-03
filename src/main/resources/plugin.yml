@@ -56,17 +56,6 @@ permissions:
   market.search:
     description: 搜索商品
     default: true
-<<<<<<< HEAD
-  market.other:
-    description: 打开他人商店
-    default: true
-  market.category:
-    description: 设置商品分类
-    default: true
-
-
-=======
   market.store:
     description: 店铺更名
     default: true
->>>>>>> 9bc3b8e (版本更新)
