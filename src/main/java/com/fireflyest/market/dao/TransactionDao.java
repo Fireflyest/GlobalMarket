@@ -35,8 +35,11 @@ public interface TransactionDao {
     @Select("SELECT * FROM `market_transaction`WHERE `ownerName`='${ownerName}' ORDER BY `id` DESC LIMIT ${start},${end};")
     Transaction[] selectTransactionByOwnerName(String ownerName, int start, int end);
 
-    @Select("SELECT `id` FROM `market_transaction` WHERE `appear` < ${deadline} AND `type`<>'auction' AND `type` NOT LIKE 'admin%';")
+    @Select("SELECT `id` FROM `market_transaction` WHERE `appear`<${deadline} AND `type`<>'auction' AND `type` NOT LIKE 'admin%';")
     long[] selectTransactionCancel(long deadline);
+
+    @Select("SELECT `id` FROM `market_transaction` WHERE `appear`<${deadline} AND `type`='prepare';")
+    long[] selectTransactionPrepareCancel(long deadline);
     
     @Select("SELECT `id` FROM `market_transaction` WHERE `type` LIKE '%${type}%';")
     long[] selectTransactionIdByType(String type);

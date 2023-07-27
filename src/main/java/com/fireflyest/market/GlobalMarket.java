@@ -19,6 +19,7 @@ import com.fireflyest.market.command.MarketCheckCommand;
 import com.fireflyest.market.command.MarketCommand;
 import com.fireflyest.market.command.MarketEditCommand;
 import com.fireflyest.market.command.MarketFinishCommand;
+import com.fireflyest.market.command.MarketHelpCommand;
 import com.fireflyest.market.command.MarketHomeCommand;
 import com.fireflyest.market.command.MarketMailCommand;
 import com.fireflyest.market.command.MarketMineCommand;
@@ -184,6 +185,7 @@ public class GlobalMarket extends JavaPlugin{
             marketEditCommand.setArgument(0, new NumberArgs());
             MarketFinishCommand marketFinishCommand = new MarketFinishCommand(service, economy, guide, handler);
             marketFinishCommand.setArgument(0, new NumberArgs());
+            MarketHelpCommand marketHelpCommand = new MarketHelpCommand();
             MarketHomeCommand marketHomeCommand = new MarketHomeCommand(guide);
             MarketMailCommand  marketMailCommand = new MarketMailCommand(guide);
             MarketOrderCommand marketOrderCommand = new MarketOrderCommand(service, guide, handler);
@@ -223,6 +225,7 @@ public class GlobalMarket extends JavaPlugin{
             marketCommand.addSubCommand("category", marketCategoryCommand);
             marketCommand.addSubCommand("edit", marketEditCommand);
             marketCommand.addSubCommand("finish", marketFinishCommand);
+            marketCommand.addSubCommand("help", marketHelpCommand);
             marketCommand.addSubCommand("home", marketHomeCommand);
             marketCommand.addSubCommand("mail", marketMailCommand);
             marketCommand.addSubCommand("mine", marketMineCommand);
@@ -239,19 +242,23 @@ public class GlobalMarket extends JavaPlugin{
             market.setExecutor(marketCommand);
             market.setTabCompleter(marketCommand);
         }
-
-        // 若有自动下架，建立监控线程
-        if(Config.TERM_OF_VALIDITY == -1){
-            return;
-        }
+        
         final long limit = (long) Config.TERM_OF_VALIDITY * 1000 * 60 * 60 * 24;
+        final long prepare = 1000 * 60 * 60 * 3;
         // 20mc刻为一秒
         marketTask = new BukkitRunnable() {
             @Override
             public void run() {
                 long deadline = TimeUtils.getTime() - limit;
+                long prepareDeadline = TimeUtils.getTime() - prepare;
                 // 超时下架
-                for (long id : service.selectTransactionCancel(deadline)) {
+                if(Config.TERM_OF_VALIDITY != -1){
+                    for (long id : service.selectTransactionCancel(deadline)) {
+                        handler.putTasks(TASK_MARKET, new TaskCancel(service.selectTransactionOwnerName(id), service, guide, id));
+                    }
+                }
+                // 预售超时
+                for (long id : service.selectTransactionPrepareCancel(prepareDeadline)) {
                     handler.putTasks(TASK_MARKET, new TaskCancel(service.selectTransactionOwnerName(id), service, guide, id));
                 }
                 // 降热度

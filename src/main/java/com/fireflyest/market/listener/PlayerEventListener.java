@@ -115,7 +115,7 @@ public class PlayerEventListener implements Listener {
                         long id = NumberConversions.toLong(value.split(" ")[1]);
                         ItemStack clone = placeItem.clone();
                         clone.setAmount(1);
-                        handler.putTasks(GlobalMarket.TASK_MARKET, new TaskAffirm(player.getName(), service, guide, id, null, null, SerializationUtil.serializeItemStack(clone)));
+                        handler.putTasks(GlobalMarket.TASK_MARKET, new TaskAffirm(player.getName(), service, guide, id, SerializationUtil.serializeItemStack(clone)));
                     } else if (value.startsWith("logo")) {
                         String target = value.split(" ")[1];
                         service.updateMerchantLogo(target, placeItem.getType().name());

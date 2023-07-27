@@ -18,6 +18,7 @@ public class TaskAffirm extends Task {
     private final String extra;
     private final MarketService service;
     private final ViewGuide guide;
+    private final boolean updateCurrency;
 
     public TaskAffirm(@NotNull String playerName, MarketService service, ViewGuide guide, long id, String type, String currency, String extra) {
         super(playerName);
@@ -27,6 +28,18 @@ public class TaskAffirm extends Task {
         this.extra = extra;
         this.service = service;
         this.guide = guide;
+        this.updateCurrency = false;
+    }
+
+    public TaskAffirm(@NotNull String playerName, MarketService service, ViewGuide guide, long id, String extra) {
+        super(playerName);
+        this.id = id;
+        this.type = null;
+        this.currency = null;
+        this.extra = extra;
+        this.service = service;
+        this.guide = guide;
+        this.updateCurrency = true;
     }
 
     @Override
@@ -37,7 +50,7 @@ public class TaskAffirm extends Task {
             executeInfo(Language.DATA_ERROR);
             return;
         }
-        if (!"prepare".equals(transactionType)){
+        if (!"prepare".equals(transactionType) && !updateCurrency){
             this.executeInfo(Language.TYPE_ERROR);
             return;
         }
@@ -57,7 +70,7 @@ public class TaskAffirm extends Task {
             service.updateTransactionExtras(extra, id);
         }
 
-        if(Config.ACTION_BROADCAST && !"prepare".equals(transactionType)){
+        if(Config.ACTION_BROADCAST && !updateCurrency){
             ChatUtils.sendItemButton(SerializationUtil.deserializeItemStack(service.selectTransactionStack(id)), 
                     String.format("/market affair %s", id), 
                     playerName);
