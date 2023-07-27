@@ -1,5 +1,17 @@
 Version: "${project.version}"
 
+Help: |
+  §e§m =               §f§l[§aGlobalMarket§f§l]§e§m               = §r
+  §b/market                           §f - 环球市场
+  §b/mk sell [m] <a>                 §f - 出售物品
+  §b/mk auction [m] <a>             §f - 拍卖物品
+  §b/mk order [m] <a>              §f - 收购物品
+  §b/mk home                          §f - 导航界面
+  §b/mk send [p] <a> <msg>        §f - 发送邮件
+  §b/mk visit [p]                       §f - 他人商店
+  §b/mk search [...]                   §f - 搜索物品
+  §9其中§7p§9表玩家，§7a§9表数量，§7m§9表价格，§7<>§9表示可选，§7[]§9表示必填
+
 PlayerCommand: "§6✦§c该指令只能由玩家使用!"
 Reloading: "§6✦§f配置重载中..."
 Reloaded: "§6✦§f配置重载完成!"

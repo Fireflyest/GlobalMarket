@@ -184,6 +184,10 @@ public class MarketService extends SQLService {
         return transactionDao.selectTransactionCancel(deadline);
     }
 
+    public long[] selectTransactionPrepareCancel(long deadline) {
+        return transactionDao.selectTransactionPrepareCancel(deadline);
+    }
+
     public long[] selectTransactionIdByType(String type) {
         return transactionDao.selectTransactionIdByType(type);
     }
