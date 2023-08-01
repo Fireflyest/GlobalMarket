@@ -108,7 +108,29 @@ public class PlayerEventListener implements Listener {
                     break;
                 default:
                     if (value.startsWith("send")) {
+                        // 是否有权限
+                        if (!player.hasPermission("market.send")) {
+                            player.sendMessage(Language.NO_PERMISSION.replace("%permission%", "market.send"));
+                            event.setHandBack(true);
+                            return;
+                        }
                         String target = value.split(" ")[1];
+                        // 禁止发送给自己
+                        if (target.equals(player.getName()) && !Config.DEBUG) {
+                            player.sendMessage(Language.ERROR_ARGUMENT);
+                            event.setHandBack(true);
+                            return;
+                        }
+                        // 违禁品判断
+                        if (Config.CONTRABAND_LORE) {
+                            String stack = SerializationUtil.serializeItemStack(placeItem);
+                            for (String lore : Config.CONTRABAND_LORE_LIST.split(",")) {
+                                if (stack.contains(lore)) {
+                                    event.setHandBack(true);
+                                    return;
+                                }
+                            }
+                        }
                         handler.putTasks(GlobalMarket.TASK_MAIL, new TaskSend(player.getName(), service, service.selectMerchantUid(target), placeItem.clone()));
                         event.setHandBack(false);
                     } else if (value.startsWith("currency")) {

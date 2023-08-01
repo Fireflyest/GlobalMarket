@@ -61,7 +61,7 @@ public class MailPage extends TemplatePage {
         ItemStack transport = yaml.getItemBuilder("transport").build();
         int stagnate = (deliveries.length - amount);
         if (stagnate > 0) {
-            ItemUtils.addLore(transport, Language.TEXT_MAIL_STAGNATE.replace("%amount%", String.valueOf(stagnate)));
+            ItemUtils.addLore(transport, "§7" + Language.TEXT_MAIL_STAGNATE.replace("%amount%", String.valueOf(stagnate)));
             transport.setAmount(stagnate);
         }
         asyncButtonMap.put(53, transport);

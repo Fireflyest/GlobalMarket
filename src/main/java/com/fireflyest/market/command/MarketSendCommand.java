@@ -93,6 +93,17 @@ public class MarketSendCommand extends SubCommand {
 
         ItemStack item = player.getInventory().getItemInMainHand();
         
+        // 违禁品判断
+        if (Config.CONTRABAND_LORE) {
+            String stack = SerializationUtil.serializeItemStack(item);
+            for (String lore : Config.CONTRABAND_LORE_LIST.split(",")) {
+                if (stack.contains(lore)) {
+                    sender.sendMessage(Language.TRANSACTION_CONTRABAND);
+                    return true;
+                }
+            }
+        }
+
         // 判断物品是否足够
         int has = item.getAmount();
         if (amount > has) {
