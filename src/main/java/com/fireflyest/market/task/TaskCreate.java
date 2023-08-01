@@ -58,6 +58,13 @@ public class TaskCreate extends Task {
             }
         }
 
+        // 邮箱数量限制
+        if (Config.MAXIMUM_MAIL && service.selectDeliveryIdByOwner(player.getUniqueId()).length > Config.MAXIMUM_MAIL_NUM) {
+            this.executeInfo(Language.MAXIMUM_MAIL);
+            player.getInventory().addItem(item);
+            return;
+        }
+
         String stack = SerializationUtil.serializeItemStack(item);
 
         // 是否违禁品
