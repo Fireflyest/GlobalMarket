@@ -62,7 +62,7 @@ public class Transaction {
     @Column(defaultValue = "coin")
     private String currency;
     // 货币数据
-    @Column(dataType = "text", defaultValue = "")
+    @Column(dataType = "text")
     private String extras;
     
     public Transaction() {

@@ -102,8 +102,6 @@ public class MarketSellCommand extends SubCommand {
         saleItem.setAmount(amount);
         item.setAmount(has - amount);
 
-        player.sendMessage(Language.TRANSACTION_CREATE);
-
         handler.putTasks(GlobalMarket.TASK_MARKET, new TaskCreate(player.getName(), service, guide, "retail", arg3, price, saleItem));
 
         return true;

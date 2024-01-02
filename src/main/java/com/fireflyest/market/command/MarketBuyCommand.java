@@ -53,7 +53,7 @@ public class MarketBuyCommand extends SubCommand {
             player.sendMessage(Language.ERROR_ARGUMENT);
             return true;
         }
-        if(!Config.BUY_PARTIAL && num == 0){
+        if(!Config.BUY_PARTIAL && num != 0){
             player.sendMessage(Language.ERROR_ARGUMENT);
             return true;
         }

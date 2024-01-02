@@ -26,6 +26,7 @@ import com.fireflyest.market.data.MarketYaml;
 import com.fireflyest.market.service.MarketService;
 import com.fireflyest.market.task.TaskAffirm;
 import com.fireflyest.market.task.TaskReprice;
+import com.google.common.base.Objects;
 
 public class EditPage extends TemplatePage {
 
@@ -114,7 +115,7 @@ public class EditPage extends TemplatePage {
 
         zeroPrice = transaction.getPrice() == 0;
 
-        if (!edition.getExtras().equals(transaction.getExtras())) {
+        if (!Objects.equal(edition.getExtras(), transaction.getExtras())) {
             edition.setCurrency("item");
             edition.setExtras(transaction.getExtras());
         }
@@ -152,7 +153,7 @@ public class EditPage extends TemplatePage {
                 break;
             case "item":
                 ItemStack currencyItem =((ButtonItemBuilder) yaml.getItemBuilder(edition.getCurrency())).actionPlugin("currency " + edition.getId()).build();
-                if (!"".equals(edition.getExtras())) {
+                if (edition.getExtras() != null && !"".equals(edition.getExtras())) {
                     currencyItem = SerializationUtil.deserializeItemStack(edition.getExtras());
                     ItemUtils.setItemNbt(currencyItem, ButtonAction.NBT_ACTION_KEY, ButtonAction.ACTION_PLUGIN);
                     ItemUtils.setItemNbt(currencyItem, ButtonAction.NBT_VALUE_KEY, "currency " + edition.getId());

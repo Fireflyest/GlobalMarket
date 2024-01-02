@@ -53,7 +53,7 @@ public class TaskBuy extends Task {
             }
         }
         // 物品货币未设置物品
-        if ("item".equals(transaction.getCurrency()) && "".equals(transaction.getExtras())) {
+        if ("item".equals(transaction.getCurrency()) && ("".equals(transaction.getExtras())) || transaction.getExtras() == null) {
             this.executeInfo(Language.CURRENCY_ERROR);
             return;
         }

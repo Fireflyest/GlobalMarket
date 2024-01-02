@@ -1,6 +1,7 @@
 package com.fireflyest.market.task;
 
 import com.fireflyest.market.bean.Delivery;
+import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
@@ -50,7 +51,12 @@ public class TaskSign extends Task {
 
         switch (delivery.getCurrency()) {
             case "coin":
-                economy.getEconomy().depositPlayer(player, delivery.getPrice());
+                double deliveryPrice = delivery.getPrice();
+                // 手续费
+                if (Config.COMMISSION && deliveryPrice >= Config.COMMISSION_THRESHOLD) {
+                    deliveryPrice -= (deliveryPrice * Config.COMMISSION_RATE);
+                }
+                economy.getEconomy().depositPlayer(player, deliveryPrice);
                 this.executeInfo(Language.AFFAIR_SUCCEED.replace("%money%", economy.getEconomy().format(delivery.getPrice())) + Language.COIN_SYMBOL);
                 service.deleteDelivery(id);
                 break;
