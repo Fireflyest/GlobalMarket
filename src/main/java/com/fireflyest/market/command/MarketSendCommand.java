@@ -73,8 +73,11 @@ public class MarketSendCommand extends SubCommand {
         }
 
         String targetUid = service.selectMerchantUid(arg1);
-        OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(UUID.fromString(targetUid));
-        if (!targetPlayer.hasPlayedBefore()) {
+        OfflinePlayer targetPlayer = null;
+        if (!"".equals(targetUid)) {
+            targetPlayer = Bukkit.getOfflinePlayer(UUID.fromString(targetUid));
+        }
+        if (targetPlayer == null || !targetPlayer.hasPlayedBefore()) {
             player.sendMessage(Language.ERROR_ARGUMENT);
             return true;
         }

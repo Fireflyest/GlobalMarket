@@ -90,6 +90,9 @@ public class TaskCreate extends Task {
             service.updateTransactionDesc(desc, id);
         }
 
+        this.executeInfo(Language.TRANSACTION_CREATE);
+
+
         // 确认发售
         if (!"prepare".equals(type)) {
             this.followTasks().add(new TaskAffirm(playerName, service, guide, id, type, currency, ""));

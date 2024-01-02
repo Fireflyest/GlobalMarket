@@ -14,6 +14,8 @@ import com.fireflyest.market.task.TaskAffirm;
 import com.fireflyest.market.task.TaskCreate;
 import com.fireflyest.market.task.TaskSend;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -131,7 +133,14 @@ public class PlayerEventListener implements Listener {
                                 }
                             }
                         }
-                        handler.putTasks(GlobalMarket.TASK_MAIL, new TaskSend(player.getName(), service, service.selectMerchantUid(target), placeItem.clone()));
+                        String targetUid = service.selectMerchantUid(target);
+                        // 邮箱数量限制
+                        if (Config.MAXIMUM_MAIL && service.selectDeliveryIdByOwner(UUID.fromString(targetUid)).length > Config.MAXIMUM_MAIL_NUM) {
+                            player.sendMessage(Language.MAXIMUM_MAIL);
+                            event.setHandBack(true);
+                            return;
+                        }
+                        handler.putTasks(GlobalMarket.TASK_MAIL, new TaskSend(player.getName(), service, targetUid, placeItem.clone()));
                         event.setHandBack(false);
                     } else if (value.startsWith("currency")) {
                         long id = NumberConversions.toLong(value.split(" ")[1]);

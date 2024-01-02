@@ -62,6 +62,11 @@ public class TaskAffirm extends Task {
 
         if (type != null) {
             service.updateTransactionType(type, id);
+            // 收购类型要设置数量
+            if ("order".equals(type)) {
+                String amount = String.valueOf(SerializationUtil.deserializeItemStack(service.selectTransactionStack(id)).getAmount());
+                service.updateTransactionDesc(amount, id);
+            }
         }
         if (currency != null) {
             service.updateTransactionCurrency(currency, id);

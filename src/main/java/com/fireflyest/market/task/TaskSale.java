@@ -58,7 +58,7 @@ public class TaskSale extends Task {
         }
 
         // 物品货币未设置物品
-        if ("item".equals(transaction.getCurrency()) && "".equals(transaction.getExtras())) {
+        if ("item".equals(transaction.getCurrency()) && ("".equals(transaction.getExtras())) || transaction.getExtras() == null) {
             this.executeInfo(Language.CURRENCY_ERROR);
             return;
         }
@@ -142,7 +142,7 @@ public class TaskSale extends Task {
                 return;
             }
             //判断剩余数量
-            if(saveAmount == 0){
+            if(saveAmount <= 0){
                 service.deleteTransaction(id);
                 // 统计数据修改
                 service.updateMerchantSelling("-1", transaction.getOwner());
@@ -156,6 +156,7 @@ public class TaskSale extends Task {
                 service.updateTransactionCost(transaction.getCost() - cost, id);
             }
             item.setAmount(saleAmount);
+            // 收购方得到物品
             this.followTasks().add(new TaskSend(Language.TEXT_MAIL_FROM_ORDER, service, transaction.getOwner(), item));
         }
 
@@ -177,7 +178,7 @@ public class TaskSale extends Task {
         // 通知
         this.executeInfo(Language.TRANSACTION_SUCCEED);
 
-        // 交易记录
+        // 出售方得到交易记录
         ItemStack recordItem = MarketItem.getRecordItem(itemName, transaction.getOwnerName(), cost, symbol);
         this.followTasks().add(new TaskSend(Language.TEXT_MAIL_FROM_REWARD, service, player.getUniqueId().toString(), recordItem, cost, transaction.getCurrency(), transaction.getExtras()));
 
