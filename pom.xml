@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.fireflyest</groupId>
-    <artifactId>GlobalMarket</artifactId>
+    <artifactId>globalmarket</artifactId>
     <version>3.3.0</version>
 
     <properties>
