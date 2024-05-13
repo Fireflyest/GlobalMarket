@@ -57,7 +57,7 @@ public class TaskSign extends Task {
                     deliveryPrice -= (deliveryPrice * Config.COMMISSION_RATE);
                 }
                 economy.getEconomy().depositPlayer(player, deliveryPrice);
-                this.executeInfo(Language.AFFAIR_SUCCEED.replace("%money%", economy.getEconomy().format(delivery.getPrice())) + Language.COIN_SYMBOL);
+                this.executeInfo(Language.AFFAIR_SUCCEED.replace("%money%", economy.getEconomy().format(deliveryPrice)) + Language.COIN_SYMBOL);
                 service.deleteDelivery(id);
                 break;
             case "point":

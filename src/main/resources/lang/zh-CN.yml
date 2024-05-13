@@ -111,7 +111,7 @@ TagHeat: "§f[§6🔥§f]"
 
 # 页面标题
 TitleMainPage: §0市场 §7#§8%page%
-TitleSearchPage: §0搜索§n%search% §7#§8%page%
+TitleSearchPage: §0搜索§n%search%§r §7#§8%page%
 TitleRetailPage: §0零售 §7#§8%page%
 TitleAuctionPage: §0拍卖行 §7#§8%page%
 TitleOrderPage: §0收购 §7#§8%page%
