@@ -39,7 +39,7 @@ public class MarketStarCommand extends SubCommand {
         }
         // 点赞量
         String uid = service.selectMerchantUid(arg1);
-        if (!"".equals(uid)) {
+        if (uid != null && !"".equals(uid)) {
             service.updateMerchantStar(uid);
             cache.setex(key, 60 * 30, "star");
             sender.sendMessage(Language.STAR_SUCCEED);
