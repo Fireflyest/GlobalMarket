@@ -41,7 +41,7 @@ public class TaskCancel extends Task{
         }
 
         // 判断操作者是否商品主人
-        if(!owner.equals(uid) && (player != null && !player.isOp())){
+        if(owner == null || (!owner.equals(uid) && (player != null && !player.isOp()))){
             guide.refreshPage(playerName);
             this.executeInfo(Language.CANCEL_ERROR);
             return;

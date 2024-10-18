@@ -5,6 +5,8 @@ import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketService;
 import com.fireflyest.market.util.ChatUtils;
+
+import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.crafttask.api.Task;
 import org.fireflyest.util.SerializationUtil;
@@ -64,8 +66,10 @@ public class TaskAffirm extends Task {
             service.updateTransactionType(type, id);
             // 收购类型要设置数量
             if ("order".equals(type)) {
+                ItemStack item = SerializationUtil.deserializeItemStack(service.selectTransactionStack(id));
                 String amount = String.valueOf(SerializationUtil.deserializeItemStack(service.selectTransactionStack(id)).getAmount());
                 service.updateTransactionDesc(amount, id);
+                player.getInventory().addItem(item);
             }
         }
         if (currency != null) {
