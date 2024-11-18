@@ -1,10 +1,10 @@
 package com.fireflyest.market.dao;
 
-import org.fireflyest.craftdatabase.annotation.Dao;
-import org.fireflyest.craftdatabase.annotation.Delete;
-import org.fireflyest.craftdatabase.annotation.Insert;
-import org.fireflyest.craftdatabase.annotation.Select;
-import org.fireflyest.craftdatabase.annotation.Update;
+import io.fireflyest.emberlib.database.annotation.Dao;
+import io.fireflyest.emberlib.database.annotation.Delete;
+import io.fireflyest.emberlib.database.annotation.Insert;
+import io.fireflyest.emberlib.database.annotation.Select;
+import io.fireflyest.emberlib.database.annotation.Update;
 
 import com.fireflyest.market.bean.Delivery;
 

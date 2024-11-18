@@ -1,6 +1,6 @@
 package com.fireflyest.market.data;
 
-import org.fireflyest.craftdatabase.cache.CacheService;
+import io.fireflyest.emberlib.database.cache.CacheService;
 
 public class StateCache extends CacheService<String> {
 

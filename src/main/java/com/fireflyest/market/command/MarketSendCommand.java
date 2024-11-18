@@ -1,7 +1,6 @@
 package com.fireflyest.market.command;
 
 import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -9,9 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
-import org.fireflyest.craftcommand.command.SubCommand;
-import org.fireflyest.crafttask.api.TaskHandler;
-import org.fireflyest.util.SerializationUtil;
+import io.fireflyest.emberlib.command.SubCommand;
+import io.fireflyest.emberlib.task.TaskHandler;
+import io.fireflyest.emberlib.util.YamlUtils;
 
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Config;
@@ -19,34 +18,49 @@ import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketService;
 import com.fireflyest.market.task.TaskSend;
 
+/**
+ * 物品邮寄命令
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 public class MarketSendCommand extends SubCommand {
 
     private final MarketService service;
     private final TaskHandler handler;
 
-	public MarketSendCommand(MarketService service, TaskHandler handler) {
+    /**
+     * 物品邮寄命令
+     * 
+     * @param service 市场服务
+     * @param handler 任务处理器
+     */
+    public MarketSendCommand(MarketService service, TaskHandler handler) {
         this.service = service;
         this.handler = handler;
     }
 
     @Override
-	protected boolean execute(CommandSender sender) {
+    protected boolean execute(CommandSender sender) {
         sender.sendMessage(Language.ERROR_ARGUMENT);
         return true;
-	}
+    }
 
     @Override
     protected boolean execute(CommandSender sender, String arg1) {
-        Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
+        final Player player = (sender instanceof Player) ? (Player) sender : null;
+        if (player == null) {
             sender.sendMessage(Language.PLAYER_COMMAND);
             return false;
         }
-        if(player.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
+        if (player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
             player.sendMessage(Language.TRANSACTION_NUM);
             return true;
         }
-        return this.execute(sender, arg1, String.valueOf(player.getInventory().getItemInMainHand().getAmount()));
+
+        final int amount = player.getInventory().getItemInMainHand().getAmount();
+
+        return this.execute(sender, arg1, String.valueOf(amount));
     }
     
     @Override
@@ -56,11 +70,11 @@ public class MarketSendCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender, String arg1, String arg2, String arg3) {
-        Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
+        final Player player = (sender instanceof Player) ? (Player) sender : null;
+        if (player == null) {
             sender.sendMessage(Language.PLAYER_COMMAND);
             return false;
-        }  
+        }
         // 是否有权限
         if (!sender.hasPermission("market.send")) {
             sender.sendMessage(Language.NO_PERMISSION.replace("%permission%", "market.send"));
@@ -72,7 +86,7 @@ public class MarketSendCommand extends SubCommand {
             return true;
         }
 
-        String targetUid = service.selectMerchantUid(arg1);
+        final String targetUid = service.selectMerchantUid(arg1);
         OfflinePlayer targetPlayer = null;
         if (!"".equals(targetUid)) {
             targetPlayer = Bukkit.getOfflinePlayer(UUID.fromString(targetUid));
@@ -83,22 +97,23 @@ public class MarketSendCommand extends SubCommand {
         }
 
         // 邮箱数量限制
-        if (Config.MAXIMUM_MAIL && service.selectDeliveryIdByOwner(targetPlayer.getUniqueId()).length > Config.MAXIMUM_MAIL_NUM) {
+        final int mailAmount = service.selectDeliveryIdByOwner(targetPlayer.getUniqueId()).length;
+        if (Config.MAXIMUM_MAIL && mailAmount > Config.MAXIMUM_MAIL_NUM) {
             player.sendMessage(Language.MAXIMUM_MAIL);
             return true;
         }
 
-        int amount = NumberConversions.toInt(arg2);
+        final int amount = NumberConversions.toInt(arg2);
         if (amount <= 0 || amount > 64) {
             player.sendMessage(Language.ERROR_ARGUMENT);
             return true;
         }
 
-        ItemStack item = player.getInventory().getItemInMainHand();
+        final ItemStack item = player.getInventory().getItemInMainHand();
         
         // 违禁品判断
         if (Config.CONTRABAND_LORE) {
-            String stack = SerializationUtil.serializeItemStack(item);
+            final String stack = YamlUtils.serializeItemStack(item);
             for (String lore : Config.CONTRABAND_LORE_LIST.split(",")) {
                 if (stack.contains(lore)) {
                     sender.sendMessage(Language.TRANSACTION_CONTRABAND);
@@ -108,16 +123,24 @@ public class MarketSendCommand extends SubCommand {
         }
 
         // 判断物品是否足够
-        int has = item.getAmount();
+        final int has = item.getAmount();
         if (amount > has) {
             player.sendMessage(Language.TRANSACTION_NUM);
             return true;
         }
-        ItemStack sendItem = item.clone();
+        final ItemStack sendItem = item.clone();
         sendItem.setAmount(amount);
         item.setAmount(has - amount);
 
-        TaskSend taskSend = new TaskSend(player.getName(), service, targetUid, sendItem, amount, "item", SerializationUtil.serializeItemStack(sendItem));
+        final TaskSend taskSend = new TaskSend(
+            player.getName(), 
+            service, 
+            targetUid, 
+            sendItem, 
+            amount, 
+            "item", 
+            YamlUtils.serializeItemStack(sendItem)
+        );
         taskSend.setInfo(arg3);
         handler.putTasks(GlobalMarket.TASK_MAIL, taskSend);
 

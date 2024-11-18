@@ -2,12 +2,17 @@ package com.fireflyest.market.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.fireflyest.craftcommand.command.SubCommand;
-import org.fireflyest.craftgui.api.ViewGuide;
-
+import io.fireflyest.emberlib.command.SubCommand;
+import io.fireflyest.emberlib.inventory.ViewGuide;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Language;
 
+/**
+ * 市场邮件命令
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 public class MarketMailCommand extends SubCommand {
 
     private final ViewGuide guide;
@@ -18,12 +23,12 @@ public class MarketMailCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
+        final Player player = (sender instanceof Player) ? (Player) sender : null;
+        if (player == null) {
             sender.sendMessage(Language.PLAYER_COMMAND);
             return false;
         }
-        String uid = player.getUniqueId().toString();
+        final String uid = player.getUniqueId().toString();
         guide.openView(player, GlobalMarket.MAIL_VIEW, uid);
         return true;
     }

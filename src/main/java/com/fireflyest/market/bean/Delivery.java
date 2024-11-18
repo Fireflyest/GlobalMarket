@@ -1,14 +1,20 @@
 package com.fireflyest.market.bean;
 
-import org.fireflyest.craftdatabase.annotation.Column;
-import org.fireflyest.craftdatabase.annotation.ID;
-import org.fireflyest.craftdatabase.annotation.Table;
+import io.fireflyest.emberlib.database.annotation.Column;
+import io.fireflyest.emberlib.database.annotation.Primary;
+import io.fireflyest.emberlib.database.annotation.Table;
 
+/**
+ * 邮件
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 @Table("market_delivery")
 public class Delivery {
 
     // 物品id
-    @ID
+    @Primary(autoIncrement = true)
     @Column
     private int id;
 
@@ -43,80 +49,47 @@ public class Delivery {
     @Column(dataType = "text")
     private String extras;
     
+    /**
+     * 构造方法
+     */
     public Delivery() {
+        // 默认构造方法
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getStack() {
         return stack;
-    }
-
-    public void setStack(String stack) {
-        this.stack = stack;
     }
 
     public long getAppear() {
         return appear;
     }
 
-    public void setAppear(long appear) {
-        this.appear = appear;
-    }
-
     public String getOwner() {
         return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-    
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getExtras() {
-        return extras;
-    }
-
-    public void setExtras(String extras) {
-        this.extras = extras;
     }
 
     public String getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public String getInfo() {
+        return info;
     }
 
-      
+    public double getPrice() {
+        return price;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getExtras() {
+        return extras;
+    }
+
 }

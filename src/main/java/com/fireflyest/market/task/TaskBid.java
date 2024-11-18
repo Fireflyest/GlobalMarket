@@ -10,8 +10,8 @@ import com.fireflyest.market.service.MarketService;
 import com.google.gson.Gson;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.fireflyest.craftgui.api.ViewGuide;
-import org.fireflyest.crafttask.api.Task;
+import io.fireflyest.emberlib.inventory.ViewGuide;
+import io.fireflyest.emberlib.task.Task;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;

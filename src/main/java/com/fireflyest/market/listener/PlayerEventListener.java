@@ -4,8 +4,8 @@ import com.fireflyest.market.util.ChatUtils;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.NumberConversions;
-import org.fireflyest.craftgui.api.ViewGuide;
-import org.fireflyest.craftgui.button.ButtonAction;
+import io.fireflyest.emberlib.inventory.ViewGuide;
+import io.fireflyest.craftgui.button.ButtonAction;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
@@ -21,11 +21,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.event.ViewPlaceEvent;
-import org.fireflyest.crafttask.api.TaskHandler;
-import org.fireflyest.util.NetworkUtils;
-import org.fireflyest.util.SerializationUtil;
-import org.fireflyest.util.TimeUtils;
+import io.fireflyest.craftgui.event.ViewPlaceEvent;
+import io.fireflyest.emberlib.task.TaskHandler;
+import io.fireflyest.util.NetworkUtils;
+import io.fireflyest.util.SerializationUtil;
+import io.fireflyest.util.TimeUtils;
 
 public class PlayerEventListener implements Listener {
 
@@ -63,7 +63,7 @@ public class PlayerEventListener implements Listener {
         }
 
         // 监测更新
-        if (Config.CHECK_UPDATE && player.isOp()) {
+        if (Config.UPDATE_CHECK && player.isOp()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {

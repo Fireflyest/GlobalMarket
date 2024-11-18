@@ -1,10 +1,15 @@
 package com.fireflyest.market.command;
 
 import org.bukkit.command.CommandSender;
-import org.fireflyest.craftcommand.command.SubCommand;
-
+import io.fireflyest.emberlib.command.SubCommand;
 import com.fireflyest.market.data.Language;
 
+/**
+ * 市场帮助命令
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 public class MarketHelpCommand extends SubCommand {
 
     @Override

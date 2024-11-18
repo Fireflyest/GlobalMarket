@@ -2,15 +2,25 @@ package com.fireflyest.market.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.fireflyest.craftcommand.command.SubCommand;
-
+import io.fireflyest.emberlib.command.SubCommand;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketService;
 
+/**
+ * 市场商店名称更新命令
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 public class MarketStoreCommand extends SubCommand {
 
     private final MarketService service;
 
+    /**
+     * 市场商店名称更新命令
+     * 
+     * @param service 市场服务
+     */
     public MarketStoreCommand(MarketService service) {
         this.service = service;
     }
@@ -23,8 +33,8 @@ public class MarketStoreCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender, String arg1) {
-        Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
+        final Player player = (sender instanceof Player) ? (Player) sender : null;
+        if (player == null) {
             sender.sendMessage(Language.PLAYER_COMMAND);
             return false;
         }
