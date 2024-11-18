@@ -2,16 +2,26 @@ package com.fireflyest.market.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.fireflyest.craftcommand.command.SubCommand;
-import org.fireflyest.craftgui.api.ViewGuide;
-
+import io.fireflyest.emberlib.command.SubCommand;
+import io.fireflyest.emberlib.inventory.ViewGuide;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Language;
 
+/**
+ * 市场搜索命令
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 public class MarketSearchCommand extends SubCommand {
 
     private final ViewGuide guide;
 
+    /**
+     * 市场搜索命令
+     * 
+     * @param guide 界面导航
+     */
     public MarketSearchCommand(ViewGuide guide) {
         this.guide = guide;
     }
@@ -24,8 +34,8 @@ public class MarketSearchCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender, String arg1) {
-        Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
+        final Player player = (sender instanceof Player) ? (Player) sender : null;
+        if (player == null) {
             sender.sendMessage(Language.PLAYER_COMMAND);
             return false;
         }

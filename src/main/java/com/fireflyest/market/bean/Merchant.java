@@ -1,9 +1,15 @@
 package com.fireflyest.market.bean;
 
-import org.fireflyest.craftdatabase.annotation.Column;
-import org.fireflyest.craftdatabase.annotation.Primary;
-import org.fireflyest.craftdatabase.annotation.Table;
+import io.fireflyest.emberlib.database.annotation.Column;
+import io.fireflyest.emberlib.database.annotation.Primary;
+import io.fireflyest.emberlib.database.annotation.Table;
 
+/**
+ * 商人
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 @Table("market_merchant")
 public class Merchant {
 
@@ -56,103 +62,59 @@ public class Merchant {
     @Column(defaultValue = "0")
     private int visit;
 
+    /**
+     * 构造方法
+     */
     public Merchant() {
+        // 默认构造方法
     }
 
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getCredit() {
         return credit;
     }
 
-    public void setCredit(int credit) {
-        this.credit = credit;
-    }
-
     public int getAmount() {
         return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     public boolean isBlack() {
         return black;
     }
 
-    public void setBlack(boolean black) {
-        this.black = black;
-    }
-
     public long getRegister() {
         return register;
-    }
-
-    public void setRegister(long register) {
-        this.register = register;
     }
 
     public int getSelling() {
         return selling;
     }
 
-    public void setSelling(int selling) {
-        this.selling = selling;
-    }
-
     public int getSize() {
         return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public String getLogo() {
         return logo;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
     public String getStore() {
         return store;
-    }
-
-    public void setStore(String store) {
-        this.store = store;
     }
 
     public int getStar() {
         return star;
     }
 
-    public void setStar(int star) {
-        this.star = star;
-    }
-
     public int getVisit() {
         return visit;
-    }
-
-    public void setVisit(int visit) {
-        this.visit = visit;
     }
 
 }

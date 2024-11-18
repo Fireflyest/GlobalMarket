@@ -2,7 +2,7 @@ package com.fireflyest.market.view;
 
 import java.util.HashMap;
 
-import org.fireflyest.craftgui.api.View;
+import io.fireflyest.emberlib.inventory.View;
 
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.MarketYaml;

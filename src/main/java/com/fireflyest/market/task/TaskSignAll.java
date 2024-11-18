@@ -3,8 +3,8 @@ package com.fireflyest.market.task;
 import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
 
-import org.fireflyest.craftgui.api.ViewGuide;
-import org.fireflyest.crafttask.api.Task;
+import io.fireflyest.emberlib.inventory.ViewGuide;
+import io.fireflyest.emberlib.task.Task;
 import org.jetbrains.annotations.NotNull;
 
 public class TaskSignAll extends Task{

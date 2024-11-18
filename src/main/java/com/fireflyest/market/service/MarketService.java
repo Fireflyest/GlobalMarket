@@ -2,9 +2,9 @@ package com.fireflyest.market.service;
 
 import java.util.UUID;
 
-import org.fireflyest.craftdatabase.annotation.Auto;
-import org.fireflyest.craftdatabase.annotation.Service;
-import org.fireflyest.craftdatabase.sql.SQLService;
+import io.fireflyest.emberlib.database.annotation.Auto;
+import io.fireflyest.emberlib.database.annotation.Service;
+import io.fireflyest.emberlib.database.sql.SQLService;
 
 import com.fireflyest.market.bean.Delivery;
 import com.fireflyest.market.bean.Merchant;

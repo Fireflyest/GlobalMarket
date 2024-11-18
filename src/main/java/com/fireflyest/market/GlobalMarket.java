@@ -1,10 +1,10 @@
 package com.fireflyest.market;
 
-import org.fireflyest.craftcommand.argument.NumberArgs;
-import org.fireflyest.craftcommand.argument.OfficePlayerArgs;
-import org.fireflyest.craftcommand.argument.StringArgs;
-import org.fireflyest.craftdatabase.sql.SQLConnector;
-import org.fireflyest.craftgui.api.ViewGuide;
+import io.fireflyest.emberlib.argument.NumberArgs;
+import io.fireflyest.emberlib.argument.OfficePlayerArgs;
+import io.fireflyest.emberlib.argument.StringArgs;
+import io.fireflyest.emberlib.database.sql.SQLConnector;
+import io.fireflyest.emberlib.inventory.ViewGuide;
 
 import com.fireflyest.market.command.MarketAdminCommand;
 import com.fireflyest.market.command.MarketReloadCommand;
@@ -63,9 +63,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.fireflyest.craftgui.util.TranslateUtils;
-import org.fireflyest.crafttask.api.TaskHandler;
-import org.fireflyest.util.TimeUtils;
+import io.fireflyest.craftgui.util.TranslateUtils;
+import io.fireflyest.emberlib.task.TaskHandler;
+import io.fireflyest.util.TimeUtils;
 
 /**
  * @author Fireflyest
@@ -122,9 +122,9 @@ public class GlobalMarket extends JavaPlugin{
         this.getLogger().info("Enable data service.");
         yaml = new MarketYaml(this);
         try {
-            if (Config.SQL) {
-                url = Config.URL;
-                SQLConnector.setupConnect(SQLConnector.MYSQL, url, Config.USER, Config.PASSWORD);
+            if (Config.SQL_ENABLE) {
+                url = Config.SQL_URL;
+                SQLConnector.setupConnect(SQLConnector.MYSQL, url, Config.SQL_USER, Config.SQL_PASSWORD);
             } else {
                 url = "jdbc:sqlite:" + getDataFolder().getParent() + "/" + this.getClass().getSimpleName() + "/storage.db";
                 SQLConnector.setupConnect(SQLConnector.SQLITE, url, null, null);

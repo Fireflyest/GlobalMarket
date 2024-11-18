@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.fireflyest.craftdatabase.yaml.YamlService;
-import org.fireflyest.craftitem.builder.ItemBuilder;
+import io.fireflyest.emberlib.database.yaml.YamlService;
+import io.fireflyest.craftitem.builder.ItemBuilder;
 
 public class MarketYaml extends YamlService {
 

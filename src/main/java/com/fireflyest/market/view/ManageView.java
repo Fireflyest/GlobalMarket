@@ -1,6 +1,6 @@
 package com.fireflyest.market.view;
 
-import org.fireflyest.craftgui.api.View;
+import io.fireflyest.emberlib.inventory.View;
 
 import com.fireflyest.market.data.MarketYaml;
 

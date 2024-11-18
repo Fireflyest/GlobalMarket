@@ -3,10 +3,9 @@ package com.fireflyest.market.command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.NumberConversions;
-import org.fireflyest.craftcommand.command.SubCommand;
-import org.fireflyest.craftgui.api.ViewGuide;
-import org.fireflyest.crafttask.api.TaskHandler;
-
+import io.fireflyest.emberlib.command.SubCommand;
+import io.fireflyest.emberlib.inventory.ViewGuide;
+import io.fireflyest.emberlib.task.TaskHandler;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketEconomy;
@@ -14,6 +13,12 @@ import com.fireflyest.market.service.MarketService;
 import com.fireflyest.market.task.TaskSign;
 import com.fireflyest.market.task.TaskSignAll;
 
+/**
+ * 市场签收命令
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 public class MarketSignCommand extends SubCommand {
     
     private final MarketService service;
@@ -21,7 +26,16 @@ public class MarketSignCommand extends SubCommand {
     private final ViewGuide guide;
     private final TaskHandler handler;
 
-    public MarketSignCommand(MarketService service, MarketEconomy economy, ViewGuide guide, TaskHandler handler) {
+    /**
+     * 市场签收命令
+     * 
+     * @param service 市场服务
+     * @param economy 经济服务
+     * @param guide 界面导航
+     * @param handler 任务处理器
+     */
+    public MarketSignCommand(MarketService service, MarketEconomy economy, 
+            ViewGuide guide, TaskHandler handler) {
         this.service = service;
         this.economy = economy;
         this.guide = guide;
@@ -30,24 +44,30 @@ public class MarketSignCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
+        final Player player = (sender instanceof Player) ? (Player) sender : null;
+        if (player == null) {
             sender.sendMessage(Language.PLAYER_COMMAND);
             return false;
         }
-        handler.putTasks(GlobalMarket.TASK_MAIL, new TaskSignAll(player.getName(), service, economy, guide));
+        handler.putTasks(
+            GlobalMarket.TASK_MAIL, 
+            new TaskSignAll(player.getName(), service, economy, guide)
+        );
         return true;
     }
  
     @Override
     protected boolean execute(CommandSender sender, String arg1) {
-        Player player = (sender instanceof Player)? (Player)sender : null;
-        if(player == null) {
+        final Player player = (sender instanceof Player) ? (Player) sender : null;
+        if (player == null) {
             sender.sendMessage(Language.PLAYER_COMMAND);
             return false;
         }
-        int id = NumberConversions.toInt(arg1);
-        handler.putTasks(GlobalMarket.TASK_MAIL, new TaskSign(player.getName(), service, economy, guide, id));
+        final int id = NumberConversions.toInt(arg1);
+        handler.putTasks(
+            GlobalMarket.TASK_MAIL, 
+            new TaskSign(player.getName(), service, economy, guide, id)
+        );
         return true;
     }
 

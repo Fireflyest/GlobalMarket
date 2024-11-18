@@ -3,7 +3,7 @@ package com.fireflyest.market.view;
 import java.util.Map;
 
 import org.bukkit.inventory.ItemStack;
-import org.fireflyest.craftgui.view.TemplatePage;
+import io.fireflyest.craftgui.view.TemplatePage;
 
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.data.MarketYaml;
