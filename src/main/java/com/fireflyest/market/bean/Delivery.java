@@ -16,7 +16,7 @@ public class Delivery {
     // 物品id
     @Primary(autoIncrement = true)
     @Column
-    private int id;
+    private long id;
 
     // 物品
     @Column(dataType = "text")
@@ -35,7 +35,7 @@ public class Delivery {
     private String sender;
 
     // 简介
-    @Column(defaultValue = "")
+    @Column
     private String info;
 
     // 钱
@@ -47,7 +47,7 @@ public class Delivery {
     private String currency;
     // 货币数据
     @Column(dataType = "text")
-    private String extras;
+    private String extra;
     
     /**
      * 构造方法
@@ -56,40 +56,78 @@ public class Delivery {
         // 默认构造方法
     }
 
-    public int getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getStack() {
         return stack;
     }
 
+    public void setStack(String stack) {
+        this.stack = stack;
+    }
+
     public long getAppear() {
         return appear;
+    }
+
+    public void setAppear(long appear) {
+        this.appear = appear;
     }
 
     public String getOwner() {
         return owner;
     }
 
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     public String getSender() {
         return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public String getInfo() {
         return info;
     }
 
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
     public double getPrice() {
         return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getCurrency() {
         return currency;
     }
 
-    public String getExtras() {
-        return extras;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
+    
 
 }

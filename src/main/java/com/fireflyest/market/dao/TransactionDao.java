@@ -11,8 +11,8 @@ import com.fireflyest.market.bean.Transaction;
 @Dao("com.fireflyest.market.bean.Transaction")
 public interface TransactionDao {
 
-    @Insert("INSERT INTO `market_transaction` (`stack`,`owner`,`ownerName`,`nickname`,`price`,`cost`,`appear`) VALUES ('${stack}','${owner}','${ownerName}','${nickname}',${price},${price},${appear});")
-    long insertTransaction(String stack, String owner, String ownerName, String nickname, double price, long appear);
+    @Insert("INSERT INTO `market_transaction` (`stack`,`owner`,`price`,`cost`,`appear`) VALUES ('${stack}','${owner}',${price},${price},${appear});")
+    long insertTransaction(String stack, String owner, double price, long appear);
     
     @Select("SELECT * FROM `market_transaction` WHERE `id`=${id};")
     Transaction selectTransactionById(long id);
@@ -32,10 +32,10 @@ public interface TransactionDao {
     @Select("SELECT * FROM `market_transaction`WHERE `nickname` LIKE '%${search}%' OR `stack` LIKE '%${search}%' ORDER BY `id` DESC  LIMIT ${start},${end};")
     Transaction[] selectTransactionBySearch(String search, int start, int end);
 
-    @Select("SELECT * FROM `market_transaction`WHERE `ownerName`='${ownerName}' ORDER BY `id` DESC LIMIT ${start},${end};")
-    Transaction[] selectTransactionByOwnerName(String ownerName, int start, int end);
+    @Select("SELECT * FROM `market_transaction`WHERE `owner`='${owner}' ORDER BY `id` DESC LIMIT ${start},${end};")
+    Transaction[] selectTransactionByOwner(String owner, int start, int end);
 
-    @Select("SELECT `id` FROM `market_transaction` WHERE `appear`<${deadline} AND `type`<>'auction' AND `type` NOT LIKE 'admin%';")
+    @Select("SELECT `id` FROM `market_transaction` WHERE `appear`<${deadline} AND `type` NOT LIKE 'admin%';")
     long[] selectTransactionCancel(long deadline);
 
     @Select("SELECT `id` FROM `market_transaction` WHERE `appear`<${deadline} AND `type`='prepare';")
@@ -44,17 +44,17 @@ public interface TransactionDao {
     @Select("SELECT `id` FROM `market_transaction` WHERE `type` LIKE '%${type}%';")
     long[] selectTransactionIdByType(String type);
 
-    @Select("SELECT `id` FROM `market_transaction` WHERE `heat`>${min} AND `type`<>'auction' ORDER BY `heat` LIMIT 10;")
+    @Select("SELECT `id` FROM `market_transaction` WHERE `heat`>${min} ORDER BY `heat` LIMIT 10;")
     long[] selectTransactionIdByHeat(int min);
+
+    @Select("SELECT `id` FROM `market_transaction` WHERE `owner`='${owner}';")
+    long[] selectTransactionIdByOwner(String owner);
 
     @Select("SELECT `type` FROM `market_transaction` WHERE `id`=${id};")
     String selectTransactionType(long id);
 
     @Select("SELECT `stack` FROM `market_transaction` WHERE `id`=${id};")
     String selectTransactionStack(long id);
-
-    @Select("SELECT `ownerName` FROM `market_transaction` WHERE `id`=${id};")
-    String selectTransactionOwnerName(long id);
 
     @Select("SELECT `owner` FROM `market_transaction` WHERE `id`=${id};")
     String selectTransactionOwner(long id);
@@ -80,8 +80,14 @@ public interface TransactionDao {
     @Select("SELECT `heat` FROM `market_transaction` WHERE `id`=${id};")
     int selectTransactionHeat(long id);
 
+    @Select("SELECT `category` FROM `market_transaction` WHERE `id`=${id};")
+    long selectTransactionCategory(long id);
+
     @Update("UPDATE `market_transaction` SET `type`='${type}' WHERE `id`=${id};")
     long updateTransactionType(String type, long id);
+
+    @Update("UPDATE `market_transaction` SET `nickname`='${nickname}' WHERE `id`=${id};")
+    long updateTransactionNickname(String nickname, long id);
 
     @Update("UPDATE `market_transaction` SET `cost`=${cost} WHERE `id`=${id};")
     long updateTransactionCost(double cost, long id);
@@ -107,8 +113,8 @@ public interface TransactionDao {
     @Update("UPDATE `market_transaction` SET `currency`='${currency}' WHERE `id`=${id};")
     long updateTransactionCurrency(String currency, long id);
 
-    @Update("UPDATE `market_transaction` SET `extras`='${extras}' WHERE `id`=${id};")
-    long updateTransactionExtras(String extras, long id);
+    @Update("UPDATE `market_transaction` SET `extra`='${extra}' WHERE `id`=${id};")
+    long updateTransactionExtra(String extra, long id);
 
     @Delete("DELETE FROM `market_transaction` WHERE `id`=${id};")
     long deleteTransaction(long id);

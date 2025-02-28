@@ -1,179 +1,259 @@
 package com.fireflyest.market.view;
 
-import java.util.Map;
 import java.util.UUID;
-
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
-import io.fireflyest.craftgui.button.ButtonItemBuilder;
-import io.fireflyest.craftgui.view.TemplatePage;
-import io.fireflyest.util.ItemUtils;
-import io.fireflyest.util.SerializationUtil;
-import io.fireflyest.util.TimeUtils;
-
-import com.fireflyest.market.bean.Info;
+import com.fireflyest.market.bean.Addend;
 import com.fireflyest.market.bean.Transaction;
+import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
 import com.fireflyest.market.service.MarketService;
 import com.google.gson.Gson;
+import io.fireflyest.emberlib.data.Pair;
+import io.fireflyest.emberlib.inventory.ActionResult;
+import io.fireflyest.emberlib.inventory.Page;
+import io.fireflyest.emberlib.inventory.item.ItemBuilder;
+import io.fireflyest.emberlib.inventory.item.SkullItemBuilder;
+import io.fireflyest.emberlib.inventory.Slot;
+import io.fireflyest.emberlib.util.TimeUtils;
+import io.fireflyest.emberlib.util.YamlUtils;
 
-public class AffairPage extends TemplatePage {
+/**
+ * 交易页面
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class AffairPage extends Page {
 
     private final MarketService service;
-    private final MarketYaml yaml;
 
-    protected AffairPage(String title, String target, int page, MarketService service, MarketYaml yaml) {
-        super(title, target, page, 27);
+    private static final String AMOUNT = "amount";
+    private static final int DAY = 1000 * 60 * 60 * 24;
+
+    protected AffairPage(String target, int pageNumber, MarketService service) {
+        super(target, pageNumber, 27);
         this.service = service;
-        this.yaml = yaml;
 
-        this.refreshPage();
+        String nickname = service.selectTransactionNickname(NumberConversions.toInt(target));
+        if (StringUtils.isEmpty(nickname)) {
+            nickname = Language.ERROR_DATA.get();
+        }
+        this.setup(Language.TITLE_AFFAIR.get().replace("%page%", String.valueOf(pageNumber))
+            .replace("%item%", nickname));
     }
 
     @Override
-    public Map<Integer, ItemStack> getItemMap() {
-        asyncButtonMap.clear();
-        asyncButtonMap.putAll(buttonMap);
-
-        Transaction transaction = service.selectTransactionById(NumberConversions.toInt(target));
-        // 交易不存在
-        if (transaction == null) {
-            asyncButtonMap.put(13, new ItemStack(Material.AIR));
-            asyncButtonMap.put(14, yaml.getItemBuilder("wait").build());
-            asyncButtonMap.put(15, new ItemStack(Material.AIR));
-            return asyncButtonMap;
+    public void refreshPage() {
+        if (!init) {
+            this.initPage();
         }
 
-        // 交易物品展示
-        ItemStack item = SerializationUtil.deserializeItemStack(transaction.getStack());
-        asyncButtonMap.put(10, item);
+        this.putItems();
+    }
 
-        ItemStack visit = ((ButtonItemBuilder)yaml.getItemBuilder("visit")).actionOpenPage("market.visit." + target).build();
-        ItemUtils.setSkullOwner(visit, Bukkit.getOfflinePlayer(UUID.fromString(transaction.getOwner())));
-        ItemUtils.setDisplayName(visit, "§3§l" + transaction.getOwnerName());
-        asyncButtonMap.put(8, visit);
+    @Override
+    public void initPage() {
+        super.initPage();
+        final ItemStack blank = MarketItem.getPair("blank").first().build();
+        this.slot(0, blank);
+        this.slot(1, blank);
+        this.slot(2, blank);
+        this.slot(9, blank);
+        this.slot(11, blank);
+        this.slot(18, blank);
+        this.slot(19, blank);
+        this.slot(20, blank);
 
-        String symbol = "";
-        String command;
-        int amount = item.getAmount();
-        boolean partial = Config.BUY_PARTIAL; 
-        switch(transaction.getCurrency()) {
-            case "coin":
-                symbol = Language.COIN_SYMBOL;
-                break;
-            case "point":
-                partial = false;
-                symbol = Language.POINT_SYMBOL;
-                break;
-            case "item":
-                partial = false;
-                if (!"".equals(transaction.getExtras())) {
-                    ItemStack currencyItem = SerializationUtil.deserializeItemStack(transaction.getExtras());
-                    asyncButtonMap.put(5, currencyItem);
-                }
-                break;
-            default:
-                break;
-        }
-        ItemStack data = yaml.getItemBuilder("transaction").build();
-        switch (transaction.getType()) {
+        this.slot(17, MarketItem.getPair("transaction"));
+        this.slot(26, MarketItem.getPair("back"));
+    }
+
+    private void putTransaction(Transaction ta, int amount, String symbol, boolean partial) {
+        final String command;
+        final Pair<ItemBuilder, Slot> data = MarketItem.getPair("transaction");
+        switch (ta.getType()) {
             case "retail":
             case "adminretail":
                 command = "market buy " + target;
                 if (partial) {
-                    ItemStack buy1 = ((ButtonItemBuilder)yaml.getItemBuilder("buy1")).actionPlayerCommand(command + " 1").build();
-                    ItemStack buy2 = ((ButtonItemBuilder)yaml.getItemBuilder("buy8")).actionPlayerCommand(command + " 8").build();
-                    ItemStack buy3 = ((ButtonItemBuilder)yaml.getItemBuilder("buy")).actionPlayerCommand(command + " " + amount).build();
-                    buy3.setAmount(amount);
-                    ItemUtils.addLore(buy1, String.format(Language.GUI_PRICE, transaction.getCost() / amount, symbol));
-                    ItemUtils.addLore(buy2, String.format(Language.GUI_PRICE, transaction.getCost() / amount * 8, symbol));
-                    ItemUtils.addLore(buy3, String.format(Language.GUI_PRICE, transaction.getCost(), symbol));
-                    ItemUtils.setDisplayName(buy3, ItemUtils.getDisplayName(buy3).replace("%amount%", String.valueOf(amount)));
-                    asyncButtonMap.put(13, buy1);
-                    if (amount > 8) asyncButtonMap.put(14, buy2);
-                    asyncButtonMap.put(15, buy3);
+                    final ItemBuilder buy1 = MarketItem.getItemBuilder("buy1");
+                    final Slot buy1Slot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " 1");
+                    final ItemBuilder buy2 = MarketItem.getItemBuilder("buy8");
+                    final Slot buy2Slot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " 8");
+                    final ItemBuilder buy3 = MarketItem.getItemBuilder("buy");
+                    final Slot buy3Slot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " " + amount);
+                    
+                    buy1.lore(String.format(
+                        Language.GUI_PRICE_NORMAL.get(), ta.getCost() / amount, symbol), 0);
+                    buy2.lore(String.format(
+                        Language.GUI_PRICE_NORMAL.get(), ta.getCost() / amount * 8, symbol), 0);
+                    buy3.amount(amount).replace(AMOUNT, amount).lore(String.format(
+                        Language.GUI_PRICE_NORMAL.get(), ta.getCost(), symbol), 0);
+                    this.slot(13, buy1.build(), buy1Slot);
+                    if (amount > 8) {
+                        this.slot(14, buy2.build(), buy2Slot);
+                    }
+                    this.slot(15, buy3.build(), buy3Slot);
                 } else {
-                    ItemStack buy = ((ButtonItemBuilder)yaml.getItemBuilder("buy")).actionPlayerCommand(command + " " + 0).build();
-                    buy.setAmount(amount);
-                    ItemUtils.addLore(buy, String.format(Language.GUI_PRICE, transaction.getCost(), symbol));
-                    ItemUtils.setDisplayName(buy, ItemUtils.getDisplayName(buy).replace("%amount%", String.valueOf(amount)));
-                    asyncButtonMap.put(14, buy);
+                    final ItemBuilder buy = MarketItem.getItemBuilder("buy");
+                    final Slot buySlot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " 0");
+                    buy.amount(amount).replace(AMOUNT, amount).lore(
+                        String.format(Language.GUI_PRICE_NORMAL.get(), ta.getCost(), symbol), 0);
+                    this.slot(14, buy.build(), buySlot);
                 }
-                ItemUtils.addLore(data, String.format(Language.GUI_HEAT, transaction.getHeat()));
-                if (Config.TERM_OF_VALIDITY != -1) {
-                    ItemUtils.addLore(data, String.format(Language.GUI_DEADLINE, TimeUtils.duration(transaction.getAppear() + Config.TERM_OF_VALIDITY * 1000 * 60 * 60 * 24 - TimeUtils.getTime())));
+                data.first().lore(String.format(Language.GUI_HEAT.get(), ta.getHeat()), 0);
+
+                if (Config.TRANSACTION_EXPIRATION.get() != -1) {
+                    final long time = ta.getAppear() + Config.TRANSACTION_EXPIRATION.get() * DAY 
+                        - TimeUtils.getTime();
+                    data.first().lore(String.format(
+                        Language.GUI_DEADLINE.get(), 
+                        TimeUtils.howLong(time)), 1);
                 }
                 break;
             case "order":
             case "adminorder":
                 command = "market sale " + target;
                 if (partial) {
-                    ItemStack sale1 = ((ButtonItemBuilder)yaml.getItemBuilder("buy1")).actionPlayerCommand(command + " 1").build();
-                    ItemStack sale2 = ((ButtonItemBuilder)yaml.getItemBuilder("buy8")).actionPlayerCommand(command + " 8").build();
-                    ItemStack sale3 = ((ButtonItemBuilder)yaml.getItemBuilder("buy")).actionPlayerCommand(command + " " + amount).build();
-                    sale3.setAmount(amount);
-                    ItemUtils.addLore(sale1, String.format(Language.GUI_ORDER_PRICE, transaction.getCost() / amount, symbol));
-                    ItemUtils.addLore(sale2, String.format(Language.GUI_ORDER_PRICE, transaction.getCost() / amount * 8, symbol));
-                    ItemUtils.addLore(sale3, String.format(Language.GUI_ORDER_PRICE, transaction.getCost(), symbol));
-                    ItemUtils.setDisplayName(sale3, ItemUtils.getDisplayName(sale3).replace("%amount%", String.valueOf(amount)));
-                    asyncButtonMap.put(13, sale1);
-                    if (amount > 8) asyncButtonMap.put(14, sale2);
-                    asyncButtonMap.put(15, sale3);
+                    final ItemBuilder sale1 = MarketItem.getItemBuilder("buy1");
+                    final Slot sale1Slot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " 1");
+                    final ItemBuilder sale2 = MarketItem.getItemBuilder("buy8");
+                    final Slot sale2Slot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " 8");
+                    final ItemBuilder sale3 = MarketItem.getItemBuilder("buy");
+                    final Slot sale3Slot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " " + amount);
+
+                    sale1.lore(String.format(
+                        Language.GUI_PRICE_ORDER.get(), ta.getCost() / amount, symbol), 0);
+                    sale2.lore(String.format(
+                        Language.GUI_PRICE_ORDER.get(), ta.getCost() / amount * 8, symbol), 0);
+                    sale3.amount(amount).replace(AMOUNT, amount).lore(String.format(
+                        Language.GUI_PRICE_ORDER.get(), ta.getCost(), symbol), 0);
+                    this.slot(13, sale1.build(), sale1Slot);
+                    if (amount > 8) {
+                        this.slot(14, sale2.build(), sale2Slot);
+                    }
+                    this.slot(15, sale3.build(), sale3Slot);
                 } else {
-                    ItemStack sale = ((ButtonItemBuilder)yaml.getItemBuilder("buy")).actionPlayerCommand(command + " " + 0).build();
-                    sale.setAmount(amount);
-                    ItemUtils.addLore(sale, String.format(Language.GUI_ORDER_PRICE, transaction.getCost(), symbol));
-                    ItemUtils.setDisplayName(sale, ItemUtils.getDisplayName(sale).replace("%amount%", String.valueOf(amount)));
-                    asyncButtonMap.put(14, sale);
+                    final ItemBuilder sale = MarketItem.getItemBuilder("buy");
+                    final Slot saleSlot = new Slot().button(
+                        ActionResult.ACTION_PLAYER_COMMAND, 
+                        command + " 0");
+                    sale.amount(amount).replace(AMOUNT, amount).lore(
+                        String.format(Language.GUI_PRICE_ORDER.get(), ta.getCost(), symbol), 0);
+                    this.slot(14, sale.build(), saleSlot);
                 }
-                ItemUtils.addLore(data, String.format(Language.GUI_HEAT, transaction.getHeat()));
-                if (Config.TERM_OF_VALIDITY != -1) {
-                    ItemUtils.addLore(data, String.format(Language.GUI_DEADLINE, TimeUtils.duration(transaction.getAppear() + Config.TERM_OF_VALIDITY * 1000 * 60 * 60 * 24 - TimeUtils.getTime())));
+                data.first().lore(String.format(Language.GUI_HEAT.get(), ta.getHeat()), 0);
+                if (Config.TRANSACTION_EXPIRATION.get() != -1) {
+                    final long time = ta.getAppear() + Config.TRANSACTION_EXPIRATION.get() * DAY 
+                        - TimeUtils.getTime();
+                    data.first().lore(String.format(
+                        Language.GUI_DEADLINE.get(), 
+                        time), 1);
                 }
                 break;
             case "auction":
                 command = "market bid " + target;
-                ItemStack bid1 = ((ButtonItemBuilder)yaml.getItemBuilder("bid10")).actionPlayerCommand(command + " 10").build();
-                ItemStack bid2 = ((ButtonItemBuilder)yaml.getItemBuilder("bid100")).actionPlayerCommand(command + " 100").build();
-                ItemStack bid3 = ((ButtonItemBuilder)yaml.getItemBuilder("bid1000")).actionPlayerCommand(command + " 1000").build();
-                ItemUtils.addLore(bid1, String.format(Language.GUI_PRESENT_PRICE, transaction.getCost(), symbol));
-                ItemUtils.addLore(bid2, String.format(Language.GUI_PRESENT_PRICE, transaction.getCost(), symbol));
-                ItemUtils.addLore(bid3, String.format(Language.GUI_PRESENT_PRICE, transaction.getCost(), symbol));
-                asyncButtonMap.put(13, bid1);
-                asyncButtonMap.put(14, bid2);
-                asyncButtonMap.put(15, bid3);
-                Info info = new Gson().fromJson(transaction.getDesc(), Info.class);
-                ItemUtils.addLore(data, String.format(Language.GUI_AUCTION_CONFIRM, 3 - transaction.getHeat()));
-                ItemUtils.addLore(data, String.format(Language.GUI_AUCTION_PLAYERS, info.getStrings()));
+                final ItemBuilder bid1 = MarketItem.getItemBuilder("bid10");
+                final Slot bid1Slot = new Slot().button(
+                    ActionResult.ACTION_PLAYER_COMMAND, 
+                    command + " 10");
+                final ItemBuilder bid2 = MarketItem.getItemBuilder("bid100");
+                final Slot bid2Slot = new Slot().button(
+                    ActionResult.ACTION_PLAYER_COMMAND, 
+                    command + " 100");
+                final ItemBuilder bid3 = MarketItem.getItemBuilder("bid1000");
+                final Slot bid3Slot = new Slot().button(
+                    ActionResult.ACTION_PLAYER_COMMAND, 
+                    command + " 1000");
+
+                bid1.lore(String.format(Language.GUI_PRICE_PRESENT.get(), ta.getCost(), symbol), 0);
+                bid2.lore(String.format(Language.GUI_PRICE_PRESENT.get(), ta.getCost(), symbol), 0);
+                bid3.lore(String.format(Language.GUI_PRICE_PRESENT.get(), ta.getCost(), symbol), 0);
+
+                this.slot(13, bid1.build(), bid1Slot);
+                this.slot(14, bid2.build(), bid2Slot);
+                this.slot(15, bid3.build(), bid3Slot);
+
+                final Addend info = new Gson().fromJson(ta.getDesc(), Addend.class);
+
+                data.first().lore(String.format(Language.GUI_HEAT.get(), 3 - ta.getHeat()), 0);
+                data.first().lore(String.format(Language.GUI_BIDERS.get(), info.getStrings()), 1);
                 break;
             case "prepare":
             default:
-                asyncButtonMap.put(14, yaml.getItemBuilder("wait").build());
+                this.slot(14, MarketItem.getPair("wait"));
                 break;
         }
-        asyncButtonMap.put(17, data);
-
-        return asyncButtonMap;
+        this.slot(17, data);
     }
 
-    @Override
-    public void refreshPage() {
-        ItemStack blank = yaml.getItemBuilder("blank").build();
-        buttonMap.put(0, blank);
-        buttonMap.put(1, blank);
-        buttonMap.put(2, blank);
-        buttonMap.put(9, blank);
-        buttonMap.put(11, blank);
-        buttonMap.put(18, blank);
-        buttonMap.put(19, blank);
-        buttonMap.put(20, blank);
+    private void putItems() {
+        final Transaction ta = 
+            service.selectTransactionById(NumberConversions.toInt(target));
+        // 交易不存在
+        if (ta == null) {
+            this.slot(13, new ItemStack(Material.AIR));
+            this.slot(14, MarketItem.getPair("wait"));
+            this.slot(15, new ItemStack(Material.AIR));
+            return;
+        }
 
-        buttonMap.put(17, yaml.getItemBuilder("transaction").build());
-        buttonMap.put(26, yaml.getItemBuilder("back").build());
+        // 交易物品展示
+        final ItemStack item = YamlUtils.deserializeItemStack(ta.getStack());
+        this.slot(10, item);
+
+        // 商品归属者信息
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(ta.getOwner()));
+        final ItemBuilder visit = MarketItem.getItemBuilder("visit");
+        ((SkullItemBuilder) visit).setPlayer(offlinePlayer)
+            .name("§3§l" + offlinePlayer.getName());
+        final Slot visitSlot = new Slot().button(ActionResult.ACTION_PAGE_OPEN, 
+            "market.visit." + offlinePlayer.getUniqueId());
+        this.slot(8, visit.build(), visitSlot);
+
+        final int amount = item.getAmount();
+        String symbol = "";
+        boolean partial = Config.TRANSACTION_PARTIAL.get().booleanValue(); 
+        switch (ta.getCurrency()) {
+            case "coin":
+                symbol = Language.SYMBOL_COIN.get();
+                break;
+            case "point":
+                partial = false;
+                symbol = Language.SYMBOL_POINT.get();
+                break;
+            case "item":
+                partial = false;
+                if (!"".equals(ta.getExtra())) {
+                    final ItemStack currencyItem = 
+                        YamlUtils.deserializeItemStack(ta.getExtra());
+                    this.slot(5, currencyItem);
+                }
+                break;
+            default:
+                break;
+        }
+        this.putTransaction(ta, amount, symbol, partial);
     }
     
 }

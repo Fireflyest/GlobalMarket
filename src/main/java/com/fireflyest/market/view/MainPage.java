@@ -1,110 +1,131 @@
 package com.fireflyest.market.view;
 
-import java.util.Map;
-
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
-import io.fireflyest.emberlib.inventory.ViewPage;
-import io.fireflyest.craftgui.view.TemplatePage;
-import io.fireflyest.util.SerializationUtil;
-
+import io.fireflyest.emberlib.inventory.ActionResult;
+import io.fireflyest.emberlib.inventory.Page;
+import io.fireflyest.emberlib.inventory.Slot;
+import io.fireflyest.emberlib.util.YamlUtils;
 import com.fireflyest.market.bean.Transaction;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
-import com.fireflyest.market.data.MarketYaml;
 import com.fireflyest.market.service.MarketService;
 
-public class MainPage extends TemplatePage {
+/**
+ * 主页
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class MainPage extends Page {
 
     private final MarketService service;
-    private final MarketYaml yaml;
+    private String originalTitle;
 
-    protected MainPage(String title, String target, int page, MarketService service, MarketYaml yaml) {
-        super(title, target, page, 54);
+    protected MainPage(String target, int pageNumber, String title, MarketService service) {
+        super(target, pageNumber, 54);
         this.service = service;
-        this.yaml = yaml;
+        this.originalTitle = title;
 
-        this.refreshPage();
+        this.setup(title.replace("%page%", String.valueOf(pageNumber)));
     }
 
     @Override
-    public Map<Integer, ItemStack> getItemMap() {
-        asyncButtonMap.clear();
-        asyncButtonMap.putAll(buttonMap);
+    public void refreshPage() {
+        if (!init) {
+            this.initPage();
+        }
 
-        Transaction[] transactions;
-        switch (target) {
+        this.putTransactions();
+    }
+
+    @Override
+    public void initPage() {
+        super.initPage();
+        // 上一页
+        if (pageNumber == 1) {
+            this.slot(45, MarketItem.getPair("pagePreDisable"));
+        } else {
+            this.slot(45, MarketItem.getPair("pagePre"));
+        }
+        // 下一页
+        this.slot(46, MarketItem.getPair("pageNextDisable"));
+
+        if (Config.MARKET_NAVIGATION.get().booleanValue()) {
+            this.slot(50, MarketItem.getPair("mine"));
+            this.slot(51, MarketItem.getPair("mail"));
+            this.slot(52, MarketItem.getPair("home"));
+        } else {
+            this.slot(51, MarketItem.getPair("mine"));
+            this.slot(52, MarketItem.getPair("mail"));
+        }
+        if ("normal".equals(target)) {
+            this.slot(53, MarketItem.getPair("close"));
+        } else {
+            this.slot(53, MarketItem.getPair("back"));
+        }
+    }
+
+    @Override
+    public Page getNext() {
+        if (next == null && pageNumber < 30) {
+            next = new MainPage(target, pageNumber + 1, originalTitle, service);
+            next.setPre(this);
+        }
+        return next;
+    }
+
+    private void putTransactions() {
+        final Transaction[] transactions;
+        switch (String.valueOf(target)) {
             case "normal":
-                transactions = service.selectTransactions((page - 1) * 45, page * 45);
+                transactions = service.selectTransactions((pageNumber - 1) * 45, pageNumber * 45);
                 break;
             case "retail":
             case "order":
             case "auction":
             case "admin":
-                transactions = service.selectTransactionByType(target, (page - 1) * 45, page * 45);
+                transactions = service.selectTransactionByType(
+                    String.valueOf(target), (pageNumber - 1) * 45, pageNumber * 45);
                 break;
             case "point":
             case "coin":
             case "item":
-                transactions = service.selectTransactionByCurrency(target, (page - 1) * 45, page * 45);
+                transactions = service.selectTransactionByCurrency(
+                    String.valueOf(target), (pageNumber - 1) * 45, pageNumber * 45);
                 break;
             default:
-                transactions = service.selectTransactions((page - 1) * 45, page * 45);
+                transactions = service.selectTransactions((pageNumber - 1) * 45, pageNumber * 45);
                 break;
         }
         // 可以下一页
-        if (transactions.length != 0){
-            asyncButtonMap.put(46, yaml.getItemBuilder("pageNext").build());
+        if (transactions.length != 0) {
+            this.slot(46, MarketItem.getPair("pageNext"));
         }
 
         // 放置商品
         for (int i = 0; i < 45; i++) {
-            if(i < transactions.length){
-                Transaction transaction = transactions[i];
-                ItemStack item = SerializationUtil.deserializeItemStack(transaction.getStack());
+            if (i < transactions.length) {
+                final Transaction transaction = transactions[i];
+                final ItemStack item = YamlUtils.deserializeItemStack(transaction.getStack());
                 MarketItem.loreItemData(item, transaction);
-                asyncButtonMap.put(i, item);
-            }else {
-                asyncButtonMap.put(i, new ItemStack(Material.AIR));
+                final Slot slot = new Slot().result(
+                    InventoryAction.PICKUP_ALL, 
+                    false, 
+                    ActionResult.ACTION_PLAYER_COMMAND, 
+                    "market affair " + transaction.getId()
+                ).result(
+                    InventoryAction.MOVE_TO_OTHER_INVENTORY, 
+                    false,
+                    ActionResult.ACTION_PLAYER_COMMAND,
+                    "market cancel " + transaction.getId()
+                );
+                this.slot(i, item, slot);
+            } else {
+                this.slot(i, new ItemStack(Material.AIR));
             }
         }
-
-        return asyncButtonMap;
-    }
-
-    @Override
-    public void refreshPage() {
-        // 上一页
-        if (page == 1){
-            buttonMap.put(45, yaml.getItemBuilder("pagePreDisable").build());
-        }else {
-            buttonMap.put(45, yaml.getItemBuilder("pagePre").build());
-        }
-        // 下一页
-        buttonMap.put(46, yaml.getItemBuilder("pageNextDisable").build());
-
-        if (Config.NAVIGATION_BUTTON) {
-            buttonMap.put(50, yaml.getItemBuilder("mine").build());
-            buttonMap.put(51, yaml.getItemBuilder("mail").build());
-            buttonMap.put(52, yaml.getItemBuilder("home").build());
-        } else {
-            buttonMap.put(51, yaml.getItemBuilder("mine").build());
-            buttonMap.put(52, yaml.getItemBuilder("mail").build());
-        }
-        if ("normal".equals(target)) {
-            buttonMap.put(53, yaml.getItemBuilder("close").build());
-        } else {
-            buttonMap.put(53, yaml.getItemBuilder("back").build());
-        }
-    }
-
-    @Override
-    public ViewPage getNext() {
-        if(next == null && page < 30){
-            next = new MainPage(title, target, page+1, service, yaml);
-            next.setPre(this);
-        }
-        return next;
     }
 
 }

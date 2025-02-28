@@ -1,28 +1,28 @@
 package com.fireflyest.market.view;
 
+import io.fireflyest.emberlib.inventory.Page;
 import io.fireflyest.emberlib.inventory.View;
 
-import com.fireflyest.market.data.MarketYaml;
+/**
+ * 管理视图
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class ManageView extends View {
 
-public class ManageView implements View<ManagePage> {
+    private ManagePage adminPage;
 
-    private final MarketYaml yaml;
-    private ManagePage AdminPage;
-
-    public ManageView(MarketYaml yaml) {
-        this.yaml = yaml;
+    public ManageView() {
+        super();
     }
 
     @Override
-    public ManagePage getFirstPage(String target) {
-        if (AdminPage == null) {
-            AdminPage = new ManagePage(yaml);
+    public Page getHomePage(String target) {
+        if (adminPage == null) {
+            adminPage = new ManagePage();
         }
-        return AdminPage;
+        return adminPage;
     }
 
-    @Override
-    public void removePage(String target) {
-        //
-    }
 }

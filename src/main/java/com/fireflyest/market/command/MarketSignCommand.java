@@ -46,12 +46,12 @@ public class MarketSignCommand extends SubCommand {
     protected boolean execute(CommandSender sender) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         handler.putTasks(
             GlobalMarket.TASK_MAIL, 
-            new TaskSignAll(player.getName(), service, economy, guide)
+            new TaskSignAll(player.getUniqueId(), service, economy, guide)
         );
         return true;
     }
@@ -60,13 +60,13 @@ public class MarketSignCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         final int id = NumberConversions.toInt(arg1);
         handler.putTasks(
             GlobalMarket.TASK_MAIL, 
-            new TaskSign(player.getName(), service, economy, guide, id)
+            new TaskSign(player.getUniqueId(), service, economy, guide, id)
         );
         return true;
     }

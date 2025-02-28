@@ -1,19 +1,25 @@
 package com.fireflyest.market.task;
 
+import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Delivery;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
-
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import io.fireflyest.emberlib.inventory.ViewGuide;
 import io.fireflyest.emberlib.task.Task;
-import io.fireflyest.util.SerializationUtil;
+import io.fireflyest.emberlib.util.YamlUtils;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.UUID;
 
+/**
+ * 签收
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
 public class TaskSign extends Task {
 
     private final long id;
@@ -22,12 +28,33 @@ public class TaskSign extends Task {
     private final MarketEconomy economy;
     private final ViewGuide guide;
 
-    public TaskSign(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide, long id) {
-        this(playerName, service, economy, guide, id, false);
+    /**
+     * 构造任务
+     * 
+     * @param uid 玩家uid
+     * @param service 服务
+     * @param economy 经济
+     * @param guide 导航
+     * @param id 交易id
+     */
+    public TaskSign(@NotNull UUID uid, MarketService service, 
+            MarketEconomy economy, ViewGuide guide, long id) {
+        this(uid, service, economy, guide, id, true);
     }
 
-    public TaskSign(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide, long id, boolean refresh) {
-        super(playerName);
+    /**
+     * 构造任务
+     * 
+     * @param uid 玩家uid
+     * @param service 服务
+     * @param economy 经济
+     * @param guide 导航
+     * @param id 交易id
+     * @param refresh 是否刷新
+     */
+    public TaskSign(@NotNull UUID uid, MarketService service, 
+            MarketEconomy economy, ViewGuide guide, long id, boolean refresh) {
+        super(uid);
         this.service = service;
         this.economy = economy;
         this.guide = guide;
@@ -38,57 +65,63 @@ public class TaskSign extends Task {
     @Override
     public void execute() {
         // 玩家不在线
-        if (player == null || !player.isOnline()) {
+        final Player player = offlinePlayer.getPlayer();
+        if (player == null) {
             return;
         }
 
-        Delivery delivery = service.selectDeliveryById(id);
+        final Delivery delivery = service.selectDeliveryById(id);
 
         if (delivery == null) {
-            this.executeInfo(Language.DATA_ERROR);
+            this.info(Language.ERROR_DATA.get());
             return;
         }
 
+        final String msg;
         switch (delivery.getCurrency()) {
             case "coin":
                 double deliveryPrice = delivery.getPrice();
                 // 手续费
-                if (Config.COMMISSION && deliveryPrice >= Config.COMMISSION_THRESHOLD) {
-                    deliveryPrice -= (deliveryPrice * Config.COMMISSION_RATE);
+                if (Config.PRICE_COMMISSION_ENABLE.get().booleanValue()
+                        && deliveryPrice >= Config.PRICE_COMMISSION_THRESHOLD.get()) {
+                    deliveryPrice -= (deliveryPrice * Config.PRICE_COMMISSION_RATE.get());
                 }
-                economy.getEconomy().depositPlayer(player, deliveryPrice);
-                this.executeInfo(Language.AFFAIR_SUCCEED.replace("%money%", economy.getEconomy().format(deliveryPrice)) + Language.COIN_SYMBOL);
+                economy.getEconomy().depositPlayer(offlinePlayer, deliveryPrice);
+                msg = Language.SUCCEED_AFFAIR.get()
+                    .replace("%m%", economy.getEconomy().format(deliveryPrice));
+                this.info(msg + Language.SYMBOL_COIN.get());
                 service.deleteDelivery(id);
                 break;
             case "point":
-                int get = (int)Math.floor(delivery.getPrice());
-                economy.gPlayerPointsAPI().give(UUID.fromString(delivery.getOwner()), get);
-                this.executeInfo(Language.AFFAIR_SUCCEED.replace("%money%", String.valueOf(get)) + Language.POINT_SYMBOL);
+                final int get = (int) Math.floor(delivery.getPrice());
+                economy.getPlayerPoints().give(UUID.fromString(delivery.getOwner()), get);
+                msg = Language.SUCCEED_AFFAIR.get().replace("%m%", String.valueOf(get));
+                this.info(msg + Language.SYMBOL_POINT);
                 service.deleteDelivery(id);
                 break;
             case "item":
             default:
                 // 判断背包是否满
-                if(player.getInventory().firstEmpty() == -1){
-                    this.executeInfo(Language.SIGN_ERROR);
+                if (player.getInventory().firstEmpty() == -1) {
+                    this.info(Language.ERROR_SIGN.get());
                     return;
                 }
-                if ("".equals(delivery.getExtras())) {
-                    delivery.setExtras(delivery.getStack());
+                if ("".equals(delivery.getExtra())) {
+                    delivery.setExtra(delivery.getStack());
                 }
-                ItemStack item = SerializationUtil.deserializeItemStack(delivery.getExtras());
-                int price = (int)delivery.getPrice();
+                final ItemStack item = YamlUtils.deserializeItemStack(delivery.getExtra());
+                final int price = (int) delivery.getPrice();
                 if (0 != price) {
                     item.setAmount(price);
                 }
                 service.deleteDelivery(id);
                 player.getInventory().addItem(item);
-                this.executeInfo(Language.SIGN_SUCCEED);
+                this.info(Language.SUCCEED_SIGN.get());
                 break;
         }
 
         if (refresh) {
-            guide.refreshPage(playerName);
+            guide.refreshPages(GlobalMarket.MAIL_VIEW, uid.toString());
         }
     }
 }

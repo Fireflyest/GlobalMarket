@@ -1,61 +1,54 @@
 package com.fireflyest.market.view;
 
-import java.util.HashMap;
-
+import io.fireflyest.emberlib.inventory.Page;
 import io.fireflyest.emberlib.inventory.View;
-
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
 import com.fireflyest.market.service.MarketService;
 
-public class CategoryView implements View<CategoryPage>{
-
-    private final HashMap<String, CategoryPage> pageMap = new HashMap<>();
+/**
+ * 类别查询视图
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class CategoryView extends View {
 
     private final MarketService service;
-    private final MarketYaml yaml;
     
-    public CategoryView(MarketService service, MarketYaml yaml) {
+    public CategoryView(MarketService service) {
         this.service = service;
-        this.yaml = yaml;
     }
 
     @Override
-    public CategoryPage getFirstPage(String target) {
-        String title;
+    public Page getHomePage(String target) {
+        final String title;
         switch (target) {
             case "category1":
-                title = Language.TITLE_CATEGORY1_PAGE;
+                title = Language.TITLE_CATEGORY_1.get();
                 break;
             case "category2":
-                title = Language.TITLE_CATEGORY2_PAGE;
+                title = Language.TITLE_CATEGORY_2.get();
                 break;
             case "category3":
-                title = Language.TITLE_CATEGORY3_PAGE;
+                title = Language.TITLE_CATEGORY_3.get();
                 break;
             case "category4":
-                title = Language.TITLE_CATEGORY4_PAGE;
+                title = Language.TITLE_CATEGORY_4.get();
                 break;
             case "category5":
-                title = Language.TITLE_CATEGORY5_PAGE;
+                title = Language.TITLE_CATEGORY_5.get();
                 break;
             case "category6":
-                title = Language.TITLE_CATEGORY6_PAGE;
+                title = Language.TITLE_CATEGORY_6.get();
                 break;
             case "category7":
-                title = Language.TITLE_CATEGORY7_PAGE;
+                title = Language.TITLE_CATEGORY_7.get();
                 break;
             default:
                 title = "???";
                 break;
         }
-        pageMap.computeIfAbsent(target, k -> new CategoryPage(title, target, 1, service, yaml));
-        return pageMap.get(target);
-    }
-
-    @Override
-    public void removePage(String target) {
-        // 
+        return pagesMap.computeIfAbsent(target, k -> new CategoryPage(target, 1, title, service));
     }
     
 }

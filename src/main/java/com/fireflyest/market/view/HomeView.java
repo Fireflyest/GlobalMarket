@@ -1,28 +1,28 @@
 package com.fireflyest.market.view;
 
+import io.fireflyest.emberlib.inventory.Page;
 import io.fireflyest.emberlib.inventory.View;
 
-import com.fireflyest.market.data.MarketYaml;
+/**
+ * 主页视图
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class HomeView extends View {
 
-public class HomeView implements View<HomePage> {
-
-    private final MarketYaml yaml;
     private HomePage homePage;
 
-    public HomeView(MarketYaml yaml) {
-        this.yaml = yaml;
+    public HomeView() {
+        super();
     }
 
     @Override
-    public HomePage getFirstPage(String target) {
+    public Page getHomePage(String target) {
         if (homePage == null) {
-            homePage = new HomePage(yaml);
+            homePage = new HomePage();
         }
         return homePage;
     }
 
-    @Override
-    public void removePage(String target) {
-        //
-    }
 }

@@ -3,7 +3,6 @@ package com.fireflyest.market.command;
 import org.bukkit.command.CommandSender;
 import io.fireflyest.emberlib.command.SubCommand;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
 
 /**
  * 市场重载命令
@@ -13,17 +12,16 @@ import com.fireflyest.market.data.MarketYaml;
  */
 public class MarketReloadCommand extends SubCommand {
 
-    private MarketYaml yaml;
 
-    public MarketReloadCommand(MarketYaml yaml) {
-        this.yaml = yaml;
+    public MarketReloadCommand() {
+        // Empty
     }
 
     @Override
     protected boolean execute(CommandSender sender) {
-        sender.sendMessage(Language.RELOADING);
-        yaml.reloadConfig();
-        sender.sendMessage(Language.RELOADED);
+        sender.sendMessage(Language.CONFIG_RELOADING.get());
+
+        sender.sendMessage(Language.CONFIG_RELOADED.get());
         return true;
     }
     

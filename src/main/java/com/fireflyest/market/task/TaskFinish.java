@@ -2,23 +2,31 @@ package com.fireflyest.market.task;
 
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Transaction;
+import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
-
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import io.fireflyest.emberlib.inventory.ViewGuide;
-import io.fireflyest.craftitem.builder.ItemBuilder;
 import io.fireflyest.emberlib.task.Task;
-import io.fireflyest.util.SerializationUtil;
+import io.fireflyest.emberlib.util.ChatUtils;
+import io.fireflyest.emberlib.util.YamlUtils;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.UUID;
 
+/**
+ * 完成交易
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
 public class TaskFinish extends Task {
 
     private final long id;
@@ -27,8 +35,18 @@ public class TaskFinish extends Task {
     private final MarketEconomy economy;
     private final ViewGuide guide;
 
-    public TaskFinish(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide, long id) {
-        super(playerName);
+    /**
+     * 构造任务
+     * 
+     * @param uid 玩家uid
+     * @param service 服务
+     * @param economy 经济
+     * @param guide 导航
+     * @param id 交易id
+     */
+    public TaskFinish(@NotNull UUID uid, MarketService service, 
+            MarketEconomy economy, ViewGuide guide, long id) {
+        super(uid);
         this.id = id;
         this.service = service;
         this.economy = economy;
@@ -37,43 +55,51 @@ public class TaskFinish extends Task {
 
     @Override
     public void execute() {
-        Transaction transaction = service.selectTransactionById(id);
+        final Transaction transaction = service.selectTransactionById(id);
 
-        if(null == transaction){
-            this.executeInfo(Language.DATA_ERROR);
+        if (null == transaction) {
+            this.info(Language.ERROR_DATA.get());
             return;
         }
-        if(!"auction".equals(transaction.getType())){
-            this.executeInfo(Language.TYPE_ERROR);
+        if (!"auction".equals(transaction.getType())) {
+            this.info(Language.ERROR_TYPE.get());
             return;
         }
-        if(transaction.getOwnerName().equals(playerName)){
-            this.executeInfo(Language.TRANSACTION_ERROR);
-            if (!Config.DEBUG) {
-                guide.refreshPage(playerName);
+        if (transaction.getOwner().equals(uid.toString())) {
+            this.info(Language.ERROR_TRANSACTION.get());
+            if (!Config.DEBUG.get().booleanValue()) {
                 return;
             }
         }
 
-        if("".equalsIgnoreCase(transaction.getTarget())){
-            // 流拍
-            this.executeInfo(Language.AUCTION_FLOW.replace("%item%", transaction.getNickname()));
-            this.followTasks().add(new TaskCancel(playerName, service, guide, id));
+        final ItemStack stack = YamlUtils.deserializeItemStack(transaction.getStack());
+        final Player player = offlinePlayer.getPlayer();
+        if (StringUtils.isEmpty(transaction.getTarget())) {
+            // 流拍提示
+            if (player != null) {
+                final String info = Language.AUCTION_FLOW.get();
+                final BaseComponent[] textItemStack = 
+                    ChatUtils.textItemStack(stack, "/market mail");
+                player.spigot().sendMessage(
+                    new ComponentBuilder(info).append(textItemStack).create());
+            }
+            // 取消交易
+            this.followTasks().add(new TaskCancel(uid, service, guide, id));
             return;
         }
 
         boolean hasMoney = false;
         String symbol = "";
-        String targetUid = service.selectMerchantUid(transaction.getTarget());
-        OfflinePlayer buyer = Bukkit.getOfflinePlayer(UUID.fromString(targetUid));
-        switch(transaction.getCurrency()) {
+        final UUID biderUid = UUID.fromString(transaction.getTarget());
+        final OfflinePlayer bider = Bukkit.getOfflinePlayer(biderUid);
+        switch (transaction.getCurrency()) {
             case "coin":
-                hasMoney = economy.getEconomy().has(buyer, transaction.getCost());
-                symbol = Language.COIN_SYMBOL;
+                hasMoney = economy.getEconomy().has(bider, transaction.getCost());
+                symbol = Language.SYMBOL_COIN.get();
                 break;
             case "point":
-                hasMoney = economy.gPlayerPointsAPI().look(buyer.getUniqueId()) >= transaction.getCost();
-                symbol = Language.POINT_SYMBOL;
+                hasMoney = economy.getPlayerPoints().look(biderUid) >= transaction.getCost();
+                symbol = Language.SYMBOL_POINT.get();
                 break;
             case "item":
             default:
@@ -81,57 +107,83 @@ public class TaskFinish extends Task {
         }
 
         if (!hasMoney) {
-            this.executeInfo(Language.TRANSACTION_FAIL.replace("%target%", transaction.getTarget()));
-            service.updateMerchantCredit("-1", targetUid);
-            this.followTasks().add(new TaskCancel(playerName, service, guide, id));
+            this.info(Language.TRANSACTION_FAIL.get().replace("%t%", transaction.getTarget()));
+            service.updateMerchantCredit("-1", biderUid);
+            this.followTasks().add(new TaskCancel(uid, service, guide, id));
             return;
         }
 
         // 买家扣钱
-        switch(transaction.getCurrency()) {
+        switch (transaction.getCurrency()) {
             case "coin":
-                economy.getEconomy().withdrawPlayer(buyer, transaction.getCost());
+                economy.getEconomy().withdrawPlayer(bider, transaction.getCost());
                 break;
             case "point":
-                economy.gPlayerPointsAPI().take(buyer.getUniqueId(),  (int)Math.ceil(transaction.getCost()));
+                economy.getPlayerPoints().take(biderUid,  (int) Math.ceil(transaction.getCost()));
                 break;
             case "item":
+                break;
             default:
                 break;
         }
 
         // 发送物品
-        ItemStack stack = SerializationUtil.deserializeItemStack(transaction.getStack());
-        this.followTasks().add(new TaskSend(Language.TEXT_MAIL_FROM_AUCTION, service, targetUid, stack));
+        this.followTasks().add(new TaskSend(
+            Language.GUI_MAIL_FROM_AUCTION.get(), service, guide, biderUid.toString(), stack));
 
         // 提示买家
-        if (buyer.isOnline()){
-            ((Player) buyer).sendMessage(Language.TRANSACTION_SUCCEED);
+        final Player biderPlayer = bider.getPlayer();
+        if (biderPlayer != null) {
+            biderPlayer.sendMessage(Language.SUCCEED_TRANSACTION.get());
         }
 
         // 删除交易
         service.deleteTransaction(id);
-        // 刷新交易界面
-        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
 
-        // 发送给卖家
-        ItemStack recordBook = this.getRecordItem(transaction.getNickname(), targetUid, transaction.getCost(), symbol);
-        this.followTasks().add(new TaskSend(Language.TEXT_MAIL_FROM_REWARD, service, targetUid, recordBook, transaction.getCost(), transaction.getCurrency(), transaction.getExtras()));
-        this.executeInfo(Language.AUCTION_FINISH.replace("%item%", transaction.getNickname()));
+        // 发送交易记录
+        final BaseComponent[] textItemStack = 
+                ChatUtils.textItemStack(stack, "/market mail");
+        final ItemStack recordBook = MarketItem.getRecordItem(
+            textItemStack, biderUid.toString(), transaction.getCost(), symbol);
+        final TaskSend taskSend = new TaskSend(
+            Language.GUI_MAIL_FROM_REWARD.get(), 
+            service, 
+            guide, 
+            biderUid.toString(), 
+            recordBook, 
+            transaction.getCost(), 
+            transaction.getCurrency());
+        taskSend.setExtra(transaction.getExtra());
+        this.followTasks().add(taskSend);
+        
+        
+        if (player != null) {
+            final String info = Language.AUCTION_FINISH.get();
+            player.spigot().sendMessage(
+                new ComponentBuilder(info).append(textItemStack).create());
+        }
 
         // 更新卖家统计数据
         service.updateMerchantSelling("-1", transaction.getOwner());
         service.updateMerchantAmount(transaction.getOwner());
+
+        // 刷新页面
+        this.refresh(transaction.getType(), transaction.getCurrency(), transaction.getCategory());
     }
 
-    @NotNull
-    public ItemStack getRecordItem(String itemName, String buyer, double cost, String symbol) {
-        return new ItemBuilder("WRITTEN_BOOK")
-                .name(Language.GUI_MARKET_RECORD)
-                .lore(String.format(Language.GUI_TRANSACTION_ITEM, itemName))
-                .lore(String.format(Language.GUI_BUYER, buyer))
-                .lore(String.format(Language.GUI_REWARD,  cost, symbol))
-                .build();
+    private void refresh(String type, String currency, long category) {
+        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
+        guide.refreshPages(GlobalMarket.EDIT_VIEW, String.valueOf(id));
+        guide.refreshPages(GlobalMarket.MAIN_VIEW, "normal", type, currency);
+        guide.refreshPages(GlobalMarket.MINE_VIEW, uid.toString());
+        guide.refreshPages(GlobalMarket.STORE_VIEW);
+        guide.refreshPages(GlobalMarket.VISIT_VIEW, uid.toString());
+        // 根据分类刷新页面，类型是按二进制存储的
+        for (int i = 0; i < 8; i++) {
+            if ((category & (1 << i)) != 0) {
+                guide.refreshPages(GlobalMarket.CATEGORY_VIEW, "category" + i);
+            }
+        }
     }
 
 }

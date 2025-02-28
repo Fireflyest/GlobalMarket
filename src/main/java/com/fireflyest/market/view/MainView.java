@@ -1,61 +1,55 @@
 package com.fireflyest.market.view;
 
-import java.util.HashMap;
-
+import io.fireflyest.emberlib.inventory.Page;
 import io.fireflyest.emberlib.inventory.View;
-
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
 import com.fireflyest.market.service.MarketService;
 
-public class MainView implements View<MainPage>{
-
-    private final HashMap<String, MainPage> pageMap = new HashMap<>();
+/**
+ * 主页视图
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class MainView extends View {
 
     private final MarketService service;
-    private final MarketYaml yaml;
     
-    public MainView(MarketService service, MarketYaml yaml) {
+    public MainView(MarketService service) {
         this.service = service;
-        this.yaml = yaml;
     }
 
     @Override
-    public MainPage getFirstPage(String target) {
-        String title;
-        switch (target) {
+    public Page getHomePage(String target) {
+        final String title;
+        switch (String.valueOf(target)) {
             case "normal":
-                title = Language.TITLE_MAIN_PAGE;
+                title = Language.TITLE_MAIN.get();
                 break;
             case "retail":
-                title = Language.TITLE_RETAIL_PAGE;
+                title = Language.TITLE_RETAIL.get();
                 break;
             case "auction":
-                title = Language.TITLE_AUCTION_PAGE;
+                title = Language.TITLE_AUCTION.get();
                 break;
             case "admin":
-                title = Language.TITLE_ADMIN_PAGE;
+                title = Language.TITLE_ADMIN.get();
                 break;
             case "point":
-                title = Language.TITLE_POINT_PAGE;
+                title = Language.TITLE_POINT.get();
                 break;
             case "coin":
-                title = Language.TITLE_COIN_PAGE;
+                title = Language.TITLE_COIN.get();
                 break;
             case "item":
-                title = Language.TITLE_ITEM_PAGE;
+                title = Language.TITLE_ITEM.get();
                 break;
             default:
-                title = Language.TITLE_MAIN_PAGE;
+                title = Language.TITLE_MAIN.get();
                 break;
         }
-        pageMap.computeIfAbsent(target, k -> new MainPage(title, target, 1, service, yaml));
-        return pageMap.get(target);
+        
+        return pagesMap.computeIfAbsent(target, k -> new MainPage(target, 1, title, service));
     }
 
-    @Override
-    public void removePage(String target) {
-        // 
-    }
-    
 }

@@ -1,75 +1,73 @@
 package com.fireflyest.market.task;
 
 import com.fireflyest.market.GlobalMarket;
-import com.fireflyest.market.bean.Info;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
-import com.google.gson.Gson;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.apache.commons.lang.StringUtils;
 import io.fireflyest.emberlib.inventory.ViewGuide;
 import io.fireflyest.emberlib.task.Task;
 import org.jetbrains.annotations.NotNull;
+import java.util.UUID;
 
-import java.util.Set;
-
+/**
+ * 热度
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
 public class TaskHeat extends Task {
 
     private final long id;
     private final int num;
     private final MarketService service;
-    private final MarketEconomy economy;
     private final ViewGuide guide;
+    private final boolean refresh;
 
-    public TaskHeat(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide, long id, int num) {
-        super(playerName);
+    /**
+     * 构造任务
+     * 
+     * @param uid 玩家uid
+     * @param service 服务
+     * @param guide 导航
+     * @param id 交易id
+     * @param num 热度
+     * @param refresh 是否刷新
+     */
+    public TaskHeat(@NotNull UUID uid, MarketService service, 
+            ViewGuide guide, long id, int num, boolean refresh) {
+        super(uid);
         this.id = id;
         this.num = num;
         this.service = service;
-        this.economy = economy;
         this.guide = guide;
+        this.refresh = refresh;
     }
 
     @Override
     public void execute() {
-        String type = service.selectTransactionType(id);
+        final String type = service.selectTransactionType(id);
 
-        if("".equals(type)){
-            executeInfo(Language.DATA_ERROR);
+        if (StringUtils.isEmpty(type)) {
+            this.info(Language.ERROR_DATA.get());
             return;
         }
 
-        int heat = service.selectTransactionHeat(id) + num;
-        String nickname = service.selectTransactionNickname(id);
-        
-        // 通知参与竞拍的
-        if (!"".equals(service.selectTransactionTarget(id)) && "auction".equals(type)) {
-            Info info = new Gson().fromJson(service.selectTransactionDesc(id), Info.class);
-            Set<String> biders = info.getStrings();
-            biders.add(playerName);
-            for (String bider : biders) {
-                Player pBider = Bukkit.getPlayerExact(bider);
-                if (pBider == null) continue;
-                pBider.sendMessage(Language.CONFIRM_BID
-                        .replace("%item%", nickname)
-                        .replace("%num%", String.valueOf(3 - heat)));
-            }
-        }
+        final int heat = service.selectTransactionHeat(id) + num;
 
-        // 热度为0的拍卖，完成竞拍
-        if ("auction".equals(type) && heat == 0) {
-            this.followTasks().add(new TaskFinish(type, service, economy, guide, id));
+        // 热度不降为0
+        if (heat > 0) {
+            service.updateTransactionHeat(heat, id);
+
             guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
-            return;
+            guide.refreshPages(GlobalMarket.EDIT_VIEW, String.valueOf(id));
         }
-        
-        if (heat <= 0) {
-            heat = 0;
+
+        if (refresh) {
+            guide.refreshPages(GlobalMarket.MAIN_VIEW);
+            guide.refreshPages(GlobalMarket.CATEGORY_VIEW);
+            guide.refreshPages(GlobalMarket.MINE_VIEW);
+            guide.refreshPages(GlobalMarket.VISIT_VIEW);
         }
-        // 更新热度
-        service.updateTransactionHeat(heat, id);
     }
 
 }

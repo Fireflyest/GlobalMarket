@@ -22,7 +22,7 @@ public class MarketBlackCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        sender.sendMessage(Language.ERROR_ARGUMENT);
+        sender.sendMessage(Language.COMMAND_ARGUMENT.get());
         return true;
     }
 
@@ -37,7 +37,7 @@ public class MarketBlackCommand extends SubCommand {
         final String uid = service.selectMerchantUid(arg1);
         if (!"".equals(uid)) {
             service.updateMerchantBlack(uid, black);
-            sender.sendMessage(Language.MERCHANT_BLACK);
+            sender.sendMessage(Language.MERCHANT_BLACK.get());
         }
         return true;
     }

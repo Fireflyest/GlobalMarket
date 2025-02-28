@@ -1,11 +1,13 @@
 package com.fireflyest.market;
 
-import io.fireflyest.emberlib.argument.NumberArgs;
-import io.fireflyest.emberlib.argument.OfficePlayerArgs;
-import io.fireflyest.emberlib.argument.StringArgs;
-import io.fireflyest.emberlib.database.sql.SQLConnector;
+import io.fireflyest.emberlib.cache.CacheOrganism;
+import io.fireflyest.emberlib.command.ComplexCommand;
+import io.fireflyest.emberlib.command.SubCommand;
+import io.fireflyest.emberlib.command.args.ObjectArgs;
+import io.fireflyest.emberlib.command.args.OfficePlayerArgs;
+import io.fireflyest.emberlib.database.DatabaseConnector;
 import io.fireflyest.emberlib.inventory.ViewGuide;
-
+import com.fireflyest.market.command.DeliveryArgs;
 import com.fireflyest.market.command.MarketAdminCommand;
 import com.fireflyest.market.command.MarketReloadCommand;
 import com.fireflyest.market.command.MarketAffairCommand;
@@ -35,15 +37,15 @@ import com.fireflyest.market.command.MarketSizeCommand;
 import com.fireflyest.market.command.MarketStarCommand;
 import com.fireflyest.market.command.MarketStoreCommand;
 import com.fireflyest.market.command.MarketVisitCommand;
+import com.fireflyest.market.command.TransactionArgs;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
-import com.fireflyest.market.data.MarketYaml;
-import com.fireflyest.market.data.StateCache;
+import com.fireflyest.market.data.Language;
 import com.fireflyest.market.listener.PlayerEventListener;
 import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
 import com.fireflyest.market.task.TaskCancel;
-import com.fireflyest.market.task.TaskHeat;
+import com.fireflyest.market.task.TaskTimer;
 import com.fireflyest.market.view.AffairView;
 import com.fireflyest.market.view.CategoryView;
 import com.fireflyest.market.view.EditView;
@@ -55,23 +57,26 @@ import com.fireflyest.market.view.MineView;
 import com.fireflyest.market.view.SearchView;
 import com.fireflyest.market.view.StoreView;
 import com.fireflyest.market.view.VisitView;
-
+import java.util.UUID;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import io.fireflyest.craftgui.util.TranslateUtils;
+import org.checkerframework.checker.units.qual.h;
+
 import io.fireflyest.emberlib.task.TaskHandler;
-import io.fireflyest.util.TimeUtils;
+import io.fireflyest.emberlib.util.TimeUtils;
+import io.fireflyest.emberlib.util.YamlUtils;
 
 /**
+ * a global market plugin
+ * 
  * @author Fireflyest
- * 2022/2/15 22:05
+ * @since 3.3
  */
-public class GlobalMarket extends JavaPlugin{
+public class GlobalMarket extends JavaPlugin {
 
     /*
     材质
@@ -105,12 +110,11 @@ public class GlobalMarket extends JavaPlugin{
     public static final String SEARCH_VIEW = "market.search";
 
     private MarketService service;
-    private MarketYaml yaml;
     private MarketEconomy economy;
     private TaskHandler handler;
     private ViewGuide guide;
     private BukkitTask marketTask;
-    private StateCache cache;
+    private CacheOrganism cache;
     private String url;
 
     @Override
@@ -120,14 +124,17 @@ public class GlobalMarket extends JavaPlugin{
 
         // 数据
         this.getLogger().info("Enable data service.");
-        yaml = new MarketYaml(this);
+        YamlUtils.loadToClass(this, Config.class, "config.yml");
+        YamlUtils.loadToClass(this, Language.class, "lang/" + Config.LANG.get() + ".yml");
         try {
-            if (Config.SQL_ENABLE) {
-                url = Config.SQL_URL;
-                SQLConnector.setupConnect(SQLConnector.MYSQL, url, Config.SQL_USER, Config.SQL_PASSWORD);
+            if (Config.SQL_ENABLE.get().booleanValue()) {
+                url = Config.SQL_URL.get();
+                DatabaseConnector.setupConnect(
+                    DatabaseConnector.MYSQL, url, Config.SQL_USER.get(), Config.SQL_PASSWORD.get());
             } else {
-                url = "jdbc:sqlite:" + getDataFolder().getParent() + "/" + this.getClass().getSimpleName() + "/storage.db";
-                SQLConnector.setupConnect(SQLConnector.SQLITE, url, null, null);
+                url = "jdbc:sqlite:" + getDataFolder().getParent() 
+                    + "/" + this.getClass().getSimpleName() + "/storage.db";
+                DatabaseConnector.setupConnect(DatabaseConnector.SQLITE, url, null, null);
             }
             service = new MarketService(url);
         } catch (Exception e) {
@@ -138,135 +145,136 @@ public class GlobalMarket extends JavaPlugin{
         this.setupGuide();
         
         economy = new MarketEconomy();
-        cache = new StateCache();
+        cache = new CacheOrganism("cache");
+        cache.load(this);
         
         // 注册事件
-        this.getServer().getPluginManager().registerEvents(new PlayerEventListener(service, guide, handler), this);
+        this.getServer()
+            .getPluginManager()
+            .registerEvents(new PlayerEventListener(service, guide, handler), this);
 
         // 注册指令
-        PluginCommand marketAdmin = this.getCommand("marketadmin");
-        if (marketAdmin != null) {
-            MarketAdminCommand marketAdminCommand = new MarketAdminCommand(guide);
-            MarketBlackCommand marketBlackCommand = new MarketBlackCommand(service);
-            marketBlackCommand.setArgument(0, new OfficePlayerArgs());
-            marketBlackCommand.setArgument(0, new StringArgs("0", "1"));
-            MarketCheckCommand marketCheckCommand = new MarketCheckCommand();
-            MarketCollateCommand marketCollateCommand = new MarketCollateCommand(service);
-            MarketReloadCommand marketAdminReloadCommand = new MarketReloadCommand(yaml);
-            MarketSizeCommand marketSizeCommand = new MarketSizeCommand(service);
-            marketSizeCommand.setArgument(0, new OfficePlayerArgs());
-            marketSizeCommand.setArgument(1, new NumberArgs());
-            marketAdminCommand.addSubCommand("black", marketBlackCommand);
-            marketAdminCommand.addSubCommand("check", marketCheckCommand);
-            marketAdminCommand.addSubCommand("collate", marketCollateCommand);
-            marketAdminCommand.addSubCommand("reload", marketAdminReloadCommand);
-            marketAdminCommand.addSubCommand("size", marketSizeCommand);
-            marketAdmin.setExecutor(marketAdminCommand);
-            marketAdmin.setTabCompleter(marketAdminCommand);
-        }
-        PluginCommand market = this.getCommand("market");
-        if (market != null) {
-            StringArgs currencyArgs = new StringArgs("coin", "point", "item");
-            MarketCommand marketCommand = new MarketCommand(guide);
-            MarketAffairCommand marketAffairCommand = new MarketAffairCommand(service, economy, guide, handler);
-            marketAffairCommand.setArgument(0, new NumberArgs());
-            MarketAuctionCommand marketAuctionCommand = new MarketAuctionCommand(service, guide, handler);
-            marketAuctionCommand.setArgument(0, new NumberArgs());
-            marketAuctionCommand.setArgument(1, new NumberArgs());
-            marketAuctionCommand.setArgument(2, currencyArgs);
-            MarketBidCommand marketBidCommand = new MarketBidCommand(service, economy, guide, handler);
-            marketBidCommand.setArgument(0, new NumberArgs());
-            marketBidCommand.setArgument(1, new NumberArgs());
-            MarketBuyCommand marketBuyCommand = new MarketBuyCommand(service, economy, guide, handler);
-            marketBuyCommand.setArgument(0, new NumberArgs());
-            marketBuyCommand.setArgument(1, new NumberArgs());
-            MarketCancelCommand marketCancelCommand = new MarketCancelCommand(service, guide, handler);
-            marketCancelCommand.setArgument(0, new NumberArgs());
-            MarketCategoryCommand marketCategoryCommand = new MarketCategoryCommand(guide);
-            marketCategoryCommand.setArgument(0, new StringArgs("category1", "category2", "category3", "category4", "category5", "category6", "category7"));
-            MarketEditCommand marketEditCommand = new MarketEditCommand(guide);
-            marketEditCommand.setArgument(0, new NumberArgs());
-            MarketFinishCommand marketFinishCommand = new MarketFinishCommand(service, economy, guide, handler);
-            marketFinishCommand.setArgument(0, new NumberArgs());
-            MarketHelpCommand marketHelpCommand = new MarketHelpCommand();
-            MarketHomeCommand marketHomeCommand = new MarketHomeCommand(guide);
-            MarketMailCommand  marketMailCommand = new MarketMailCommand(guide);
-            MarketOrderCommand marketOrderCommand = new MarketOrderCommand(service, guide, handler);
-            marketOrderCommand.setArgument(0, new NumberArgs());
-            marketOrderCommand.setArgument(1, new NumberArgs());
-            marketOrderCommand.setArgument(2, currencyArgs);
-            MarketMineCommand marketMineCommand = new MarketMineCommand(guide);
-            MarketRepriceCommand marketRepriceCommand = new MarketRepriceCommand(service, guide, handler);
-            marketRepriceCommand.setArgument(0, new NumberArgs());
-            marketRepriceCommand.setArgument(1, new NumberArgs());
-            MarketSaleCommand marketSaleCommand = new MarketSaleCommand(service, economy, guide, handler);
-            marketSaleCommand.setArgument(0, new NumberArgs());
-            marketSaleCommand.setArgument(1, new NumberArgs());
-            MarketSearchCommand marketSearchCommand = new MarketSearchCommand(guide);
-            marketSearchCommand.setArgument(0, new StringArgs("[...]"));
-            MarketSellCommand marketSellCommand = new MarketSellCommand(service, guide, handler);
-            marketSellCommand.setArgument(0, new NumberArgs());
-            marketSellCommand.setArgument(1, new NumberArgs());
-            marketSellCommand.setArgument(2, currencyArgs);
-            MarketSendCommand marketSendCommand = new MarketSendCommand(service, handler);
-            marketSendCommand.setArgument(0, new OfficePlayerArgs());
-            marketSendCommand.setArgument(1, new NumberArgs());
-            marketSendCommand.setArgument(2, new StringArgs("<...>"));
-            MarketSignCommand marketSignCommand = new MarketSignCommand(service, economy, guide, handler);
-            marketSignCommand.setArgument(0, new NumberArgs());
-            MarketStarCommand marketStarCommand = new MarketStarCommand(service, cache);
-            marketStarCommand.setArgument(0, new OfficePlayerArgs());
-            MarketStoreCommand marketStoreCommand = new MarketStoreCommand(service);
-            marketStoreCommand.setArgument(0, new StringArgs("[...]"));
-            MarketVisitCommand marketVisitCommand = new MarketVisitCommand(service, guide, cache);
-            marketVisitCommand.setArgument(0, new OfficePlayerArgs());
-            marketCommand.addSubCommand("affair", marketAffairCommand);
-            marketCommand.addSubCommand("auction", marketAuctionCommand);
-            marketCommand.addSubCommand("bid", marketBidCommand);
-            marketCommand.addSubCommand("buy", marketBuyCommand);
-            marketCommand.addSubCommand("cancel", marketCancelCommand);
-            marketCommand.addSubCommand("category", marketCategoryCommand);
-            marketCommand.addSubCommand("edit", marketEditCommand);
-            marketCommand.addSubCommand("finish", marketFinishCommand);
-            marketCommand.addSubCommand("help", marketHelpCommand);
-            marketCommand.addSubCommand("home", marketHomeCommand);
-            marketCommand.addSubCommand("mail", marketMailCommand);
-            marketCommand.addSubCommand("mine", marketMineCommand);
-            marketCommand.addSubCommand("order", marketOrderCommand);
-            marketCommand.addSubCommand("reprice", marketRepriceCommand);
-            marketCommand.addSubCommand("sale", marketSaleCommand);
-            marketCommand.addSubCommand("search", marketSearchCommand);
-            marketCommand.addSubCommand("sell", marketSellCommand);
-            marketCommand.addSubCommand("send", marketSendCommand);
-            marketCommand.addSubCommand("sign", marketSignCommand);
-            marketCommand.addSubCommand("star", marketStarCommand);
-            marketCommand.addSubCommand("store", marketStoreCommand);
-            marketCommand.addSubCommand("visit", marketVisitCommand);
-            market.setExecutor(marketCommand);
-            market.setTabCompleter(marketCommand);
-        }
+        final ComplexCommand marketAdminCommand = new MarketAdminCommand(guide).name("marketadmin");
+        final SubCommand blackCommand = new MarketBlackCommand(service)
+            .addArg(new OfficePlayerArgs())
+            .addArg(new ObjectArgs("0", "1"));
+        final SubCommand sizeCommand = new MarketSizeCommand(service)
+            .addArg(new OfficePlayerArgs())
+            .addArg(new ObjectArgs(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
+        marketAdminCommand.addSub("black", blackCommand)
+            .addSub("size", sizeCommand)
+            .addSub("check", new MarketCheckCommand())
+            .addSub("collate", new MarketCollateCommand(service))
+            .addSub("reload", new MarketReloadCommand())
+            .apply(this);
         
-        final long limit = (long) Config.TERM_OF_VALIDITY * 1000 * 60 * 60 * 24;
-        final long prepare = 1000 * 60 * 60 * 3;
+        final ComplexCommand makretCommand = new MarketCommand(guide).name("market");
+        final ObjectArgs currencyArgs = new ObjectArgs("coin", "point", "item");
+        final TransactionArgs playerTransactionArgs = new TransactionArgs(service, null);
+        final TransactionArgs retailTransactionArgs = new TransactionArgs(service, "retail");
+        final TransactionArgs auctionTransactionArgs = new TransactionArgs(service, "auction");
+        final TransactionArgs orderTransactionArgs = new TransactionArgs(service, "order");
+        final DeliveryArgs deliveryArgs = new DeliveryArgs(service);
+        final SubCommand marketAffairCommand = 
+            new MarketAffairCommand(service, guide, cache, handler).addArg(retailTransactionArgs);
+        final SubCommand marketAuctionCommand = new MarketAuctionCommand(service, guide, handler)
+            .addArg(new ObjectArgs("价格", 9, 998, 666))
+            .addArg(new ObjectArgs("数量", 1, 16, 64))
+            .addArg(currencyArgs);
+        final SubCommand marketBidCommand = new MarketBidCommand(service, economy, guide, handler)
+            .addArg(auctionTransactionArgs)
+            .addArg(new ObjectArgs("金额", 10, 100, 1000));
+        final SubCommand marketBuyCommand = new MarketBuyCommand(service, economy, guide, handler)
+            .addArg(retailTransactionArgs)
+            .addArg(new ObjectArgs("数量", 1, 16, 64));
+        final SubCommand marketCancelCommand = new MarketCancelCommand(service, guide, handler)
+            .addArg(playerTransactionArgs);
+        final SubCommand marketCategoryCommand = new MarketCategoryCommand(guide)
+            .addArg(new ObjectArgs("1", "2", "3", "4", "5", "6", "7"));
+        final SubCommand marketEditCommand = new MarketEditCommand(guide)
+            .addArg(playerTransactionArgs);
+        final SubCommand marketFinishCommand = 
+            new MarketFinishCommand(service, economy, guide, handler).addArg(playerTransactionArgs);
+        final SubCommand marketOrderCommand = new MarketOrderCommand(service, guide, handler)
+            .addArg(new ObjectArgs("价格", 9, 998, 666))
+            .addArg(new ObjectArgs("数量", 1, 16, 64))
+            .addArg(currencyArgs);
+        final SubCommand marketRepriceCommand = new MarketRepriceCommand(service, guide, handler)
+            .addArg(playerTransactionArgs)
+            .addArg(new ObjectArgs("价格", 9, 998, 666));
+        final SubCommand marketSaleCommand = new MarketSaleCommand(service, economy, guide, handler)
+            .addArg(orderTransactionArgs)
+            .addArg(new ObjectArgs("数量", 1, 16, 64));
+        final SubCommand marketSearchCommand = new MarketSearchCommand(guide)
+            .addArg(new ObjectArgs("[name], [lore]"));
+        final SubCommand marketSellCommand = new MarketSellCommand(service, guide, handler)
+            .addArg(new ObjectArgs("价格", 9, 998, 666))
+            .addArg(new ObjectArgs("数量", 1, 16, 64))
+            .addArg(currencyArgs);
+        final SubCommand marketSendCommand = new MarketSendCommand(service, guide, handler)
+            .addArg(new OfficePlayerArgs())
+            .addArg(new ObjectArgs("数量", 1, 16, 64))
+            .addArg(new ObjectArgs("附言"));
+        final SubCommand marketSignCommand = new MarketSignCommand(service, economy, guide, handler)
+            .addArg(deliveryArgs);
+        final SubCommand marketStarCommand = new MarketStarCommand(service, cache)
+            .addArg(new OfficePlayerArgs());
+        final SubCommand marketStoreCommand = new MarketStoreCommand(service)
+            .addArg(new OfficePlayerArgs());
+        final SubCommand marketVisitCommand = new MarketVisitCommand(service, guide, cache)
+            .addArg(new OfficePlayerArgs());
+        makretCommand.addSub("affair", marketAffairCommand)
+            .addSub("auction", marketAuctionCommand)
+            .addSub("bid", marketBidCommand)
+            .addSub("buy", marketBuyCommand)
+            .addSub("cancel", marketCancelCommand)
+            .addSub("category", marketCategoryCommand)
+            .addSub("edit", marketEditCommand)
+            .addSub("finish", marketFinishCommand)
+            .addSub("help", new MarketHelpCommand())
+            .addSub("home", new MarketHomeCommand(guide))
+            .addSub("mail", new MarketMailCommand(guide))
+            .addSub("mine", new MarketMineCommand(guide))
+            .addSub("order", marketOrderCommand)
+            .addSub("reprice", marketRepriceCommand)
+            .addSub("sale", marketSaleCommand)
+            .addSub("search", marketSearchCommand)
+            .addSub("sell", marketSellCommand)
+            .addSub("send", marketSendCommand)
+            .addSub("sign", marketSignCommand)
+            .addSub("star", marketStarCommand)
+            .addSub("store", marketStoreCommand)
+            .addSub("visit", marketVisitCommand)
+            .apply(this);
+        
+        
+        final long limit = (long) Config.TRANSACTION_EXPIRATION.get() * 1000 * 60 * 60 * 24;
+        final long prepare = 1000 * 60 * 60 * 3L;
         // 20mc刻为一秒
         marketTask = new BukkitRunnable() {
             @Override
             public void run() {
-                long deadline = TimeUtils.getTime() - limit;
-                long prepareDeadline = TimeUtils.getTime() - prepare;
+                final long deadline = TimeUtils.getTime() - limit;
+                final long prepareDeadline = TimeUtils.getTime() - prepare;
                 // 超时下架
-                if(Config.TERM_OF_VALIDITY != -1){
+                if (Config.TRANSACTION_EXPIRATION.get() != -1) {
                     for (long id : service.selectTransactionCancel(deadline)) {
-                        handler.putTasks(TASK_MARKET, new TaskCancel(service.selectTransactionOwnerName(id), service, guide, id));
+                        final UUID owner = UUID.fromString(service.selectTransactionOwner(id));
+                        handler.putTasks(TASK_MARKET, new TaskCancel(owner, service, guide, id));
                     }
                 }
                 // 预售超时
                 for (long id : service.selectTransactionPrepareCancel(prepareDeadline)) {
-                    handler.putTasks(TASK_MARKET, new TaskCancel(service.selectTransactionOwnerName(id), service, guide, id));
+                    final UUID owner = UUID.fromString(service.selectTransactionOwner(id));
+                    handler.putTasks(TASK_MARKET, new TaskCancel(owner, service, guide, id));
                 }
                 // 降热度
-                for (long id : service.selectTransactionIdByType("")) {
-                    handler.putTasks(TASK_MARKET, new TaskHeat(service.selectTransactionOwnerName(id), service, economy, guide, id, -1));
+                final long[] ids = service.selectTransactionIdByType("");
+                if (ids.length > 0) {
+                    final UUID owner = UUID.fromString(service.selectTransactionOwner(ids[0]));
+                    handler.putTasks(TASK_MARKET, 
+                        new TaskTimer(owner, service, economy, guide, ids));
+                    
                 }
                 MarketItem.setHeatRank(service.selectTransactionIdByHeat(10));
             }
@@ -277,17 +285,34 @@ public class GlobalMarket extends JavaPlugin{
     public void onDisable() {
         // 关闭数据库
         if (service != null) {
-            SQLConnector.close(url);
+            DatabaseConnector.close(url);
         }
         Bukkit.getScheduler().cancelTasks(this);
 
+        // 工作队列
+        if (handler != null) {
+            handler.removeWorker(TASK_MARKET);
+            handler.removeWorker(TASK_MAIL);
+        }
+
         // 自动下架监控
-        if (marketTask != null) marketTask.cancel();
+        if (marketTask != null) {
+            marketTask.cancel();
+        }
+
+        // 缓存
+        if (cache != null) {
+            cache.save(this);
+        }
     }
 
-
+    /**
+     * 注册任务处理器
+     */
     public void setupHandler() {
-        RegisteredServiceProvider<TaskHandler> rsp = Bukkit.getServer().getServicesManager().getRegistration(TaskHandler.class);
+        final RegisteredServiceProvider<TaskHandler> rsp = Bukkit.getServer()
+            .getServicesManager()
+            .getRegistration(TaskHandler.class);
         if (rsp == null) {
             this.getLogger().warning("TaskHandler not found!");
             return;
@@ -301,27 +326,26 @@ public class GlobalMarket extends JavaPlugin{
      * 界面初始化
      */
     public void setupGuide() {
-
-        TranslateUtils.setLanguage(Config.LANG);
-
-        RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer().getServicesManager().getRegistration(ViewGuide.class);
+        final RegisteredServiceProvider<ViewGuide> rsp = Bukkit.getServer()
+            .getServicesManager()
+            .getRegistration(ViewGuide.class);
         if (rsp == null) {
             this.getLogger().warning("GUI not found!");
             return;
         }
         guide = rsp.getProvider();
 
-        guide.addView(MAIN_VIEW, new MainView(service, yaml));
-        guide.addView(MAIL_VIEW, new MailView(service, yaml));
-        guide.addView(MINE_VIEW, new MineView(service, yaml));
-        guide.addView(VISIT_VIEW, new VisitView(service, yaml));
-        guide.addView(HOME_VIEW, new HomeView(yaml));
-        guide.addView(MANAGE_VIEW, new ManageView(yaml));
-        guide.addView(STORE_VIEW, new StoreView(service, yaml));
-        guide.addView(CATEGORY_VIEW, new CategoryView(service, yaml));
-        guide.addView(AFFAIR_VIEW, new AffairView(service, yaml));
-        guide.addView(EDIT_VIEW, new EditView(service, yaml, guide, handler));
-        guide.addView(SEARCH_VIEW, new SearchView(service, yaml));
+        guide.addView(MAIN_VIEW, new MainView(service));
+        guide.addView(MAIL_VIEW, new MailView(service));
+        guide.addView(MINE_VIEW, new MineView(service, guide, handler));
+        guide.addView(VISIT_VIEW, new VisitView(service));
+        guide.addView(HOME_VIEW, new HomeView());
+        guide.addView(MANAGE_VIEW, new ManageView());
+        guide.addView(STORE_VIEW, new StoreView(service));
+        guide.addView(CATEGORY_VIEW, new CategoryView(service));
+        guide.addView(AFFAIR_VIEW, new AffairView(service));
+        guide.addView(EDIT_VIEW, new EditView(service, guide, handler));
+        guide.addView(SEARCH_VIEW, new SearchView(service));
     }
 
     public static GlobalMarket getPlugin() {

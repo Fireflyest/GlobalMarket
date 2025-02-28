@@ -2,7 +2,6 @@ package com.fireflyest.market.command;
 
 import org.bukkit.command.CommandSender;
 import io.fireflyest.emberlib.command.SubCommand;
-import com.fireflyest.market.data.Language;
 
 /**
  * 市场帮助命令
@@ -14,7 +13,7 @@ public class MarketHelpCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        sender.sendMessage(Language.HELP);
+        // TODO 发送帮助信息
         return true;
     }
     

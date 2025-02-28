@@ -43,13 +43,13 @@ public class MarketBidCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        sender.sendMessage(Language.ERROR_ARGUMENT);
+        sender.sendMessage(Language.COMMAND_ARGUMENT.get());
         return true;
     }
 
     @Override
     protected boolean execute(CommandSender sender, String arg1) {
-        sender.sendMessage(Language.ERROR_ARGUMENT);
+        sender.sendMessage(Language.COMMAND_ARGUMENT.get());
         return true;
     }
 
@@ -57,18 +57,18 @@ public class MarketBidCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1, String arg2) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         final int id = NumberConversions.toInt(arg1);
         final int num = NumberConversions.toInt(arg2);
         if (num <= 0) {
-            player.sendMessage(Language.ERROR_ARGUMENT);
+            player.sendMessage(Language.COMMAND_ARGUMENT.get());
             return true;
         }
         handler.putTasks(
             GlobalMarket.TASK_MARKET, 
-            new TaskBid(player.getName(), service, economy, guide, id, num)
+            new TaskBid(player.getUniqueId(), service, economy, guide, id, num)
         );
         return true;
     }

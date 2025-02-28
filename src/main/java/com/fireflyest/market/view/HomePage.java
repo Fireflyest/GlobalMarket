@@ -1,95 +1,154 @@
 package com.fireflyest.market.view;
 
-import java.util.Map;
-
-import org.bukkit.inventory.ItemStack;
-import io.fireflyest.craftgui.button.ButtonItemBuilder;
-import io.fireflyest.craftgui.view.TemplatePage;
-
+import org.bukkit.event.inventory.InventoryAction;
+import io.fireflyest.emberlib.data.Pair;
+import io.fireflyest.emberlib.inventory.ActionResult;
+import io.fireflyest.emberlib.inventory.Page;
+import io.fireflyest.emberlib.inventory.item.ItemBuilder;
+import io.fireflyest.emberlib.inventory.Slot;
+import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
 
-public class HomePage extends TemplatePage {
+/**
+ * 主页
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class HomePage extends Page {
 
-    private final MarketYaml yaml;
 
-    protected HomePage(MarketYaml yaml) {
-        super(Language.TITLE_HOME_PAGE, "", 0, 27);
-        this.yaml = yaml;
+    protected HomePage() {
+        super("", 0, 27);
 
-        this.refreshPage();
-    }
-
-    @Override
-    public Map<Integer, ItemStack> getItemMap() {
-        asyncButtonMap.clear();
-        asyncButtonMap.putAll(buttonMap);
-        return buttonMap;
+        this.setup(Language.TITLE_HOME.get());
     }
 
     @Override
     public void refreshPage() {
-        buttonMap.put(0, ((ButtonItemBuilder)yaml.getItemBuilder("category1"))
-                .actionOpenPage("market.category.category1")
-                .build());
-        buttonMap.put(1, ((ButtonItemBuilder)yaml.getItemBuilder("category2"))
-                .actionOpenPage("market.category.category2")
-                .build());
-        buttonMap.put(2, ((ButtonItemBuilder)yaml.getItemBuilder("category3"))
-                .actionOpenPage("market.category.category3")
-                .build());
-        buttonMap.put(3, ((ButtonItemBuilder)yaml.getItemBuilder("category4"))
-                .actionOpenPage("market.category.category4")
-                .build());
-        buttonMap.put(4, ((ButtonItemBuilder)yaml.getItemBuilder("category5"))
-                .actionOpenPage("market.category.category5")
-                .build());
-        buttonMap.put(5, ((ButtonItemBuilder)yaml.getItemBuilder("category6"))
-                .actionOpenPage("market.category.category6")
-                .build());
-        buttonMap.put(6, ((ButtonItemBuilder)yaml.getItemBuilder("category7"))
-                .actionOpenPage("market.category.category7")
-                .build());
 
-        buttonMap.put(8, yaml.getItemBuilder("search").build());
+        final Pair<ItemBuilder, Slot> category1 = MarketItem.getPair("category1");
+        category1.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.category.category1");
+        
+        final Pair<ItemBuilder, Slot> category2 = MarketItem.getPair("category2");
+        category2.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.category.category2");
 
-        buttonMap.put(18, ((ButtonItemBuilder)yaml.getItemBuilder("admin"))
-                .actionOpenPage("market.main.admin")
-                .build());
-        buttonMap.put(19, ((ButtonItemBuilder)yaml.getItemBuilder("auction"))
-                .actionOpenPage("market.main.auction")
-                .build());
-        buttonMap.put(20, ((ButtonItemBuilder)yaml.getItemBuilder("retail"))
-                .actionOpenPage("market.main.retail")
-                .build());
+        final Pair<ItemBuilder, Slot> category3 = MarketItem.getPair("category3");
+        category3.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.category.category3");
+
+        final Pair<ItemBuilder, Slot> category4 = MarketItem.getPair("category4");
+        category4.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.category.category4");
+
+        final Pair<ItemBuilder, Slot> category5 = MarketItem.getPair("category5");
+        category5.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.category.category5");
+
+        final Pair<ItemBuilder, Slot> category6 = MarketItem.getPair("category6");
+        category6.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.category.category6");
+
+        final Pair<ItemBuilder, Slot> category7 = MarketItem.getPair("category7");
+        category7.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.category.category7");
+
+        this.slot(0, category1);
+        this.slot(1, category2);
+        this.slot(2, category3);
+        this.slot(3, category4);
+        this.slot(4, category5);
+        this.slot(5, category6);
+        this.slot(6, category7);
+
+        this.slot(8, MarketItem.getPair("search"));
+
+        final Pair<ItemBuilder, Slot> admin = MarketItem.getPair("admin");
+        admin.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.main.admin");
+        this.slot(18, admin);
+
+        final Pair<ItemBuilder, Slot> auction = MarketItem.getPair("auction");
+        auction.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.main.auction");
+        this.slot(19, auction);
+
+        final Pair<ItemBuilder, Slot> retail = MarketItem.getPair("retail");
+        retail.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.main.retail");
+        this.slot(20, retail);
         int pos = 21;
-        if (Config.ORDER_MARKET) {
-            buttonMap.put(pos++, ((ButtonItemBuilder)yaml.getItemBuilder("order"))
-                    .actionOpenPage("market.main.order")
-                    .build());
+        if (Config.MARKET_ORDER.get().booleanValue()) {
+            final Pair<ItemBuilder, Slot> order = MarketItem.getPair("order");
+            order.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.main.order");
+            this.slot(pos++, order);
         }
-        if (Config.PLAYER_POINT_MARKET) {
-            buttonMap.put(pos++, ((ButtonItemBuilder)yaml.getItemBuilder("point"))
-                    .actionOpenPage("market.main.point")
-                    .build());
+        if (Config.CURRENCY_POINT.get().booleanValue()) {
+            final Pair<ItemBuilder, Slot> point = MarketItem.getPair("point");
+            point.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.main.point");
+            this.slot(pos++, point);
         }
-        if (Config.TRADE_MARKET) {
-            buttonMap.put(pos, ((ButtonItemBuilder)yaml.getItemBuilder("trade"))
-                    .actionOpenPage("market.main.trade")
-                    .build());
+        if (Config.MARKET_TRADE.get().booleanValue()) {
+            final Pair<ItemBuilder, Slot> trade = MarketItem.getPair("trade");
+            trade.second().result(
+                InventoryAction.PICKUP_ALL, 
+                false, 
+                ActionResult.ACTION_PAGE_OPEN, 
+                "market.main.trade");
+            this.slot(pos, trade);
         }
 
-        ItemStack blank = yaml.getItemBuilder("blank").build();
+        final Pair<ItemBuilder, Slot> blank = MarketItem.getPair("blank");
         for (int i = 9; i < 17; i++) {
-            buttonMap.put(i, blank);
+            this.slot(i, blank);
         }
-        buttonMap.put(7, blank);
-        buttonMap.put(25, blank);
+        this.slot(7, blank);
+        this.slot(25, blank);
 
-        buttonMap.put(17, yaml.getItemBuilder("store").build());
-        buttonMap.put(26, yaml.getItemBuilder("back").build());
+        this.slot(17, MarketItem.getPair("store"));
+        this.slot(26, MarketItem.getPair("back"));
 
     }
-    
+
 }

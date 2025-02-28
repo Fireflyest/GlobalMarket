@@ -30,7 +30,7 @@ public class MarketCategoryCommand extends SubCommand {
     protected boolean execute(CommandSender sender) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         guide.openView(player, GlobalMarket.HOME_VIEW, "");
@@ -41,10 +41,10 @@ public class MarketCategoryCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
-        guide.openView(player, GlobalMarket.CATEGORY_VIEW, arg1);
+        guide.openView(player, GlobalMarket.CATEGORY_VIEW, "category" + arg1);
         return true;
     }
 

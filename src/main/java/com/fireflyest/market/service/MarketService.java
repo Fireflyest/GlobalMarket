@@ -1,11 +1,9 @@
 package com.fireflyest.market.service;
 
 import java.util.UUID;
-
+import io.fireflyest.emberlib.database.DatabaseService;
 import io.fireflyest.emberlib.database.annotation.Auto;
 import io.fireflyest.emberlib.database.annotation.Service;
-import io.fireflyest.emberlib.database.sql.SQLService;
-
 import com.fireflyest.market.bean.Delivery;
 import com.fireflyest.market.bean.Merchant;
 import com.fireflyest.market.bean.Transaction;
@@ -13,8 +11,14 @@ import com.fireflyest.market.dao.DeliveryDao;
 import com.fireflyest.market.dao.MerchantDao;
 import com.fireflyest.market.dao.TransactionDao;
 
+/**
+ * 数据服务
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
 @Service
-public class MarketService extends SQLService {
+public class MarketService extends DatabaseService {
 
     @Auto
     public DeliveryDao deliveryDao;
@@ -54,8 +58,12 @@ public class MarketService extends SQLService {
         return merchantDao.selectMerchantName(uid.toString());
     }
 
-    public int selectMerchantSize(String name) {
-        return merchantDao.selectMerchantSize(name);
+    public int selectMerchantSizeByUid(UUID uid) {
+        return merchantDao.selectMerchantSizeByUid(uid.toString());
+    }
+
+    public int selectMerchantSizeByName(String name) {
+        return merchantDao.selectMerchantSizeByName(name);
     }
 
     public int selectMerchantCredit(UUID uid) {
@@ -86,8 +94,8 @@ public class MarketService extends SQLService {
         return merchantDao.updateMerchantSelling(update, uid);
     }
 
-    public long updateMerchantCredit(String update, String uid) {
-        return merchantDao.updateMerchantCredit(update, uid);
+    public long updateMerchantCredit(String update, UUID uid) {
+        return merchantDao.updateMerchantCredit(update, uid.toString());
     }
 
     public long updateMerchantAmount(String uid) {
@@ -119,7 +127,9 @@ public class MarketService extends SQLService {
     }
 
 
-
+    public int selectDeliveryCountByOwner(String owner) {
+        return deliveryDao.selectDeliveryCountByOwner(owner);
+    }
 
     public long[] selectDeliveryIdByOwner(UUID owner) {
         return deliveryDao.selectDeliveryIdByOwner(owner.toString());
@@ -133,8 +143,9 @@ public class MarketService extends SQLService {
         return deliveryDao.selectDeliveryByOwner(owner);
     }
 
-    public long insertDelivery(String stack, String owner, String sender, long appear, double price, String currency, String extras) {
-        return deliveryDao.insertDelivery(stack, owner, sender, appear, price, currency, extras);
+    public long insertDelivery(String stack, String owner, String sender, 
+            long appear, double price, String currency, String extra) {
+        return deliveryDao.insertDelivery(stack, owner, sender, appear, price, currency, extra);
     }
 
     public long updateDeliveryInfo(String info, long id) {
@@ -148,8 +159,8 @@ public class MarketService extends SQLService {
 
 
 
-    public long insertTransaction(String stack, UUID owner, String ownerName, String nickname, double price, long appear) {
-        return transactionDao.insertTransaction(stack, owner.toString(), ownerName, nickname, price, appear);
+    public long insertTransaction(String stack, UUID owner, double price, long appear) {
+        return transactionDao.insertTransaction(stack, owner.toString(), price, appear);
     }
 
     public Transaction selectTransactionById(long id) {
@@ -176,8 +187,8 @@ public class MarketService extends SQLService {
         return transactionDao.selectTransactionBySearch(search, start, end);
     }
 
-    public Transaction[] selectTransactionByOwnerName(String ownerName, int start, int end) {
-        return transactionDao.selectTransactionByOwnerName(ownerName, start, end);
+    public Transaction[] selectTransactionByOwner(String owner, int start, int end) {
+        return transactionDao.selectTransactionByOwner(owner, start, end);
     }
 
     public long[] selectTransactionCancel(long deadline) {
@@ -196,16 +207,16 @@ public class MarketService extends SQLService {
         return transactionDao.selectTransactionIdByHeat(min);
     }
 
+    public long[] selectTransactionIdByOwner(UUID owner) {
+        return transactionDao.selectTransactionIdByOwner(owner.toString());
+    }
+
     public String selectTransactionType(long id) {
         return transactionDao.selectTransactionType(id);
     }
 
     public String selectTransactionStack(long id) {
         return transactionDao.selectTransactionStack(id);
-    }
-
-    public String selectTransactionOwnerName(long id) {
-        return transactionDao.selectTransactionOwnerName(id);
     }
 
     public String selectTransactionOwner(long id) {
@@ -240,8 +251,16 @@ public class MarketService extends SQLService {
         return transactionDao.selectTransactionHeat(id);
     }
 
+    public long selectTransactionCategory(long id) {
+        return transactionDao.selectTransactionCategory(id);
+    }
+
     public long updateTransactionType(String type, long id) {
         return transactionDao.updateTransactionType(type, id);
+    }
+
+    public long updateTransactionNickname(String nickname, long id) {
+        return transactionDao.updateTransactionNickname(nickname, id);
     }
 
     public long updateTransactionCost(double cost, long id) {
@@ -276,8 +295,8 @@ public class MarketService extends SQLService {
         return transactionDao.updateTransactionCurrency(currency, id);
     }
 
-    public long updateTransactionExtras(String extras, long id) {
-        return transactionDao.updateTransactionExtras(extras, id);
+    public long updateTransactionExtra(String extra, long id) {
+        return transactionDao.updateTransactionExtra(extra, id);
     }
 
     public long deleteTransaction(long id) {

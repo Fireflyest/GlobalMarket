@@ -1,40 +1,38 @@
 package com.fireflyest.market.view;
 
-import java.util.Map;
-
-import org.bukkit.inventory.ItemStack;
-import io.fireflyest.craftgui.view.TemplatePage;
-
+import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
+import io.fireflyest.emberlib.inventory.Page;
 
-public class ManagePage extends TemplatePage {
+/**
+ * 管理页面
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class ManagePage extends Page {
 
-    private final MarketYaml yaml;
+    protected ManagePage() {
+        super("", 0, 27);
 
-    protected ManagePage(MarketYaml yaml) {
-        super(Language.TITLE_MANAGE_PAGE, "", 0, 27);
-        this.yaml = yaml;
-
-        this.refreshPage();
-    }
-
-    @Override
-    public Map<Integer, ItemStack> getItemMap() {
-        asyncButtonMap.clear();
-        asyncButtonMap.putAll(buttonMap);
-
-        return buttonMap;
+        this.setup(Language.TITLE_MANAGE.get());
     }
 
     @Override
     public void refreshPage() {
-        buttonMap.put(0, yaml.getItemBuilder("reload").build());
-        buttonMap.put(1, yaml.getItemBuilder("check").build());
+        if (!init) {
+            this.initPage();
+        }
 
-        buttonMap.put(9, yaml.getItemBuilder("statistic").build());
+        this.slot(9, MarketItem.getPair("statistic"));
+    }
 
-        buttonMap.put(26, yaml.getItemBuilder("back").build());
+    @Override
+    public void initPage() {
+        super.initPage();
+        this.slot(0, MarketItem.getPair("reload"));
+        this.slot(1, MarketItem.getPair("check"));
+        this.slot(26, MarketItem.getPair("back"));
     }
     
 }
