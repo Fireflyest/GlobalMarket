@@ -25,7 +25,7 @@ public class MarketHomeCommand extends SubCommand {
     protected boolean execute(CommandSender sender) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         guide.openView(player, GlobalMarket.AFFAIR_VIEW, "");

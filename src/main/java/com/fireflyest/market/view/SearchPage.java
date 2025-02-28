@@ -1,81 +1,101 @@
 package com.fireflyest.market.view;
 
-import java.util.Map;
-
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
-import io.fireflyest.emberlib.inventory.ViewPage;
-import io.fireflyest.craftgui.view.TemplatePage;
-import io.fireflyest.util.SerializationUtil;
-
 import com.fireflyest.market.bean.Transaction;
 import com.fireflyest.market.core.MarketItem;
-import com.fireflyest.market.data.MarketYaml;
+import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketService;
+import io.fireflyest.emberlib.inventory.ActionResult;
+import io.fireflyest.emberlib.inventory.Page;
+import io.fireflyest.emberlib.inventory.Slot;
+import io.fireflyest.emberlib.util.YamlUtils;
 
-public class SearchPage extends TemplatePage {
+/**
+ * 搜索页
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class SearchPage extends Page {
 
     private final MarketService service;
-    private final MarketYaml yaml;
 
-    protected SearchPage(String title, String target, int page, MarketService service, MarketYaml yaml) {
-        super(title, target, page, 54);
+    protected SearchPage(String target, int pageNumber, MarketService service) {
+        super(target, pageNumber, 54);
         this.service = service;
-        this.yaml = yaml;
 
-        this.refreshPage();
+        this.setup(Language.TITLE_SEARCH.get().replace("%search%", String.valueOf(target)));
     }
 
-    @Override
-    public Map<Integer, ItemStack> getItemMap() {
-        asyncButtonMap.clear();
-        asyncButtonMap.putAll(buttonMap);
-
-        Transaction[] transactions;
-        transactions = service.selectTransactionBySearch(target, (page - 1) * 45, page * 45);
-        // 可以下一页
-        if (transactions.length != 0){
-            asyncButtonMap.put(46, yaml.getItemBuilder("pageNext").build());
-        }
-
-        // 放置商品
-        for (int i = 0; i < 45; i++) {
-            if(i < transactions.length){
-                Transaction transaction = transactions[i];
-                ItemStack item = SerializationUtil.deserializeItemStack(transaction.getStack());
-                MarketItem.loreItemData(item, transaction);
-                asyncButtonMap.put(i, item);
-            }else {
-                asyncButtonMap.put(i, new ItemStack(Material.AIR));
-            }
-        }
-
-        return asyncButtonMap;
-    }
-
+    
     @Override
     public void refreshPage() {
-        // 上一页
-        if (page == 1){
-            buttonMap.put(45, yaml.getItemBuilder("pagePreDisable").build());
-        }else {
-            buttonMap.put(45, yaml.getItemBuilder("pagePre").build());
+        if (!init) {
+            this.initPage();
         }
-        // 下一页
-        buttonMap.put(46, yaml.getItemBuilder("pageNextDisable").build());
 
-        buttonMap.put(51, yaml.getItemBuilder("mine").build());
-        buttonMap.put(52, yaml.getItemBuilder("mail").build());
-        buttonMap.put(53, yaml.getItemBuilder("back").build());
+        this.putTransactions();
     }
 
     @Override
-    public ViewPage getNext() {
-        if(next == null && page < 30){
-            next = new SearchPage(title, target, page+1, service, yaml);
+    public void initPage() {
+        super.initPage();
+        // 上一页
+        if (pageNumber == 1) {
+            this.slot(45, MarketItem.getPair("pagePreDisable"));
+        } else {
+            this.slot(45, MarketItem.getPair("pagePre"));
+        }
+        // 下一页
+        this.slot(46, MarketItem.getPair("pageNextDisable"));
+
+        this.slot(51, MarketItem.getPair("mine"));
+        this.slot(52, MarketItem.getPair("mail"));
+        this.slot(53, MarketItem.getPair("back"));
+    }
+
+    @Override
+    public Page getNext() {
+        if (next == null && pageNumber < 30) {
+            next = new SearchPage(target, pageNumber + 1, service);
             next.setPre(this);
         }
         return next;
     }
+
+    private void putTransactions() {
+        final Transaction[] transactions = service.selectTransactionBySearch(
+            String.valueOf(target), (pageNumber - 1) * 45, pageNumber * 45);
+        // 可以下一页
+        if (transactions.length != 0) {
+            this.slot(46, MarketItem.getPair("pageNext"));
+        }
+
+        // 放置商品
+        for (int i = 0; i < 45; i++) {
+            if (i < transactions.length) {
+                final Transaction transaction = transactions[i];
+                final ItemStack item = YamlUtils.deserializeItemStack(transaction.getStack());
+                MarketItem.loreItemData(item, transaction);
+                final Slot slot = new Slot().result(
+                    InventoryAction.PICKUP_ALL, 
+                    false, 
+                    ActionResult.ACTION_PLAYER_COMMAND, 
+                    "market affair " + transaction.getId()
+                ).result(
+                    InventoryAction.MOVE_TO_OTHER_INVENTORY, 
+                    false,
+                    ActionResult.ACTION_PLAYER_COMMAND,
+                    "market cancel " + transaction.getId()
+                );
+                this.slot(i, item, slot);
+            } else {
+                this.slot(i, new ItemStack(Material.AIR));
+            }
+        }
+    }
+
 
 }

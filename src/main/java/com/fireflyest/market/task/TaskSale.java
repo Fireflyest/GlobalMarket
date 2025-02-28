@@ -1,16 +1,16 @@
 package com.fireflyest.market.task;
 
 import java.util.UUID;
-
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
 import io.fireflyest.emberlib.inventory.ViewGuide;
 import io.fireflyest.emberlib.task.Task;
-import io.fireflyest.crafttask.exception.ExecuteException;
-import io.fireflyest.util.SerializationUtil;
-
+import io.fireflyest.emberlib.util.ChatUtils;
+import io.fireflyest.emberlib.util.YamlUtils;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Transaction;
 import com.fireflyest.market.core.MarketItem;
@@ -19,6 +19,12 @@ import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
 
+/**
+ * 出售商品
+ * 
+ * @author Fireflyest
+ * @since 1.0
+ */
 public class TaskSale extends Task {
 
     private final long id;
@@ -27,8 +33,19 @@ public class TaskSale extends Task {
     private final MarketEconomy economy;
     private final ViewGuide guide;
 
-    public TaskSale(String playerName, MarketService service, MarketEconomy economy, ViewGuide guide, long id, int num) {
-        super(playerName);
+    /**
+     * 构造任务
+     * 
+     * @param uid 玩家uid
+     * @param service 服务
+     * @param economy 经济
+     * @param guide 导航
+     * @param id 交易id
+     * @param num 出售数量
+     */
+    public TaskSale(UUID uid, MarketService service, 
+            MarketEconomy economy, ViewGuide guide, long id, int num) {
+        super(uid);
         this.id = id;
         this.num = num;
         this.service = service;
@@ -37,155 +54,191 @@ public class TaskSale extends Task {
     }
 
     @Override
-    public void execute() throws ExecuteException {
-        Transaction transaction = service.selectTransactionById(id);
+    public void execute() {
+        final Transaction transaction = service.selectTransactionById(id);
+        final boolean buyAll = num == 0;
 
-        if(null == transaction){
-            this.executeInfo(Language.DATA_ERROR);
-            return;
-        }
-        if(!"order".equals(transaction.getType()) && !"adminorder".equals(transaction.getType())){
-            this.executeInfo(Language.TYPE_ERROR);
-            return;
-        }
-        // 自己购买自己
-        if(transaction.getOwnerName().equals(playerName)){
-            this.executeInfo(Language.TRANSACTION_ERROR);
-            if (!Config.DEBUG) {
-                guide.refreshPage(playerName);
-                return;
-            }
-        }
-
-        // 物品货币未设置物品
-        if ("item".equals(transaction.getCurrency()) && ("".equals(transaction.getExtras())) || transaction.getExtras() == null) {
-            this.executeInfo(Language.CURRENCY_ERROR);
+        if (!this.check(transaction, buyAll)) {
             return;
         }
 
-        if (player == null || !player.isOnline()) {
-            return;
-        }
-
-        int amount = NumberConversions.toInt(transaction.getDesc());
-        double price;
-        double cost;
+        final int amount = NumberConversions.toInt(transaction.getDesc());
+        final boolean admin = transaction.getType().startsWith("admin");
+        final double price;
+        final double cost;
+        final ItemStack item = YamlUtils.deserializeItemStack(transaction.getStack());
+        final int saleAmount = buyAll ?  item.getAmount() : num;
         boolean hasMoney = false;
-        boolean admin = transaction.getType().startsWith("admin");
-        boolean buyAll = num == 0;
         String symbol = "";
-        String itemName = transaction.getNickname();
-        ItemStack item = SerializationUtil.deserializeItemStack(transaction.getStack());
         ItemStack currencyItem = null;      
-        int saleAmount = buyAll ?  item.getAmount() : num;
-
-        // 点券和物品交易不允许零散购买
-        if (!buyAll && !"coin".equals(transaction.getCurrency())) {
-            this.executeInfo(Language.AMOUNT_ERROR);
-            return;
-        }
 
         // 计算价格
-        if (buyAll){
+        if (buyAll) {
             price = transaction.getPrice();
             cost = transaction.getCost();
-        }else {
+        } else {
             price = transaction.getPrice() / item.getAmount() * num;
             cost = transaction.getCost() / item.getAmount() * num;
         }
 
         // 判断收购方钱是否足够
-        OfflinePlayer ownerPlayer = Bukkit.getOfflinePlayer(UUID.fromString(transaction.getOwner()));
-        switch(transaction.getCurrency()) {
+        final OfflinePlayer ownerPlayer = 
+            Bukkit.getOfflinePlayer(UUID.fromString(transaction.getOwner()));
+        switch (transaction.getCurrency()) {
             case "coin":
                 hasMoney = economy.getEconomy().has(ownerPlayer, cost);
-                symbol = Language.COIN_SYMBOL;
+                symbol = Language.SYMBOL_COIN.get();
                 break;
             case "point":
-                hasMoney = economy.gPlayerPointsAPI().look(ownerPlayer.getUniqueId()) >= cost;
-                symbol = Language.POINT_SYMBOL;
+                hasMoney = economy.getPlayerPoints().look(ownerPlayer.getUniqueId()) >= cost;
+                symbol = Language.SYMBOL_POINT.get();
                 break;
             case "item":
-                currencyItem = SerializationUtil.deserializeItemStack(transaction.getExtras());
-                if (!ownerPlayer.isOnline()) {
+                final Player player = ownerPlayer.getPlayer();
+                currencyItem = YamlUtils.deserializeItemStack(transaction.getExtra());
+                if (player == null) {
                     hasMoney = false;
                 } else {
-                    hasMoney = economy.hasItem(ownerPlayer.getPlayer(), currencyItem, (int)cost);
+                    hasMoney = economy.hasItem(player, currencyItem, (int) cost);
                 }
                 break;
             default:
                 break;
         }
 
-        if (!hasMoney){
-            this.executeInfo(Language.TRANSACTION_FAIL.replace("%target%", transaction.getOwnerName()));
-            guide.refreshPage(playerName);
+        if (!hasMoney) {
+            this.info(Language.TRANSACTION_FAIL.get().replace("%target%", ownerPlayer.getName()));
             return;
         }
 
         // 供给方扣除物品
-        if (economy.hasItem(player, item, saleAmount)) {
+        final Player player = offlinePlayer.getPlayer();
+        if (player != null && economy.hasItem(player, item, saleAmount)) {
             economy.deductItem(player, item, saleAmount);
         } else {
-            this.executeInfo(Language.TRANSACTION_FAIL.replace("%target%", ""));
-            guide.refreshPage(playerName);
+            this.info(Language.TRANSACTION_FAIL.get().replace("%target%", ""));
             return;
         }
 
         // 非无限情况下，修改交易剩余数量
-        if (!admin)  {
-            ItemStack save = item.clone();
-            int saveAmount = amount - saleAmount;
-            if (saleAmount < 0) {
-                this.executeInfo(Language.TRANSACTION_NUM);
-                guide.refreshPage(playerName);
-                return;
-            }
-            //判断剩余数量
-            if(saveAmount <= 0){
-                service.deleteTransaction(id);
-                // 统计数据修改
-                service.updateMerchantSelling("-1", transaction.getOwner());
-                service.updateMerchantAmount(transaction.getOwner());
-            } else {
-                // 更新数量和价格
-                save.setAmount(saveAmount);
-                service.updateTransactionStack(SerializationUtil.serializeItemStack(save), id);
-                service.updateTransactionDesc(String.valueOf(saveAmount), id);
-                service.updateTransactionPrice(transaction.getPrice() - price, id);
-                service.updateTransactionCost(transaction.getCost() - cost, id);
-            }
-            item.setAmount(saleAmount);
-            // 收购方得到物品
-            this.followTasks().add(new TaskSend(Language.TEXT_MAIL_FROM_ORDER, service, transaction.getOwner(), item));
+        if (!admin && !this.sale(transaction, amount, price, cost, saleAmount, item)) {
+            return;
         }
 
         // 收购方扣钱并通知
-        switch(transaction.getCurrency()) {
+        switch (transaction.getCurrency()) {
             case "coin":
                 economy.getEconomy().withdrawPlayer(ownerPlayer, cost);
                 break;
             case "point":
-                economy.gPlayerPointsAPI().take(ownerPlayer.getUniqueId(),  (int)Math.ceil(cost));
+                economy.getPlayerPoints().take(ownerPlayer.getUniqueId(),  (int) Math.ceil(cost));
                 break;
             case "item":
-                economy.deductItem(ownerPlayer.getPlayer(), currencyItem, (int)Math.ceil(cost));
+                economy.deductItem(ownerPlayer.getPlayer(), currencyItem, (int) Math.ceil(cost));
                 break;
             default:
                 break;
         }
 
         // 通知
-        this.executeInfo(Language.TRANSACTION_SUCCEED);
+        this.info(Language.SUCCEED_TRANSACTION.get());
 
         // 出售方得到交易记录
-        ItemStack recordItem = MarketItem.getRecordItem(itemName, transaction.getOwnerName(), cost, symbol);
-        this.followTasks().add(new TaskSend(Language.TEXT_MAIL_FROM_REWARD, service, player.getUniqueId().toString(), recordItem, cost, transaction.getCurrency(), transaction.getExtras()));
+        final ItemStack recordItem = MarketItem.getRecordItem(
+            ChatUtils.textItemStack(item, "/market mail"), ownerPlayer.getName(), cost, symbol);
+        final TaskSend taskSend = new TaskSend(
+            Language.GUI_MAIL_FROM_REWARD.get(), 
+            service, 
+            guide,
+            transaction.getOwner(), 
+            recordItem, 
+            cost, 
+            transaction.getCurrency());
+        taskSend.setExtra(transaction.getExtra());
+        this.followTasks().add(taskSend);
 
         // 刷新
-        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(transaction.getId()));
+        this.refresh(transaction);
     }
     
-    
+    private void refresh(Transaction transaction) {
+        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
+        guide.refreshPages(GlobalMarket.EDIT_VIEW, String.valueOf(id));
+        guide.refreshPages(GlobalMarket.MAIN_VIEW, 
+            "normal", transaction.getType(), transaction.getCurrency());
+        guide.refreshPages(GlobalMarket.MINE_VIEW, transaction.getOwner());
+        guide.refreshPages(GlobalMarket.STORE_VIEW);
+        guide.refreshPages(GlobalMarket.VISIT_VIEW, transaction.getOwner());
+        // 根据分类刷新页面，类型是按二进制存储的
+        for (int i = 0; i < 8; i++) {
+            if ((transaction.getCategory() & (1 << i)) != 0) {
+                guide.refreshPages(GlobalMarket.CATEGORY_VIEW, "category" + i);
+            }
+        }
+    }
+
+    private boolean check(Transaction transaction, boolean buyAll) {
+        if (null == transaction) {
+            this.info(Language.ERROR_DATA.get());
+            return false;
+        }
+        // 玩家在线
+        if (!offlinePlayer.isOnline()) {
+            return false;
+        }
+        if (!"order".equals(transaction.getType()) && !"adminorder".equals(transaction.getType())) {
+            this.info(Language.ERROR_TYPE.get());
+            return false;
+        }
+        // 自己购买自己
+        if (transaction.getOwner().equals(uid.toString())) {
+            this.info(Language.ERROR_TRANSACTION.get());
+            if (!Config.DEBUG.get().booleanValue()) {
+                return false;
+            }
+        }
+        // 物品货币未设置物品
+        if ("item".equals(transaction.getCurrency()) 
+                && StringUtils.isEmpty(transaction.getExtra())) {
+            this.info(Language.ERROR_CURRENCY.get());
+            return false;
+        }
+        // 点券和物品交易不允许零散购买
+        if (!buyAll && !"coin".equals(transaction.getCurrency())) {
+            this.info(Language.ERROR_AMOUNT.get());
+            return false;
+        }
+        return true;
+    }
+
+    private boolean sale(Transaction transaction, int amount, 
+            double price, double cost, int saleAmount, ItemStack item) {
+        
+        final ItemStack save = item.clone();
+        final int saveAmount = amount - saleAmount;
+        if (saleAmount < 0) {
+            this.info(Language.TRANSACTION_NUM.get());
+            return false;
+        }
+        //判断剩余数量
+        if (saveAmount <= 0) {
+            service.deleteTransaction(id);
+            // 统计数据修改
+            service.updateMerchantSelling("-1", transaction.getOwner());
+            service.updateMerchantAmount(transaction.getOwner());
+        } else {
+            // 更新数量和价格
+            save.setAmount(saveAmount);
+            service.updateTransactionStack(YamlUtils.serializeItemStack(save), id);
+            service.updateTransactionDesc(String.valueOf(saveAmount), id);
+            service.updateTransactionPrice(transaction.getPrice() - price, id);
+            service.updateTransactionCost(transaction.getCost() - cost, id);
+        }
+        item.setAmount(saleAmount);
+        // 收购方得到物品
+        this.followTasks().add(new TaskSend(
+            Language.GUI_MAIL_FROM_ORDER.get(), service, guide, transaction.getOwner(), item));
+        return true;
+    }
 
 }

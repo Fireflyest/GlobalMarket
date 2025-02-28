@@ -38,7 +38,7 @@ public class MarketRepriceCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        sender.sendMessage(Language.ERROR_ARGUMENT);
+        sender.sendMessage(Language.COMMAND_ARGUMENT.get());
         return true;
     }
     
@@ -46,7 +46,7 @@ public class MarketRepriceCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         guide.openView(player, GlobalMarket.EDIT_VIEW, arg1);
@@ -57,7 +57,7 @@ public class MarketRepriceCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1, String arg2) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         final int id = NumberConversions.toInt(arg1);
@@ -65,9 +65,10 @@ public class MarketRepriceCommand extends SubCommand {
         
         handler.putTasks(
             GlobalMarket.TASK_MARKET, 
-            new TaskReprice(player.getName(), service, guide, id, num)
+            new TaskReprice(player.getUniqueId(), service, guide, id, num)
         );
-        player.sendMessage(Language.TRANSACTION_REPRICE.replace("%price%", String.valueOf(arg2)));
+        player.sendMessage(
+            Language.TRANSACTION_REPRICE.get().replace("%price%", String.valueOf(arg2)));
 
         return true;
     }

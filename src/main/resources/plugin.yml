@@ -6,7 +6,7 @@ description: 环球市场插件，自由交易的平台
 api-version: 1.14
 authors: [Fireflyest]
 website: https://www.spigotmc.org/resources/globalmarket.103933/
-depend: [Vault,CraftGUI]
+depend: [Vault,EmberLib]
 softdepend: [PlayerPoints,EssentialEconomy,Economy,CMI]
 
 commands:

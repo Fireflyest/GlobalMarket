@@ -2,19 +2,35 @@ package com.fireflyest.market.task;
 
 import com.fireflyest.market.service.MarketEconomy;
 import com.fireflyest.market.service.MarketService;
-
 import io.fireflyest.emberlib.inventory.ViewGuide;
 import io.fireflyest.emberlib.task.Task;
+import io.fireflyest.emberlib.util.RandomUtils;
+import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 
-public class TaskSignAll extends Task{
+/**
+ * 全签收
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class TaskSignAll extends Task {
 
     private final MarketService service;
     private final ViewGuide guide;
     private final MarketEconomy economy;
 
-    public TaskSignAll(@NotNull String playerName, MarketService service, MarketEconomy economy, ViewGuide guide) {
-        super(playerName);
+    /**
+     * 构造任务
+     * 
+     * @param uid 玩家uid
+     * @param service 服务
+     * @param economy 经济
+     * @param guide 导航
+     */
+    public TaskSignAll(@NotNull UUID uid, MarketService service, 
+            MarketEconomy economy, ViewGuide guide) {
+        super(uid);
         this.service = service;
         this.economy = economy;
         this.guide = guide;
@@ -22,17 +38,13 @@ public class TaskSignAll extends Task{
 
     @Override
     public void execute() {
-        // 玩家不在线
-        if (player == null || !player.isOnline()) {
-            return;
-        }
-
-        long[] ids = service.selectDeliveryIdByOwner(player.getUniqueId());
-
+        final long[] ids = service.selectDeliveryIdByOwner(uid);
         int num = 0;
         for (long id : ids) {
             num++;
-            this.followTasks().add(new TaskSign(playerName, service, economy, guide, id, num == ids.length));
+            final boolean refresh = num == ids.length || RandomUtils.randomBoolean();
+            this.followTasks().add(
+                new TaskSign(uid, service, economy, guide, id, refresh));
         }
     }
 }

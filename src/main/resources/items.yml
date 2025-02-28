@@ -1,7 +1,7 @@
 # 按钮行为
-# 返回 1  关闭 2  页面编辑 7
+# 返回 1  关闭 2 刷新 3
 # 前一页 11  下一页 12  跳转页面 13  打开页面 14
-# 玩家指令 15  控制台指令 16  双重玩家指令 17
+# 玩家指令 4  控制台指令 5  双重玩家指令 17
 air:
   material: AIR
 blank: 
@@ -104,26 +104,38 @@ auction:
   type: button
   material: GOLD_INGOT
   name: "§a§l拍卖"
+  action: 14
+  value: market.main.auction
 retail:
   type: button
   material: MAP
   name: "§a§l零售"
+  action: 14
+  value: market.main.retail
 order:
   type: button
   material: BOWL
   name: "§a§l收购"
+  action: 14
+  value: market.main.order
 adminretail:
   type: button
   material: MAP
   name: "§a§l无限出售"
+  action: 14
+  value: market.main.adminretail
 adminorder:
   type: button
   material: BOWL
   name: "§a§l无限收购"
+  action: 14
+  value: market.main.adminorder
 trade:
   type: button
   material: IRON_HORSE_ARMOR
   name: "§a§l交易"
+  action: 14
+  value: market.main.trade
 item:
   type: button
   material: EMERALD
@@ -134,25 +146,31 @@ coin:
   type: button
   material: SUNFLOWER
   name: "§a§l金币"
+  action: 14
+  value: market.main.coin
 point:
   type: button
   material: DIAMOND
   name: "§a§l点券"
+  action: 14
+  value: market.main.point
 admin:
   type: button
   material: NETHER_STAR
   name: "§a§l官方"
+  action: 14
+  value: market.main.admin
 mine:
   type: button
   material: ENDER_CHEST
   name: "§a§l我的"
-  action: 15
+  action: 4
   value: market mine
 mail:
   type: button
   material: GRINDSTONE
   name: "§a§l邮箱"
-  action: 15
+  action: 4
   value: market mail
 create:
   type: button
@@ -165,21 +183,22 @@ createExtra:
   material: GREEN_STAINED_GLASS_PANE
   name: "§f§l[↓]"
   action: 8
-  value: createExtra
+  value: create
 createOver:
   type: button
   material: GRAY_STAINED_GLASS_PANE
   name: "§f§l[↓]"
   action: 8
-  value: createOver
+  value: create
 wait:
   type: button
   material: PAINTING
   name: "§a§l..."
 visit:
+  meta: skull
   type: button
   material: PLAYER_HEAD
-  name: "§a§l%target%的商店"
+  name: "§a§l个人店铺"
 merchant:
   material: BOOK
   name: "§a§l商家数据"
@@ -199,7 +218,7 @@ sign:
   type: button
   material: FEATHER
   name: "§a§l签收"
-  action: 15
+  action: 4
   value: market sign
 destroy:
   type: button
@@ -269,13 +288,13 @@ reload:
   type: button
   material: STRING
   name: "§a§l重载配置"
-  action: 15
+  action: 4
   value: mka reload
 check:
   type: button
   material: GLOWSTONE_DUST
   name: "§a§l检查更新"
-  action: 15
+  action: 4
   value: mka check
 
 # 可自定义分类按钮

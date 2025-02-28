@@ -51,7 +51,7 @@ public class Merchant {
     private String logo;
 
     // 店铺名称
-    @Column(defaultValue = "")
+    @Column
     private String store;
 
     // 点赞数量
@@ -73,48 +73,98 @@ public class Merchant {
         return uid;
     }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCredit() {
         return credit;
     }
 
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
     public int getAmount() {
         return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public boolean isBlack() {
         return black;
     }
 
+    public void setBlack(boolean black) {
+        this.black = black;
+    }
+
     public long getRegister() {
         return register;
+    }
+
+    public void setRegister(long register) {
+        this.register = register;
     }
 
     public int getSelling() {
         return selling;
     }
 
+    public void setSelling(int selling) {
+        this.selling = selling;
+    }
+
     public int getSize() {
         return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public String getLogo() {
         return logo;
     }
 
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     public String getStore() {
         return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
     }
 
     public int getStar() {
         return star;
     }
 
+    public void setStar(int star) {
+        this.star = star;
+    }
+
     public int getVisit() {
         return visit;
     }
+
+    public void setVisit(int visit) {
+        this.visit = visit;
+    }
+
+    
 
 }

@@ -42,7 +42,7 @@ public class MarketOrderCommand extends SubCommand {
     protected boolean execute(CommandSender sender) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         guide.openView(player, GlobalMarket.MAIN_VIEW, "order");
@@ -53,7 +53,7 @@ public class MarketOrderCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         final String var2 = String.valueOf(player.getInventory().getItemInMainHand().getAmount());
@@ -69,18 +69,19 @@ public class MarketOrderCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1, String arg2, String arg3) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         // 是否有权限
         if (!sender.hasPermission("market.order")) {
-            sender.sendMessage(Language.NO_PERMISSION.replace("%permission%", "market.sell"));
+            sender.sendMessage(
+                    Language.COMMAND_PERMISSION.get().replace("%perm%", "market.sell"));
             return true;
         }
         final double price = NumberConversions.toDouble(arg1);
         final int amount = NumberConversions.toInt(arg2);
-        if (price <= 0 || price > Config.MAX_PRICE || amount <= 0) {
-            sender.sendMessage(Language.ERROR_ARGUMENT);
+        if (price <= 0 || price > Config.PRICE_MAX.get() || amount <= 0) {
+            sender.sendMessage(Language.COMMAND_ARGUMENT.get());
             return true;
         }
 
@@ -89,10 +90,10 @@ public class MarketOrderCommand extends SubCommand {
         final ItemStack saleItem = item.clone();
         saleItem.setAmount(amount);
 
-        player.sendMessage(Language.TRANSACTION_CREATE);
+        player.sendMessage(Language.TRANSACTION_CREATE.get());
 
         final TaskCreate taskCreate = new TaskCreate(
-            player.getName(), 
+            player.getUniqueId(), 
             service, 
             guide, 
             "order", 

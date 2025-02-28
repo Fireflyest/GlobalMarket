@@ -11,6 +11,9 @@ import com.fireflyest.market.bean.Delivery;
 @Dao("com.fireflyest.market.bean.Delivery")
 public interface DeliveryDao {
     
+    @Select("SELECT COUNT(*) FROM `market_delivery` WHERE `owner`='${owner}';")
+    int selectDeliveryCountByOwner(String owner);
+
     @Select("SELECT `id` FROM `market_delivery` WHERE `owner`='${owner}';")
     long[] selectDeliveryIdByOwner(String owner);
 
@@ -20,8 +23,8 @@ public interface DeliveryDao {
     @Select("SELECT * FROM `market_delivery` WHERE `owner`='${owner}';")
     Delivery[] selectDeliveryByOwner(String owner);
 
-    @Insert("INSERT INTO `market_delivery` (`stack`,`owner`,`sender`,`appear`,`price`,`currency`,`extras`) VALUES ('${stack}','${owner}','${sender}',${appear},${price},'${currency}','${extras}');")
-    long insertDelivery(String stack, String owner, String sender, long appear, double price, String currency, String extras);
+    @Insert("INSERT INTO `market_delivery` (`stack`,`owner`,`sender`,`appear`,`price`,`currency`,`extra`) VALUES ('${stack}','${owner}','${sender}',${appear},${price},'${currency}','${extra}');")
+    long insertDelivery(String stack, String owner, String sender, long appear, double price, String currency, String extra);
 
     @Update("UPDATE `market_delivery` SET `info`='${info}' WHERE `id`=${id};")
     long updateDeliveryInfo(String info, long id);

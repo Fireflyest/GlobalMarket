@@ -27,7 +27,7 @@ public class MarketStoreCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        sender.sendMessage(Language.ERROR_ARGUMENT);
+        sender.sendMessage(Language.COMMAND_ARGUMENT.get());
         return true;
     }
 
@@ -35,17 +35,18 @@ public class MarketStoreCommand extends SubCommand {
     protected boolean execute(CommandSender sender, String arg1) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player == null) {
-            sender.sendMessage(Language.PLAYER_COMMAND);
+            sender.sendMessage(Language.COMMAND_PLAYER.get());
             return false;
         }
         // 是否有权限
         if (!sender.hasPermission("market.store")) {
-            sender.sendMessage(Language.NO_PERMISSION.replace("%permission%", "market.store"));
+            sender.sendMessage(
+                Language.COMMAND_PERMISSION.get().replace("%perm%", "market.store"));
             return true;
         }
 
         service.updateMerchantStore(player.getUniqueId(), arg1.replace("&", "§"));
-        sender.sendMessage(Language.STORE_SUCCEED);
+        sender.sendMessage(Language.SUCCEED_STORE.get());
         return true;
     }
     

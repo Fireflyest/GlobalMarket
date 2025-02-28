@@ -1,37 +1,45 @@
 package com.fireflyest.market.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
+import io.fireflyest.emberlib.data.Pair;
+import io.fireflyest.emberlib.inventory.ActionResult;
+import io.fireflyest.emberlib.inventory.Page;
+import io.fireflyest.emberlib.inventory.Slot;
 import io.fireflyest.emberlib.inventory.ViewGuide;
-import io.fireflyest.craftgui.button.ButtonAction;
-import io.fireflyest.craftgui.button.ButtonItemBuilder;
-import io.fireflyest.craftgui.view.TemplatePage;
-import io.fireflyest.craftitem.builder.ItemBuilder;
+import io.fireflyest.emberlib.inventory.item.ItemBuilder;
 import io.fireflyest.emberlib.task.TaskHandler;
-import io.fireflyest.util.ItemUtils;
-import io.fireflyest.util.SerializationUtil;
-
+import io.fireflyest.emberlib.util.ItemUtils;
+import io.fireflyest.emberlib.util.YamlUtils;
 import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.bean.Transaction;
 import com.fireflyest.market.core.MarketItem;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
 import com.fireflyest.market.service.MarketService;
 import com.fireflyest.market.task.TaskAffirm;
+import com.fireflyest.market.task.TaskCategory;
 import com.fireflyest.market.task.TaskReprice;
 import com.google.common.base.Objects;
 
-public class EditPage extends TemplatePage {
+/**
+ * 编辑页面
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class EditPage extends Page {
 
     private final MarketService service;
-    private final MarketYaml yaml;
     private final ViewGuide guide;
     private final TaskHandler handler;
 
@@ -41,318 +49,371 @@ public class EditPage extends TemplatePage {
     private boolean zeroPrice;
     private boolean dot;
     private int typeNum = 0;
+    private int currencyNum = 1;
 
+    private static final String RETAIL = "retail";
+    private static final String ADMIN_RETAIL = "adminretail";
+    private static final String ORDER = "order";
+    private static final String ADMIN_ORDER = "adminorder";
+    private static final String AUCTION = "auction";
+    private static final String COIN = "coin";
+    private static final String POINT = "point";
+    private static final String ITEM = "item";
     private List<String> types = new ArrayList<>();
-    private ItemBuilder[] categorys;
-    private ItemStack keyDot;
-    private ItemStack keyDelete;
-    private ItemStack key0;
-    private ItemStack key1;
-    private ItemStack key2;
-    private ItemStack key3;
-    private ItemStack key4;
-    private ItemStack key5;
-    private ItemStack key6;
-    private ItemStack key7;
-    private ItemStack key8;
-    private ItemStack key9;
+    private List<String> currencies = new ArrayList<>();
+    private Map<Integer, String> numMap = new HashMap<>();
+    private Map<Integer, Integer> categoryNumMap = new HashMap<>();
+    private List<ItemBuilder> categories = new ArrayList<>(7);
+    private Pair<ItemBuilder, Slot> keyDot;
+    private Pair<ItemBuilder, Slot> keyDelete;
+    private Pair<ItemBuilder, Slot> key0;
+    private Pair<ItemBuilder, Slot> key1;
+    private Pair<ItemBuilder, Slot> key2;
+    private Pair<ItemBuilder, Slot> key3;
+    private Pair<ItemBuilder, Slot> key4;
+    private Pair<ItemBuilder, Slot> key5;
+    private Pair<ItemBuilder, Slot> key6;
+    private Pair<ItemBuilder, Slot> key7;
+    private Pair<ItemBuilder, Slot> key8;
+    private Pair<ItemBuilder, Slot> key9;
 
-    protected EditPage(String title, String target, int page, MarketService service, MarketYaml yaml, ViewGuide guide, TaskHandler handler) {
-        super(title, target, page, 54);
+    protected EditPage(String target, int pageNumber, 
+            MarketService service, ViewGuide guide, TaskHandler handler) {
+        super(target, pageNumber, 54);
         this.service = service;
-        this.yaml = yaml;
         this.guide = guide;
         this.handler = handler;
 
         // 分类按钮
-        categorys = new ItemBuilder[] {
-            yaml.getItemBuilder("category1"),
-            yaml.getItemBuilder("category2"),
-            yaml.getItemBuilder("category3"),
-            yaml.getItemBuilder("category4"),
-            yaml.getItemBuilder("category5"),
-            yaml.getItemBuilder("category6"),
-            yaml.getItemBuilder("category7")
-        };
-        types.add("retail");
-        types.add("order");
-        types.add("auction");
-
-        this.refreshPage();
-    }
-
-    @Override
-    public Map<Integer, ItemStack> getItemMap() {
-        asyncButtonMap.clear();
-        asyncButtonMap.putAll(buttonMap);
-
-        Transaction transaction = service.selectTransactionById(NumberConversions.toInt(target));
-        // 交易不存在
-        if (transaction == null) {
-            return asyncButtonMap;
+        categories.add(MarketItem.getItemBuilder("category1"));
+        categories.add(MarketItem.getItemBuilder("category2"));
+        categories.add(MarketItem.getItemBuilder("category3"));
+        categories.add(MarketItem.getItemBuilder("category4"));
+        categories.add(MarketItem.getItemBuilder("category5"));
+        categories.add(MarketItem.getItemBuilder("category6"));
+        categories.add(MarketItem.getItemBuilder("category7"));
+        // 对应位置对应的键盘数字
+        numMap.put(4, "7");
+        numMap.put(5, "8");
+        numMap.put(6, "9");
+        numMap.put(13, "4");
+        numMap.put(14, "5");
+        numMap.put(15, "6");
+        numMap.put(22, "1");
+        numMap.put(23, "2");
+        numMap.put(24, "3");
+        numMap.put(32, "0");
+        // 对应位置对应的分类
+        for (int i = 1; i <= 7; i++) {
+            categoryNumMap.put(44 + i, (int) Math.pow(2, i));
         }
 
-        // 复制一份作为修改版
-        if (edition == null) {
-            edition = transaction.duplicate();
-            if (Bukkit.getOfflinePlayer(UUID.fromString(transaction.getOwner())).isOp()) {
-                types.add("adminretail");
-                types.add("adminorder");
-            }
-            keyDot = yaml.getItemBuilder("dot").build();
-            keyDelete = yaml.getItemBuilder("delete").build();
-            key0 = yaml.getItemBuilder("key0").build();
-            key1 = yaml.getItemBuilder("key1").build();
-            key2 = yaml.getItemBuilder("key2").build();
-            key3 = yaml.getItemBuilder("key3").build();
-            key4 = yaml.getItemBuilder("key4").build();
-            key5 = yaml.getItemBuilder("key5").build();
-            key6 = yaml.getItemBuilder("key6").build();
-            key7 = yaml.getItemBuilder("key7").build();
-            key8 = yaml.getItemBuilder("key8").build();
-            key9 = yaml.getItemBuilder("key9").build();
+        types.add(RETAIL);
+        types.add(ORDER);
+        types.add(AUCTION);
+
+        currencies.add(COIN);
+        if (Config.CURRENCY_POINT.get().booleanValue()) {
+            currencies.add(POINT);
         }
+        currencies.add(ITEM);
 
-        zeroPrice = transaction.getPrice() == 0;
-
-        if (!Objects.equal(edition.getExtras(), transaction.getExtras())) {
-            edition.setCurrency("item");
-            edition.setExtras(transaction.getExtras());
+        String nickname = service.selectTransactionNickname(NumberConversions.toInt(target));
+        if (StringUtils.isEmpty(nickname)) {
+            nickname = Language.ERROR_DATA.get();
         }
-
-        switch (transaction.getType()) {
-            case "retail":
-            case "adminretail":
-            case "order":
-            case "adminorder":
-                asyncButtonMap.put(35, yaml.getItemBuilder("edit").build());
-                prepare = false;
-                break;
-            case "auction":
-                if (transaction.getPrice() == transaction.getCost()) {
-                    asyncButtonMap.put(35, yaml.getItemBuilder("edit").build());
-                } else {
-                    asyncButtonMap.put(35, yaml.getItemBuilder("edit_disable").build());
-                }
-                prepare = false;
-                break;
-            case "prepare":
-            default:
-                asyncButtonMap.put(35, yaml.getItemBuilder("done").build());
-                prepare = true;
-                break;
-        }
-
-        switch(edition.getCurrency()) {
-            case "coin":
-                asyncButtonMap.put(8, ((ButtonItemBuilder)yaml.getItemBuilder(edition.getCurrency())).actionEdit().build());
-                dot = true;
-                break;
-            case "point":
-                asyncButtonMap.put(8, ((ButtonItemBuilder)yaml.getItemBuilder(edition.getCurrency())).actionEdit().build());
-                break;
-            case "item":
-                ItemStack currencyItem =((ButtonItemBuilder) yaml.getItemBuilder(edition.getCurrency())).actionPlugin("currency " + edition.getId()).build();
-                if (edition.getExtras() != null && !"".equals(edition.getExtras())) {
-                    currencyItem = SerializationUtil.deserializeItemStack(edition.getExtras());
-                    ItemUtils.setItemNbt(currencyItem, ButtonAction.NBT_ACTION_KEY, ButtonAction.ACTION_PLUGIN);
-                    ItemUtils.setItemNbt(currencyItem, ButtonAction.NBT_VALUE_KEY, "currency " + edition.getId());
-                    ItemUtils.addLore(currencyItem, Language.GUI_CURRENCY_ITEM);
-                }
-                asyncButtonMap.put(8, currencyItem);
-                break;
-            default:
-                break;
-        }
-
-        switch (edition.getType()) {
-            case "retail":
-            case "adminretail":
-            case "order":
-            case "adminorder":
-                this.placeKeyboard();
-                asyncButtonMap.put(17, ((ButtonItemBuilder)yaml.getItemBuilder(edition.getType())).actionEdit().build());
-                break;
-            case "auction":
-                if (transaction.getPrice() == transaction.getCost()) {
-                    this.placeKeyboard();
-                }
-                asyncButtonMap.put(17, ((ButtonItemBuilder)yaml.getItemBuilder(edition.getType().replace("admin", ""))).actionEdit().build());
-                break;
-            case "prepare":
-            default:
-                asyncButtonMap.put(17, ((ButtonItemBuilder)yaml.getItemBuilder("wait")).actionEdit().build());
-                break;
-        }
-
-        // 下架按钮
-        asyncButtonMap.put(26, ((ButtonItemBuilder)yaml.getItemBuilder("cancel")).actionPlayerCommand("market cancel " + target).build());
-
-        // 分类
-        ItemStack categoryNone = yaml.getItemBuilder("categoryNone").build();
-        for (int i = 0, j = 2; i < 7; i++, j *= 2) {
-            ItemStack categoryItem = ((ButtonItemBuilder)categorys[i]).actionEdit().build();
-            if ((transaction.getCategory() & j) == 0) {
-                String category = ItemUtils.getDisplayName(categoryItem);
-                categoryItem = categoryNone.clone();
-                ItemUtils.setDisplayName(categoryItem, category);
-            }
-            asyncButtonMap.put(45 + i, categoryItem);
-        }
-
-         // 交易物品展示
-        ItemStack item = SerializationUtil.deserializeItemStack(transaction.getStack());
-        ItemStack editItem = SerializationUtil.deserializeItemStack(edition.getStack());
-        MarketItem.loreItemData(item, transaction, "");
-        MarketItem.loreItemData(editItem, edition, "");
-        asyncButtonMap.put(10, item);
-        asyncButtonMap.put(28, editItem);
-
-        return asyncButtonMap;
+        this.setup(Language.TITLE_EDIT.get().replace("%page%", String.valueOf(pageNumber))
+            .replace("%item%", nickname));
     }
 
     @Override
     public void refreshPage() {
-        ItemStack blank = yaml.getItemBuilder("blank").build();
-        buttonMap.put(0, blank);
-        buttonMap.put(1, blank);
-        buttonMap.put(2, blank);
-        buttonMap.put(9, blank);
-        buttonMap.put(11, blank);
-        buttonMap.put(18, blank);
-        buttonMap.put(19, blank);
-        buttonMap.put(20, blank);
-        buttonMap.put(27, blank);
-        buttonMap.put(29, blank);
-        for (int i = 36; i < 45; i++) {
-            buttonMap.put(i, blank);
+        if (!init) {
+            this.initPage();
         }
-       
-        buttonMap.put(53, yaml.getItemBuilder("back").build());
+
+        this.putTransaction();
     }
 
     @Override
-    public ItemStack getItem(int slot) {
-        switch (slot){
+    public void initPage() {
+        super.initPage();
+        final Pair<ItemBuilder, Slot> blank = MarketItem.getPair("blank");
+        this.slot(0, blank);
+        this.slot(1, blank);
+        this.slot(2, blank);
+        this.slot(9, blank);
+        this.slot(11, blank);
+        this.slot(18, blank);
+        this.slot(19, blank);
+        this.slot(20, blank);
+        this.slot(27, blank);
+        this.slot(29, blank);
+        for (int i = 36; i < 45; i++) {
+            this.slot(i, blank);
+        }
+        this.slot(53, MarketItem.getPair("back"));
+    }
+
+    @Override
+    public ActionResult action(int index, InventoryAction inventoryAction, 
+            Player player, ItemStack currentItem, ItemStack cursor) {
+        
+        final ActionResult action = 
+            super.action(index, inventoryAction, player, currentItem, cursor);
+        int categoryNum = 0;
+        boolean editCategory = false;
+        switch (index) {
             case 4:
-                num += "7";
-                break;
             case 5:
-                num += "8";
-                break;
             case 6:
-                num += "9";
-                break;
             case 13:
-                num += "4";
-                break;
             case 14:
-                num += "5";
-                break;
             case 15:
-                num += "6";
-                break;
             case 22:
-                num += "1";
-                break;
             case 23:
-                num += "2";
-                break;
             case 24:
-                num += "3";
-                break;
             case 32:
-                num += "0";
+                num += numMap.get(index);
+                action.addAction(ActionResult.ACTION_REFRESH);
                 break;
             case 31:
-                if (!num.contains(".")) num += ".";
+                if (!num.contains(".")) {
+                    num += ".";
+                }
+                action.addAction(ActionResult.ACTION_REFRESH);
                 break;
             case 8:
-                if (prepare && Config.PLAYER_POINT_MARKET) {
-                    if ("coin".equals(edition.getCurrency())) {
-                        edition.setCurrency("point");
-                        if (num.contains(".")) {
-                            num = num.substring(0, num.indexOf("."));
-                        }
-                    } else if("point".equals(edition.getCurrency())) {
-                        edition.setCurrency("item");
-                    } else {
-                        edition.setCurrency("coin");
+                if (prepare) {
+                    // currency 轮换
+                    edition.setCurrency(currencies.get(currencyNum++));
+                    if (currencyNum >= currencies.size()) {
+                        currencyNum = 0;
+                    }
+                    if (edition.getCurrency().equals(POINT) && num.contains(".")) {
+                        num = num.substring(0, num.indexOf("."));
                     }
                 }
+                action.addAction(ActionResult.ACTION_REFRESH);
                 break;
             case 17:
-                if (!prepare) {
-                    break;
+                // type 轮换
+                if (prepare) {
+                    edition.setType(types.get(typeNum++));
+                    if (typeNum >= types.size()) {
+                        typeNum = 0;
+                    }
                 }
-                edition.setType(types.get(typeNum++));
-                if (typeNum >= types.size()) {
-                    typeNum = 0;
-                }
+                action.addAction(ActionResult.ACTION_REFRESH);
                 break;
             case 33:
-                if (num.length() > 0) num = num.substring(0, num.length()-1);
+                if (!num.isEmpty()) {
+                    num = num.substring(0, num.length() - 1);
+                }
+                action.addAction(ActionResult.ACTION_REFRESH);
                 break;
             case 35:
+                final UUID owner = UUID.fromString(edition.getOwner());
                 // 修改价格
-                handler.putTasks(GlobalMarket.TASK_MARKET, new TaskReprice(edition.getOwnerName(), service, guide, edition.getId(), edition.getCost()));
+                handler.putTasks(
+                    GlobalMarket.TASK_MARKET, 
+                    new TaskReprice(owner, service, guide, edition.getId(), edition.getCost()));
                 // 确认发售
                 if (prepare) {
-                    handler.putTasks(GlobalMarket.TASK_MARKET, new TaskAffirm(edition.getOwnerName(), service, guide, edition.getId(), edition.getType(), edition.getCurrency(), edition.getExtras()));
+                    handler.putTasks(GlobalMarket.TASK_MARKET, new TaskAffirm(
+                        owner, 
+                        service, 
+                        guide, 
+                        edition.getId(), 
+                        edition.getType(), 
+                        edition.getCurrency(), 
+                        edition.getExtra()));
                 }
                 break;
             case 45:
-                edition.setCategory(this.switchCategory(edition.getCategory(), (int)Math.pow(2, 1)));
-                service.updateTransactionCategory(edition.getCategory(), edition.getId());
-                break;
             case 46:
-                edition.setCategory(this.switchCategory(edition.getCategory(), (int)Math.pow(2, 2)));
-                service.updateTransactionCategory(edition.getCategory(), edition.getId());
-                break;
             case 47:
-                edition.setCategory(this.switchCategory(edition.getCategory(), (int)Math.pow(2, 3)));
-                service.updateTransactionCategory(edition.getCategory(), edition.getId());
-                break;
             case 48:
-                edition.setCategory(this.switchCategory(edition.getCategory(), (int)Math.pow(2, 4)));
-                service.updateTransactionCategory(edition.getCategory(), edition.getId());
-                break;
             case 49:
-                edition.setCategory(this.switchCategory(edition.getCategory(), (int)Math.pow(2, 5)));
-                service.updateTransactionCategory(edition.getCategory(), edition.getId());
-                break;
             case 50:
-                edition.setCategory(this.switchCategory(edition.getCategory(), (int)Math.pow(2, 6)));
-                service.updateTransactionCategory(edition.getCategory(), edition.getId());
-                break;
             case 51:
-                edition.setCategory(this.switchCategory(edition.getCategory(), (int)Math.pow(2, 7)));
-                service.updateTransactionCategory(edition.getCategory(), edition.getId());
+                categoryNum = categoryNumMap.get(index);
+                edition.setCategory(this.switchCategory(edition.getCategory(), categoryNum));
+                editCategory = true;
+                final ItemBuilder categoryNone = MarketItem.getItemBuilder("categoryNone");
+                final ItemBuilder categoryItem = categories.get(categoryNum);
+                if ((edition.getCategory() & categoryNum) == 0) {
+                    final String category = categoryItem.getName();
+                    categoryNone.name(category);
+                    this.slot(index, categoryNone.build());
+                } else {
+                    this.slot(index, categoryItem.build());
+                }
                 break;
             default:
         }
         if (zeroPrice) {
             edition.setPrice(NumberConversions.toDouble(num));
         }
+        if (editCategory) {
+            handler.putTasks(GlobalMarket.TASK_MARKET, new TaskCategory(
+                    UUID.fromString(edition.getOwner()), 
+                    service, 
+                    guide, 
+                    edition.getId(), 
+                    edition.getCategory(), 
+                    categoryNum));
+        }
         edition.setCost(NumberConversions.toDouble(num));
-        guide.refreshPages(GlobalMarket.EDIT_VIEW, target);
-        return super.getItem(slot);
-    }
-
-    public boolean isCategory(long category, long num) {
-        return (category & num) != 0;
-    }
-
-    public long onCategory(long category, long num) {
-        return category | num;
-    }
-
-    public long offCategory(long category, long num) {
-        return category & (~num);
+        return action;
     }
 
     public long switchCategory(long category, long num) {
-        return this.isCategory(category, num) ? this.offCategory(category, num) : this.onCategory(category, num);
+        return category ^ num;
+    }
+
+    private void putTransaction() {
+        final Transaction transaction = 
+            service.selectTransactionById(NumberConversions.toInt(target));
+        // 交易不存在
+        if (transaction == null) {
+            this.clean();
+            this.slot(53, MarketItem.getPair("back"));
+            return;
+        }
+
+        // 复制一份作为修改版
+        if (edition == null) {
+            edition = transaction.duplicate();
+            if (Bukkit.getOfflinePlayer(UUID.fromString(transaction.getOwner())).isOp()) {
+                types.add(ADMIN_RETAIL);
+                types.add(ADMIN_ORDER);
+            }
+            keyDot = MarketItem.getPair("dot");
+            keyDelete = MarketItem.getPair("delete");
+            key0 = MarketItem.getPair("key0");
+            key1 = MarketItem.getPair("key1");
+            key2 = MarketItem.getPair("key2");
+            key3 = MarketItem.getPair("key3");
+            key4 = MarketItem.getPair("key4");
+            key5 = MarketItem.getPair("key5");
+            key6 = MarketItem.getPair("key6");
+            key7 = MarketItem.getPair("key7");
+            key8 = MarketItem.getPair("key8");
+            key9 = MarketItem.getPair("key9");
+        }
+
+        zeroPrice = transaction.getPrice() == 0;
+
+        if (!Objects.equal(edition.getExtra(), transaction.getExtra())) {
+            edition.setCurrency("item");
+            edition.setExtra(transaction.getExtra());
+        }
+        switch (transaction.getType()) {
+            case RETAIL:
+            case ADMIN_RETAIL:
+            case ORDER:
+            case ADMIN_ORDER:
+                this.slot(35, MarketItem.getPair("edit"));
+                prepare = false;
+                break;
+            case AUCTION:
+                if (transaction.getPrice() == transaction.getCost()) {
+                    this.slot(35, MarketItem.getPair("edit"));
+                } else {
+                    this.slot(35, MarketItem.getPair("edit_disable"));
+                }
+                prepare = false;
+                break;
+            case "prepare":
+            default:
+                this.slot(35, MarketItem.getPair("done"));
+                prepare = true;
+                break;
+        }
+
+        ItemBuilder currencyItemBuilder = null;
+        switch (edition.getCurrency()) {
+            case COIN:
+                dot = true;
+                currencyItemBuilder = MarketItem.getItemBuilder(edition.getCurrency());
+                this.slot(8, currencyItemBuilder.build());
+                break;
+            case POINT:
+                currencyItemBuilder = MarketItem.getItemBuilder(edition.getCurrency());
+                this.slot(8, currencyItemBuilder.build());
+                break;
+            case ITEM:
+                final Pair<ItemBuilder, Slot> currencySlot = 
+                    MarketItem.getPair(edition.getCurrency());
+                if (edition.getExtra() != null && !"".equals(edition.getExtra())) {
+                    final ItemStack currencyItem = 
+                        YamlUtils.deserializeItemStack(edition.getExtra());
+                    ItemUtils.addLore(currencyItem, Language.GUI_CURRENCY.get());
+                    this.slot(8, currencyItem, currencySlot.second());
+                } else {
+                    this.slot(8, currencySlot);
+                }
+                break;
+            default:
+                break;
+        }
+
+
+        switch (edition.getType()) {
+            case RETAIL:
+            case ADMIN_RETAIL:
+            case ORDER:
+            case ADMIN_ORDER:
+                this.placeKeyboard();
+                this.slot(17, MarketItem.getItemBuilder(edition.getType()).build());
+                break;
+            case AUCTION:
+                if (transaction.getPrice() == transaction.getCost()) {
+                    this.placeKeyboard();
+                }
+                this.slot(17, MarketItem.getItemBuilder(edition.getType()).build());
+                break;
+            case "prepare":
+            default:
+                this.slot(17, MarketItem.getItemBuilder("wait").build());
+                break;
+        }
+
+        // 下架按钮
+        final ItemBuilder cancelItem = MarketItem.getItemBuilder("cancel");
+        final Slot cancelSlot = new Slot().result(
+            InventoryAction.PICKUP_ALL, 
+            false, 
+            ActionResult.ACTION_PLAYER_COMMAND, 
+            "market cancel " + target);
+        this.slot(26, cancelItem.build(), cancelSlot);
+
+        // 分类
+        this.putCategorys();
+
+        // 交易物品展示
+        final ItemStack item = YamlUtils.deserializeItemStack(transaction.getStack());
+        final ItemStack editItem = YamlUtils.deserializeItemStack(edition.getStack());
+        MarketItem.loreItemData(item, transaction);
+        MarketItem.loreItemData(editItem, edition);
+        this.slot(10, item);
+        this.slot(28, editItem);
+
+    }
+
+    private void putCategorys() {
+        final ItemBuilder categoryNone = MarketItem.getItemBuilder("categoryNone");
+        for (int i = 0, j = 2; i < 7; i++, j *= 2) {
+            final ItemBuilder categoryItem = categories.get(i);
+            if ((edition.getCategory() & j) == 0) {
+                final String category = categoryItem.getName();
+                categoryNone.name(category);
+                this.slot(45 + i, categoryNone.build());
+            } else {
+                this.slot(45 + i, categoryItem.build());
+            }
+        }
     }
 
     /**
@@ -363,49 +424,53 @@ public class EditPage extends TemplatePage {
         // 小数点
         if (dot) {
             if (num.endsWith(".")) {
-                ItemUtils.setLore(keyDot, "§7" + num + "§70", 0);
-            } else if (!num.contains(".")){
-                ItemUtils.setLore(keyDot, "§7" + num + "§9.§70", 0);
+                keyDot.first().lore("§7" + num + "§70", 0);
+            } else if (!num.contains(".")) {
+                keyDot.first().lore("§7" + num + "§9.§70", 0);
             } else {
-                ItemUtils.setLore(keyDot, "§7" + num, 0);
+                keyDot.first().lore("§7" + num, 0);
             }
-            asyncButtonMap.put(31, keyDot);
+            this.slot(31, keyDot);
         }
 
         // 删除键
-        if (num.length() > 0) {
+        if (!StringUtils.isEmpty(num)) {
+            final StringBuilder insert = new StringBuilder(num).insert(num.length() - 1, "§c");
             if (num.endsWith(".")) {
-                ItemUtils.setLore(keyDelete, "§7" + new StringBuilder(num).insert(num.length() - 1, "§c"), 0);
-            } else if (!num.contains(".")){
-                ItemUtils.setLore(keyDelete, "§7" + new StringBuilder(num).insert(num.length() - 1, "§c") + "§9.§70", 0);
+                keyDelete.first()
+                    .lore("§7" + insert, 0);
+            } else if (!num.contains(".")) {
+                keyDelete.first()
+                    .lore("§7" + insert + "§9.§70", 0);
             } else {
-                ItemUtils.setLore(keyDelete, "§7" + new StringBuilder(num).insert(num.length() - 1, "§c"), 0);
+                keyDelete.first()
+                    .lore("§7" + insert, 0);
             }
         }
-        asyncButtonMap.put(33, keyDelete);
+        this.slot(33, keyDelete);
 
         // 数字
-        asyncButtonMap.put(4, key7);
-        asyncButtonMap.put(5, key8);
-        asyncButtonMap.put(6, key9);
-        asyncButtonMap.put(13, key4);
-        asyncButtonMap.put(14, key5);
-        asyncButtonMap.put(15, key6);
-        asyncButtonMap.put(22, key1);
-        asyncButtonMap.put(23, key2);
-        asyncButtonMap.put(24, key3);
-        asyncButtonMap.put(32, key0);
-        String end = num.contains(".") ? "":"§7.0";
-        ItemUtils.setLore(key7, "§7" + num + "§8§n7" + end, 0);
-        ItemUtils.setLore(key8, "§7" + num + "§8§n8" + end, 0);
-        ItemUtils.setLore(key9, "§7" + num + "§8§n9" + end, 0);
-        ItemUtils.setLore(key4, "§7" + num + "§8§n4" + end, 0);
-        ItemUtils.setLore(key5, "§7" + num + "§8§n5" + end, 0);
-        ItemUtils.setLore(key6, "§7" + num + "§8§n6" + end, 0);
-        ItemUtils.setLore(key1, "§7" + num + "§8§n1" + end, 0);
-        ItemUtils.setLore(key2, "§7" + num + "§8§n2" + end, 0);
-        ItemUtils.setLore(key3, "§7" + num + "§8§n3" + end, 0);
-        ItemUtils.setLore(key0, "§7" + num + "§8§n0" + end, 0);
+        final String end = num.contains(".") ? "" : "§7.0";
+        key7.first().lore("§7" + num + "§8§n7" + end, 0);
+        key8.first().lore("§7" + num + "§8§n8" + end, 0);
+        key9.first().lore("§7" + num + "§8§n9" + end, 0);
+        key4.first().lore("§7" + num + "§8§n4" + end, 0);
+        key5.first().lore("§7" + num + "§8§n5" + end, 0);
+        key6.first().lore("§7" + num + "§8§n6" + end, 0);
+        key1.first().lore("§7" + num + "§8§n1" + end, 0);
+        key2.first().lore("§7" + num + "§8§n2" + end, 0);
+        key3.first().lore("§7" + num + "§8§n3" + end, 0);
+        key0.first().lore("§7" + num + "§8§n0" + end, 0);
+        this.slot(4, key7);
+        this.slot(5, key8);
+        this.slot(6, key9);
+        this.slot(13, key4);
+        this.slot(14, key5);
+        this.slot(15, key6);
+        this.slot(22, key1);
+        this.slot(23, key2);
+        this.slot(24, key3);
+        this.slot(32, key0);
     }
     
 }

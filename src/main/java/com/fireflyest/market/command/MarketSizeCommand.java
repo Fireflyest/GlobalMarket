@@ -22,16 +22,17 @@ public class MarketSizeCommand extends SubCommand {
 
     @Override
     protected boolean execute(CommandSender sender) {
-        sender.sendMessage(Language.ERROR_ARGUMENT);
+        sender.sendMessage(Language.COMMAND_ARGUMENT.get());
         return true;
     }
 
     @Override
     protected boolean execute(CommandSender sender, String arg1) {
-        final int size = service.selectMerchantSize(arg1);
+        final int size = service.selectMerchantSizeByName(arg1);
         sender.sendMessage(
-            Language.TRANSACTION_SIZE.replace("%target%", arg1)
-                                     .replace("%num%", String.valueOf(size))
+            Language.TRANSACTION_SIZE.get()
+                .replace("%t%", arg1)
+                .replace("%num%", String.valueOf(size))
         );
         return true;
     }
@@ -42,8 +43,9 @@ public class MarketSizeCommand extends SubCommand {
         if (!"".equals(uid)) {
             service.updateMerchantSize(uid, NumberConversions.toInt(arg2));
             sender.sendMessage(
-                Language.TRANSACTION_SIZE.replace("%target%", arg1)
-                                         .replace("%num%", arg2)
+                Language.TRANSACTION_SIZE.get()
+                    .replace("%target%", arg1)
+                    .replace("%num%", arg2)
             );
         }
         return true;

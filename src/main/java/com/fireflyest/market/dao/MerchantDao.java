@@ -44,8 +44,11 @@ public interface MerchantDao {
     @Select("SELECT `name` FROM `market_merchant` WHERE `uid`='${uid}';")
     String selectMerchantName(String uid);
 
+    @Select("SELECT `size` FROM `market_merchant` WHERE `uid`='${uid}';")
+    int selectMerchantSizeByUid(String uid);
+
     @Select("SELECT `size` FROM `market_merchant` WHERE `name`='${name}';")
-    int selectMerchantSize(String name);
+    int selectMerchantSizeByName(String name);
 
     @Select("SELECT `credit` FROM `market_merchant` WHERE `uid`='${uid}';")
     int selectMerchantCredit(String uid);

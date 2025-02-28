@@ -4,17 +4,24 @@ import com.fireflyest.market.GlobalMarket;
 import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
 import com.fireflyest.market.service.MarketService;
-
+import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import io.fireflyest.emberlib.inventory.MaterialLocale;
 import io.fireflyest.emberlib.inventory.ViewGuide;
-import io.fireflyest.craftgui.util.TranslateUtils;
 import io.fireflyest.emberlib.task.Task;
-import io.fireflyest.util.ItemUtils;
-import io.fireflyest.util.SerializationUtil;
-import io.fireflyest.util.TimeUtils;
+import io.fireflyest.emberlib.util.ItemUtils;
+import io.fireflyest.emberlib.util.TimeUtils;
+import io.fireflyest.emberlib.util.YamlUtils;
 import org.jetbrains.annotations.NotNull;
 
-
+/**
+ * 创建交易任务
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
 public class TaskCreate extends Task {
 
     private final MarketService service;
@@ -26,8 +33,20 @@ public class TaskCreate extends Task {
 
     private String desc;
 
-    public TaskCreate(@NotNull String playerName, MarketService service, ViewGuide guide, String type, String currency, double price, ItemStack item) {
-        super(playerName);
+    /**
+     * 构造任务
+     * 
+     * @param uid 玩家uuid
+     * @param service 服务
+     * @param guide 导航
+     * @param type 类型
+     * @param currency 货币
+     * @param price 价格
+     * @param item 物品
+     */
+    public TaskCreate(@NotNull UUID uid, MarketService service, 
+            ViewGuide guide, String type, String currency, double price, ItemStack item) {
+        super(uid);
         this.service = service;
         this.guide = guide;
         this.type = type;
@@ -38,72 +57,94 @@ public class TaskCreate extends Task {
 
     @Override
     public void execute() {
-        if (player == null || !player.isOnline()) {
+        // 玩家必须在线
+        final Player player = offlinePlayer.getPlayer();
+        if (player == null) {
             return;
         }
-
         // 是否黑名单
-        if (service.selectMerchantBlack(player.getUniqueId())) {
-            this.executeInfo(Language.CREATE_ERROR);
+        if (service.selectMerchantBlack(uid)) {
+            this.info(Language.ERROR_CREATE.get());
             return;
         }
-
         // 交易数量是否上限
-        if (Config.MAXIMUM_SALE) {
-            int size = Config.MAXIMUM_SALE_NUM + service.selectMerchantSize(player.getName());
-            if (service.selectMerchantSelling(player.getUniqueId()) >= size) {
-                this.executeInfo(Language.MAXIMUM_TRANSACTION);
+        if (Config.TRANSACTION_LIMIT.get().booleanValue()) {
+            final int size = 
+                Config.TRANSACTION_MAXIMUM.get() + service.selectMerchantSizeByUid(uid);
+            if (service.selectMerchantSelling(uid) >= size) {
+                this.info(Language.TRANSACTION_MAXIMUM.get());
                 player.getInventory().addItem(item);
                 return;
             }
         }
 
         // 邮箱数量限制
-        if (Config.MAXIMUM_MAIL && service.selectDeliveryIdByOwner(player.getUniqueId()).length > Config.MAXIMUM_MAIL_NUM) {
-            this.executeInfo(Language.MAXIMUM_MAIL);
+        if (Config.MAIL_LIMIT.get().booleanValue() 
+                && service.selectDeliveryCountByOwner(uid.toString()) > Config.MAIL_MAXIMUM.get()) {
+            this.info(Language.MAIL_MAXIMUM.get());
             player.getInventory().addItem(item);
             return;
         }
 
-        String stack = SerializationUtil.serializeItemStack(item);
-
+        final String stack = YamlUtils.serializeItemStack(item);
         // 是否违禁品
-        if (Config.CONTRABAND_LORE) {
-            for (String lore : Config.CONTRABAND_LORE_LIST.split(",")) {
-                if (stack.contains(lore)) {
-                    this.executeInfo(Language.TRANSACTION_CONTRABAND);
-                    player.getInventory().addItem(item);
-                    return;
-                }
-            }
+        if (this.contraband(stack)) {
+            this.info(Language.TRANSACTION_CONTRABAND.get());
+            player.getInventory().addItem(item);
+            return;
         }
-
-         // 获取物品名称
-         String itemName = ItemUtils.getDisplayName(item);
-         if("".equals(itemName)) {
-             itemName = TranslateUtils.translate(item.getType());
-         }
         
         // 插入数据
-        long id = service.insertTransaction(stack, player.getUniqueId(), playerName, itemName, price, TimeUtils.getTime());
+        final long id = service.insertTransaction(stack, uid, price, TimeUtils.getTime());
         if (desc != null) {
             service.updateTransactionDesc(desc, id);
         }
+        String nickname = ItemUtils.getDisplayName(item);
+        if (StringUtils.isEmpty(nickname)) {
+            nickname = MaterialLocale.translate(item.getType(), Config.LANG.get());
+        }
+        service.updateTransactionNickname(nickname, id);
 
-        this.executeInfo(Language.TRANSACTION_CREATE);
-
+        this.info(Language.TRANSACTION_CREATE.get());
 
         // 确认发售
         if (!"prepare".equals(type)) {
-            this.followTasks().add(new TaskAffirm(playerName, service, guide, id, type, currency, ""));
+            this.followTasks().add(new TaskAffirm(uid, service, guide, id, type, currency, ""));
         }
 
         // 增加正在出售的数量
         service.updateMerchantSelling("+1", player.getUniqueId().toString());
 
+        // 自动分类
+        long category = 0;
+        if (Config.MARKET_CATEGORY.get().booleanValue()) {
+            // TODO: 
+        }
+
         // 刷新界面
-        guide.refreshPages(GlobalMarket.MAIN_VIEW, "normal");
-        guide.refreshPage(playerName);
+        guide.refreshPages(GlobalMarket.AFFAIR_VIEW, String.valueOf(id));
+        guide.refreshPages(GlobalMarket.EDIT_VIEW, String.valueOf(id));
+        guide.refreshPages(GlobalMarket.MAIN_VIEW, "normal", type, currency);
+        guide.refreshPages(GlobalMarket.MINE_VIEW, uid.toString());
+        guide.refreshPages(GlobalMarket.STORE_VIEW);
+        guide.refreshPages(GlobalMarket.VISIT_VIEW, uid.toString());
+        // 根据分类刷新页面，类型是按二进制存储的
+        for (int i = 0; i < 8; i++) {
+            if ((category & (1 << i)) != 0) {
+                guide.refreshPages(GlobalMarket.CATEGORY_VIEW, "category" + i);
+            }
+        }
+    }
+
+    private boolean contraband(String stack) {
+        if (Config.CONTRABAND_ENABLE.get().booleanValue()) {
+            for (String lore : Config.CONTRABAND_LORE.get().split(",")) {
+                if (stack.contains(lore)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void setDesc(String desc) {

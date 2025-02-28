@@ -1,94 +1,104 @@
 package com.fireflyest.market.view;
 
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
-import io.fireflyest.emberlib.inventory.ViewPage;
-import io.fireflyest.craftgui.button.ButtonItemBuilder;
-import io.fireflyest.craftgui.view.TemplatePage;
-import io.fireflyest.util.ItemUtils;
-import io.fireflyest.util.SerializationUtil;
-
 import com.fireflyest.market.bean.Merchant;
-import com.fireflyest.market.bean.Transaction;
 import com.fireflyest.market.core.MarketItem;
-import com.fireflyest.market.data.Config;
 import com.fireflyest.market.data.Language;
-import com.fireflyest.market.data.MarketYaml;
 import com.fireflyest.market.service.MarketService;
+import io.fireflyest.emberlib.inventory.ActionResult;
+import io.fireflyest.emberlib.inventory.Page;
+import io.fireflyest.emberlib.inventory.Slot;
+import io.fireflyest.emberlib.inventory.item.ItemBuilder;
 
-public class StorePage extends TemplatePage {
+/**
+ * 玩家店铺页面
+ * 
+ * @author Fireflyest
+ * @since 3.3
+ */
+public class StorePage extends Page {
 
     private final MarketService service;
-    private final MarketYaml yaml;
 
-    protected StorePage(String target, int page, MarketService service, MarketYaml yaml) {
-        super(Language.TITLE_STORE_PAGE, target, page, 54);
+    protected StorePage(String target, int pageNumber, MarketService service) {
+        super(target, pageNumber, 54);
         this.service = service;
-        this.yaml = yaml;
 
-        this.refreshPage();
-    }
-
-    @Override
-    public Map<Integer, ItemStack> getItemMap() {
-        asyncButtonMap.clear();
-        asyncButtonMap.putAll(buttonMap);
-
-        Merchant[] merchants = service.selectMerchants((page - 1) * 45, page * 45);;
-
-        // 可以下一页
-        if (merchants.length != 0){
-            asyncButtonMap.put(46, yaml.getItemBuilder("pageNext").build());
-        }
-
-        // 放置店铺
-        for (int i = 0; i < 45; i++) {
-            if(i < merchants.length){
-                Merchant merchant = merchants[i];
-                String storeName = "".equals(merchant.getStore()) ? "§f" + merchant.getName() : merchant.getStore();
-                ItemStack item = new ButtonItemBuilder(merchant.getLogo())
-                        .actionPlayerCommand("market visit " + merchant.getName())
-                        .name(storeName)
-                        .lore(String.format(Language.GUI_OWNER, merchant.getName()))
-                        .lore(String.format(Language.GUI_AMOUNT, merchant.getAmount()))
-                        .lore(String.format(Language.GUI_SELLING, merchant.getSelling()))
-                        .lore(String.format(Language.GUI_VISIT, merchant.getVisit()))
-                        .lore(String.format(Language.GUI_STAR, merchant.getStar()))
-                        .build();
-                asyncButtonMap.put(i, item);
-            }else {
-                asyncButtonMap.put(i, new ItemStack(Material.AIR));
-            }
-        }
-
-        return asyncButtonMap;
+        this.setup(Language.TITLE_STORE.get().replace("%page%", String.valueOf(pageNumber)));
     }
 
     @Override
     public void refreshPage() {
-        // 上一页
-        if (page == 1){
-            buttonMap.put(45, yaml.getItemBuilder("pagePreDisable").build());
-        }else {
-            buttonMap.put(45, yaml.getItemBuilder("pagePre").build());
+        if (!init) {
+            this.initPage();
         }
-        // 下一页
-        buttonMap.put(46, yaml.getItemBuilder("pageNextDisable").build());
-        
-        buttonMap.put(53, yaml.getItemBuilder("back").build());
+
+        this.putStore();
     }
 
     @Override
-    public ViewPage getNext() {
-        if(next == null && page < 30){
-            next = new StorePage(target, page + 1, service, yaml);
+    public void initPage() {
+        super.initPage();
+
+        // 上一页
+        if (pageNumber == 1) {
+            this.slot(45, MarketItem.getPair("pagePreDisable"));
+        } else {
+            this.slot(45, MarketItem.getPair("pagePre"));
+        }
+        // 下一页
+        this.slot(46, MarketItem.getPair("pageNextDisable"));
+
+        this.slot(53, MarketItem.getPair("back"));
+    }
+
+    @Override
+    public Page getNext() {
+        if (next == null && pageNumber < 30) {
+            next = new StorePage(target, pageNumber + 1, service);
             next.setPre(this);
         }
         return next;
     }
     
+    private void putStore() {
+
+        final Merchant[] merchants = 
+            service.selectMerchants((pageNumber - 1) * 45, pageNumber * 45);
+
+        // 可以下一页
+        if (merchants.length != 0) {
+            this.slot(46, MarketItem.getPair("pageNext"));
+        }
+
+        // 放置店铺
+        for (int i = 0; i < 45; i++) {
+            if (i < merchants.length) {
+                final Merchant merchant = merchants[i];
+                final String playerName = merchant.getName();
+                final String storeName = StringUtils.isEmpty(merchant.getStore())
+                    ? Language.GUI_STORE.get().replace("%p%", playerName) : merchant.getStore();
+                final ItemStack item = new ItemBuilder(merchant.getLogo())
+                        .name(storeName)
+                        .lore(String.format(Language.GUI_OWNER.get(), merchant.getName()))
+                        .lore(String.format(Language.GUI_AMOUNT.get(), merchant.getAmount()))
+                        .lore(String.format(Language.GUI_SELLING.get(), merchant.getSelling()))
+                        .lore(String.format(Language.GUI_VISIT.get(), merchant.getVisit()))
+                        .lore(String.format(Language.GUI_STAR.get(), merchant.getStar()))
+                        .build();
+                final Slot slot = new Slot();
+                slot.result(InventoryAction.PICKUP_ALL, 
+                    false, 
+                    ActionResult.ACTION_PAGE_OPEN, 
+                    "market.visit." + merchant.getUid());
+                this.slot(i, item, slot);
+            } else {
+                this.slot(i, new ItemStack(Material.AIR));
+            }
+        }
+    }
+
 }

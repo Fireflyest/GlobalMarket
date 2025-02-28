@@ -36,8 +36,9 @@ public class MarketCheckCommand extends SubCommand {
                 url = latest.getAssets().get(0).getBrowserDownloadUrl();
             }
             sender.sendMessage(
-                Language.CHECK_VERSION.replace("%version%", version + " -> " + latest.getName())
-                                      .replace("%url%", url)
+                Language.VERSION_CHECK.get()
+                    .replace("%version%", version + " -> " + latest.getName())
+                    .replace("%url%", url)
             );
         }
         return true;
